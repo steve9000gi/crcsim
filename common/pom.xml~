@@ -47,7 +47,6 @@
 
   <modules>
     <module>population</module>
-    <module>util</module>
   </modules>
 
 </project>

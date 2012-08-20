@@ -4,12 +4,12 @@
 
   <modelVersion>4.0.0</modelVersion>
   <version>1.0-SNAPSHOT</version>
-  <artifactId>common</artifactId>
+  <artifactId>common</artifactId> 
   <parent>
     <groupId>epi</groupId>
     <artifactId>root</artifactId>
     <version>1.0-SNAPSHOT</version>
-  </parent>
+  </parent> 
 
   <packaging>pom</packaging>
   <name>${project.groupId}-${project.artifactId}</name>
@@ -47,6 +47,11 @@
 
   <modules>
     <module>population</module>
+    <module>util</module>
   </modules>
+
+  <build>
+    <finalName>${project.groupId}-${project.artifactId}-${project.version}</finalName>
+  </build>
 
 </project>
