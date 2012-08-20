@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+			   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+  
+  
+  <context:property-placeholder location="classpath:/spring/jdbc.properties"/>
+  <import resource="classpath*:/spring/population-context.xml" />
+
+  <context:component-scan base-package="org.renci.epi"/>
+
+  <!-- Configures the @Controller programming model -->
+  <mvc:annotation-driven />
+  
+  <!-- Forwards requests to the "/" resource to the "welcome" view -->
+  <mvc:view-controller path="/" view-name="index"/>
+  
+  <!-- Configures Handler Interceptors -->	
+  <mvc:interceptors>
+    <!-- Changes the locale when a 'locale' request parameter is sent; e.g. /?locale=de -->
+    <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+  </mvc:interceptors>
+  
+  <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources/ directory -->
+  <mvc:resources mapping="/resources/**" location="/resources/" />
+  
+  <!-- Saves a locale change using a cookie -->
+  <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" />
+  
+  <!-- Application Message Bundle -->
+  <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    <property name="basename" value="/WEB-INF/messages/messages" />
+    <property name="cacheSeconds" value="0" />
+  </bean>
+  
+  <!-- Resolves view names to protected .jsp resources within the /WEB-INF/views directory -->
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/WEB-INF/views/"/>
+    <property name="suffix" value=".jsp"/>
+  </bean>
+
+  <bean id="reportViewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+    <property name="basename" value="report-views" />
+    <property name="order" value="0" />
+  </bean>
+  
+  <!--
+      http://static.springsource.org/spring/docs/3.0.0.M3/reference/html/ch17s07.html
+      http://forum.springsource.org/showthread.php?12110-JasperReport-config 
+      http://forum.springsource.org/showthread.php?42317-JasperReport-IN-HTML-using-Spring&p=149743#post149743
+      http://www.mkyong.com/spring-mvc/configure-multiple-view-resolvers-priority-in-spring-mvc/
+  -->
+  <!-- 
+  <bean id="appController" name="/**" class="org.renci.epi.web.AppController" />
+  <bean id="pdfViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
+    <property name="location" value="/WEB-INF/jasper-views.xml" />
+    <property name="order"    value="1" />
+  </bean>
+  -->
+      
+  
+
+  
+</beans>

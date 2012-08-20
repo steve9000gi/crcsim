@@ -1,0 +1,156 @@
+#!/bin/bash
+ 
+set -x
+
+app=/cygdrive/c/dev/code-0
+anylogicHome=/cygdrive/c/app/AnyLogicUniversity/
+anylogicEngineDir=com.xj.anylogic.engine6_6.8.1.201206071455
+
+basedir=tmp
+rm -rf $basedir
+seed=356987966
+
+
+grepjars () {
+    dir=$1
+    class=$2
+    for j in $dir/*jar; do
+	winj=$(cygpath -w $j)
+	line=$(jar tf $winj | grep $class)
+	if [ "$(echo $line | grep -c $class)" -gt 0 ]; then
+	    echo $j: $line
+	fi
+    done
+}
+#grepjars ${anylogicHome}/plugins/$anylogicEngineDir/ ExperimentCustom
+pathc () {
+    local value=$1
+    if [ "$(uname -a | grep -ci cygwin)" -gt 0 ]; then
+	value=$(cygpath -w $1)
+    fi
+    echo $value
+}
+set_classpath () {
+    classPath=$(pathc $app/al6utils/trunk/dist/al6utils-v7.jar)
+    classPath="$(pathc $app/model/CRCScreening_v49_NoAnimation.jar);$classPath"
+    for j in ${anylogicHome}/plugins/$anylogicEngineDir/*jar; do
+	echo adding $j
+	classPath="$(pathc $j);$classPath"
+    done
+}
+
+#grepjars /home/scox/app/anylogic/plugins/com.xj.anylogic.engine6_6.8.0.201204241328 ExperimentCustom
+run_app () {
+
+    javaFlags=-verbose:class
+    javaFlags=
+
+    javaCmd="
+    java $javaFlags -Xms2000M -Xmx2000M -Djava.awt.headless=true -cp $classPath CRC.NoAnimation
+        seed $seed
+        model_description $description
+        num_tests 3
+        population_size $population_size
+        infile_population_name $population_file
+        outfile_replication true
+        outfile_replication_name $outDir/replication_${description}_$iteration.tsv
+        outfile_replication_overwrite true
+        outfile_year true
+        outfile_year_name $outDir/year_${description}_$iteration.tsv
+        outfile_year_overwrite true
+        outfile_year_start_age 49
+        outfile_year_end_age 59
+        compute_population_rates $compute_population_rates
+        population_rates_sample_size 100000
+        num_population_rates 70
+        max_surveillance_negatives 10
+        model_initial_compliance false
+        model_test_probability false
+        surveillance_compliance_rate 1.000
+        treatment_compliance_rate 1.000
+        never_compliant_rate $never_compliant_rate
+        initial_compliance_rate $initial_compliance_rate
+        test_compliance_rate_given_prev_compliant $test_compliance_rate_given_prev_compliant
+        test_compliance_rate_given_not_prev_compliant $test_compliance_rate_given_not_prev_compliant
+        diagnostic_compliance_rate $diagnostic_compliance_rate
+        test_proportion $test_proportion
+        test_sensitivity_polyp1 $test_sensitivity_polyp1
+        test_sensitivity_polyp2 $test_sensitivity_polyp2
+        test_sensitivity_polyp3 $test_sensitivity_polyp3
+        test_sensitivity_cancer $test_sensitivity_cancer
+        test_specificity $test_specificity
+        test_proportion_lethal 0,0,0.00005
+        test_proportion_perforation 0,0,0.0007
+        test_cost $test_cost
+        cost_polypectomy $cost_polypectomy
+        test_cost_perforation $test_cost_perforation
+        cost_treatment1 $cost_treatment1
+        cost_treatment2 $cost_treatment2
+        cost_treatment3 $cost_treatment3
+        cost_treatment4 $cost_treatment4
+    "
+    echo $javaCmd | sed -e "s, ,\n ,g" > $outDir/java_cmd.txt.$iteration
+    $javaCmd > $outDir/stdout.$iteration 2>&1
+}
+
+main () {
+    iterations=2
+    logDir=$basedir/logs
+    outDir=$basedir/out
+    mkdir -p $logDir
+    mkdir -p $outDir
+    export batch
+    export outDir
+
+    population_size=110000
+    population_file=../../synthetic_population_110k.tsv
+
+    population_size=1000
+    population_file=../model/population.tsv
+
+    population_size=8544531
+    population_file=/cygdrive/c/dev/code-0/population/target/out.txt
+
+    set -x
+    export description=$1
+    export never_compliant_rate=$2
+    export initial_compliance_rate=$3
+    export test_compliance_rate_given_prev_compliant=$4
+    export test_compliance_rate_given_not_prev_compliant=$5
+    export diagnostic_compliance_rate=$6
+    export test_proportion=$7
+    export test_sensitivity_polyp1=$8
+    export test_sensitivity_polyp2=$9
+    export test_sensitivity_polyp3=${10}
+    export test_sensitivity_cancer=${11}
+    export test_specificity=${12}
+    export test_cost=${13}
+    export cost_polypectomy=${14}
+    export test_cost_perforation=${15}
+    export cost_treatment1=${16}
+    export cost_treatment2=${17}
+    export cost_treatment3=${18}
+    export cost_treatment4=${19}
+    export compute_population_rates=${20}
+    set +x
+
+    set_classpath > $outDir/set_classpath.log
+    # Submit the run script once for each iteration, being sure to choose a new
+    # seed each time.
+    #
+    for ((i=1; $i <= $iterations; i++)); do
+        export iteration=$i
+        export seed=$((seed + 1))
+	run_app
+    done
+}
+
+
+
+
+main     anylogic6      0.000     0.450     0.559,0.510,0.510  0.361,0.401,0.401  0.750       0.300,0.120,0.580  0.02,0.75,0.80  0.02,0.85,0.85  0.10,0.95,0.95  0.40,0.95,0.95  0.97,1.00,1.00  18,349,818   380          0,0,24000    32700 34400 41600 29400  true
+
+cat $outDir/*
+
+f () {
+}

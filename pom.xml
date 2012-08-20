@@ -1,0 +1,125 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>root</artifactId>
+  <packaging>pom</packaging>
+  <groupId>epi</groupId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>${project.groupId}-${project.artifactId}</name>
+  <url>http://www.renci.org/~scox/crc</url>
+
+  <!--
+      == threadsafe controller: http://studiofreya.com/2012/02/06/spring-mvc-how-to-build-a-thread-safe-controller/
+      == spring3+junit: http://giannisapi.wordpress.com/2011/09/30/spring-3-testing-with-junit-4-using-contextconfiguration-and-abstracttransactionaljunit4springcontexttests/
+      == testing webmvc: http://www.finalconcept.com.au/article/view/spring-unit-testing-controllers
+      == classpath scanning: http://static.springsource.org/spring/docs/3.0.0.M3/spring-framework-reference/html/ch04s12.html
+      == jasper-admin: http://localhost:8081/jasperserver/flow.html?_flowId=searchFlow
+        == integrate jasper: http://himtech-spring.blogspot.com/2012/07/spring-mvc-with-jasperreport.html
+        == jasper api: http://jasperreports.sourceforge.net/api/index.html
+        == integration: http://krams915.blogspot.com/2010/12/spring-3-mvc-jasper-integration.html
+  -->
+
+  <properties>
+    <!-- maven -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.plugin.version.compiler>2.5.1</maven.plugin.version.compiler>
+    <maven.plugin.version.dependency>2.4</maven.plugin.version.dependency>
+    <maven.plugin.version.war>2.2</maven.plugin.version.war>
+    <tomcat.maven.plugin.version>1.1</tomcat.maven.plugin.version>
+
+    <!-- common -->
+    <junit.version>4.5</junit.version>
+    <log4j.version>1.2.17</log4j.version>
+    <junit.springsource.version>4.7.0</junit.springsource.version>
+<!--
+    <junit.version>3.8.1</junit.version>
+    <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+-->
+    <org.springframework.version>3.1.2.RELEASE</org.springframework.version>
+    <org.apache.commons.lang3.version>3.0</org.apache.commons.lang3.version>
+    <org.apache.commons.io.version>2.3</org.apache.commons.io.version>
+    <org.apache.commons.logging.version>1.1.1</org.apache.commons.logging.version>
+    <org.json.version>20090211</org.json.version>
+    <net.sf.opencsv.version>2.3</net.sf.opencsv.version>
+    <sqlite.jdbc.version>3.7.2</sqlite.jdbc.version>
+    <xerial.sqlite.jdbc.driver.version>3.7.2</xerial.sqlite.jdbc.driver.version>
+    <commons.dbcp.version>1.4</commons.dbcp.version>
+                        
+    <!-- web -->    
+    <jstl.version>1.2</jstl.version>
+    <aspectj.version>1.6.5</aspectj.version>
+    <servlet-api.version>2.5</servlet-api.version>
+    <jsp.version>2.1</jsp.version>
+    <urlrewrite.version>3.1.0</urlrewrite.version>
+    <net.sf.jaspersoft.reports.version>4.7.0</net.sf.jaspersoft.reports.version>
+
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>${org.springframework.version}</version>
+    </dependency>    
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${org.springframework.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+
+  </dependencies>
+
+  <modules>
+    <module>common</module>
+    <module>web</module>
+  </modules>
+
+  <build>
+
+    <defaultGoal>install</defaultGoal>
+
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.plugin.version.compiler}</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+
+<!--
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-dependency-plugin</artifactId>
+        <version>${maven.plugin.version.dependency}</version>
+	<executions>
+	  <execution>
+	    <id>install</id>
+	    <phase>install</phase>
+	    <goals>
+	      <goal>sources</goal>
+	    </goals>
+	  </execution>
+	</executions>
+      </plugin>
+-->
+    </plugins>
+  </build>
+
+</project>

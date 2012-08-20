@@ -1,0 +1,151 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <version>1.0-SNAPSHOT</version>
+  <artifactId>web</artifactId>
+  <parent>
+    <groupId>epi</groupId>
+    <artifactId>root</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <packaging>war</packaging>
+  <name>${project.groupId}-${project.artifactId}</name>
+  <url>http://maven.apache.org</url>
+
+  <dependencies>
+
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>util</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>population</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency> 
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${org.springframework.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>${org.springframework.version}</version>
+      <exclusions>
+	<exclusion>
+	  <groupId>quartz</groupId>
+	  <artifactId>quartz</artifactId>
+	</exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${org.springframework.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-mock</artifactId>
+      <version>2.0.8</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>${jstl.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- Clean URLs with JSPs -->
+    <dependency>
+      <groupId>org.tuckey</groupId>
+      <artifactId>urlrewritefilter</artifactId>
+      <version>${urlrewrite.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>${aspectj.version}</version>
+    </dependency>
+
+    <!-- Container-provided dependencies-->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>${servlet-api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>${jsp.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sf.jasperreports</groupId>
+      <artifactId>jasperreports</artifactId>
+      <version>${net.sf.jaspersoft.reports.version}</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>${project.name}</finalName>
+
+    <resources>
+<!--
+      <resource>
+        <directory>src/main/resources/org/renci/epi/reports</directory>
+	<targetPath>${project.build.directory}/classes/org/renci/epi/reports</targetPath>
+        <filtering>false</filtering>
+      </resource>
+-->
+      <resource>
+        <directory>src/main/resources</directory>
+	<targetPath>${project.build.directory}/classes/</targetPath>
+        <filtering>false</filtering>
+      </resource>
+<!--
+      <resource>
+        <directory>src/webapp/resources</directory>
+	<targetPath>${project.build.directory}/WEB-INF</targetPath>
+        <filtering>false</filtering>
+      </resource>
+-->
+    </resources>
+
+    <plugins>
+
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-war-plugin</artifactId>
+	<version>${maven.plugin.version.war}</version>
+	<configuration>
+	  <warName>${project.groupId}-${project.artifactId}</warName>
+	</configuration>
+      </plugin>
+
+      <plugin>
+	<groupId>org.codehaus.mojo</groupId>
+	<artifactId>tomcat-maven-plugin</artifactId>
+	<version>${tomcat.maven.plugin.version}</version>
+	<configuration>
+	  <warFile>${project.build.directory}/${project.build.finalName}.war</warFile>
+	  <url>http://localhost:8080/manager/html</url>
+	  <server>localServer</server>
+	  <path>/${project.build.finalName}</path>
+	</configuration>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+</project>

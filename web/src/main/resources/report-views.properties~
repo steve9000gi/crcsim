@@ -1,0 +1,5 @@
+statusPdf.class=org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView
+statusPdf.url=/WEB-INF/reports/healthyPolypCancerMultiAxis.jrxml
+statusPdf.reportDataKey=reportData
+
+

@@ -1,0 +1,71 @@
+#!/bin/bash
+
+
+batch=2
+seed=356987966
+
+iterations=250
+
+
+logDir=/MIDAS/storage/rjmorris/crc/experiments/2012-02-29_al5_vs_al6/batch$batch/log
+outDir=/MIDAS/storage/rjmorris/crc/experiments/2012-02-29_al5_vs_al6/batch$batch/out
+
+if [ ! -d $logDir ]; then
+    mkdir $logDir
+fi
+if [ ! -d $outDir ]; then
+    mkdir $outDir
+fi
+
+
+
+function submit_scenario() {
+    export batch
+    export outDir
+
+    export description=$1
+    export never_compliant_rate=$2
+    export initial_compliance_rate=$3
+    export test_compliance_rate_given_prev_compliant=$4
+    export test_compliance_rate_given_not_prev_compliant=$5
+    export diagnostic_compliance_rate=$6
+    export test_proportion=$7
+    export test_sensitivity_polyp1=$8
+    export test_sensitivity_polyp2=$9
+    export test_sensitivity_polyp3=${10}
+    export test_sensitivity_cancer=${11}
+    export test_specificity=${12}
+    export test_cost=${13}
+    export cost_polypectomy=${14}
+    export test_cost_perforation=${15}
+    export cost_treatment1=${16}
+    export cost_treatment2=${17}
+    export cost_treatment3=${18}
+    export cost_treatment4=${19}
+    export compute_population_rates=${20}
+
+
+    # Submit the run script once for each iteration, being sure to choose a new
+    # seed each time.
+    #
+
+    for ((i=1; $i <= $iterations; i++)); do
+        export iteration=$i
+        export seed=$((seed + 1))
+
+        # Notes:
+        #   1) It appears that running two jobs on the same node causes problems.
+        #      One of the jobs runs properly but one doesn't. Therefore, specify
+        #      ppn=2 to ensure that each job runs on its own node.
+        #   2) With no -q option, the scheduler gave an error saying we could not
+        #      have ppn=2 when using rti_debug. Therefore, we explicity specify a
+        #      queue with the -q option.
+        #
+        qsub -N run_$i -l mem_free=2G,h_vmem=3G,h_rt=00:30:00 -o $logDir -j yes -V run
+    done
+}
+
+
+#                description       never  initial  pos-conditional    neg-conditional    diagnostic  distribution       sens-polyp1     sens-polyp2     sens-polyp3     sens-cancer     spec-cancer     cost         polypectomy  perforation  treatment cost           compute pop rates?
+#--------------  ----------------  -----  -------  -----------------  -----------------  ----------  -----------------  --------------  --------------  --------------  --------------  --------------  -----------  -----------  -----------  -----------------------  ------------------
+submit_scenario  anylogic6         0.000  0.450    0.559,0.510,0.510  0.361,0.401,0.401  0.750       0.300,0.120,0.580  0.02,0.75,0.80  0.02,0.85,0.85  0.10,0.95,0.95  0.40,0.95,0.95  0.97,1.00,1.00  18,349,818   380          0,0,24000    32700 34400 41600 29400  true

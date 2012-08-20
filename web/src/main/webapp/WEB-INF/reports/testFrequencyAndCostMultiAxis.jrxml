@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="testFrequencyAndCost"
+pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="description" class="java.lang.String"/>
+	<field name="replication" class="java.lang.String"/>
+	<field name="population" class="java.lang.String"/>
+	<field name="age" class="java.lang.String"/>
+	<field name="n" class="java.lang.String"/>
+	<field name="num_state_healthy" class="java.lang.String"/>
+	<field name="tot_state_healthy" class="java.lang.String"/>
+	<field name="num_state_polyp" class="java.lang.String"/>
+	<field name="tot_state_polyp" class="java.lang.String"/>
+	<field name="num_state_cancer" class="java.lang.String"/>
+	<field name="tot_state_cancer" class="java.lang.String"/>
+	<field name="num_state_pre" class="java.lang.String"/>
+	<field name="tot_state_pre" class="java.lang.String"/>
+	<field name="num_state_clin" class="java.lang.String"/>
+	<field name="tot_state_clin" class="java.lang.String"/>
+	<field name="tot_state_dead" class="java.lang.String"/>
+	<field name="tot_state_dead_crc" class="java.lang.String"/>
+	<field name="tot_polyps_removed" class="java.lang.String"/>
+	<field name="tot_lesions_cured" class="java.lang.String"/>
+	<field name="tot_discounted_cost_routine" class="java.lang.String"/>
+	<field name="tot_discounted_cost_diagnostic" class="java.lang.String"/>
+	<field name="tot_discounted_cost_surveillance" class="java.lang.String"/>
+	<field name="tot_discounted_cost_treatment" class="java.lang.String"/>
+	<field name="tot_test0_performed" class="java.lang.String"/>
+	<field name="tot_test1_performed" class="java.lang.String"/>
+	<field name="tot_test2_performed" class="java.lang.String"/>
+	<group name="Year">
+		<groupExpression><![CDATA[$F{age}]]></groupExpression>
+		<groupFooter>
+			<band height="294">
+				<multiAxisChart>
+					<chart>
+						<reportElement x="11" y="0" width="791" height="294"/>
+						<chartTitle/>
+						<chartSubtitle/>
+						<chartLegend/>
+					</chart>
+					<multiAxisPlot>
+						<plot/>
+						<axis>
+							<lineChart>
+								<chart>
+									<reportElement x="0" y="0" width="0" height="0" backcolor="#FFFFFF"/>
+									<chartTitle color="#000000"/>
+									<chartSubtitle color="#000000"/>
+									<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
+								</chart>
+								<categoryDataset>
+									<categorySeries>
+										<seriesExpression><![CDATA["Test 0"]]></seriesExpression>
+										<categoryExpression><![CDATA[Integer.parseInt ($F{age})]]></categoryExpression>
+										<valueExpression><![CDATA[Integer.parseInt ($F{tot_test0_performed})]]></valueExpression>
+									</categorySeries>
+									<categorySeries>
+										<seriesExpression><![CDATA["Test 1"]]></seriesExpression>
+										<categoryExpression><![CDATA[Integer.parseInt ($F{age})]]></categoryExpression>
+										<valueExpression><![CDATA[Integer.parseInt ($F{tot_test1_performed})]]></valueExpression>
+									</categorySeries>
+									<categorySeries>
+										<seriesExpression><![CDATA["Test 2"]]></seriesExpression>
+										<categoryExpression><![CDATA[Integer.parseInt ($F{age})]]></categoryExpression>
+										<valueExpression><![CDATA[Integer.parseInt ($F{tot_test2_performed})]]></valueExpression>
+									</categorySeries>
+								</categoryDataset>
+								<linePlot>
+									<plot/>
+								</linePlot>
+							</lineChart>
+						</axis>
+						<axis>
+							<lineChart>
+								<chart>
+									<reportElement x="0" y="0" width="0" height="0" backcolor="#FFFFFF"/>
+									<chartTitle color="#000000"/>
+									<chartSubtitle color="#000000"/>
+									<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
+								</chart>
+								<categoryDataset>
+									<categorySeries>
+										<seriesExpression><![CDATA["Discounted Cost Treatment"]]></seriesExpression>
+										<categoryExpression><![CDATA[Integer.parseInt ($F{age})]]></categoryExpression>
+										<valueExpression><![CDATA[Math.round (Float.parseFloat ($F{tot_discounted_cost_treatment}))]]></valueExpression>
+									</categorySeries>
+								</categoryDataset>
+								<linePlot>
+									<plot/>
+								</linePlot>
+							</lineChart>
+						</axis>
+					</multiAxisPlot>
+				</multiAxisChart>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="32" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="25" splitType="Stretch"/>
+	</pageHeader>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

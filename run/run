@@ -1,0 +1,64 @@
+#!/bin/bash
+
+date
+echo "--- simulation run starting"
+
+cd /MIDAS/storage/rjmorris/crc/experiments/2012-02-29_al5_vs_al6/batch$batch
+
+classPath="/home/rjmorris/lib/anylogic6/com.xj.anylogic.engine-6.7.1.jar"
+classPath="$classPath:/home/rjmorris/lib/anylogic6/al6utils-v7.jar"
+classPath="$classPath:../../CRCScreening_v46_NoAnimation.jar"
+
+javaCmd="
+    java -Xms2000M -Xmx2000M -Djava.awt.headless=true -cp $classPath CRC.NoAnimation
+        seed $seed
+        model_description $description
+        num_replications 1
+        num_populations 1
+        num_tests 3
+        num_lesion_types 1
+        population_size 110000
+        infile_population_name ../../synthetic_population_110k.tsv
+        outfile_replication true
+        outfile_replication_name $outDir/replication_${description}_$iteration.tsv
+        outfile_replication_overwrite true
+        outfile_year true
+        outfile_year_name $outDir/year_${description}_$iteration.tsv
+        outfile_year_overwrite true
+        outfile_year_start_age 49
+        outfile_year_end_age 59
+        compute_population_rates $compute_population_rates
+        population_rates_sample_size 100000
+        num_population_rates 70
+        max_surveillance_negatives 10
+        model_initial_compliance false
+        model_test_probability false
+        surveillance_compliance_rate 1.000
+        treatment_compliance_rate 1.000
+        never_compliant_rate $never_compliant_rate
+        initial_compliance_rate $initial_compliance_rate
+        test_compliance_rate_given_prev_compliant $test_compliance_rate_given_prev_compliant
+        test_compliance_rate_given_not_prev_compliant $test_compliance_rate_given_not_prev_compliant
+        diagnostic_compliance_rate $diagnostic_compliance_rate
+        test_proportion $test_proportion
+        test_sensitivity_polyp1 $test_sensitivity_polyp1
+        test_sensitivity_polyp2 $test_sensitivity_polyp2
+        test_sensitivity_polyp3 $test_sensitivity_polyp3
+        test_sensitivity_cancer $test_sensitivity_cancer
+        test_specificity $test_specificity
+        test_proportion_lethal 0,0,0.00005
+        test_proportion_perforation 0,0,0.0007
+        test_cost $test_cost
+        cost_polypectomy $cost_polypectomy
+        test_cost_perforation $test_cost_perforation
+        cost_treatment1 $cost_treatment1
+        cost_treatment2 $cost_treatment2
+        cost_treatment3 $cost_treatment3
+        cost_treatment4 $cost_treatment4
+    "
+
+echo $javaCmd
+$javaCmd
+
+echo "--- simulation run complete"
+date

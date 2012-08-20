@@ -1,0 +1,163 @@
+#!/bin/bash
+
+#set -x
+
+###################################################################
+###################################################################
+##    
+##    
+## Command line interface for interacting with RTI synthetic
+## population and associated PUMS (census) data.
+##
+## usage:
+##    
+##    import:
+##
+##          ./generate-population --import
+##
+##    export:
+##
+##          ./generate-population --export
+##
+## confiugration:
+##          
+##    data_home: directory in which the synthetic population
+##               files are stored.
+##
+##    input_files: files to be imported. 
+##
+##
+###################################################################
+
+# Configure environment
+
+configure_system () {
+    data_home=~/dev/rti_synth_pop/
+    data_home=/cygdrive/c/dev/rti/syntheticpopulation
+    input_files="
+2005_2009_ver1_37_synth_people.txt 
+2005_2009_ver1_37_synth_households.txt 
+2005_2009_ver1_37_pums_p.txt"
+    
+    unset subset
+    unset tables
+    unset cygwin
+    
+    if [ "$(uname -o)" == 'Cygwin' ]
+    then 
+	cygwin=true
+    fi
+}
+
+# Utilities
+
+get_fields () {
+    local input=$1
+    echo " $(head -1 $input | sed -e 's/,/ varchar\(10\)\n,/g' ) varchar(10) "
+}
+
+execute_sql () {
+    sqlite3 pop.db <<SQL_ENTRY_TAG_1
+$1
+SQL_ENTRY_TAG_1
+}
+
+drop_tables () {
+    for table in $*; do
+	execute_sql "drop table $table;"
+    done
+}
+
+create_table () {
+    local input=$1
+    local table=$2
+    fields="$(get_fields $input)"
+    sql="create table $table ($fields);"
+    execute_sql "$sql"
+}
+
+load_data () {
+    local input=$1
+    if [ ! -z $cygwin ]; then
+	input=$(cygpath -w $1)
+    fi
+    local table=$2
+    cat > ${table}-loader.txt <<EOF
+.mode csv
+.schema $table
+.import '$input' $table
+EOF
+    sqlite3 pop.db ".read ${table}-loader.txt" > ${table}-loader.log
+}
+
+create_and_load () {
+    local input=$1
+    local table=$2
+    create_table $input $table
+    load_data $input $table
+}    
+
+# Import tables
+
+import_tables () {
+    for file in $input_files; do
+	table=$(echo $file | sed -e "s,pums_,pums,g" | sed -e "s,.*_,," -e "s,.txt,,")
+	table="$table:${data_home}/$file"
+	tables="$tables $table"
+    done
+    
+    drop_tables people households pumsp
+    
+    for table in $tables; do
+	input=$(echo $table | sed -e "s,:, ," | awk '{ print $2 }')
+	table=$(echo $table | sed -e "s,:, ," | awk '{ print $1 }')
+	create_and_load $input $table
+    done
+}
+
+# Export a population
+
+export_data () {
+    echo "sex|race|hh_income|age|hh_size|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
+    execute_sql "
+  select people.sex,
+         race,
+         hh_income,
+         age,
+         hh_size,
+         pumsp.hisp,
+         pumsp.schl,
+         pumsp.semp,
+         pumsp.rac1p
+  from people, households, pumsp
+  where people.hh_id    == households.hh_id
+    and people.serialno == pumsp.serialno
+    and people.pernum   == pumsp.sporder;
+"
+}
+
+usage () {
+    echo "$0 [ --import | --export ]"
+    exit 1
+}
+
+main () {
+
+	configure_system
+
+	for arg in $*; do
+	    case $arg in
+		'--import')
+		    import_tables
+		    ;;
+		'--export')
+		    export_data
+		    ;;
+		*)
+		    usage 
+		    ;;
+	    esac
+	done
+}
+
+main $*
