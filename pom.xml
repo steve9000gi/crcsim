@@ -33,10 +33,6 @@
     <junit.version>4.5</junit.version>
     <log4j.version>1.2.17</log4j.version>
     <junit.springsource.version>4.7.0</junit.springsource.version>
-<!--
-    <junit.version>3.8.1</junit.version>
-    <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
--->
     <org.springframework.version>3.1.2.RELEASE</org.springframework.version>
     <org.apache.commons.lang3.version>3.0</org.apache.commons.lang3.version>
     <org.apache.commons.io.version>2.3</org.apache.commons.io.version>
@@ -46,6 +42,9 @@
     <sqlite.jdbc.version>3.7.2</sqlite.jdbc.version>
     <xerial.sqlite.jdbc.driver.version>3.7.2</xerial.sqlite.jdbc.driver.version>
     <commons.dbcp.version>1.4</commons.dbcp.version>
+
+    <!-- geography -->
+    <geotools.version>8.0</geotools.version>
                         
     <!-- web -->    
     <jstl.version>1.2</jstl.version>
