@@ -32,44 +32,17 @@ public class AppController extends BaseController {
 
     private final PopulationService populationService;
 
-    private final JRCsvDataSource datasource;
-
-
     protected static Logger logger = Logger.getLogger (BaseController.class.getName ());
 
     @Autowired
     public AppController (PopulationService populationService) {
 	this.populationService = populationService;
-	InputStream input = this.getClass().getResourceAsStream ("/org/renci/epi/reports/datasource.csv");
-	this.datasource = new JRCsvDataSource (input);
-	this.datasource.setUseFirstRowAsHeader (true);
     }
 
     @RequestMapping("/")
     public String welcomeHandler () {
 	populationService.getPopulation (new String [] { "0" });
 	return "index";
-    }
-
-    private void dumpds () {
-	InputStream in = null;
-	try {
-	    in = this.getClass().getResourceAsStream ("/org/renci/epi/reports/datasource.csv");
-	    BufferedReader reader = new BufferedReader (new InputStreamReader (in));
-	    for (String line = reader.readLine (); line != null; line = reader.readLine ()) {
-		System.out.println (line);
-	    }
-	} catch (IOException e) {
-	    e.printStackTrace ();
-	} finally {
-	    if (in != null) {
-		try {
-		    in.close ();
-		} catch (IOException e) {
-		    e.printStackTrace ();
-		}
-	    }
-	}
     }
 
     @RequestMapping("/reports/status/{format}")
@@ -80,13 +53,14 @@ public class AppController extends BaseController {
     {
 	Map<String,Object> model = new HashMap<String,Object> ();
 	model.put ("format", format);
+
 	/**
-	this.dumpds ();
+	*/
 	InputStream input = this.getClass().getResourceAsStream ("/org/renci/epi/reports/datasource.csv");
 	JRCsvDataSource datasource = new JRCsvDataSource (input);
 	datasource.setUseFirstRowAsHeader (true);
-	*/
-	model.put ("datasource", this.datasource);
+
+	model.put ("datasource", datasource);
 	return new ModelAndView ("StatusReport", model);
     }
 
