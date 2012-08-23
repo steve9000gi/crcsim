@@ -2,7 +2,7 @@
  
 set -x
 
-app=/cygdrive/c/dev/code-0
+app=/cygdrive/c/dev/crcsim
 anylogicHome=/cygdrive/c/app/AnyLogicUniversity/
 anylogicEngineDir=com.xj.anylogic.engine6_6.8.1.201206071455
 
@@ -45,13 +45,17 @@ run_app () {
     javaFlags=-verbose:class
     javaFlags=
 
+    echo "----------"
+    echo $classPath
+    echo "----------"
+
     javaCmd="
     java $javaFlags -Xms2000M -Xmx2000M -Djava.awt.headless=true -cp $classPath CRC.NoAnimation
         seed $seed
         model_description $description
         num_tests 3
         population_size $population_size
-        infile_population_name $population_file
+        infile_population_name "$(pathc $population_file)"
         outfile_replication true
         outfile_replication_name $outDir/replication_${description}_$iteration.tsv
         outfile_replication_overwrite true
@@ -109,7 +113,9 @@ main () {
     population_file=../model/population.tsv
 
     population_size=8544531
-    population_file=/cygdrive/c/dev/code-0/population/target/out.txt
+    population_size=9
+    population_file=$app/common/population/target/out.txt
+
 
     set -x
     export description=$1
@@ -152,5 +158,3 @@ main     anylogic6      0.000     0.450     0.559,0.510,0.510  0.361,0.401,0.401
 
 cat $outDir/*
 
-f () {
-}

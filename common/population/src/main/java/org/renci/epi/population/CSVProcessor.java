@@ -125,16 +125,17 @@ class SynthPopAnnotationProcessor implements Processor {
 	 * And in the RTI input file
 	 *   SEXC is true if male
 	 */
-	String sex = record.get ("sex");
+	String sex = record.get ("people.sex");
+	record.put ("sex", record.get ("people.sex"));
 	record.put ("SEXC", String.valueOf (sex.charAt (0) == '1' ? 1 : 0));
 
 	/** age */
-	record.put ("AGE_G2", record.get ("age"));
+	record.put ("AGE_G2", record.get ("people.age"));
 
 	/** income */
 	try {
 	    int pumsIncomeCode = Integer.parseInt (record.get ("pumsp.semp"));
-	    record.put ("INCOME", String.valueOf (pumsIncomeCode));
+	    record.put ("INCOME", pumsIncomeCode >= 20000 ? "1" : "0");
 	} catch (NumberFormatException e) {
 	    record.put ("INCOME", "0");
 	    if (logger.isDebugEnabled ()) {
@@ -145,7 +146,7 @@ class SynthPopAnnotationProcessor implements Processor {
 	//record.put ("INCOME", record.get ("hh_income"));
 
 	/** alone status */
-	String householdSizeString = record.get ("hh_size");
+	String householdSizeString = record.get ("households.hh_size");
 	try {
 	    int householdSize = Integer.parseInt (householdSizeString);
 	    record.put ("ALONE", householdSize == 1 ? "1" : "0");
@@ -189,12 +190,12 @@ class SynthPopAnnotationProcessor implements Processor {
 	record.put ("NOINS", "0");
 	record.put ("PRIVA", "0");
 	try {
-	    Person person = Person.getPerson (Integer.parseInt (record.get ("age")),
+	    Person person = Person.getPerson (Integer.parseInt (record.get ("people.age")),
 					      Integer.parseInt (record.get ("INCOME")),
-					      Integer.parseInt (record.get ("hh_size")),
+					      Integer.parseInt (record.get ("households.hh_size")),
 					      pumsRaceCode != PUMS.RAC1P_WHITE ? 1 : 0,
 					      Integer.parseInt (record.get ("BLACK")),
-					      Integer.parseInt (record.get ("sex")));
+					      Integer.parseInt (record.get ("people.sex")));
 	    InsuranceStatus status = _insuranceStrategy.getInsuranceStatus (person);
 	    
 	    record.put ("NOINS", _insuranceStrategy.hasNoInsurance (person, status) ? "1" : "0");
@@ -218,15 +219,18 @@ class SynthPopAnnotationProcessor implements Processor {
 	    }
 	}
 
+	record.put ("LAT", record.get ("households.latitude"));
+	record.put ("LON", record.get ("households.longitude"));
+
 	/** Unknown */
-	record.put ("FRISK", "0");
-	record.put ("VITALE", "0");
-	record.put ("AGE_G3", "0");
-	record.put ("AGE_G4", "0");
-	record.put ("FLU", "0");
-	record.put ("FORMER", "0");
-	record.put ("NEVER", "0");
-	record.put ("USUAL", "0");
+	record.put ("FRISK", "0");  // unavailable
+	record.put ("VITALE", "0"); // unavailable
+	record.put ("AGE_G3", "0"); // unused in the model.
+	record.put ("AGE_G4", "0"); // unused in the model.
+	record.put ("FLU", "0");    // get from iciss
+	record.put ("FORMER", "0"); // get from iciss
+	record.put ("NEVER", "0");  // get from iciss
+	record.put ("USUAL", "0");  // get from iciss
     }
 }
 
