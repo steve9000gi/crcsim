@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#set -x
+set -x
 
 ###################################################################
 ###################################################################
@@ -32,6 +32,9 @@
 # Configure environment
 
 configure_system () {
+    
+    DATABASE=pop.db
+
     data_home=~/dev/rti_synth_pop/
     data_home=/cygdrive/c/dev/rti/syntheticpopulation
     input_files="
@@ -57,7 +60,7 @@ get_fields () {
 }
 
 execute_sql () {
-    sqlite3 pop.db <<SQL_ENTRY_TAG_1
+    sqlite3 $DATABASE <<SQL_ENTRY_TAG_1
 $1
 SQL_ENTRY_TAG_1
 }
@@ -87,7 +90,7 @@ load_data () {
 .schema $table
 .import '$input' $table
 EOF
-    sqlite3 pop.db ".read ${table}-loader.txt" > ${table}-loader.log
+    sqlite3 $DATABASE ".read ${table}-loader.txt" > ${table}-loader.log
 }
 
 create_and_load () {
@@ -118,18 +121,22 @@ import_tables () {
 # Export a population
 
 export_data () {
-    echo "sex|race|hh_income|age|hh_size|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
+    echo "people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
     execute_sql "
   select people.sex,
-         race,
-         hh_income,
-         age,
-         hh_size,
+         people.race,
+         households.hh_income,
+         people.age,
+         households.hh_size,
+         households.latitude,
+         households.longitude,
          pumsp.hisp,
          pumsp.schl,
          pumsp.semp,
          pumsp.rac1p
-  from people, households, pumsp
+  from people,
+       households,
+       pumsp
   where people.hh_id    == households.hh_id
     and people.serialno == pumsp.serialno
     and people.pernum   == pumsp.sporder;
@@ -141,12 +148,19 @@ usage () {
     exit 1
 }
 
+getarg () {
+    echo $1 | sed s,.*=,,
+}
+
 main () {
 
 	configure_system
 
 	for arg in $*; do
 	    case $arg in
+		--database\=*)
+		    DATABASE=$(getarg $arg)
+		    ;;
 		'--import')
 		    import_tables
 		    ;;

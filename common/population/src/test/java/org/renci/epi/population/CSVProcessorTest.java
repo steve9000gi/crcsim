@@ -41,7 +41,7 @@ public class CSVProcessorTest extends AbstractJUnit4SpringContextTests {
 
 	BasicConfigurator.configure ();
 	Logger.getRootLogger().setLevel (Level.DEBUG);
-	Logger.getRootLogger().setLevel (Level.ERROR);
+	//Logger.getRootLogger().setLevel (Level.ERROR);
   
 	String inputFileName  = "/sample.out";
 	String outputFileName = "target/out.txt";
@@ -51,7 +51,7 @@ public class CSVProcessorTest extends AbstractJUnit4SpringContextTests {
 	    "sex", "race", "SEXC", "INCOME", "FRISK", "VITALE", "AGE_G2",
 	    "AGE_G3", "AGE_G4", "FLU", "BLACK", "HISP", "OTHER", "FORMER",
 	    "NEVER", "ALONE", "MW", "SO", "WE", "USUAL", "NOINS",
-	    "PRIVA", "EDU", "id"
+	    "PRIVA", "EDU", "id", "LAT", "LON"
 	};
 	Assert.assertTrue (this.populationService != null);
 	this.populationService.compileModelInput (inputFileName,
