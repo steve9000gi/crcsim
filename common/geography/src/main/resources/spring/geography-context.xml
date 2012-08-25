@@ -8,6 +8,8 @@
 			   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
   <!-- define geography service -->
-  <bean id="geographyService" class="org.renci.epi.geography.GeographyServiceImpl" />
+  <bean id="geographyService" class="org.renci.epi.geography.GeographyServiceImpl" >
+
+  </bean>
   
 </beans>

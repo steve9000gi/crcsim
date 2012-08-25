@@ -18,6 +18,7 @@
   </bean>
 -->
   <import resource="classpath*:/spring/datasource-context.xml" />
+  <import resource="classpath*:/spring/geography-context.xml" />
 
   <bean id="populationDao" class="org.renci.epi.population.dao.jdbc.PopulationDAOImpl">
     <property name="dataSource" ref="dataSource"/>
@@ -26,6 +27,7 @@
   <!-- define population service -->
   <bean id="populationService" class="org.renci.epi.population.PopulationServiceImpl">
     <property name="populationDAO" ref="populationDao"/>
+    <property name="geographyService" ref="geographyService"/>
   </bean>
   
 </beans>

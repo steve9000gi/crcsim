@@ -45,6 +45,7 @@ public class GeographyServiceTest extends AbstractJUnit4SpringContextTests {
 	Assert.assertTrue (this.geographyService != null);
 
 	String fileName = "/home/scox/dev/census2010/tl_2010_37_tabblock10.shp";
+	fileName = "\\dev\\var\\crcsim\\census2010\\tl_2010_37_tabblock10.shp";
 	this.geographyService.getPolygons (fileName);
     }
 }

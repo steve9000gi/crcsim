@@ -9,19 +9,35 @@ import java.io.FileWriter;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.renci.epi.population.dao.PopulationDAO;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+import org.renci.epi.geography.GeographyService;
+import org.renci.epi.geography.PolygonOperator;
+import org.renci.epi.geography.JSONPolygonWriterOperator;
 
 public class PopulationServiceImpl implements PopulationService {
 
     private PopulationDAO populationDao;
 
+    private GeographyService geographyService;
+
     public void setPopulationDAO (PopulationDAO populationDao) {
 	this.populationDao = populationDao;
+    }
+    public void setGeographyService (GeographyService geographyService) {
+	this.geographyService = geographyService;
     }
 
     public void compileModelInput (String inputFileName,
@@ -36,7 +52,6 @@ public class PopulationServiceImpl implements PopulationService {
 	CSVProcessor syntheticPopulation = null;
 	try {
 	    input = new BufferedInputStream (new FileInputStream ("sample.out")); 
-	    //this.getClass().getResourceAsStream ("/sample.out");
 	    reader = new BufferedReader (new InputStreamReader (input));
 	    writer = new BufferedWriter (new FileWriter (outputFileName));
 	    Processor processor = new SynthPopAnnotationProcessor (outputKeys);
@@ -50,7 +65,6 @@ public class PopulationServiceImpl implements PopulationService {
 	    // verification steps
 	    
 	    File outputFile = new File (outputFileName);
-	    //outputFile.delete ();
 	    
 	} catch (IOException e) {
 	    e.printStackTrace ();
@@ -68,8 +82,17 @@ public class PopulationServiceImpl implements PopulationService {
     }
 
     public Object getPopulation (String [] query) {
-	System.out.println ("==========================================================");
 	return this.populationDao.getPopulation (query);
     }
 
+    public void geocodePopulation (String modelFileDirectory, String polygonsFile, String outputFilePath) {
+	this.geographyService.
+	    getPolygons (polygonsFile,
+			 new PolygonOperator [] {
+			     new JSONPolygonWriterOperator (outputFilePath, "polygon"),
+			     new PopulationPolygonOperator (outputFilePath, "occurrences", modelFileDirectory)
+			 });
+    }
+    
 }
+

@@ -12,4 +12,8 @@ public interface PopulationService {
 				   String [] outputKeys);
 				   
     public Object getPopulation (String [] query);
+
+    public void geocodePopulation (String modelFileDirectory,
+				   String polygonsFile,
+				   String outputFilePath); 
 }

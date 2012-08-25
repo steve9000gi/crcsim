@@ -7,103 +7,116 @@ Array.prototype.remove = function(from, to) {
     return this.push.apply(this, rest);
 };
 
-/**
- *
- * Epidemiology oriented map.
- * 
- */
-function EpiMap (map) {
-    this.map = map;
-    var center = this.map.getCenter ();
-    this.heatmapData = [];	 
-    for (var c = -100; c < 100; c++) {
-	var data = new google.maps.LatLng (center.lat () + (Math.random () * 10 * Math.random () / 10),
-					   center.lng () + (Math.random () * 10 * Math.random () / 10));
-	this.heatmapData.push (data);
-    }
-    this.zoomThreshold = 12; // point at which we render real person markers.
-    this.markers = [];
-    this.infowindow = new google.maps.InfoWindow ({
-            content : "",
-            size    : new google.maps.Size (50,50)
-	});
-};
-EpiMap.prototype.getMap = function () {
-    return this.map;
-};
-EpiMap.prototype.getHeatmapData = function () {
-    return this.heatmapData;
-};
-EpiMap.prototype.boundsChanged = function (map) {
-    this.removeMarkers ();
-    var zoom = map.getZoom ();
-    if (zoom > this.zoomThreshold) {
-	var bounds = map.getBounds ();
-	for (var c = 0; c < this.heatmapData.length; c++) {
-	    var point = this.heatmapData [c];
-	    if (bounds.contains (point)) {
-		var marker = new google.maps.Marker({
-		        position : point,
-			map      : map,
-                        animation: google.maps.Animation.DROP,
-			title    : "person id"
-		    });
-
-		google.maps.event.addListener(marker, 'mouseover', this.showDetail);
-		google.maps.event.addListener(marker, 'mouseout', this.hideDetail);
-		this.markers.push (marker);
-	    }
-	}
-    } else if (zoom < this.zoomThreshold) {
-	this.removeMarkers ();
-    }
-};
-EpiMap.prototype.removeMarkers = function () {            
-    while (this.markers.length > 0) {
-	var marker = this.markers [0];
-	if (marker) {
-	    marker.setMap (null);
-	    this.markers.remove (0);
-	}
-    }
-};
-EpiMap.prototype.showDetail = function (event) {
-    var contentString = "details...";
-    epiMap.infowindow.setContent (contentString);
-    epiMap.infowindow.setPosition (event.latLng);
-    epiMap.infowindow.open (epiMap.getMap ());
-};
-EpiMap.prototype.hideDetail = function (event) {
-    epiMap.infowindow.close ();
-};
-
-
-
 function initialize() {
-
-    $("#dialog").dialog ();
+    //    $("#dialog").dialog ();
     var center = new google.maps.LatLng (35.9131, -79.0561);
-
     var mapOptions = {
 	center: center,
-	zoom: 5,
-	mapTypeId: google.maps.MapTypeId.ROADMAP
+	zoom: 7,
+	mapTypeId: google.maps.MapTypeId.TERRAIN //ROADMAP
     };
-    var map = new google.maps.Map(document.getElementById("map_canvas"),
-				  mapOptions);
-
+    var map = new google.maps.Map ($("#map_canvas")[0], mapOptions);
     epiMap = new EpiMap (map);
+    $.ajaxSetup({
+	"error" : function (XMLHttpRequest, textStatus, errorThrown) {
+	    alert (textStatus);
+	    alert (errorThrown);
+	    alert (XMLHttpRequest.responseText);
+	}});
+    $.getJSON ("resources/occurrences.json", function (occurrences) {
+	$.getJSON ("resources/polygon-index.json", function (obj) {
+	    for (var c = 0; c < obj.index.length; c++) {
+		var polygonName = obj.index [c];
+		$.getJSON ("resources/" + polygonName, function (polygon) {
+		    epiMap.processPolygons (polygon, occurrences.counts [polygon.count], map);
+		});
+	    }
+	});
+    });
+}
+
+function EpiMap (map) {
+    this.map = map;
+};
+EpiMap.prototype.processPolygons = function (polygon, count) {
+    var coordinates = [];
+    for (var q = 0; q < polygon.points.length; q++) {
+	var point = polygon.points [q];
+	var latlng = new google.maps.LatLng (point [1], point [0]);
+	coordinates.push (latlng);
+    }
+    epiMap.renderPolygon (coordinates, count);
+};
+
+EpiMap.prototype.renderPolygon = function (points, count, map) {    
+    var color = "#00FF00";
+    if (count > 10) {
+	color = "#9f0";
+    }
+    if (count > 100) {
+	color = "#c00";
+    }
+    var polygon = new google.maps.Polygon ({
+	paths         : points,
+	strokeColor   : "#FF0000",
+	strokeOpacity : 0.8,
+	strokeWeight  : 2,
+	fillColor     : color,
+	fillOpacity   : 0.35
+    });    
+    polygon.setMap (this.map);
+};
+
+/*
+	    $.ajax({
+		type     : "GET",
+		url      : "resources/" + county,
+		dataType : "text",
+		success  : function (text){
+		    var county = $.parseJSON (text);
+		    processPolygons (county, map);
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown){
+		    console.log (textStatus); 
+		    console.log (errorThrown); 
+		    alert("Error");
+		}
+	    });
 
 
-    var heatmap = new google.maps.visualization.HeatmapLayer({
-	    data: epiMap.getHeatmapData ()
-        });
-    heatmap.setMap (map);
 
 
+	    $.getJSON ("resources/" + county, function (county) {
+
+	    });
+*/
+
+
+
+/*
+    $.getJSON ("resources/c.json", function (obj) {
+	processPolygons (obj, map);
+    });
+
+    $.ajax({
+	type     : "GET",
+	url      : "resources/c.json",
+	dataType : "text", //"jsonp",
+	success  : function (t){
+	    var obj = $.parseJSON (t);
+	    processPolygons (obj);
+	},
+	error: function (XMLHttpRequest, textStatus, errorThrown){
+	    console.log (textStatus); 
+	    console.log (errorThrown); 
+            alert("Error");
+	}
+    });
+*/
+
+    
+/*    
     google.maps.event.addListener(map, 'bounds_changed', function() {
 	    epiMap.boundsChanged (map);
         });
-
-
-}
+*/
