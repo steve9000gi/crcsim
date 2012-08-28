@@ -1,7 +1,49 @@
-html { height: 100% }
-body { height: 100%; margin: 0; padding: 0 }
-#menu { position : absolute; width : 100%; z-index: 2; background-color : darkgray; color: white; padding : 10px; height : 20px; }
-#status { position : absolute; width : 100%; z-index: 2; background-color : darkgray; color: white; padding : 10px; top : 40px; }
-#map_canvas { height: 100% }
+html {
+    height: 100%;
+}
+
+body {
+    height  : 100%;
+    margin  : 0;
+    padding : 0;
+}
+
+#menu {
+    position         : absolute;
+    width            : 100%;
+    z-index          : 2; 
+    background-color : darkgray;
+    color            : white;
+    padding          : 10px;
+    height           : 20px;
+}
+
+#status {
+    position         : absolute;
+    width            : 30px;
+    height           : 3px;
+    top: 2px;
+    left: 338px;
+    z-index          : 2;
+    background-color : darkgray;
+    color            : white;
+    padding          : 10px;
+}
+
+#progress {
+    position: absolute;
+    width: 250px;
+    height: 3px;
+    top: 8px;
+    left: 66px;
+    z-index: 2;
+    background-color: darkGray;
+    color: white;
+    padding: 10px;
+}
+
+#map_canvas {
+    height: 100%;
+}
 
 

@@ -39,7 +39,7 @@ function EpiMap () {
 
 EpiMap.prototype.animateMap = function () {
     var map = epiMap;
-    map.frame = 38; //0;
+    map.frame = 0; //38; //0;
     map.nextFrame ();
 };
 
@@ -61,7 +61,10 @@ EpiMap.prototype.initializeMap = function (map) {
 
 EpiMap.prototype.nextFrame = function () {
     var map = epiMap;
-    $("#status").html ("   frame: " + map.frame);
+    $("#status").html (map.frame + "%");
+    $("#progress").progressbar ({
+	value : map.frame
+    });
     if (map.frame < map.occurrences.counts.length) {
 	//console.log (map.frame + ' => ' + map.occurrences.counts [map.frame]);
 	for (var c = 0; c < map.polygons.length; c++) {
@@ -93,7 +96,7 @@ EpiMap.prototype.getColorForValue = function (value) {
 	color ="yellow";
     }
     if (value > 20) {
-	color = "lightred";
+	color = "orange";
     }
     if (value > 25) {
 	color = "crimson";
