@@ -42,9 +42,11 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
 
     @Test
     public void testModelInputCompiler () throws Exception {
-
+	
+	/*
 	BasicConfigurator.configure ();
 	Logger.getRootLogger().setLevel (Level.DEBUG);
+	*/
 	//Logger.getRootLogger().setLevel (Level.ERROR);
   
 	String inputFileName  = _dataLocator.getPreliminarySyntheticPopulation (); //"/sample.out";
@@ -98,7 +100,7 @@ class DataLocator {
 
     // input to and output files from the RTI ABM
     public String getModelOutputPath () {
-	String [] parts = new String [] { _dataRoot, "model", "output", "person.99.0" };
+	String [] parts = new String [] { _dataRoot, "model", "output" };
 	return StringUtils.join (parts, File.separatorChar);
     }
     public String getModelInputFilePath () {

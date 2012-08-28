@@ -5,6 +5,9 @@ model/person*
 *~
 *.class
 target/
+*.tsv
+*.autosave.alp
+*.original.alp
 
 *.pydevproject
 .project

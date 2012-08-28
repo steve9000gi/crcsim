@@ -2162,7 +2162,7 @@ import al6utils.Format;]]></Import>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Dynamic="false">
 						<Type><![CDATA[boolean]]></Type>        
-						<DefaultValue><![CDATA[false]]></DefaultValue>
+						<DefaultValue><![CDATA[true]]></DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
@@ -2197,6 +2197,28 @@ import al6utils.Format;]]></Import>
 					</Properties>                 
 				</Variable>
 				<Variable Class="Parameter">
+					<Id>1328041345590</Id>
+					<Name><![CDATA[outfile_year]]></Name>
+					<X>40</X><Y>330</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[boolean]]></Type>        
+						<DefaultValue><![CDATA[true]]></DefaultValue>
+						<ParameterEditor>
+							<Id>0</Id>
+							<Name><![CDATA[]]></Name>
+							<Label><![CDATA[outfile_year]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
 					<Id>1328041345589</Id>
 					<Name><![CDATA[outfile_replication_overwrite]]></Name>
 					<X>40</X><Y>310</Y>
@@ -2211,28 +2233,6 @@ import al6utils.Format;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[outfile_replication_overwrite]]></Label>
-							<EditorContolType>TEXT_BOX</EditorContolType>
-							<MinSliderValue><![CDATA[0]]></MinSliderValue>
-							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
-							<Separator>false</Separator>
-						</ParameterEditor>
-					</Properties>                 
-				</Variable>
-				<Variable Class="Parameter">
-					<Id>1328041345590</Id>
-					<Name><![CDATA[outfile_year]]></Name>
-					<X>40</X><Y>330</Y>
-					<Label><X>20</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" Dynamic="false">
-						<Type><![CDATA[boolean]]></Type>        
-						<DefaultValue><![CDATA[false]]></DefaultValue>
-						<ParameterEditor>
-							<Id>0</Id>
-							<Name><![CDATA[]]></Name>
-							<Label><![CDATA[outfile_year]]></Label>
 							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
@@ -9354,7 +9354,7 @@ else {
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[double]]></Type>        
+						<Type><![CDATA[int]]></Type>        
 					</Properties>
 				</Variable>
 			</Variables>
@@ -9956,7 +9956,10 @@ for (int i=0; i < people.size(); i++) {
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[outfile_person_writer_count++;
-outfile_person_writer = get_Main().modelIO.getModelOutputWriter ("person." + outfile_person_writer_count, false);
+java.text.NumberFormat format = new java.text.DecimalFormat ("00000");
+String suffix = format.format (outfile_person_writer_count);
+String fileName = "person." + suffix;
+outfile_person_writer = get_Main().modelIO.getModelOutputWriter (fileName, false);
 ]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -10000,7 +10003,7 @@ String [] fieldNames = new String [] {
 String newline = "\n";
 char separator = '\t';
 
-get_Main().modelIO.outputRow (outfile_person_writer, fieldNames, separator, newline)
+get_Main().modelIO.outputRow (outfile_person_writer, fieldNames, separator, newline);
 for (int j = 0; j < people.size (); j++) {
    Person person = people.get (j);
    get_Main().modelIO.outputDataRow (outfile_person_writer,
@@ -11002,11 +11005,11 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[outfile_replication_overwrite]]></ParameterName>
+					<ParameterName><![CDATA[outfile_year]]></ParameterName>
 					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[outfile_year]]></ParameterName>
+					<ParameterName><![CDATA[outfile_replication_overwrite]]></ParameterName>
 					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
 				<Parameter>

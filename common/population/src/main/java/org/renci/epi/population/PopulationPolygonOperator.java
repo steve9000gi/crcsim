@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.IOUtils;
@@ -33,15 +34,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.renci.epi.geography.PolygonOperator;
+import org.renci.epi.util.DelimitedFileImporter;
 
 class PopulationPolygonOperator implements PolygonOperator {
 
     private static Log logger = LogFactory.getLog (PopulationPolygonOperator.class); 
 
     private static final int BLOCK = 2048;
-    private final char separator = '\t';
+    private final char delimiter = '\t';
+
     private final String LATITUDE = "latitude";
     private final String LONGITUDE = "longitude";
+    private final String NUM_LESIONS = "num_lesions";
+    private final String NEVER_COMPLIANT = "never_compliant";
+    
     private boolean _firstLine = true;
     private int _latitudePosition = -1;
     private int _longitudePosition = -1;
@@ -89,11 +95,48 @@ class PopulationPolygonOperator implements PolygonOperator {
 	}
     }
     
-    private void processModelOutputFile (MultiPolygon polygon, Point [] points, boolean hasNext, File modelOutputFile, ArrayList<Integer> outputLevelCounts) {
+    private void processModelOutputFile (MultiPolygon polygon,
+					 Point [] points,
+					 boolean hasNext,
+					 File modelOutputFile,
+					 ArrayList<Integer> outputLevelCounts) 
+    {
+	BufferedReader reader = null;
+	try {
+	    int count = 0;
+
+	    logger.debug ("processing model output file: " + modelOutputFile.getCanonicalPath ());
+	    DelimitedFileImporter input = new DelimitedFileImporter (modelOutputFile.getCanonicalPath (),
+								     new String (new char [] { delimiter }),
+								     DelimitedFileImporter.ALL);
+
+	    for (input.nextRow (); input.hasMoreRows (); input.nextRow ()) {
+		Coordinate coordinate = new Coordinate (input.getDouble (LONGITUDE),
+							input.getDouble (LATITUDE));
+		Point point = this.geometryFactory.createPoint (coordinate);
+		
+		int numLesions = input.getInt (NUM_LESIONS);
+		boolean neverCompliant = input.getBoolean (NEVER_COMPLIANT);
+		
+		if (polygon.contains (point) && numLesions > 0 && neverCompliant) {
+		    count++;
+		}
+	    }
+	    outputLevelCounts.add (count);
+	} catch (IOException e) {
+	    throw new RuntimeException (e);
+	} finally {
+	    IOUtils.closeQuietly (reader);
+	}
+    }
+
+
+    private void processModelOutputFile0 (MultiPolygon polygon, Point [] points, boolean hasNext, File modelOutputFile, ArrayList<Integer> outputLevelCounts) {
 	BufferedReader reader = null;
 	try {
 	    int count = 0;
 	    logger.debug ("processing model output file: " + modelOutputFile.getCanonicalPath ());
+
 	    reader = new BufferedReader (new FileReader (modelOutputFile.getCanonicalPath ()), BLOCK);
 	    for (String line = reader.readLine (); line != null; line = reader.readLine ()) {
 		String [] fields = StringUtils.split (line);
@@ -149,9 +192,7 @@ class PopulationPolygonOperator implements PolygonOperator {
 	    // http://labs.carrotsearch.com/hppc-api-and-code-examples.html
 	    File [] keys = (File [])_counts.keySet ().toArray (new File [_counts.size ()]);
 	    Arrays.sort (keys);
-	    
 	    JSONArray matrix = new JSONArray ();
-	    
 	    for (File key : keys) {
 		ArrayList<Integer> vector = _counts.get (key);
 		Integer [] integers = (Integer [])vector.toArray (new Integer [vector.size ()]);
@@ -163,7 +204,7 @@ class PopulationPolygonOperator implements PolygonOperator {
 	    }
 	    JSONObject jsonObject = new JSONObject ();
 	    jsonObject.put ("counts", matrix);
-	    
+
 	    String outputFileName = new StringBuffer ().
 		append (_outputFileNamePrefix).
 		append (".json").toString ();
@@ -182,4 +223,9 @@ class PopulationPolygonOperator implements PolygonOperator {
 	}
     }
 
+}
+
+interface ObservationMatrix {
+    public void addObservation (String keyA, String keyB, int value);
+    public int [] getObservations (String keyA, String keyB);
 }
