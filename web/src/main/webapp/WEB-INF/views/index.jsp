@@ -7,7 +7,7 @@
   </head>
   <body onload="initialize()">
     <div id="menu">
-      <div>Animate</div>
+      <div id="animate">Animate</div>
     </div>
     <div id="progress"></div>
     <div id="status"></div>

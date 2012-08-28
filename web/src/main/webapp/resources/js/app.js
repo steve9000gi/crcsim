@@ -63,7 +63,7 @@ EpiMap.prototype.nextFrame = function () {
     var map = epiMap;
     $("#status").html (map.frame + "%");
     $("#progress").progressbar ({
-	value : map.frame
+	value : map.frame + 1
     });
     if (map.frame < map.occurrences.counts.length) {
 	//console.log (map.frame + ' => ' + map.occurrences.counts [map.frame]);
@@ -75,7 +75,7 @@ EpiMap.prototype.nextFrame = function () {
 	}
     }
     map.frame++;
-    if (map.frame < map.occurrences.counts.length) {
+    if (map.frame <= map.occurrences.counts.length) {
 	setTimeout ("epiMap.nextFrame ()", 200);
     }
 };
