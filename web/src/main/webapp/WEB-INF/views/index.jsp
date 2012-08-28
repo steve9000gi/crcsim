@@ -10,6 +10,9 @@
 
   <body onload="initialize()">
 
+    <div id="menu">Animate</div>
+    <div id="status"></div>
+
     <div id="map_canvas" style="width:100%; height:100%"></div>
 
     <div id="dialog" title="CRC GIS Prototype">
