@@ -36,6 +36,21 @@ import org.json.JSONTokener;
 import org.renci.epi.geography.PolygonOperator;
 import org.renci.epi.util.DelimitedFileImporter;
 
+/**
+ *
+ * A polygon operator. Polygon operators are plugins to the GeographyService invoked for each 
+ * polygon in a list.
+ *
+ * This operator
+ *   Reads each of a set of output files from a model.
+ *   For each line in the file, it extracts longitude and latitude data
+ *   It then calculates containment of the point by the polygon
+ *   A secondary predicate is also calculated
+ *   If (a) the point is contained by the polygon and
+ *      (b) the second predicate evaluates to true
+ *      then a counter is incremented and added to a matrix of values 
+ *
+ */
 class PopulationPolygonOperator implements PolygonOperator {
 
     private static Log logger = LogFactory.getLog (PopulationPolygonOperator.class); 
@@ -48,10 +63,6 @@ class PopulationPolygonOperator implements PolygonOperator {
     private final String NUM_LESIONS = "num_lesions";
     private final String NEVER_COMPLIANT = "never_compliant";
     
-    private boolean _firstLine = true;
-    private int _latitudePosition = -1;
-    private int _longitudePosition = -1;
-
     private GeometryFactory geometryFactory = new GeometryFactory ();
 
     private String _modelOutputPath;
@@ -60,23 +71,35 @@ class PopulationPolygonOperator implements PolygonOperator {
 
     private HashMap<File, ArrayList<Integer>> _counts = new HashMap<File, ArrayList<Integer>> ();
 
+    /**
+     * Construct a new operator.
+     */
     PopulationPolygonOperator (String outputPath, String outputFileNamePrefix, String modelOutputPath) {
 	_outputPath = outputPath;
 	_outputFileNamePrefix = outputFileNamePrefix;
 	_modelOutputPath = modelOutputPath;
     }
 
+    /**
+     * Execute the operator, iterating over a set of observations, processing each in the context of the polygon.
+     * <p>
+     * Updates a matrix of values by observation and polygon.
+     * <p>
+     * {@link GeographyService} defines the plugin API this implements.
+     *
+     * @param polygon   the polygon to describe.
+     * @param points    the list of points in the polygon.
+     * @param hasNext   there are more polygons to process after this one.
+     * @see             PolygonOperator
+     * @since           1.0
+     */
     public void execute (MultiPolygon polygon, Point [] points, boolean hasNext) {
-
 	try {
 	    File modelOutputDir = new File (_modelOutputPath);
 	    if (! modelOutputDir.isDirectory ()) {
 		throw new RuntimeException ("Model output directory: " + _modelOutputPath + " does not exist.");
 	    }
-	    
 	    logger.debug ("Event counter: processing polygon for output dir; " + modelOutputDir.getCanonicalPath ());
-	    
-	    // second parameter - filename filter. third, recursive.
 	    Collection<File> fileCollection = FileUtils.listFiles (modelOutputDir, null, false);
 	    File [] files = (File [])fileCollection.toArray (new File [fileCollection.size ()]);
 	    for (int c = 0; c < files.length; c++) {	    
@@ -95,6 +118,18 @@ class PopulationPolygonOperator implements PolygonOperator {
 	}
     }
     
+    /**
+     * Analyzes an observation in the context of the given polygon. Determines containment and calculates additional predicates.
+     * <p>
+     * Updates a matrix of values by observation and polygon.
+     *
+     * @param polygon           the polygon to describe.
+     * @param points            the list of points in the polygon.
+     * @param hasNext           there are more polygons to process after this one.
+     * @param modelOutputFile   observation data to process in the context of this polygon.
+     * @param outputLevelCounts matrix row of values pertaining to this observation.
+     * @since           1.0
+     */
     private void processModelOutputFile (MultiPolygon polygon,
 					 Point [] points,
 					 boolean hasNext,
@@ -130,66 +165,15 @@ class PopulationPolygonOperator implements PolygonOperator {
 	}
     }
 
-
-    private void processModelOutputFile0 (MultiPolygon polygon, Point [] points, boolean hasNext, File modelOutputFile, ArrayList<Integer> outputLevelCounts) {
-	BufferedReader reader = null;
-	try {
-	    int count = 0;
-	    logger.debug ("processing model output file: " + modelOutputFile.getCanonicalPath ());
-
-	    reader = new BufferedReader (new FileReader (modelOutputFile.getCanonicalPath ()), BLOCK);
-	    for (String line = reader.readLine (); line != null; line = reader.readLine ()) {
-		String [] fields = StringUtils.split (line);
-		if (_firstLine) { // header
-		    _firstLine = false;
-		    for (int q = 0; q < fields.length; q++) {
-			String value = fields [q];
-			if (value.equals (LATITUDE)) {
-			    _latitudePosition = q;
-			} else if (value.equals (LONGITUDE)) {
-			    _longitudePosition = q;
-			}
-		    }
-		    if (_latitudePosition == -1 || _longitudePosition == -1) {
-			throw new RuntimeException ("Unable to find latitude and longitude keys " + 
-						    LATITUDE + " " + LONGITUDE + " in file: " + modelOutputFile.getCanonicalPath ());
-		    }
-		    break;
-		} else {
-		    String latitudeText = fields [_latitudePosition];
-		    String longitudeText = fields [_longitudePosition];
-		    try {
-			double latitude = Double.parseDouble (latitudeText);
-			double longitude = Double.parseDouble (longitudeText);
-			Coordinate coordinate = new Coordinate (longitude, latitude); //(latitude, longitude);
-			Point point = this.geometryFactory.createPoint (coordinate);
-
-			int numLesions = Integer.parseInt (fields [4]);
-			boolean neverCompliant = Boolean.parseBoolean (fields [5]);
-			
-
-			if (polygon.contains (point) && numLesions > 0 && neverCompliant) {
-			    count++;
-			}
-
-		    } catch (NumberFormatException e) {
-			//logger.error ("Error parsing doubles: lat(" + latitudeText + ") and lon(" + longitudeText + ")");
-		    }
-		}
-	    }
-	    logger.error ("adding count: " + count);
-	    outputLevelCounts.add (count);
-	} catch (IOException e) {
-	    throw new RuntimeException (e);
-	} finally {
-	    IOUtils.closeQuietly (reader);
-	}
-    }
-
+    /**
+     * Close the polygon operator. Called when all polygons have been processed.
+     * <p>
+     * Writes output index and matrix data.
+     *
+     */
     public void close () {
 	PrintWriter writer = null;
 	try {
-	    // http://labs.carrotsearch.com/hppc-api-and-code-examples.html
 	    File [] keys = (File [])_counts.keySet ().toArray (new File [_counts.size ()]);
 	    Arrays.sort (keys);
 	    JSONArray matrix = new JSONArray ();
@@ -223,9 +207,4 @@ class PopulationPolygonOperator implements PolygonOperator {
 	}
     }
 
-}
-
-interface ObservationMatrix {
-    public void addObservation (String keyA, String keyB, int value);
-    public int [] getObservations (String keyA, String keyB);
 }
