@@ -9999,15 +9999,13 @@ String [] fieldNames = new String [] {
 	    "longitude",
 	    "latitude"
 	};
-
 String newline = "\n";
 char separator = '\t';
 
 get_Main().modelIO.outputRow (outfile_person_writer, fieldNames, separator, newline);
-for (int j = 0; j < people.size (); j++) {
-   Person person = people.get (j);
+for (Person person : people) {
    get_Main().modelIO.outputDataRow (outfile_person_writer,
-              	                     "CRC.Person",
+              	                     Person.class.getName (),
                                      person,
                                      fieldNames,
                                      separator,
