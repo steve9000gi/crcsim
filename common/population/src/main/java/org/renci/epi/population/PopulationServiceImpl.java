@@ -18,7 +18,6 @@ import java.util.HashMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.renci.epi.population.dao.PopulationDAO;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +25,7 @@ import org.json.JSONTokener;
 import org.renci.epi.geography.GeographyService;
 import org.renci.epi.geography.PolygonOperator;
 import org.renci.epi.geography.JSONPolygonWriterOperator;
+import org.renci.epi.util.DataLocator;
 
 public class PopulationServiceImpl implements PopulationService {
 
@@ -39,10 +39,11 @@ public class PopulationServiceImpl implements PopulationService {
     public void setGeographyService (GeographyService geographyService) {
 	this.geographyService = geographyService;
     }
+    public DataLocator getDataLocator () {
+	return this.geographyService.getDataLocator ();
+    }
 
-    public void compileModelInput (String inputFileName,
-				   String outputFileName,
-				   char inputSeparator,
+    public void compileModelInput (char inputSeparator,
 				   char outputSeparator,
 				   String [] outputKeys)
     {
@@ -51,7 +52,9 @@ public class PopulationServiceImpl implements PopulationService {
 	Writer writer = null;
 	CSVProcessor syntheticPopulation = null;
 	try {
-	    input = new BufferedInputStream (new FileInputStream ("sample.out")); 
+	    String inputFileName = getDataLocator().getSyntheticPopulationPath ("syntheticpopulation.out");
+	    String outputFileName = getDataLocator().getModelInputFileName ();
+	    input = new BufferedInputStream (new FileInputStream (inputFileName));
 	    reader = new BufferedReader (new InputStreamReader (input));
 	    writer = new BufferedWriter (new FileWriter (outputFileName));
 	    Processor processor = new SynthPopAnnotationProcessor (outputKeys);
@@ -85,9 +88,11 @@ public class PopulationServiceImpl implements PopulationService {
 	return this.populationDao.getPopulation (query);
     }
 
-    public void geocodePopulation (String modelFileDirectory, String polygonsFile, String outputFilePath) {
+    public void geocodePopulation (String polygonFileName) {
+	String modelFileDirectory = getDataLocator ().getModelOutputPath ();
+	String outputFilePath = getDataLocator ().getGeocodedOutputPath ();
 	this.geographyService.
-	    getPolygons (polygonsFile,
+	    getPolygons (polygonFileName,
 			 new PolygonOperator [] {
 			     new JSONPolygonWriterOperator (outputFilePath, "polygon"),
 			     new PopulationPolygonOperator (outputFilePath, "occurrences", modelFileDirectory)

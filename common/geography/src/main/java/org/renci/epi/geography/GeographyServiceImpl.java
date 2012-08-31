@@ -31,17 +31,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.renci.epi.util.DataLocator;
 
 public class GeographyServiceImpl implements GeographyService {
 
     private static Log logger = LogFactory.getLog (GeographyServiceImpl.class); 
 
     private GeometryFactory geometryFactory = new GeometryFactory ();
+    private DataLocator _dataLocator;
 
     public void getPolygons (String fileName) {
 	getPolygons (fileName, null);
     }
 
+    public void setDataLocator (DataLocator dataLocator) {
+	_dataLocator = dataLocator;
+    }
+    public DataLocator getDataLocator () {
+	return _dataLocator;
+    }
+    
     public void getPolygons (String fileName, PolygonOperator [] operators) {
 	File file = new File (fileName);
 	try {

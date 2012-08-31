@@ -149,18 +149,36 @@ install_data () {
     mkdir -p $APP_HOME/var/crcsim
 
     cd $APP_HOME/var/crcsim
-    wget http://www.renci.org/~scox/crc/data/crcsim-data-1.0.tar.gz | tar xvzf - 
+    if [ ! -d census2010 ]; then
+	wget -O- http://www.renci.org/~scox/crc/data/crcsim-data-1.0.tar.gz | tar xvzf - 
+    fi
 
     cd census2010
-    unzip tl_2010_37_county10.zip
-    unzip tl_2010_37_tabblock10.zip
+    if [ ! -f tl_2010_37_county10.dbf ]; then
+	for z in $(ls *.zip); do
+	    unzip $z
+	done
+    fi
 
     cd ../rti/syntheticpopulation
-    unzip 2005_2009_ver1_37.zip
+    if [ ! -f 2005_2009_ver1_37_synth_people.txt ]; then
+	for z in $(ls *.zip); do
+	    unzip $z
+	done
+    fi
 
-    cd $APP_HOME/crcsim/common/population
-    chmod +x generate-population
-    ./generate-population --import
+    cd $APP_HOME/crcsim/
+    database=$APP_HOME/var/crcsim/generated/population.db
+    exportFile=$APP_HOME/var/crcsim/generated/syntheticpopulation.out
+    if [ ! -f $database ]; then
+	$0 --database=$database --import
+    fi
+    if [ ! -f $exportFile ]; then
+	$0 --database=$database --export > $exportFile
+    fi
+
+    cd $APP_HOME/crcsim
+    mvn --settings=conf/settings.xml
 }
 
 usage () {
@@ -186,6 +204,9 @@ main () {
 		    ;;
 		'--export')
 		    export_data
+		    ;;
+		'--install')
+		    install_data
 		    ;;
 		*)
 		    usage 

@@ -297,9 +297,11 @@ EpiMapOpenLayersPlugin.prototype.createPolygon = function (polygon, count) {
     var polygonFeature = new OpenLayers.Feature.Vector (polygon);
     polygonFeature.attributes = {
         name: "",
+	/*
         age: 21,
         favColor: 'purple',
         align: 'lb'
+	*/
     };
     this.layer.addFeatures ([ polygonFeature ]);
     return new OpenLayersPolygonProxy (polygonFeature, this.layer);

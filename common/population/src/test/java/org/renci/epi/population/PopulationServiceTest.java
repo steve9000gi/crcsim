@@ -43,14 +43,10 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void testModelInputCompiler () throws Exception {
 	
-	/*
 	BasicConfigurator.configure ();
 	Logger.getRootLogger().setLevel (Level.DEBUG);
-	*/
-	//Logger.getRootLogger().setLevel (Level.ERROR);
+	Logger.getRootLogger().setLevel (Level.ERROR);
   
-	String inputFileName  = _dataLocator.getPreliminarySyntheticPopulation (); //"/sample.out";
-	String outputFileName = _dataLocator.getModelInputFilePath (); //"target/out.txt";
 	char inputSeparator   = '|';
 	char outputSeparator  = '\t';
 	String [] outputKeys  = {
@@ -60,9 +56,7 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
 	    "PRIVA", "EDU", "id", "LAT", "LON"
 	};
 	Assert.assertTrue (this.populationService != null);
-	this.populationService.compileModelInput (inputFileName,
-						  outputFileName,
-						  inputSeparator,
+	this.populationService.compileModelInput (inputSeparator,
 						  outputSeparator,
 						  outputKeys);
     }
@@ -74,9 +68,8 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
 
     @Test
     public void testGeocodePopulation () throws Exception {
-	this.populationService.geocodePopulation (_dataLocator.getModelOutputPath (),
-						  _dataLocator.getPolygonFile (),
-						  _dataLocator.getGeocodedOutputPath ());
+	String polygonFileName = populationService.getDataLocator().getCountyPolygonFileName ();
+	this.populationService.geocodePopulation (polygonFileName);
     }
 }
 

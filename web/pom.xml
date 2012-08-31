@@ -93,6 +93,11 @@
       <artifactId>jasperreports</artifactId>
       <version>${net.sf.jaspersoft.reports.version}</version>
     </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>${xerces.impl.version}</version>
+    </dependency>
 
   </dependencies>
 
