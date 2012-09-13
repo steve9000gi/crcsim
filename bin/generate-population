@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -x
+#set -e
 
 ###################################################################
 ###################################################################
@@ -11,33 +12,47 @@ set -x
 ##
 ## usage:
 ##    
-##    import:
+##    install: download data files, import, and export.
+##
+##          ./generate-population --install
+##
+##    clean: delete all data files.
+##
+##          ./generate-population --clean
+##
+##    import: load raw synthetic population and pums data into database.
 ##
 ##          ./generate-population --import
 ##
-##    export:
+##    export: select custom format from database.
 ##
 ##          ./generate-population --export
 ##
 ## confiugration:
-##          
-##    data_home: directory in which the synthetic population
-##               files are stored.
+##
+##    synth_data_home: directory in which the synthetic population
+##                     files are stored.
 ##
 ##    input_files: files to be imported. 
 ##
 ##
+##
+## requires sqlite3, wget and unzip commands.
+##
+##
 ###################################################################
-
-# Configure environment
 
 configure_system () {
     
-    DATABASE=pop.db
-
     APP_HOME=~/dev/
-    data_home=/cygdrive/c/dev/rti/syntheticpopulation
-    data_home=~/dev/var/crcsim/rti/syntheticpopulation/
+    synth_data_home=/cygdrive/c/dev/rti/syntheticpopulation
+    synth_data_home=~/dev/var/crcsim/rti/syntheticpopulation/
+
+    APP_HOME=/cygdrive/c/scox/dev/
+    DATA_HOME=$APP_HOME/var/crcsim
+    synth_data_home=$APP_HOME/var/crcsim/rti/syntheticpopulation/
+
+    DATABASE=$APP_HOME/var/crcsim/generated/population.db
 
     input_files="
 2005_2009_ver1_37_synth_people.txt 
@@ -53,8 +68,6 @@ configure_system () {
 	cygwin=true
     fi
 }
-
-# Utilities
 
 get_fields () {
     local input=$1
@@ -87,12 +100,12 @@ load_data () {
 	input=$(cygpath -w $1)
     fi
     local table=$2
-    cat > ${table}-loader.txt <<EOF
+    cat > sqlgen-${table}-loader.txt <<EOF
 .mode csv
 .schema $table
 .import '$input' $table
 EOF
-    sqlite3 $DATABASE ".read ${table}-loader.txt" > ${table}-loader.log
+    sqlite3 $DATABASE ".read sqlgen-${table}-loader.txt" > sqlgen-${table}-loader.log
 }
 
 create_and_load () {
@@ -102,25 +115,19 @@ create_and_load () {
     load_data $input $table
 }    
 
-# Import tables
-
 import_tables () {
     for file in $input_files; do
 	table=$(echo $file | sed -e "s,pums_,pums,g" | sed -e "s,.*_,," -e "s,.txt,,")
-	table="$table:${data_home}/$file"
+	table="$table:${synth_data_home}/$file"
 	tables="$tables $table"
     done
-    
     drop_tables people households pumsp
-    
     for table in $tables; do
 	input=$(echo $table | sed -e "s,:, ," | awk '{ print $2 }')
 	table=$(echo $table | sed -e "s,:, ," | awk '{ print $1 }')
 	create_and_load $input $table
     done
 }
-
-# Export a population
 
 export_data () {
     echo "people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
@@ -142,7 +149,7 @@ export_data () {
   where people.hh_id    == households.hh_id
     and people.serialno == pumsp.serialno
     and people.pernum   == pumsp.sporder;
-"
+" 
 }
 
 install_data () {
@@ -191,9 +198,7 @@ getarg () {
 }
 
 main () {
-
 	configure_system
-
 	for arg in $*; do
 	    case $arg in
 		--database\=*)
@@ -208,11 +213,15 @@ main () {
 		'--install')
 		    install_data
 		    ;;
+		'--clean')
+		    rm -rf $DATA_HOME
+		    ;;
 		*)
 		    usage 
 		    ;;
 	    esac
 	done
+	rm sqlgen-*
 }
 
 main $*
