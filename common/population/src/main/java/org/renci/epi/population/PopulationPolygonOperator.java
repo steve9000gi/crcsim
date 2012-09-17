@@ -10,10 +10,13 @@ import com.vividsolutions.jts.geom.Polygon;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -70,6 +74,8 @@ class PopulationPolygonOperator implements PolygonOperator {
     private String _outputFileNamePrefix;
 
     private HashMap<File, ArrayList<Integer>> _counts = new HashMap<File, ArrayList<Integer>> ();
+
+
 
     /**
      * Construct a new operator.
@@ -136,12 +142,23 @@ class PopulationPolygonOperator implements PolygonOperator {
 					 File modelOutputFile,
 					 ArrayList<Integer> outputLevelCounts) 
     {
-	BufferedReader reader = null;
+	Reader reader = null;
 	try {
 	    int count = 0;
 
 	    logger.debug ("processing model output file: " + modelOutputFile.getCanonicalPath ());
+	    /*
 	    DelimitedFileImporter input = new DelimitedFileImporter (modelOutputFile.getCanonicalPath (),
+								     new String (new char [] { delimiter }),
+								     DelimitedFileImporter.ALL);
+	    */
+	    String fileName = modelOutputFile.getCanonicalPath ();
+	    reader = fileName.endsWith (".gz") ?
+	        new InputStreamReader (new GZIPInputStream (new FileInputStream (fileName))) :
+		new FileReader (fileName);
+
+	    DelimitedFileImporter input = new DelimitedFileImporter (fileName,
+								     reader,
 								     new String (new char [] { delimiter }),
 								     DelimitedFileImporter.ALL);
 

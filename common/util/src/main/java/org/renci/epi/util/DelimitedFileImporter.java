@@ -3,6 +3,7 @@ package org.renci.epi.util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -71,6 +72,7 @@ import org.apache.commons.io.IOUtils;
 public class DelimitedFileImporter {
 
     public static final int ALL = -1;
+    private static final int BLOCK_SIZE = 2048;
 
     /**
      * Creates a {@code DelimitedFileImporter} from the given file, using the
@@ -86,13 +88,30 @@ public class DelimitedFileImporter {
     public DelimitedFileImporter(String filename, String delimiter, int numRows)
         throws IOException
     {
+	this (filename, new FileReader (filename), delimiter, numRows);
+    }
+
+    /**
+     * Creates a {@code DelimitedFileImporter} from the given file, using the
+     * given field delimiter and reading only the given number of rows. Does not
+     * set an active row.
+     *
+     * @param filename name of the delimited file to import
+     * @param delimiter the field delimiter, interpreted as a regular expression
+     * @param numRows the maximum number of rows to read from the file, or -1 to
+     *        read all rows
+     * @throws IOException if an I/O error occurs
+     */
+    public DelimitedFileImporter(String filename, Reader reader, String delimiter, int numRows)
+        throws IOException
+    {
         if (numRows < -1) {
             throw new IllegalArgumentException("Invalid number of rows specfied [" + numRows + "]");
         }
 
         BufferedReader in = null;
 	try {
-	    in = new BufferedReader(new FileReader(filename));
+	    in = new BufferedReader (reader, BLOCK_SIZE);
 
 	    // Read the field names from the first line.
 	    fieldNames = in.readLine().split(delimiter);

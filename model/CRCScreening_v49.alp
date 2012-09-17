@@ -1910,7 +1910,8 @@ TableFunction us_age_distribution = new TableFunction(
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
 			<Import><![CDATA[import java.io.BufferedWriter;
 import java.io.FileWriter;
-import al6utils.Format;]]></Import>
+import al6utils.Format;
+import org.renci.epi.util.ModelIO;]]></Import>
 			<Generic>false</Generic>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
@@ -2016,8 +2017,8 @@ import al6utils.Format;]]></Import>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[al6utils.ModelIO]]></Type>        
-						<InitialValue><![CDATA[new al6utils.ModelIO ()]]></InitialValue>                 	
+						<Type><![CDATA[ org.renci.epi.util.ModelIO]]></Type>        
+						<InitialValue><![CDATA[new ModelIO ()]]></InitialValue>                 	
 					</Properties>
 				</Variable>
 				<Variable Class="Parameter">
@@ -9959,7 +9960,8 @@ for (int i=0; i < people.size(); i++) {
 java.text.NumberFormat format = new java.text.DecimalFormat ("00000");
 String suffix = format.format (outfile_person_writer_count);
 String fileName = "person." + suffix;
-outfile_person_writer = get_Main().modelIO.getModelOutputWriter (fileName, false);
+outfile_person_writer = 
+	get_Main().modelIO.getModelOutputWriter (fileName, false, true); // compress
 ]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -11785,8 +11787,18 @@ engine.runFast();]]></Code>
 		<Folder>false</Folder>
 	</ClassPathEntry>
 	<ClassPathEntry>
-		<Location><![CDATA[util-1.0-SNAPSHOT.jar]]></Location>
+		<Location><![CDATA[commons-lang3-3.0.jar]]></Location>
 		<Imported>true</Imported>
+		<Folder>false</Folder>
+	</ClassPathEntry>
+	<ClassPathEntry>
+		<Location><![CDATA[commons-io-2.3.jar]]></Location>
+		<Imported>true</Imported>
+		<Folder>false</Folder>
+	</ClassPathEntry>
+	<ClassPathEntry>
+		<Location><![CDATA[C:/dev/crcsim/common/util/target/epi-util-1.0-SNAPSHOT.jar]]></Location>
+		<Imported>false</Imported>
 		<Folder>false</Folder>
 	</ClassPathEntry>
 </Model>

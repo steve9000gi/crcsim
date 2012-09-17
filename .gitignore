@@ -2,12 +2,14 @@
 ## Eclipse
 #################
 model/person*
+*.gz
 *~
 *.class
 target/
 *.tsv
 *.autosave.alp
 *.original.alp
+*.jar
 
 *.pydevproject
 .project

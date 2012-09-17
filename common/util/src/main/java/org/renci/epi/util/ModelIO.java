@@ -2,13 +2,17 @@ package org.renci.epi.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.Writer;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.zip.GZIPOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.io.IOUtils;
-import java.lang.reflect.Field;
 
 /**
  *
@@ -17,22 +21,44 @@ import java.lang.reflect.Field;
  */
 public class ModelIO {
 
-    /**
-     * Create a Writer object.
-     */
-    public BufferedWriter getModelOutputWriterAppend (String fileName, boolean append) 
-	throws IOException
-    {
-	return new BufferedWriter (new FileWriter (fileName, append));
+    private int BLOCK_SIZE = 2048;
+    private String _outputRoot = "out";
+
+    public ModelIO () {
+	File root = new File (_outputRoot);
+	if (! root.isDirectory ()) {
+	    root.mkdirs ();
+	}
     }
 
     /**
      * Create a Writer object.
      */
-    public BufferedWriter getModelOutputWriter (String fileName, boolean overwrite) {
+    private BufferedWriter getModelOutputWriterInternal (String fileName, boolean append, boolean compress) 
+	throws IOException
+    {
+	Writer writer = null;
+	try {
+	    if (compress) {
+		writer = new OutputStreamWriter (new GZIPOutputStream (new FileOutputStream (fileName + ".gz", append)));
+	    } else {
+		writer = new FileWriter (fileName, append);
+	    }
+	} catch (IOException e) {
+	    IOUtils.closeQuietly (writer);
+	}
+	return new BufferedWriter (writer, BLOCK_SIZE); //new FileWriter (fileName, append));
+    }
+
+    /**
+     * Create a Writer object.
+     */
+    public BufferedWriter getModelOutputWriter (String fileName, boolean overwrite, boolean compress) {
 	BufferedWriter writer = null;
 	try {
-	    writer = getModelOutputWriterAppend (fileName, !overwrite);
+
+	    fileName = StringUtils.join (new String [] { _outputRoot, fileName }, File.separator);
+	    writer = getModelOutputWriterInternal (fileName, !overwrite, compress);
 	    if (overwrite) {
 		String text = StringUtils.join (new String [] {
 			"description",
@@ -49,7 +75,7 @@ public class ModelIO {
 	}
 	return writer;
     }
-    
+
     /**
      * Close a writer.
      */
