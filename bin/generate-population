@@ -45,12 +45,12 @@ set -x
 configure_system () {    
     APP_HOME=~/dev/                 # scox.europa.renci.org
     APP_HOME=/cygdrive/c/scox/dev/  # blueridge largemem
-    APP_HOME=/cygdrive/c/dev/       # x301
+    APP_HOME=/cygdrive/c/dev       # x301
 
     DATA_HOME=$APP_HOME/var/crcsim
     synth_data_home=$APP_HOME/var/crcsim/rti/syntheticpopulation/
 
-    DATABASE=$APP_HOME/var/crcsim/generated/population.db
+    DATABASE=$(cygpath -w $APP_HOME/var/crcsim/generated/population.db)
 
     input_files="
 2005_2009_ver1_37_synth_people.txt 
@@ -154,6 +154,9 @@ install_data () {
     cd $APP_HOME/var/crcsim
     if [ ! -d census2010 ]; then
 	wget --timestamping http://www.renci.org/~scox/crc/data/crcsim-data-1.0.tar.gz
+    fi
+
+    if [ ! -d census2010 ]; then
 	tar xvzf crcsim-data-1.0.tar.gz
     fi
 

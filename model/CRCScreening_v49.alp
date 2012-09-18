@@ -9961,7 +9961,7 @@ java.text.NumberFormat format = new java.text.DecimalFormat ("00000");
 String suffix = format.format (outfile_person_writer_count);
 String fileName = "person." + suffix;
 outfile_person_writer = 
-	get_Main().modelIO.getModelOutputWriter (fileName, false, true); // compress
+	get_Main().modelIO.getModelOutputWriter (fileName, false, true); // append, compress
 ]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
