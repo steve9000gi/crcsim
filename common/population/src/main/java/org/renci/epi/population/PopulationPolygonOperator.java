@@ -39,6 +39,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.renci.epi.geography.PolygonOperator;
 import org.renci.epi.util.DelimitedFileImporter;
+import org.renci.epi.util.Executor;
 
 /**
  *
@@ -75,7 +76,7 @@ class PopulationPolygonOperator implements PolygonOperator {
 
     private HashMap<File, ArrayList<Integer>> _counts = new HashMap<File, ArrayList<Integer>> ();
 
-
+    private Executor executor = new Executor ();
 
     /**
      * Construct a new operator.
@@ -99,7 +100,7 @@ class PopulationPolygonOperator implements PolygonOperator {
      * @see             PolygonOperator
      * @since           1.0
      */
-    public void execute (MultiPolygon polygon, Point [] points, boolean hasNext) {
+    public void execute (final MultiPolygon polygon, final Point [] points, final boolean hasNext) {
 	try {
 	    File modelOutputDir = new File (_modelOutputPath);
 	    if (! modelOutputDir.isDirectory ()) {
@@ -109,14 +110,36 @@ class PopulationPolygonOperator implements PolygonOperator {
 	    Collection<File> fileCollection = FileUtils.listFiles (modelOutputDir, null, false);
 	    File [] files = (File [])fileCollection.toArray (new File [fileCollection.size ()]);
 	    for (int c = 0; c < files.length; c++) {	    
-		File file = files [c];
+		final File file = files [c];
 		if (file.getName ().startsWith ("person.")) {
-		    ArrayList<Integer> outputLevelCounts = _counts.get (file);
+		    /*
+		    final ArrayList<Integer> outputLevelCounts = _counts.get (file);
 		    if (outputLevelCounts == null) {
 			outputLevelCounts = new ArrayList<Integer> ();
 			_counts.put (file, outputLevelCounts);
-		    }		
+		    }
 		    this.processModelOutputFile (polygon, points, hasNext, file, outputLevelCounts);
+		    */
+
+		    ArrayList<Integer> counts = _counts.get (file);
+		    if (counts == null) {
+			counts = new ArrayList<Integer> ();
+			_counts.put (file, counts);
+		    }
+		    final ArrayList<Integer> outputLevelCounts = counts;
+
+		    executor.run (new Runnable () {
+			    @Override
+			    public void run () {
+				try {
+				    processModelOutputFile (polygon, points, hasNext, file, outputLevelCounts);
+				    // if it's a file, process it
+				    //new ConvertTask(currentFile).perform();
+				} catch (Exception ex) {
+				    // error management logic
+				}
+			    } 
+			});
 		}
 	    }
 	} catch (IOException e) {
