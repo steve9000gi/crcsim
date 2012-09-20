@@ -37,15 +37,21 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
     private static Log logger = LogFactory.getLog (PopulationServiceTest.class); 
     private DataLocator _dataLocator = new DataLocator ();
 
+    static {
+	BasicConfigurator.configure ();
+	Logger.getRootLogger().setLevel (Level.ERROR);
+    }
+    
     @Autowired
     protected PopulationService populationService;
 
+    /*
     @Test
     public void testModelInputCompiler () throws Exception {
 	
 	BasicConfigurator.configure ();
 	Logger.getRootLogger().setLevel (Level.DEBUG);
-	Logger.getRootLogger().setLevel (Level.ERROR);
+	//Logger.getRootLogger().setLevel (Level.ERROR);
   
 	char inputSeparator   = '|';
 	char outputSeparator  = '\t';
@@ -60,6 +66,7 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
 						  outputSeparator,
 						  outputKeys);
     }
+    */
 
     @Test
     public void testGetPopulation () throws Exception {

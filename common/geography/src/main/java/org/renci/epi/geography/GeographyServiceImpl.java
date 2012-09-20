@@ -81,6 +81,7 @@ public class GeographyServiceImpl implements GeographyService {
 				try {
 				    operator.execute (multiPolygon, points, iterator.hasNext ());
 				} catch (Exception e) {
+				    e.printStackTrace ();
 				    logger.error (e);
 				}
 			    }
