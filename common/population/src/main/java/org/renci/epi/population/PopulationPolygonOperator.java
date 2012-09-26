@@ -10,6 +10,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -38,7 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.renci.epi.geography.PolygonOperator;
-import org.renci.epi.util.DelimitedFileImporter;
+import org.renci.epi.util.CsvValueReader;
 import org.renci.epi.util.Executor;
 
 /**
@@ -60,9 +61,8 @@ class PopulationPolygonOperator implements PolygonOperator {
 
     private static Log logger = LogFactory.getLog (PopulationPolygonOperator.class); 
 
-    private static final int BLOCK = 2048;
+    private static final int BLOCK = 4096000;
     private final char delimiter = '\t';
-
     private final String LATITUDE = "latitude";
     private final String LONGITUDE = "longitude";
     private final String NUM_LESIONS = "num_lesions";
@@ -76,7 +76,7 @@ class PopulationPolygonOperator implements PolygonOperator {
 
     private HashMap<File, ArrayList<Integer>> _counts = new HashMap<File, ArrayList<Integer>> ();
 
-    private Executor executor = new Executor ();
+    private Executor _executor = new Executor ();
 
     /**
      * Construct a new operator.
@@ -112,15 +112,6 @@ class PopulationPolygonOperator implements PolygonOperator {
 	    for (int c = 0; c < files.length; c++) {	    
 		final File file = files [c];
 		if (file.getName ().startsWith ("person.")) {
-		    /*
-		    final ArrayList<Integer> outputLevelCounts = _counts.get (file);
-		    if (outputLevelCounts == null) {
-			outputLevelCounts = new ArrayList<Integer> ();
-			_counts.put (file, outputLevelCounts);
-		    }
-		    this.processModelOutputFile (polygon, points, hasNext, file, outputLevelCounts);
-		    */
-
 		    ArrayList<Integer> counts = _counts.get (file);
 		    if (counts == null) {
 			counts = new ArrayList<Integer> ();
@@ -128,18 +119,21 @@ class PopulationPolygonOperator implements PolygonOperator {
 		    }
 		    final ArrayList<Integer> outputLevelCounts = counts;
 
-		    executor.run (new Runnable () {
-			    @Override
-			    public void run () {
-				try {
-				    processModelOutputFile (polygon, points, hasNext, file, outputLevelCounts);
-				    // if it's a file, process it
-				    //new ConvertTask(currentFile).perform();
-				} catch (Exception ex) {
-				    // error management logic
-				}
-			    } 
-			});
+		    boolean serial = false;
+		    if (serial) {
+			processModelOutputFile (polygon, points, hasNext, file, outputLevelCounts);
+		    } else {
+			_executor.queue (new Runnable () {
+				@Override
+				public void run () {
+				    try {
+					processModelOutputFile (polygon, points, hasNext, file, outputLevelCounts);
+				    } catch (Exception e) {
+					throw new RuntimeException (e);
+				    }
+				} 
+			    });
+		    }
 		}
 	    }
 	} catch (IOException e) {
@@ -167,38 +161,41 @@ class PopulationPolygonOperator implements PolygonOperator {
     {
 	Reader reader = null;
 	try {
+	    int lines = 0;
 	    int count = 0;
-
-	    logger.debug ("processing model output file: " + modelOutputFile.getCanonicalPath ());
-	    /*
-	    DelimitedFileImporter input = new DelimitedFileImporter (modelOutputFile.getCanonicalPath (),
-								     new String (new char [] { delimiter }),
-								     DelimitedFileImporter.ALL);
-	    */
+	    String inputFileName = modelOutputFile.getCanonicalPath ();
 	    String fileName = modelOutputFile.getCanonicalPath ();
 	    reader = fileName.endsWith (".gz") ?
-	        new InputStreamReader (new GZIPInputStream (new FileInputStream (fileName))) :
+	        new InputStreamReader (new GZIPInputStream (new BufferedInputStream (new FileInputStream (fileName), BLOCK))) :
 		new FileReader (fileName);
 
-	    DelimitedFileImporter input = new DelimitedFileImporter (fileName,
-								     reader,
-								     new String (new char [] { delimiter }),
-								     DelimitedFileImporter.ALL);
-
-	    for (input.nextRow (); input.hasMoreRows (); input.nextRow ()) {
-		Coordinate coordinate = new Coordinate (input.getDouble (LONGITUDE),
-							input.getDouble (LATITUDE));
-		Point point = this.geometryFactory.createPoint (coordinate);
-		
-		int numLesions = input.getInt (NUM_LESIONS);
-		boolean neverCompliant = input.getBoolean (NEVER_COMPLIANT);
-		
-		if (polygon.contains (point) && numLesions > 0 && neverCompliant) {
-		    count++;
+	    CsvValueReader csvReader = new CsvValueReader (reader, delimiter);
+	    while (csvReader.readRecord ()) {
+		try {
+		    if (lines++ > 2000) {
+			//break; // for testing.
+		    }
+		    Coordinate coordinate = new Coordinate (csvReader.getDouble (LONGITUDE),
+							    csvReader.getDouble (LATITUDE));
+		    Point point = this.geometryFactory.createPoint (coordinate);
+		    int numLesions = csvReader.getInt (NUM_LESIONS);
+		    boolean neverCompliant = csvReader.getBoolean (NEVER_COMPLIANT);
+		    logger.debug ("never: " + neverCompliant + " numLesions: " + numLesions);
+		    if (polygon.contains (point) && numLesions > 0 && neverCompliant) {
+			count++;
+			logger.debug ("count: " + count);
+		    }
+		} catch (NumberFormatException e) {
+		    e.printStackTrace ();
+		    System.exit (0);
+		    //logger.error (".");
+		    //
 		}
 	    }
 	    outputLevelCounts.add (count);
 	} catch (IOException e) {
+	    logger.error ("error: ", e);
+	    e.printStackTrace ();
 	    throw new RuntimeException (e);
 	} finally {
 	    IOUtils.closeQuietly (reader);
@@ -212,6 +209,7 @@ class PopulationPolygonOperator implements PolygonOperator {
      *
      */
     public void close () {
+	_executor.waitFor ();
 	PrintWriter writer = null;
 	try {
 	    File [] keys = (File [])_counts.keySet ().toArray (new File [_counts.size ()]);
