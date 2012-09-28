@@ -60,6 +60,7 @@ import org.renci.epi.util.Executor;
 class PopulationPolygonOperator implements PolygonOperator {
 
     private static Log logger = LogFactory.getLog (PopulationPolygonOperator.class); 
+    private static final String GZIP_EXTENSION = ".gz";
 
     private static final int BLOCK = 4096000;
     private final char delimiter = '\t';
@@ -161,19 +162,21 @@ class PopulationPolygonOperator implements PolygonOperator {
     {
 	Reader reader = null;
 	try {
-	    int lines = 0;
+	    int lineNumber = 1;
 	    int count = 0;
 	    String inputFileName = modelOutputFile.getCanonicalPath ();
 	    String fileName = modelOutputFile.getCanonicalPath ();
-	    reader = fileName.endsWith (".gz") ?
-	        new InputStreamReader (new GZIPInputStream (new BufferedInputStream (new FileInputStream (fileName), BLOCK))) :
+	    File file = new File (fileName);
+	    int blockSize = (int)file.length ();
+	    reader = fileName.endsWith (GZIP_EXTENSION) ?
+	        new InputStreamReader (new GZIPInputStream (new BufferedInputStream (new FileInputStream (fileName), blockSize))) :
 		new FileReader (fileName);
-
+	    long start = System.currentTimeMillis ();
 	    CsvValueReader csvReader = new CsvValueReader (reader, delimiter);
 	    while (csvReader.readRecord ()) {
 		try {
-		    if (lines++ > 2000) {
-			//break; // for testing.
+		    if (interrupted (lineNumber)) {
+			break;
 		    }
 		    Coordinate coordinate = new Coordinate (csvReader.getDouble (LONGITUDE),
 							    csvReader.getDouble (LATITUDE));
@@ -181,15 +184,12 @@ class PopulationPolygonOperator implements PolygonOperator {
 		    int numLesions = csvReader.getInt (NUM_LESIONS);
 		    boolean neverCompliant = csvReader.getBoolean (NEVER_COMPLIANT);
 		    logger.debug ("never: " + neverCompliant + " numLesions: " + numLesions);
-		    if (polygon.contains (point) && numLesions > 0 && neverCompliant) {
+		    if (numLesions > 0 && neverCompliant && polygon.contains (point)) {
 			count++;
 			logger.debug ("count: " + count);
 		    }
 		} catch (NumberFormatException e) {
 		    e.printStackTrace ();
-		    System.exit (0);
-		    //logger.error (".");
-		    //
 		}
 	    }
 	    outputLevelCounts.add (count);
