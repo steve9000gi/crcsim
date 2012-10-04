@@ -125,7 +125,7 @@ import_tables () {
     done
 }
 
-export_data () {
+export_data0 () {
     echo "people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
     execute_sql "
   select people.sex,
@@ -143,6 +143,30 @@ export_data () {
        households,
        pumsp
   where people.hh_id    == households.hh_id
+    and people.serialno == pumsp.serialno
+    and people.pernum   == pumsp.sporder;
+" 
+}
+
+export_data () {
+    echo "people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
+    execute_sql "
+  select people.sex,
+         people.race,
+         households.hh_income,
+         people.age,
+         households.hh_size,
+         households.latitude,
+         households.longitude,
+         pumsp.hisp,
+         pumsp.schl,
+         pumsp.semp,
+         pumsp.rac1p
+  from people,
+       households,
+       pumsp
+  where people.age      == '40'
+    and people.hh_id    == households.hh_id
     and people.serialno == pumsp.serialno
     and people.pernum   == pumsp.sporder;
 " 

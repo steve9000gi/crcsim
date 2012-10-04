@@ -22,9 +22,16 @@ import org.apache.commons.io.IOUtils;
 public class ModelIO {
 
     private int BLOCK_SIZE = 2048;
-    private String _outputRoot = "out";
 
-    public ModelIO () {
+    private static final String DEFAULT_OUTPUT = "out";
+    private String _outputRoot = DEFAULT_OUTPUT;
+
+    public void setOutputDir (String outputDir) {
+	_outputRoot = outputDir;
+	ensureOutputDir ();
+    }
+
+    private void ensureOutputDir () {
 	File root = new File (_outputRoot);
 	if (! root.isDirectory ()) {
 	    root.mkdirs ();
@@ -54,9 +61,9 @@ public class ModelIO {
      * Create a Writer object.
      */
     public BufferedWriter getModelOutputWriter (String fileName, boolean overwrite, boolean compress) {
+	ensureOutputDir ();
 	BufferedWriter writer = null;
 	try {
-
 	    fileName = StringUtils.join (new String [] { _outputRoot, fileName }, File.separator);
 	    writer = getModelOutputWriterInternal (fileName, !overwrite, compress);
 	    if (overwrite) {
@@ -114,9 +121,36 @@ public class ModelIO {
     public Object getFieldValue (String className, Object object, String fieldName) {
 	Object value = null;
 	try {
-	    Class c = Class.forName (className);
+	    Class c = object.getClass (); //Class.forName (className);
 	    Field field = c.getField (fieldName);
 	    value = field.get (object);
+	} catch (Exception e) {
+	    e.printStackTrace ();
+	}
+	return value;
+    }
+
+   /**
+     *
+     * Set the value of a field from an object given an instance, the field name and a value.
+     *
+     */
+    public Object setFieldValue (Object object, String fieldName, String value) {
+	try {
+	    Class c = object.getClass (); //Class.forName (className);
+	    Field field = c.getField (fieldName);
+	    Object val = value;
+	    Class type = field.getType ();
+	    if (type.equals (double.class)) {
+		val = Double.parseDouble (value);
+	    } else if (type.equals (float.class)) {
+		val = Float.parseFloat (value);
+	    } else if (type.equals (int.class)) {
+		val = Integer.parseInt (value);
+	    } else if (type.equals (boolean.class)) {
+		val = Boolean.parseBoolean (value);
+	    }
+	    field.set (object, val);
 	} catch (Exception e) {
 	    e.printStackTrace ();
 	}
