@@ -2025,7 +2025,7 @@ import java.io.File;]]></Import>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="true">
 						<Type><![CDATA[ org.renci.epi.util.ModelIO]]></Type>        
 						<InitialValue><![CDATA[new ModelIO ()]]></InitialValue>                 	
 					</Properties>
@@ -4349,6 +4349,27 @@ import java.io.File;]]></Import>
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1350053085013</Id>
+					<Name><![CDATA[experiment_parameters]]></Name>
+					<X>40</X><Y>2420</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[String]]></Type>        
+						<DefaultValue><![CDATA[null]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1350053085010</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1336336262301</Id>
 					<Name><![CDATA[routine_test_list]]></Name>
@@ -4428,7 +4449,7 @@ else {
 // need for this timer would be eliminated.
 init_model();
 start_model();
-//System.out.println ("----------------------------------- startup timer triggered.")]]></Action>
+]]></Action>
 					</Properties>
 				</Event>
 			</Events>
@@ -4502,6 +4523,13 @@ population.start_model();
 
 initializing = true;
 
+/**
+ * If an experiment or intervention is configured,
+ * apply each parameter value in the intervention.
+ 
+configure_parameters ("experiment", experiment_parameters);
+configure_parameters ("intervention", intervention);
+*/
 // Cap the population_rates_sample_size at the population_size.
 if (population_rates_sample_size > population_size) {
   population_rates_sample_size = population_size;
@@ -4764,24 +4792,6 @@ if (outfile_year) {
 if (outfile_state) {
   output_state_open();
 }
-
-
-
-if (intervention != null) {
-	String [] lines = intervention.split ("\n");
-	for (String line : lines) {
-	    String [] nameVal = line.split ("=");
-		if (nameVal != null && nameVal.length == 2) {
-			String fieldName = nameVal [0];
-			String fieldValue = nameVal [1];
-			traceln ("setting field: " + fieldName + " => " + fieldValue);
-			modelIO.setFieldValue (this, fieldName, fieldValue);
-		} else {
-			traceln ("ERROR: ill formed line: " + line);
-		}
-	}
-}
-
 
 //---------------------------------------------------------
 // Initialize the model for the population. Population is
@@ -5254,6 +5264,43 @@ catch (Exception e) {
 		values [c] = 0.0;
 	}
 	function.setArgumentsAndValues (function.getArguments (), values);
+}]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>1350052091252</Id>
+					<Name><![CDATA[configure_parameters]]></Name>
+					<X>690</X><Y>440</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Parameter>
+						<Name><![CDATA[type]]></Name>
+						<Type><![CDATA[String]]></Type>
+					</Parameter>
+					<Parameter>
+						<Name><![CDATA[parameters]]></Name>
+						<Type><![CDATA[String]]></Type>
+					</Parameter>
+					<Body><![CDATA[if (parameters != null) {
+	String [] lines = parameters.split ("\n");
+	for (String line : lines) {
+		if (line.length () > 0) {
+			if (line.charAt (0) == '#') {
+				continue;
+			}
+			String [] nameVal = line.split ("=");
+			if (nameVal != null && nameVal.length == 2) {
+				String fieldName = nameVal [0];
+				String fieldValue = nameVal [1];
+				traceln ("  [" + type + "] setting: " + fieldName + " => [" + fieldValue + "]");
+				modelIO.setFieldValue (this, fieldName, fieldValue);
+			} else {
+				//traceln ("ERROR: ill formed line: " + line);
+			}
+		}
+	}
 }]]></Body>
 				</Function>
 			</Functions>
@@ -9990,13 +10037,27 @@ for (int i=0; i<people.size(); i++) {
 
   String fileName = get_Main().infile_population_name;
   int populationSize = get_Main().population_size;
-  al6utils.DelimitedFileImporter in = new al6utils.DelimitedFileImporter(fileName, "\t", populationSize);
+  //al6utils.DelimitedFileImporter in = new al6utils.DelimitedFileImporter(fileName, "\t", populationSize);
+  org.renci.epi.util.DelimitedFileImporter in = 
+  		new org.renci.epi.util.DelimitedFileImporter (fileName, "\t", populationSize);
+
+/*
+System.out.println ("------------> " + people.getClass().getName ());
+System.exit (0);
+	while (people.size () < populationSize) {
+		people._add (new Person ());
+	}
+*/
 
   Iterator peopleIter = people.iterator();
 
+int c = 0;
+
   while (in.hasMoreRows()) {
+c++;
     in.nextRow();
 
+try {
     Person p = (Person)peopleIter.next();
     p.sex_male = in.getBoolean("SEXC");
     p.educ_college = in.getBoolean("EDU");
@@ -10019,11 +10080,19 @@ for (int i=0; i<people.size(); i++) {
     p.region_west = in.getBoolean("WE");
     p.latitude = in.getDouble ("LAT");
     p.longitude = in.getDouble ("LON");
+//System.out.println ("c: " + c);
+} catch (Exception e) {
+	System.out.println ("==================================================");
+	e.printStackTrace ();
+}
+
   }
 }
 catch (Exception e) {
+	e.printStackTrace ();
   error(e.getMessage());
 }
+
 
 ]]></Body>
 				</Function>
@@ -10090,10 +10159,7 @@ java.text.NumberFormat format = new java.text.DecimalFormat ("00000");
 String suffix = format.format (outfile_person_writer_count);
 String fileName = "person." + suffix;
 
-Main root = get_Main ();
-//root.modelIO.setOutputId (root.simulation_count);
-//System.out.println ("____ simulation count: " + root.simulation_count);
-outfile_person_writer = root.modelIO.getModelOutputWriter (fileName, false, false); // append, compress
+outfile_person_writer = Main.modelIO.getModelOutputWriter (fileName, false, false); // append, compress
 ]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -10105,7 +10171,7 @@ outfile_person_writer = root.modelIO.getModelOutputWriter (fileName, false, fals
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[get_Main().modelIO.closeWriter (outfile_person_writer);]]></Body>
+					<Body><![CDATA[Main.modelIO.closeWriter (outfile_person_writer);]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
@@ -10116,36 +10182,7 @@ outfile_person_writer = root.modelIO.getModelOutputWriter (fileName, false, fals
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[
-String [] fieldNames = new String [] {
-	    "cancer_free_years",
-	    "cost_diagnostic",
-	    "death_age",
-	    "lost_years",
-	    "num_lesions",
-	    "never_compliant",
-	    "onset_age_clin",
-	    "onset_age_polyp",
-	    "onset_stage_clin", 
-	    "surveillance_negatives",
-	    "tot_lesions",
-	    "value_life",
-	    "longitude",
-	    "latitude"
-	};
-String newline = "\n";
-char separator = '\t';
-
-get_Main().modelIO.outputRow (outfile_person_writer, fieldNames, separator, newline);
-for (Person person : people) {
-   get_Main().modelIO.outputDataRow (outfile_person_writer,
-              	                     Person.class.getName (),
-                                     person,
-                                     fieldNames,
-                                     separator,
-                                     newline);
-}
-]]></Body>
+					<Body><![CDATA[Main.modelIO.writePeople (people.iterator (), outfile_person_writer);]]></Body>
 				</Function>
 			</Functions>
 			<EmbeddedObjects>
@@ -11524,6 +11561,10 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 					<ParameterName><![CDATA[intervention]]></ParameterName>
 					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[experiment_parameters]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
 			</Parameters>			
 			<PresentationProperties 
 				EnableAdaptiveFrameManagement="true" 
@@ -11953,6 +11994,9 @@ if (root.simulation_count % 2 == 0) {
 			<FreeformParamValue>	
 				<Id>1349384018403</Id>
 			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1350053085013</Id>
+			</FreeformParamValue>
 			<RangeVariationParamValue>	
 				<Id>1328041345577</Id>
 				<Type>FIXED</Type>
@@ -12373,6 +12417,10 @@ if (root.simulation_count % 2 == 0) {
 				<Id>1349384018403</Id>
 				<Type>FIXED</Type>
 			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1350053085013</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
 			<ModelTimeProperties 
 				UseCalendar="false">
 				<StopOption><![CDATA[Stop at specified time]]></StopOption>
@@ -12777,82 +12825,90 @@ engine.runFast();]]></Code>
 		<!--   =========  Custom Experiment   ========  -->
 		<CustomExperiment>
 			<Id>1349374749666</Id>
-			<Name><![CDATA[NoAnimationRepeater]]></Name>
-			<MaximumMemory>64</MaximumMemory>
-			<CommandLineArguments><![CDATA[seed 12334]]></CommandLineArguments>
+			<Name><![CDATA[HassmillerCRC]]></Name>
+			<MaximumMemory>2048</MaximumMemory>
+			<CommandLineArguments><![CDATA[seed 12334 ]]></CommandLineArguments>
 			<VmArgs><![CDATA[]]></VmArgs>
 			<Import><![CDATA[import java.io.File;
-import java.io.FilenameFilter;]]></Import>
+import java.io.FilenameFilter;
+import java.util.HashMap;
+import org.renci.epi.util.Outcomes;]]></Import>
 			<Code><![CDATA[/**
  * Configure the population scenario to execute.
  */
-execute_multiple_populations (40,    // deathDelay
-                              0.35,  // initialCompliance
-                              true); // computePopulationRates
+execute_multiple_populations ();
 ]]></Code>
-			<AdditionalClassCode><![CDATA[String get_intervention () {
-	return new StringBuffer ().
-		append ("death_rate_delay=40\n").
-		append ("initial_compliance_rate=0.35");
-	};
+			<AdditionalClassCode><![CDATA[private List<Outcomes> _outcomes = null;
+
+/**
+ * For each input population file
+ *    Execute the model with default parameters as a control
+ *    For each intervention configuration
+ *       Create a new model
+ *       Apply the intervention
+ *       Execute the model
+ */
+void execute_multiple_populations () {
+
+	// Read parameters common to the entire experiment.
+	String experimentParameters = null;
+	File experimentParametersFile = new File ("experiment.txt");
+	if (experimentParametersFile.exists ()) {
+		experimentParameters = Main.modelIO.getFileAsString (experimentParametersFile);	
+	}
+	
+	// Iterate over all potential input files. These are <anything>.tsv.<integer> in this directory.	
+	File [] files = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+");	
+	for (File file : files) {
+		traceln ("[execute-control-scenario]-> " + file.getName ());
+		
+		// Prepare to record outcomes for the base case and each iteration.
+		_outcomes = new ArrayList<Outcomes> ();
+			
+		// Create a new model. Configure its IO streams. Run it.
+		Main root = configure_output (create_model (), file.getName (), "control");
+	   	root.configure_parameters ("experiment", experimentParameters);
+		execute_model (file.getName (), root);
+
+		File [] interventions = Main.modelIO.getFilesByPattern ("intervention.[0-9]+");
+		for (File intervention : interventions) {
+			traceln ("[execute-intervention-scenario]-> " + file.getName ());
+			
+			// Create a new model. Configure its IO streams. Run it.
+			root = configure_output (create_model (), file.getName (), intervention.getName ());
+	   	 	root.experiment_parameters = experimentParameters;
+		   	root.configure_parameters ("experiment", experimentParameters);
+	   	 	root.configure_parameters ("intervention", Main.modelIO.getFileAsString (intervention));
+	   	 	execute_model (intervention.getName (), root);
+	   	}
+	}
+	Outcomes.writeOutcomes (_outcomes, "outcomes.tsv", "\t");
 }
 
 /**
- * Iterate over a series of population files.
- *   Execute the model for each.
+ * Record outcomes for a model.
+ *@param root The model to record outcomes for.
  */
-void execute_multiple_populations (int deathDelay,
-                                   double initialCompliance,
-                                   boolean computePopulationRates)
-{
-	Main root = null;
-	
-	FilenameFilter filenameFilter = new FilenameFilter () {
-		public boolean accept(File dir, String name) {
-			return name.toLowerCase().matches (".*.tsv.[0-9]+");
-		}
-	};
-	File [] files = new File (".").listFiles (filenameFilter);
-	
-	for (File file : files) {
-	
-		String fileName = file.getName ();
-		
-		/**
-		 * Control
-		 */
-		// Construct an object representing the simulation.
-		traceln ("--Execute control ->");
-		root = create_model ();
-	
-		// Configure IO streams
-		configure_output (root, fileName, "control");
-		
-		// Run the model
-		execute_model (root);
-
-		/**
-		 * Intervention
-		 */		
-		traceln ("--Execute intervention ->");
-		root = create_model ();
-
-		// Configure IO streams		
-		configure_output (root, fileName, "intervention");
-
-	    /*
-		
-	    // Zero death rate probabilities for ages below the target age.
-		root.death_rate_delay = 40;
-	
-	    // set the initial compliance rate.
-	    root.initial_compliance_rate = 0.35;
-	    */
-	    
-	    root.intervention = get_intervention ();
-		
-		// Run the model
-	    execute_model (root);
+private void addOutcomes (String name, Main root) {
+	Outcomes outcomes =
+		new Outcomes (name,
+					  root.population.people.average ("cost_routine"),
+	                  root.population.people.average ("cost_diagnostic"),
+	                  root.population.people.average ("cost_surveillance"),
+	                  root.population.people.average ("cost_treatment"),
+	                  
+					  root.population.people.average ("discounted_cost_routine"),
+	                  root.population.people.average ("discounted_cost_diagnostic"),
+	                  root.population.people.average ("discounted_cost_surveillance"),
+	                  root.population.people.average ("discounted_cost_treatment"),
+	                  
+	                  -root.population.people.average ("lost_years"),
+	    			  root.population.prob_crc,
+					  root.population.prob_dead_crc);
+	_outcomes.add (outcomes);
+	if (_outcomes.size () > 1) {
+		Outcomes control = _outcomes.get (0);
+		outcomes.calculateDeltas (control);
 	}
 }
 
@@ -12864,16 +12920,18 @@ void execute_multiple_populations (int deathDelay,
  * @param mode The mode of the experiment (control or intervention)
  *
  */
-private void configure_output (Main root, String inputFile, String mode) {
+private Main configure_output (Main root, String inputFile, String mode) {
 
 	// Set input file name.
  	root.infile_population_name = inputFile;
 
 	// Set output file name.
-	root.output_dir = inputFile + ".out." + mode;
+	root.output_dir = inputFile + "." + mode;
 
 	// Configure the simulation to compute population rates.
 	root.compute_population_rates = true;
+
+	return root;
 }
 
 /**
@@ -12907,217 +12965,16 @@ public Main create_model () {
 			engine.getDefaultRandomGenerator().setSeed(seed);
 			foundSeed = true;
 		}
-		else if (args[i].equalsIgnoreCase("model_description"))
-			root.model_description = args[++i];
-		else if (args[i].equalsIgnoreCase("num_lesion_types"))
-			root.num_lesion_types = Integer.parseInt(args[++i]);
-		else if (args[i].equalsIgnoreCase("num_tests"))
-			root.num_tests = Integer.parseInt(args[++i]);
-		else if (args[i].equalsIgnoreCase("max_age"))
-			root.max_age = Integer.parseInt(args[++i]);
-		else if (args[i].equalsIgnoreCase("population_size"))
-			root.population_size = Integer.parseInt(args[++i]);
-		else if (args[i].equalsIgnoreCase("infile_population_name"))
-			root.infile_population_name = args[++i];
-		else if (args[i].equalsIgnoreCase("outfile_replication"))
-			root.outfile_replication = Boolean.parseBoolean(args[++i]);
-		else if (args[i].equalsIgnoreCase("outfile_replication_name"))
-			root.outfile_replication_name = args[++i];
-		else if (args[i].equalsIgnoreCase("outfile_replication_overwrite"))
-			root.outfile_replication_overwrite = Boolean.parseBoolean(args[++i]);
-		else if (args[i].equalsIgnoreCase("outfile_year"))
-			root.outfile_year = Boolean.parseBoolean(args[++i]);
-		else if (args[i].equalsIgnoreCase("outfile_year_name"))
-			root.outfile_year_name = args[++i];
-		else if (args[i].equalsIgnoreCase("outfile_year_overwrite"))
-			root.outfile_year_overwrite = Boolean.parseBoolean(args[++i]);
-		else if (args[i].equalsIgnoreCase("outfile_year_start_age"))
-			root.outfile_year_start_age = Integer.parseInt(args[++i]);
-		else if (args[i].equalsIgnoreCase("outfile_year_end_age"))
-			root.outfile_year_end_age = Integer.parseInt(args[++i]);
-		else if (args[i].equalsIgnoreCase("outfile_state"))
-			root.outfile_state = Boolean.parseBoolean(args[++i]);
-		else if (args[i].equalsIgnoreCase("outfile_state_name"))
-			root.outfile_state_name = args[++i];
-		else if (args[i].equalsIgnoreCase("outfile_state_overwrite"))
-			root.outfile_state_overwrite = Boolean.parseBoolean(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_polyp1_polyp2"))
-			root.mean_duration_polyp1_polyp2 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_polyp2_polyp3"))
-			root.mean_duration_polyp2_polyp3 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_polyp1_pre"))
-			root.mean_duration_polyp1_pre = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_polyp2_pre"))
-			root.mean_duration_polyp2_pre = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_polyp3_pre"))
-			root.mean_duration_polyp3_pre = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_pre1_pre2"))
-			root.mean_duration_pre1_pre2 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_pre2_pre3"))
-			root.mean_duration_pre2_pre3 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_pre3_pre4"))
-			root.mean_duration_pre3_pre4 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_pre1_dead"))
-			root.mean_duration_pre1_dead = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_pre2_dead"))
-			root.mean_duration_pre2_dead = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_pre3_dead"))
-			root.mean_duration_pre3_dead = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_pre4_dead"))
-			root.mean_duration_pre4_dead = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_clin1_dead"))
-			root.mean_duration_clin1_dead = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_clin2_dead"))
-			root.mean_duration_clin2_dead = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_clin3_dead"))
-			root.mean_duration_clin3_dead = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_clin4_dead"))
-			root.mean_duration_clin4_dead = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_pre1_clin1"))
-			root.mean_duration_pre1_clin1 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_pre2_clin2"))
-			root.mean_duration_pre2_clin2 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_pre3_clin3"))
-			root.mean_duration_pre3_clin3 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_pre4_clin4"))
-			root.mean_duration_pre4_clin4 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_clin1_clin2"))
-			root.mean_duration_clin1_clin2 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_clin2_clin3"))
-			root.mean_duration_clin2_clin3 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("mean_duration_clin3_clin4"))
-			root.mean_duration_clin3_clin4 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("proportion_survive_clin1"))
-			root.proportion_survive_clin1 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("proportion_survive_clin2"))
-			root.proportion_survive_clin2 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("proportion_survive_clin3"))
-			root.proportion_survive_clin3 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("proportion_survive_clin4"))
-			root.proportion_survive_clin4 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("cost_polypectomy"))
-			root.cost_polypectomy = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("cost_polyp_pathology"))
-			root.cost_polyp_pathology = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("cost_treatment1"))
-			root.cost_treatment1 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("cost_treatment2"))
-			root.cost_treatment2 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("cost_treatment3"))
-			root.cost_treatment3 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("cost_treatment4"))
-			root.cost_treatment4 = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("proportion_treatment_cure"))
-			root.proportion_treatment_cure = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("lifespan_multiplier_no_treatment"))
-			root.lifespan_multiplier_no_treatment = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("value_loss_cancer"))
-			root.value_loss_cancer = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("value_life_year_ages"))
-			root.value_life_year_ages = args[++i];
-		else if (args[i].equalsIgnoreCase("value_life_year_dollars"))
-			root.value_life_year_dollars = args[++i];
-		else if (args[i].equalsIgnoreCase("model_test_probability"))
-			root.model_test_probability = Boolean.parseBoolean(args[++i]);
-		else if (args[i].equalsIgnoreCase("duration_screen_low_risk"))
-			root.duration_screen_low_risk = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("surveillance_interval"))
-			root.surveillance_interval = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("max_surveillance_negatives"))
-			root.max_surveillance_negatives = Integer.parseInt(args[++i]);
-		else if (args[i].equalsIgnoreCase("use_conditional_compliance"))
-			root.use_conditional_compliance = Boolean.parseBoolean(args[++i]);
-		else if (args[i].equalsIgnoreCase("model_initial_compliance"))
-			root.model_initial_compliance = Boolean.parseBoolean(args[++i]);
-		else if (args[i].equalsIgnoreCase("initial_compliance_rate"))
-			root.initial_compliance_rate = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("never_compliant_rate"))
-			root.never_compliant_rate = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("diagnostic_compliance_rate"))
-			root.diagnostic_compliance_rate = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("surveillance_compliance_rate"))
-			root.surveillance_compliance_rate = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("treatment_compliance_rate"))
-			root.treatment_compliance_rate = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("routine_tests"))
-			root.routine_tests = args[++i];
-		else if (args[i].equalsIgnoreCase("lesion_initial_state"))
-			root.lesion_initial_state = args[++i];
-		else if (args[i].equalsIgnoreCase("lesion_incidence_black_female_ages"))
-			root.lesion_incidence_black_female_ages = args[++i];
-		else if (args[i].equalsIgnoreCase("lesion_incidence_black_female_rates"))
-			root.lesion_incidence_black_female_rates = args[++i];
-		else if (args[i].equalsIgnoreCase("lesion_incidence_black_male_ages"))
-			root.lesion_incidence_black_male_ages = args[++i];
-		else if (args[i].equalsIgnoreCase("lesion_incidence_black_male_rates"))
-			root.lesion_incidence_black_male_rates = args[++i];
-		else if (args[i].equalsIgnoreCase("lesion_incidence_white_female_ages"))
-			root.lesion_incidence_white_female_ages = args[++i];
-		else if (args[i].equalsIgnoreCase("lesion_incidence_white_female_rates"))
-			root.lesion_incidence_white_female_rates = args[++i];
-		else if (args[i].equalsIgnoreCase("lesion_incidence_white_male_ages"))
-			root.lesion_incidence_white_male_ages = args[++i];
-		else if (args[i].equalsIgnoreCase("lesion_incidence_white_male_rates"))
-			root.lesion_incidence_white_male_rates = args[++i];
-		else if (args[i].equalsIgnoreCase("lesion_risk_alpha"))
-			root.lesion_risk_alpha = args[++i];
-		else if (args[i].equalsIgnoreCase("lesion_risk_beta"))
-			root.lesion_risk_beta = args[++i];
-		else if (args[i].equalsIgnoreCase("test_name"))
-			root.test_name = args[++i];
-		else if (args[i].equalsIgnoreCase("test_routine_start"))
-			root.test_routine_start = args[++i];
-		else if (args[i].equalsIgnoreCase("test_routine_end"))
-			root.test_routine_end = args[++i];
-		else if (args[i].equalsIgnoreCase("test_routine_freq"))
-			root.test_routine_freq = args[++i];
-		else if (args[i].equalsIgnoreCase("test_specificity"))
-			root.test_specificity = args[++i];
-		else if (args[i].equalsIgnoreCase("test_sensitivity_polyp1"))
-			root.test_sensitivity_polyp1 = args[++i];
-		else if (args[i].equalsIgnoreCase("test_sensitivity_polyp2"))
-			root.test_sensitivity_polyp2 = args[++i];
-		else if (args[i].equalsIgnoreCase("test_sensitivity_polyp3"))
-			root.test_sensitivity_polyp3 = args[++i];
-		else if (args[i].equalsIgnoreCase("test_sensitivity_cancer"))
-			root.test_sensitivity_cancer = args[++i];
-		else if (args[i].equalsIgnoreCase("test_cost"))
-			root.test_cost = args[++i];
-		else if (args[i].equalsIgnoreCase("test_proportion_lethal"))
-			root.test_proportion_lethal = args[++i];
-		else if (args[i].equalsIgnoreCase("test_proportion_perforation"))
-			root.test_proportion_perforation = args[++i];
-		else if (args[i].equalsIgnoreCase("test_cost_perforation"))
-			root.test_cost_perforation = args[++i];
-		else if (args[i].equalsIgnoreCase("test_proportion"))
-			root.test_proportion = args[++i];
-		else if (args[i].equalsIgnoreCase("test_compliance_rate_given_prev_compliant"))
-			root.test_compliance_rate_given_prev_compliant = args[++i];
-		else if (args[i].equalsIgnoreCase("test_compliance_rate_given_not_prev_compliant"))
-			root.test_compliance_rate_given_not_prev_compliant = args[++i];
-		else if (args[i].equalsIgnoreCase("compute_population_rates"))
-			root.compute_population_rates = Boolean.parseBoolean(args[++i]);
-		else if (args[i].equalsIgnoreCase("population_rates_sample_size"))
-			root.population_rates_sample_size = Integer.parseInt(args[++i]);
-		else if (args[i].equalsIgnoreCase("num_population_rates"))
-			root.num_population_rates = Integer.parseInt(args[++i]);
-		else if (args[i].equalsIgnoreCase("cost_discount_age"))
-			root.cost_discount_age = Integer.parseInt(args[++i]);
-		else if (args[i].equalsIgnoreCase("cost_discount_rate"))
-			root.cost_discount_rate = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("lifespan_discount_age"))
-			root.lifespan_discount_age = Integer.parseInt(args[++i]);
-		else if (args[i].equalsIgnoreCase("lifespan_discount_rate"))
-			root.lifespan_discount_rate = Double.parseDouble(args[++i]);
-		else if (args[i].equalsIgnoreCase("num_tests_displayed"))
-			root.num_tests_displayed = Integer.parseInt(args[++i]);
-		else {
-			throw new RuntimeException("Unexpected model parameter: " + args[i]);
-		}
+		traceln (args [i]);
 	}
 	if (!foundSeed) {
 		throw new RuntimeException("No seed parameter was specified.");
 	}
+	
+	// Configure the model. Use reflection to process command line parameters.
+	HashMap<String,String> skip = new HashMap<String,String> ();
+	skip.put ("seed", "seed");
+	Main.modelIO.configureModel (root, args, skip);
 
 	traceln("  seed = " + seed);
 
@@ -13127,118 +12984,17 @@ public Main create_model () {
 /**
  * Execute the model
  */
-void execute_model (Main root) {
-
+void execute_model (String name, Main root) {
 	// Echo all parameter values to the command line so we can verify that
 	// they were set correctly.
-
 	traceln("Running the model using the following parameter values:");
-	traceln("  output_dir = " + root.output_dir);
-	traceln("  model_description = " + root.model_description);
-	traceln("  num_lesion_types = " + root.num_lesion_types);
-	traceln("  num_tests = " + root.num_tests);
-	traceln("  max_age = " + root.max_age);
-	traceln("  population_size = " + root.population_size);
-	traceln("  infile_population_name = " + root.infile_population_name);
-	traceln("  outfile_replication = " + root.outfile_replication);
-	traceln("  outfile_replication_name = " + root.outfile_replication_name);
-	traceln("  outfile_replication_overwrite = " + root.outfile_replication_overwrite);
-	traceln("  outfile_year = " + root.outfile_year);
-	traceln("  outfile_year_name = " + root.outfile_year_name);
-	traceln("  outfile_year_overwrite = " + root.outfile_year_overwrite);
-	traceln("  outfile_year_start_age = " + root.outfile_year_start_age);
-	traceln("  outfile_year_end_age = " + root.outfile_year_end_age);
-	traceln("  outfile_state = " + root.outfile_state);
-	traceln("  outfile_state_name = " + root.outfile_state_name);
-	traceln("  outfile_state_overwrite = " + root.outfile_state_overwrite);
-	traceln("  mean_duration_polyp1_polyp2 = " + root.mean_duration_polyp1_polyp2);
-	traceln("  mean_duration_polyp2_polyp3 = " + root.mean_duration_polyp2_polyp3);
-	traceln("  mean_duration_polyp1_pre = " + root.mean_duration_polyp1_pre);
-	traceln("  mean_duration_polyp2_pre = " + root.mean_duration_polyp2_pre);
-	traceln("  mean_duration_polyp3_pre = " + root.mean_duration_polyp3_pre);
-	traceln("  mean_duration_pre1_pre2 = " + root.mean_duration_pre1_pre2);
-	traceln("  mean_duration_pre2_pre3 = " + root.mean_duration_pre2_pre3);
-	traceln("  mean_duration_pre3_pre4 = " + root.mean_duration_pre3_pre4);
-	traceln("  mean_duration_pre1_dead = " + root.mean_duration_pre1_dead);
-	traceln("  mean_duration_pre2_dead = " + root.mean_duration_pre2_dead);
-	traceln("  mean_duration_pre3_dead = " + root.mean_duration_pre3_dead);
-	traceln("  mean_duration_pre4_dead = " + root.mean_duration_pre4_dead);
-	traceln("  mean_duration_clin1_dead = " + root.mean_duration_clin1_dead);
-	traceln("  mean_duration_clin2_dead = " + root.mean_duration_clin2_dead);
-	traceln("  mean_duration_clin3_dead = " + root.mean_duration_clin3_dead);
-	traceln("  mean_duration_clin4_dead = " + root.mean_duration_clin4_dead);
-	traceln("  mean_duration_pre1_clin1 = " + root.mean_duration_pre1_clin1);
-	traceln("  mean_duration_pre2_clin2 = " + root.mean_duration_pre2_clin2);
-	traceln("  mean_duration_pre3_clin3 = " + root.mean_duration_pre3_clin3);
-	traceln("  mean_duration_pre4_clin4 = " + root.mean_duration_pre4_clin4);
-	traceln("  mean_duration_clin1_clin2 = " + root.mean_duration_clin1_clin2);
-	traceln("  mean_duration_clin2_clin3 = " + root.mean_duration_clin2_clin3);
-	traceln("  mean_duration_clin3_clin4 = " + root.mean_duration_clin3_clin4);
-	traceln("  proportion_survive_clin1 = " + root.proportion_survive_clin1);
-	traceln("  proportion_survive_clin2 = " + root.proportion_survive_clin2);
-	traceln("  proportion_survive_clin3 = " + root.proportion_survive_clin3);
-	traceln("  proportion_survive_clin4 = " + root.proportion_survive_clin4);
-	traceln("  cost_polypectomy = " + root.cost_polypectomy);
-	traceln("  cost_polyp_pathology = " + root.cost_polyp_pathology);
-	traceln("  cost_treatment1 = " + root.cost_treatment1);
-	traceln("  cost_treatment2 = " + root.cost_treatment2);
-	traceln("  cost_treatment3 = " + root.cost_treatment3);
-	traceln("  cost_treatment4 = " + root.cost_treatment4);
-	traceln("  proportion_treatment_cure = " + root.proportion_treatment_cure);
-	traceln("  lifespan_multiplier_no_treatment = " + root.lifespan_multiplier_no_treatment);
-	traceln("  value_loss_cancer = " + root.value_loss_cancer);
-	traceln("  value_life_year_ages = " + root.value_life_year_ages);
-	traceln("  value_life_year_dollars = " + root.value_life_year_dollars);
-	traceln("  model_test_probability = " + root.model_test_probability);
-	traceln("  duration_screen_low_risk = " + root.duration_screen_low_risk);
-	traceln("  surveillance_interval = " + root.surveillance_interval);
-	traceln("  max_surveillance_negatives = " + root.max_surveillance_negatives);
-	traceln("  use_conditional_compliance = " + root.use_conditional_compliance);
-	traceln("  model_initial_compliance = " + root.model_initial_compliance);
-	traceln("  initial_compliance_rate = " + root.initial_compliance_rate);
-	traceln("  never_compliant_rate = " + root.never_compliant_rate);
-	traceln("  diagnostic_compliance_rate = " + root.diagnostic_compliance_rate);
-	traceln("  surveillance_compliance_rate = " + root.surveillance_compliance_rate);
-	traceln("  treatment_compliance_rate = " + root.treatment_compliance_rate);
-	traceln("  routine_tests = " + root.routine_tests);
-	traceln("  lesion_initial_state = " + root.lesion_initial_state);
-	traceln("  lesion_incidence_black_female_ages = " + root.lesion_incidence_black_female_ages);
-	traceln("  lesion_incidence_black_female_rates = " + root.lesion_incidence_black_female_rates);
-	traceln("  lesion_incidence_black_male_ages = " + root.lesion_incidence_black_male_ages);
-	traceln("  lesion_incidence_black_male_rates = " + root.lesion_incidence_black_male_rates);
-	traceln("  lesion_incidence_white_female_ages = " + root.lesion_incidence_white_female_ages);
-	traceln("  lesion_incidence_white_female_rates = " + root.lesion_incidence_white_female_rates);
-	traceln("  lesion_incidence_white_male_ages = " + root.lesion_incidence_white_male_ages);
-	traceln("  lesion_incidence_white_male_rates = " + root.lesion_incidence_white_male_rates);
-	traceln("  lesion_risk_alpha = " + root.lesion_risk_alpha);
-	traceln("  lesion_risk_beta = " + root.lesion_risk_beta);
-	traceln("  test_name = " + root.test_name);
-	traceln("  test_routine_start = " + root.test_routine_start);
-	traceln("  test_routine_end = " + root.test_routine_end);
-	traceln("  test_routine_freq = " + root.test_routine_freq);
-	traceln("  test_specificity = " + root.test_specificity);
-	traceln("  test_sensitivity_polyp1 = " + root.test_sensitivity_polyp1);
-	traceln("  test_sensitivity_polyp2 = " + root.test_sensitivity_polyp2);
-	traceln("  test_sensitivity_polyp3 = " + root.test_sensitivity_polyp3);
-	traceln("  test_sensitivity_cancer = " + root.test_sensitivity_cancer);
-	traceln("  test_cost = " + root.test_cost);
-	traceln("  test_proportion_lethal = " + root.test_proportion_lethal);
-	traceln("  test_proportion_perforation = " + root.test_proportion_perforation);
-	traceln("  test_cost_perforation = " + root.test_cost_perforation);
-	traceln("  test_proportion = " + root.test_proportion);
-	traceln("  test_compliance_rate_given_prev_compliant = " + root.test_compliance_rate_given_prev_compliant);
-	traceln("  test_compliance_rate_given_not_prev_compliant = " + root.test_compliance_rate_given_not_prev_compliant);
-	traceln("  compute_population_rates = " + root.compute_population_rates);
-	traceln("  population_rates_sample_size = " + root.population_rates_sample_size);
-	traceln("  num_population_rates = " + root.num_population_rates);
-	traceln("  cost_discount_age = " + root.cost_discount_age);
-	traceln("  cost_discount_rate = " + root.cost_discount_rate);
-	traceln("  lifespan_discount_age = " + root.lifespan_discount_age);
-	traceln("  lifespan_discount_rate = " + root.lifespan_discount_rate);
-	traceln("  num_tests_displayed = " + root.num_tests_displayed);
-
+	String [] configuration = Main.modelIO.printConfiguration (root);
+	for (String line : configuration) {
+		traceln (line);
+	}
 	root.getEngine().start (root);
 	root.getEngine().runFast ();
+	addOutcomes (name, root);
 }
 ]]></AdditionalClassCode>
 		</CustomExperiment>
@@ -13261,6 +13017,16 @@ void execute_model (Main root) {
 	<ClassPathEntry>
 		<Location><![CDATA[C:/dev/crcsim/common/util/target/epi-util-1.0-SNAPSHOT.jar]]></Location>
 		<Imported>false</Imported>
+		<Folder>false</Folder>
+	</ClassPathEntry>
+	<ClassPathEntry>
+		<Location><![CDATA[commons-logging-1.1.1.jar]]></Location>
+		<Imported>true</Imported>
+		<Folder>false</Folder>
+	</ClassPathEntry>
+	<ClassPathEntry>
+		<Location><![CDATA[log4j-1.2.17.jar]]></Location>
+		<Imported>true</Imported>
 		<Folder>false</Folder>
 	</ClassPathEntry>
 </Model>

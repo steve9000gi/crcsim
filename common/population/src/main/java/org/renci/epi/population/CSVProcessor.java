@@ -14,6 +14,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log; 
@@ -50,6 +51,7 @@ class SynthPopAnnotationProcessor implements Processor {
     private String [] _outputKeys = null;
     private static Log logger = LogFactory.getLog (SynthPopAnnotationProcessor.class); 
     private static int _id = 0;
+    Random _randomGenerator = new Random ( 19580427 );
 
     private InsuranceStrategy _insuranceStrategy = new BasicInsuranceStrategy ();
 
@@ -222,17 +224,20 @@ class SynthPopAnnotationProcessor implements Processor {
 	record.put ("LAT", record.get ("households.latitude"));
 	record.put ("LON", record.get ("households.longitude"));
 
-	/** Unknown */
-	record.put ("FRISK", "0");  // unavailable
-	record.put ("VITALE", "0"); // unavailable
-	record.put ("AGE_G3", "0"); // unused in the model.
-	record.put ("AGE_G4", "0"); // unused in the model.
-	record.put ("FLU", "0");    // get from iciss
-	record.put ("FORMER", "0"); // get from iciss
-	record.put ("NEVER", "0");  // get from iciss
-	record.put ("USUAL", "0");  // get from iciss
+	record.put ("FRISK",   getStateWithProbability (0.2));
+	record.put ("VITALE",  getStateWithProbability (0.35));
+	record.put ("FLU",     getStateWithProbability (0.5));
+	record.put ("FORMER",  getStateWithProbability (0.26));
+	record.put ("NEVER",   getStateWithProbability (0.56));
+	record.put ("CURRENT", getStateWithProbability (0.18));
+	record.put ("USUAL",   getStateWithProbability (0.80));
+    }
+
+    private String getStateWithProbability (double probability) {
+	return String.valueOf (_randomGenerator.nextDouble () < probability);
     }
 }
+
 
 /**
  *
