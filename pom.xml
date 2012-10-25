@@ -145,7 +145,7 @@
 		project.properties["hostname"] = InetAddress.getLocalHost().getHostName()
 		hostname = InetAddress.getLocalHost().getHostName()
 		if (hostname == 'LARGEMEM-0-1') {
-		    project.properties ['data.root'] = '/scox/dev/var/crcsim'
+		    project.properties ['data.root'] = '/dev/var/crcsim'
                 } else if (hostname == 'STEVE-X301') {
 		    project.properties ['data.root'] = '/dev/var/crcsim'
                 }

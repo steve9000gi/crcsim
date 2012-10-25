@@ -51,8 +51,11 @@ public class Executor {
      * @param runnable The runnable object to execute.
      *
      */
-    public void queue (Runnable runnable) {
-	_futures.add (_executorService.submit (runnable));
+    public Future queue (Runnable runnable) {
+	//_futures.add (_executorService.submit (runnable));
+	Future future = _executorService.submit (runnable);
+	_futures.add (future);
+	return future;
     }
 
     /**
@@ -71,7 +74,21 @@ public class Executor {
 		throw new RuntimeException (e);
 	    }
 	}
+	/*
 	for (Future future : _futures) {
+	    try {
+		future.get ();
+	    } catch (InterruptedException e) {
+		throw new RuntimeException (e);
+	    } catch (ExecutionException e) {
+		throw new RuntimeException (e);
+	    }
+	}
+	*/
+	waitFor (_futures);
+    }
+    public void waitFor (List<Future> futures) {
+	for (Future future : futures) {
 	    try {
 		future.get ();
 	    } catch (InterruptedException e) {

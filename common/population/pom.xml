@@ -76,6 +76,7 @@
 
   <build>
     <plugins>
+
       <plugin>
 	<groupId>org.apache.maven.plugins</groupId>
 	<artifactId>maven-surefire-plugin</artifactId>
@@ -84,7 +85,27 @@
 	  <argLine>-Xmx702g -server</argLine>
 	</configuration>
       </plugin>
-    </plugins>
+ 
+     <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <configuration>
+          <executable>java</executable>
+          <arguments>
+            <argument>-Xms1024m</argument>
+            <argument>-Xmx1024m</argument>
+            <argument>-XX:NewRatio=3</argument>
+            <argument>-XX:+PrintGCTimeStamps</argument>
+            <argument>-XX:+PrintGCDetails</argument>
+            <argument>-Xloggc:gc.log</argument>
+            <argument>-classpath</argument>
+            <classpath/>
+            <argument>org.renci.epi.population.PopulationMain</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+
+   </plugins>
   </build>
 
 </project>

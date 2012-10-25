@@ -47,10 +47,19 @@ public class PopulationServiceImpl implements PopulationService {
 				   char outputSeparator,
 				   String [] outputKeys)
     {
+	File inputFile = new File (getDataLocator().getSyntheticPopulationPath ("syntheticpopulation.out"));
+	File outputFile = new File (getDataLocator().getModelInputFileName ("population.tsv"));
+	this.createModelInput (inputSeparator,
+			       outputSeparator,
+			       outputKeys,
+			       inputFile,
+			       outputFile);
+	/*
 	InputStream input = null;
 	Reader reader = null;
 	Writer writer = null;
 	CSVProcessor syntheticPopulation = null;
+
 	try {
 	    String inputFileName = getDataLocator().getSyntheticPopulationPath ("syntheticpopulation.out");
 	    String outputFileName = getDataLocator().getModelInputFileName ();
@@ -82,8 +91,68 @@ public class PopulationServiceImpl implements PopulationService {
 	    IOUtils.closeQuietly (reader);
 	    IOUtils.closeQuietly (writer);
 	}	
+	    */
     }
 
+    public void compileMultipleModelInputs (char inputSeparator,
+					    char outputSeparator,
+					    String [] outputKeys)
+    {
+	InputStream input = null;
+	Reader reader = null;
+	Writer writer = null;
+	CSVProcessor syntheticPopulation = null;
+	int c = 0;
+	File [] inputFiles = getDataLocator().getSyntheticPopulationExports ();
+	for (File inputFile : inputFiles) {
+	    File outputFile = new File (getDataLocator().getModelInputFileName ("population.tsv." + c++));
+	    this.createModelInput (inputSeparator,
+				   outputSeparator,
+				   outputKeys,
+				   inputFile,
+				   outputFile);
+	}
+    }
+
+    private void createModelInput (char inputSeparator,
+				   char outputSeparator,
+				   String [] outputKeys,
+				   File inputFile,
+				   File outputFile)
+    {
+	InputStream input = null;
+	Reader reader = null;
+	Writer writer = null;
+	CSVProcessor syntheticPopulation = null;
+
+	try {
+	    String inputFileName = inputFile.getCanonicalPath ();
+	    String outputFileName = outputFile.getCanonicalPath ();
+	    input = new BufferedInputStream (new FileInputStream (inputFileName));
+	    reader = new BufferedReader (new InputStreamReader (input));
+	    writer = new BufferedWriter (new FileWriter (outputFileName));
+	    Processor processor = new SynthPopAnnotationProcessor (outputKeys);
+	    syntheticPopulation = new CSVProcessor (reader,
+						    inputSeparator,
+						    processor,
+						    writer,
+						    outputSeparator);
+	    syntheticPopulation.parse ();	    
+	} catch (IOException e) {
+	    e.printStackTrace ();
+	} finally {
+	    if (syntheticPopulation != null) {
+		try {
+		    syntheticPopulation.close ();
+		} catch (IOException e) {
+		    e.printStackTrace ();
+		}
+	    }
+	    IOUtils.closeQuietly (reader);
+	    IOUtils.closeQuietly (writer);
+	}	
+    }
+ 
     public Object getPopulation (String [] query) {
 	return this.populationDao.getPopulation (query);
     }

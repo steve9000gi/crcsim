@@ -62,9 +62,11 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
 	    "PRIVA", "EDU", "id", "LAT", "LON"
 	};
 	Assert.assertTrue (this.populationService != null);
+	/*
 	this.populationService.compileModelInput (inputSeparator,
 						  outputSeparator,
 						  outputKeys);
+	*/
     }
     /*
     */

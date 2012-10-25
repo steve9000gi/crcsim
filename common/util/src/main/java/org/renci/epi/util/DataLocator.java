@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log; 
 import org.apache.commons.logging.LogFactory; 
 import org.apache.commons.lang3.StringUtils;
+import java.io.FilenameFilter;
 
 /**
  *
@@ -28,13 +29,25 @@ public class DataLocator {
     public String getSyntheticPopulationPath (String fileName) {
 	return this.join (new String [] { _dataRoot, "generated", fileName });
     }
-
+    public File [] getSyntheticPopulationExports () {
+	final String pattern = "export.*";
+	File directory = new File (join (new String [] { _dataRoot, "generated", "exports" })); //fileName }));
+	FilenameFilter filenameFilter = new FilenameFilter () {
+		public boolean accept (File dir, String name) {
+		    return name.toLowerCase().matches (pattern);
+		}
+	    };
+	return directory.listFiles (filenameFilter);
+    }
     // input to and output files from the RTI ABM
     public String getModelOutputPath () {
 	return this.join (new String [] { _dataRoot, "model", "output" } );
     }
     public String getModelInputFileName () {
 	return this.join (new String [] { _dataRoot, "..", "crcsim", "model", "population.tsv" });
+    }
+    public String getModelInputFileName (String inputFileName) {
+	return this.join (new String [] { _dataRoot, "..", "crcsim", "model", inputFileName });
     }
 
     // geocoding census shapefile data

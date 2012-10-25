@@ -12835,15 +12835,22 @@ import java.io.FilenameFilter;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import org.renci.epi.util.Executor;
 import org.renci.epi.util.Outcomes;
+import java.util.concurrent.Future;
 ]]></Import>
 			<Code><![CDATA[/**
  * Configure the population scenario to execute.
  */
-execute_multiple_populations (3);
+//execute_multiple_populations (3);
+
+execute_populations_parallel (3);
 ]]></Code>
 			<AdditionalClassCode><![CDATA[private List<Outcomes> _outcomes = null;
+private Executor _executor = new Executor ();
 
 /**
  * For each input population file
@@ -12872,7 +12879,9 @@ void execute_multiple_populations (int replications) {
 		// Track outcomes for the base case and each intervention.
 		_outcomes = new ArrayList<Outcomes> ();
 		HashMap<String,Outcomes> outcomeResults = new HashMap<String,Outcomes> ();
-			
+		
+		boolean parallel = true;
+		
 		// Create a new model. Configure its IO streams. Run it.
 		Main root = configure_output (create_model (), file.getName (), "control");
 		execute_model  (file.getName (),
@@ -12881,7 +12890,7 @@ void execute_multiple_populations (int replications) {
 						new String [] { experimentParameters },
 						replications,
 						outcomeResults);
-
+		
 		File [] interventions = Main.modelIO.getFilesByPattern ("intervention.[0-9]+");
 		for (File intervention : interventions) {
 		
@@ -12891,47 +12900,77 @@ void execute_multiple_populations (int replications) {
 			// Create a new model. Configure its IO streams. Run it.
 			root = configure_output (create_model (), file.getName (), intervention.getName ());
 	   	 	root.experiment_parameters = experimentParameters;
-			String [] parameters = new String [] { experimentParameters, Main.modelIO.getFileAsString (intervention) };
+			String [] parameters = new String [] {
+				experimentParameters,
+				Main.modelIO.getFileAsString (intervention)
+			};
 	   	 	execute_model  (file.getName (),
 	   	 					intervention.getName (),
 	   	 					root,
 	   	 					parameters,
 	   	 					replications,
 	   	 					outcomeResults);
-
 			Outcomes.writeOutcomes (_outcomes, "outcomes.tsv", "\t");
 	   	}
 	}
 }
 
-/**
- * Record outcomes for a model.
- *@param root The model to record outcomes for.
 
-private void addOutcomes (String name, Main root) {
-	Outcomes outcomes =
-		new Outcomes (name,
-					  root.population.people.average ("cost_routine"),
-	                  root.population.people.average ("cost_diagnostic"),
-	                  root.population.people.average ("cost_surveillance"),
-	                  root.population.people.average ("cost_treatment"),
-	                  -root.population.people.average ("lost_years"),
-	                  
-					  root.population.people.average ("discounted_cost_routine"),
-	                  root.population.people.average ("discounted_cost_diagnostic"),
-	                  root.population.people.average ("discounted_cost_surveillance"),
-	                  root.population.people.average ("discounted_cost_treatment"),	                  
-	                  -root.population.people.average ("discounted_lost_years"),
-	                  
-	    			  root.population.prob_crc,
-					  root.population.prob_dead_crc);
-	_outcomes.add (outcomes);
-	if (_outcomes.size () > 1) {
-		Outcomes control = _outcomes.get (0);
-		outcomes.calculateDeltas (control);
+
+
+
+void execute_populations_parallel (int replications) {
+	// Read parameters common to the entire experiment.
+	String experimentParameters = null;
+	File experimentParametersFile = new File ("experiment.txt");
+	if (experimentParametersFile.exists ()) {
+		experimentParameters = Main.modelIO.getFileAsString (experimentParametersFile);	
+	}
+
+	HashMap<File,List<Future>> replicationFutures = new HashMap<File,List<Future>> ();
+	
+	// Iterate over all potential input files. These are <anything>.tsv.<integer> in this directory.	
+	File [] files = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+");	
+	for (File file : files) {
+		// Track outcomes for the base case and each intervention.
+		_outcomes = new ArrayList<Outcomes> ();
+		HashMap<String,Outcomes> outcomeResults = new HashMap<String,Outcomes> ();
+		
+		List<Future> futures = execute_parallel (file,
+						  						"control",
+						  						new String [] { experimentParameters }, 
+						  						replications,
+						  						outcomeResults);
+		replicationFutures.put (file, futures);
+		
+		File [] interventions = Main.modelIO.getFilesByPattern ("intervention.[0-9]+");
+		for (File intervention : interventions) {
+			String interventionParameters = Main.modelIO.getFileAsString (intervention);
+			List<Future> futures = execute_parallel (file,
+							  						intervention.getName (),
+							  						new String [] {
+							  							experimentParameters,
+							  							interventionParameters
+							  						}, 
+													replications,
+													outcomeResults);
+			replicationFutures.put (file, futures);
+			
+			Outcomes.writeOutcomes (_outcomes, "outcomes.tsv", "\t");
+	   	}
+	}
+
+	for (File input : replicationFutures.keys ()) {
+		List<Future> futures = replicationFutures.get (input);
+		_executor.waitFor (futures);
+		addOutcomes (input.getName (), results);
 	}
 }
- */
+
+
+
+
+
 private void addReplicationOutcomes (String name, Main root, HashMap<String,Outcomes> results) {
 	Outcomes outcomes = results.get (name);
 	if (outcomes == null) {
@@ -12951,19 +12990,30 @@ private void addReplicationOutcomes (String name, Main root, HashMap<String,Outc
 	               -root.population.people.average ("discounted_lost_years"),
 	               
 	    		   root.population.prob_crc,
-				   root.population.prob_dead_crc);	
+				   root.population.prob_dead_crc);
 }
-private void addOutcomes (String name, Main root, HashMap<String,Outcomes> results) {
+
+private void addOutcomes (String name, HashMap<String,Outcomes> results) {
 	Outcomes outcomes = results.get (name);
 	if (outcomes != null) {	
 		outcomes.calculateValues ();
 		_outcomes.add (outcomes);
-		if (_outcomes.size () > 1) {
-			Outcomes control = _outcomes.get (0);
-			outcomes.calculateDeltas (control);
-		}
 	}
 	results.remove (name);
+}
+
+private void calculateOutcomes () {
+	Outcomes [] outcomesArray = (Outcomes [])_outcomes.toArray (new Outcomes [_outcomes.size ()]);
+	if (outcomesArray != null && outcomesArray.length > 0) {
+		Outcomes control = outcomesArray [0];
+		for (int c = 0; c < outcomesArray.length; c++) {
+			Outcomes outcomes = outcomesArray [c];
+			if (_outcomes.size () > 1) {
+				Outcomes control = _outcomes.get (0);
+				outcomes.calculateDeltas (control);
+			}
+		}
+	}
 }
 
 /**
@@ -12988,57 +13038,27 @@ private Main configure_output (Main root, String inputFile, String mode) {
 	return root;
 }
 
-/**
- * Create the model.
+public Main create_model (File input, String mode) {
 
-public Main create_model () {
+	// Create a new model.
+	Main root = new Main (createEngine (), null, null);
 
-	Engine engine = createEngine();
-	Main root = new Main(null, null, null);
+	// Set input file name.
+ 	root.infile_population_name = input.getName ();
 
-	// Parse the command-line parameters. For now, we require parameters to
-	// be specified in the form:
-	//
-	//    paramname1 paramvalue1 paramname2 paramvalue2 ...
-	//
-	// A parameter named seed must be provided on the command line. Other
-	// command-line parameter names must match a parameter name for the
-	// Main object. Providing the Main parameters on the command line is
-	// optional.
-	//
-	// The Main parameter run_mode must not be provided on the command
-	// line. This parameter will automatically be set to "batch" because
-	// other values are invalid in command-line runs.
-	boolean foundSeed = false;
-	long seed = 0;
-	root.setParametersToDefaultValues();
-	String[] args = getCommandLineArguments();
-	for (int i = 0; i < args.length; i++) {
-		if (args[i].equalsIgnoreCase("seed")) {
-			seed = Long.parseLong(args[++i]);
-			engine.getDefaultRandomGenerator().setSeed(seed);
-			foundSeed = true;
-		}
-		traceln (args [i]);
-	}
-	if (!foundSeed) {
-		throw new RuntimeException("No seed parameter was specified.");
-	}
+	// Set output file name.
+	root.output_dir = input.getName () + "." + mode;
+
+	// Configure the simulation to compute population rates.
+	root.compute_population_rates = true;
 	
-	// Configure the model. Use reflection to process command line parameters.
-	HashMap<String,String> skip = new HashMap<String,String> ();
-	skip.put ("seed", "seed");
-	Main.modelIO.configureModel (root, args, skip);
-
-	traceln("  seed = " + seed);
-
-	return root;
+	return initialize (root);
 }
- */
+
 public Main create_model () {
 	return new Main (createEngine (), null, null);
 }
-private void initialize_model (Main root) {
+private Main initialize (Main root) {
 	// Parse the command-line parameters. For now, we require parameters to
 	// be specified in the form:
 	//
@@ -13074,27 +13094,32 @@ private void initialize_model (Main root) {
 	Main.modelIO.configureModel (root, args, skip);
 
 	traceln("  seed = " + seed);
+
+	return root;
 }
 
-/**
- * Execute the model
+class ModelRunner implements Runnable {
 
-void execute_model (String name, Main root) {
-	// Echo all parameter values to the command line so we can verify that
-	// they were set correctly.
-	traceln("Running the model using the following parameter values:");
-	String [] configuration = Main.modelIO.printConfiguration (root);
-	for (String line : configuration) {
-		traceln (line);
+	private String name;
+	private Main root;
+	private HashMap<String,Outcomes> results;
+
+	ModelRunner (String name, Main root, HashMap<String, Outcomes> results) {
+		this.name = name;
+		this.root = root;
+		this.results = results;
 	}
-	Engine engine = createEngine ();
-	root.setEngine (engine);
-    root.getEngine().start (root);
-	root.getEngine().runFast ();
-	addOutcomes (name, root);
+	public void run () {
+    	root.getEngine().start (root);
+		root.getEngine().runFast ();
+		addReplicationOutcomes (name, root, results);
+	}
+	Main getRoot () {
+		return this.root;
+	}
 }
- */
- 
+
+
 /**
  * Execute the model
  */
@@ -13105,18 +13130,15 @@ void execute_model (String populationFile,
 					int replications,
 					HashMap<String,Outcomes> results) 
 {
-	// Echo all parameter values to the command line so we can verify that
-	// they were set correctly.
 	for (int c = 0; c < replications; c++) {
-		System.out.println ("---(replication)--> " + c);
+		traceln ("---(replication)--> " + c);
 
 		// Initialize the model.
-		initialize_model (root);
+		initialize (root);
 		for (String parameterSet : parameters) {
 		   	root.configure_parameters (name, parameterSet);
 		}
 
-	root = create_model ();
 		root.configure_parameters (name, "infile_population_name=" + populationFile + "\n");
 
 		// Write input parameters.
@@ -13125,25 +13147,62 @@ void execute_model (String populationFile,
 		for (String line : configuration) {
 			traceln (line);
 		}
-
 	
 		// Run the model.
 		root.setEngine (createEngine ());
     	root.getEngine().start (root);
 		root.getEngine().runFast ();
-		//addReplicationOutcomes (name, root, results);
+		addReplicationOutcomes (name, root, results);
+	}
+	addOutcomes (name, results);
+}
 
-		// Write current state of outcomes.	
-		try {
-			PrintWriter out = new PrintWriter (new OutputStreamWriter (System.err));
-			Outcomes.writeOutcomes (_outcomes, out, "\t");
-			out.flush ();
-		} catch (IOException e) {
-			throw new RuntimeException (e);
+void execute_parallel  (File input,
+						String mode,
+						String [] parameters,
+						int replications,
+						HashMap<String,Outcomes> results)
+{
+	List<Future> futures = new ArrayList<Future> (replications);
+	if (input.exists ()) {
+		for (int c = 0; c < replications; c++) {
+			traceln ("---(replication)--> " + c);	
+
+			Main root = create_model (input, mode);
+			for (String parameterSet : parameters) {
+			   	root.configure_parameters (input.getName (), parameterSet);
+			}
+
+			root.configure_parameters (input.getName (),
+									   "infile_population_name=" + input.getName () + "\n");
+
+			traceln("Running the model using the following parameter values:");
+			String [] configuration = Main.modelIO.printConfiguration (root);
+			for (String line : configuration) {
+				traceln (line);
+			}
+	
+			// Run the model.
+			root.setEngine (createEngine ());
+			ModelRunner runner = new ModelRunner (input.getName (), root, results);
+			Future future = _executor.queue (runner);
+			futures.add (future);		
 		}
 	}
-	//addOutcomes (name, root, results);
+	return futures;
 }
+
+private void printOutcomes () {
+	// Write current state of outcomes.	
+	try {
+		PrintWriter out = new PrintWriter (new OutputStreamWriter (System.err));
+		Outcomes.writeOutcomes (_outcomes, out, "\t");
+		out.flush ();
+	} catch (IOException e) {
+		throw new RuntimeException (e);
+	}
+}
+
 ]]></AdditionalClassCode>
 		</CustomExperiment>
 	</Experiments>

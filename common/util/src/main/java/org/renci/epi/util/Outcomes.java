@@ -13,6 +13,7 @@ import java.io.Writer;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import org.apache.log4j.Logger;
 import org.apache.commons.logging.Log; 
 import org.apache.commons.logging.LogFactory;
 
-public class Outcomes {
+public class Outcomes implements Comparable {
 
     private static Log logger = LogFactory.getLog (Outcomes.class); 
 
@@ -111,23 +112,32 @@ public class Outcomes {
 	this.prob_dead_crc = prob_dead_crc;
 
     }
+
+    public int compareTo (Object other) throws ClassCastException {
+	if (! (other instanceof Outcomes)) {
+	    throw new ClassCastException ("Expected a " + getClass().getName () + " object.");
+	}
+	Outcomes otherOutcomes = (Outcomes)other;
+	return name.compareTo (otherOutcomes.name);
+    }
+
     /**
      * Read values, adding to running totals.
      */
-    public void read (double cost_routine,
-		      double cost_diagnostic,
-		      double cost_surveillance,
-		      double cost_treatment,
-		      double lost_years,
-		      
-		      double d_cost_routine,
-		      double d_cost_diagnostic,
-		      double d_cost_surveillance,
-		      double d_cost_treatment,
-		      double d_lost_years,
-		      
-		      double prob_crc,
-		      double prob_dead_crc)
+    public synchronized void read (double cost_routine,
+				   double cost_diagnostic,
+				   double cost_surveillance,
+				   double cost_treatment,
+				   double lost_years,
+				   
+				   double d_cost_routine,
+				   double d_cost_diagnostic,
+				   double d_cost_surveillance,
+				   double d_cost_treatment,
+				   double d_lost_years,
+				   
+				   double prob_crc,
+				   double prob_dead_crc)
     {
 	this.replications++;
 
@@ -293,6 +303,7 @@ public class Outcomes {
     public static void writeOutcomes (List<Outcomes> outcomesList, PrintWriter writer, String separator, String [][] views) 
 	throws IOException
     {
+	Collections.sort (outcomesList);
 	for (String [] view : views) {
 	    writer.println ();
 	    String header = StringUtils.join (view, separator);
