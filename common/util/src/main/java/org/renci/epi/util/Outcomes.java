@@ -155,7 +155,6 @@ public class Outcomes implements Comparable {
 
 	this.prob_crc = prob_crc;
 	this.prob_dead_crc = prob_dead_crc;
-
     }
 
     /**

@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
@@ -95,6 +96,8 @@ public class ModelIO {
 		writer = new FileWriter (fileName, append);
 	    }
 	} catch (IOException e) {
+	    throw new RuntimeException (e + " : " + fileName);
+	} finally {
 	    IOUtils.closeQuietly (writer);
 	}
 	return new BufferedWriter (writer, BLOCK_SIZE); //new FileWriter (fileName, append));
@@ -328,6 +331,62 @@ public class ModelIO {
 	    result.add ("   " + fieldName + " = " + Util.getFieldValue (instance, fieldName));
 	}
 	return (String [])result.toArray (new String [result.size ()]);
+    }
+
+    /**
+     * Return a list of field values for the given instance.
+     *@param instance A model object.
+     *@param fileName Name of file to write to.
+     */
+    public synchronized void writeConfiguration (Object instance, String directoryName, String fileName, List<String> parameters) {
+	BufferedWriter writer = null;
+	setOutputDir (directoryName);
+	File dir = new File (directoryName);
+	dir.mkdirs ();
+	try {
+	    writer = new BufferedWriter (new FileWriter (directoryName + File.separator + fileName));
+	    List config = Arrays.asList (printConfiguration (instance));
+	    String lineSeparator = System.getProperty ("line.separator");
+	    IOUtils.writeLines (parameters, lineSeparator, writer);
+	    IOUtils.writeLines (config, lineSeparator, writer);
+	} catch (IOException e) {
+	    throw new RuntimeException (e);
+	} finally {
+	    IOUtils.closeQuietly (writer);
+	}
+    }
+    public int getAge (File input) {
+	int value = -1;
+	BufferedReader reader = null;
+	try {
+	    reader = new BufferedReader (new FileReader (input));
+	    reader.readLine ();
+	    String line = reader.readLine ();
+	    String [] parts = StringUtils.split (line, '\t');
+	    if (parts != null && parts.length > 6) {
+		value = Integer.parseInt (parts [5]);
+	    }
+	} catch (IOException e) {
+	    throw new RuntimeException (e);
+	} finally {
+	    IOUtils.closeQuietly (reader);
+	}
+	return value;
+    }
+    public int countFileLines (File input) {
+	int lines = 0;
+	BufferedReader reader = null;
+	try {
+	    reader = new BufferedReader(new FileReader(input));
+	    while (reader.readLine() != null) {
+		lines++;
+	    }
+	} catch (IOException e) {
+	    throw new RuntimeException (e);
+	} finally {
+	    IOUtils.closeQuietly (reader);
+	}
+	return lines;
     }
 }
 

@@ -11,7 +11,7 @@ diagnostic_compliance_rate=0.75
 surveillance_compliance_rate=1.0
 treatment_compliance_rate=1.0
 compute_population_rates=false
-death_rate_delay=40
+#death_rate_delay=40
 #population_size=135870
 population_size=1000
 
