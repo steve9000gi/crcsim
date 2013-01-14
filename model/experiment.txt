@@ -13,5 +13,5 @@ treatment_compliance_rate=1.0
 compute_population_rates=false
 #death_rate_delay=40
 #population_size=135870
-population_size=1000
-
+population_size=100
+dynamic_compliance_rate_year_offset=6
