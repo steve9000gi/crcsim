@@ -1,7 +1,9 @@
 model/intervention.*
 \#*\#
 
-
+model/out/
+model/pops/
+model/population.*
 
 #################
 ## Eclipse
