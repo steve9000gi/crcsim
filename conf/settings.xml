@@ -141,6 +141,8 @@ under the License.
     --> 
   </servers> 
  
+
+
   <!-- mirrors 
    | This is a list of mirrors to be used in downloading artifacts from remote repositories. 
    |  
@@ -228,11 +230,7 @@ under the License.
 	  <name>Spring Framework Maven Snapshot Repository</name>
 	  <url>http://maven.springframework.org/snapshot</url>
 	</repository>
-	<repository>
-	  <id>jboss</id>
-	  <name>JBoss repository</name>
-	  <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
-	</repository>
+
 
 	<repository>
 	  <id>central</id>
@@ -240,6 +238,7 @@ under the License.
 	  <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
 	  <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
 	</repository>
+
 
 	<!-- geotools -->
         <repository>
@@ -253,17 +252,38 @@ under the License.
             <url>http://download.osgeo.org/webdav/geotools/</url>
         </repository>
 
+	<repository>
+	  <id>jboss.releases</id>
+	  <name>JBoss</name>
+	  <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+	</repository>
 
+<!--
+	  <repository>
+	    <id>scala-tools.org</id>
+	    <name>Scala-tools Maven2 Repository</name>
+	    <url>http://scala-tools.org/repo-releases</url>
+	  </repository>
+-->
 
       </repositories>
 
       <pluginRepositories>
+
 	<pluginRepository>
 	  <id>central</id>
 	  <url>http://repo1.maven.org/maven2</url>
 	  <releases><enabled>true</enabled><updatePolicy>always</updatePolicy></releases>
 	  <snapshots><enabled>true</enabled><updatePolicy>always</updatePolicy></snapshots>
 	</pluginRepository>
+<!--
+	<pluginRepository>
+	  <id>scala-tools.org</id>
+	  <name>Scala-tools Maven2 Repository</name>
+	  <url>http://scala-tools.org/repo-releases</url>
+	</pluginRepository>
+-->
+
       </pluginRepositories>
     </profile>
 
