@@ -13,10 +13,10 @@
   <url>http://www.renci.org/~scox/crc</url>
 
   <properties>
-    <!-- application 
     <data.root>/home/scox/dev/var/crcsim</data.root>
--->
+    <!-- application 
     <data.root>c:/dev/var/crcsim</data.root>
+-->
 
     <!-- maven -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

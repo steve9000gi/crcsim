@@ -1,0 +1,126 @@
+html {
+    height: 100%;
+}
+
+body {
+    height  : 100%;
+    margin  : 0;
+    padding : 0;
+}
+
+#menu {
+    width: 100%;
+    z-index: 2;
+    background-color: darkGray;
+    color: white;
+    padding: 0;
+    height: 45px;
+}
+#animate {
+    padding : 10px;
+}
+
+#status {
+    position         : absolute;
+    width            : 30px;
+    height           : 3px;
+    top: 2px;
+    left: 338px;
+    z-index          : 2;
+    background-color : darkgray;
+    color            : white;
+    padding          : 10px;
+}
+
+#progress {
+    position: absolute;
+    width: 250px;
+    height: 3px;
+    top: 8px;
+    left: 66px;
+    z-index: 2;
+    background-color: darkGray;
+    color: white;
+    padding: 10px;
+}
+
+#map_canvas {
+    height: 100%;
+}
+
+#map_canvas {
+    position : absolute;
+    top      : 45px;
+    left     : 0px;
+    width    : 600px;
+    height   : 500px;
+}
+
+/* openlayers */
+.olControlAttribution {
+    bottom: 5px;
+    font-size: 9px;
+}
+#customZoom {
+    z-index: 1001;
+    position: relative;
+    top: 10px;
+    left: 10px;
+}
+#customZoom a {
+    text-decoration: none;
+    position: absolute;
+    display: block;
+    width: 50px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    background: #369;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+#customZoom a:hover {
+    background: #036;
+}
+#customZoomOut {
+    top: 25px;
+}
+
+
+#maps {
+    height : 100%;
+    padding : 5px;
+    position: relative;
+    min-width: 933px;
+    border: none;
+    margin : 0px;
+ }
+.map-container {
+    width: 45%;
+    height: 32%;
+    float: left;
+    margin: 0px;
+    position: relative;
+ }
+.map-border {
+    border: 0.07em solid gray;
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: lightgray;
+    position: relative;
+ }
+.map {
+    width: 100%;
+    height: 95%;
+    padding: -13px;
+    border: 1px solid gray;
+    margin: -2px;
+ }
+.map-title {
+    padding: 6px;
+    margin: 0;
+    font-family: helvetica;
+    font-size: 20px;
+ }
