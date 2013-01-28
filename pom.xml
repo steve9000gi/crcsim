@@ -23,9 +23,10 @@
     <maven.plugin.version.compiler>2.5.1</maven.plugin.version.compiler>
     <maven.plugin.version.dependency>2.4</maven.plugin.version.dependency>
     <maven.plugin.version.war>2.2</maven.plugin.version.war>
+    <maven.plugin.version.exec>1.2.1</maven.plugin.version.exec>
     <tomcat.maven.plugin.version>1.1</tomcat.maven.plugin.version>
     <maven.assembly.plugin.version>2.3</maven.assembly.plugin.version>
-
+    <maven.plugin.version.scala>2.15.2</maven.plugin.version.scala>
     <!-- common -->
     <junit.version>4.5</junit.version>
     <log4j.version>1.2.17</log4j.version>
@@ -39,7 +40,11 @@
     <sqlite.jdbc.version>3.7.2</sqlite.jdbc.version>
     <xerial.sqlite.jdbc.driver.version>3.7.2</xerial.sqlite.jdbc.driver.version>
     <commons.dbcp.version>1.4</commons.dbcp.version>
-    <xerces.impl.version>2.8.0</xerces.impl.version>
+    <xerces.impl.version>2.9.0</xerces.impl.version>
+<!--
+    <scala.version>2.8.0</scala.version>
+-->
+    <scala.version>2.10.0-M7</scala.version>
 
     <!-- geography -->
     <geotools.version>8.0</geotools.version>
@@ -145,7 +150,7 @@
 		project.properties["hostname"] = InetAddress.getLocalHost().getHostName()
 		hostname = InetAddress.getLocalHost().getHostName()
 		if (hostname == 'LARGEMEM-0-1') {
-		    project.properties ['data.root'] = '/scox/dev/var/crcsim'
+		    project.properties ['data.root'] = '/dev/var/crcsim'
                 } else if (hostname == 'STEVE-X301') {
 		    project.properties ['data.root'] = '/dev/var/crcsim'
                 }
@@ -153,6 +158,12 @@
 	    </configuration>
 	  </execution>
 	</executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+	<version>${maven.plugin.version.scala}</version>
       </plugin>
       
     </plugins>

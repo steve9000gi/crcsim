@@ -27,6 +27,12 @@ import org.renci.epi.geography.PolygonOperator;
 import org.renci.epi.geography.JSONPolygonWriterOperator;
 import org.renci.epi.util.DataLocator;
 
+
+/**
+ *
+ * A service for manipulating population data.
+ *
+ */
 public class PopulationServiceImpl implements PopulationService {
 
     private PopulationDAO populationDao;
@@ -42,18 +48,84 @@ public class PopulationServiceImpl implements PopulationService {
     public DataLocator getDataLocator () {
 	return this.geographyService.getDataLocator ();
     }
-
+    /**
+     * Translate model data from a raw export format emitted from the RTI synthetic model.
+     * Add insurance and other data.
+     * Generate an output file suitable for input to the RTI CRC model.
+     *@param inputSeparator The separator character used in the input.
+     *@param outputSeparator The separator characgter used in the output.
+     *@param outputKeys The keys (names and order) in the output.
+     */
     public void compileModelInput (char inputSeparator,
 				   char outputSeparator,
 				   String [] outputKeys)
+    {
+	File inputFile = new File (getDataLocator().getSyntheticPopulationPath ("syntheticpopulation.out"));
+	File outputFile = new File (getDataLocator().getModelInputFileName ("population.tsv"));
+	this.createModelInput (inputSeparator,
+			       outputSeparator,
+			       outputKeys,
+			       inputFile,
+			       outputFile);
+    }
+
+    /**
+     * Translate model data from a raw export format emitted from the RTI synthetic model.
+     * Add insurance and other data.
+     * Generate an output file suitable for input to the RTI CRC model.
+     *
+     * This version operates on multiple export files, generating multiple import files.
+     *
+     *@param inputSeparator The separator character used in the input.
+     *@param outputSeparator The separator characgter used in the output.
+     *@param outputKeys The keys (names and order) in the output.
+     */
+    public void compileMultipleModelInputs (char inputSeparator,
+					    char outputSeparator,
+					    String [] outputKeys)
     {
 	InputStream input = null;
 	Reader reader = null;
 	Writer writer = null;
 	CSVProcessor syntheticPopulation = null;
+	int c = 0;
+	File [] inputFiles = getDataLocator().getSyntheticPopulationExports ();
+	if (inputFiles != null) {
+	    for (File inputFile : inputFiles) {
+		File outputFile = new File (getDataLocator().getModelInputFileName ("population.tsv." + c++));
+		this.createModelInput (inputSeparator,
+				       outputSeparator,
+				       outputKeys,
+				       inputFile,
+				       outputFile);
+	    }
+	}
+    }
+
+    /**
+     * Translate model data from a raw export format emitted from the RTI synthetic model.
+     * Add insurance and other data.
+     * Generate an output file suitable for input to the RTI CRC model.
+     *@param inputSeparator The separator character used in the input.
+     *@param outputSeparator The separator characgter used in the output.
+     *@param outputKeys The keys (names and order) in the output.
+     *@param inputFile An input file to convert.
+     *@param outputFile The output file to create.
+     */
+    private void createModelInput (char inputSeparator,
+				   char outputSeparator,
+				   String [] outputKeys,
+				   File inputFile,
+				   File outputFile)
+    {
+	InputStream input = null;
+	Reader reader = null;
+	Writer writer = null;
+	CSVProcessor syntheticPopulation = null;
+
 	try {
-	    String inputFileName = getDataLocator().getSyntheticPopulationPath ("syntheticpopulation.out");
-	    String outputFileName = getDataLocator().getModelInputFileName ();
+	    String inputFileName = inputFile.getCanonicalPath ();
+	    String outputFileName = outputFile.getCanonicalPath ();
 	    input = new BufferedInputStream (new FileInputStream (inputFileName));
 	    reader = new BufferedReader (new InputStreamReader (input));
 	    writer = new BufferedWriter (new FileWriter (outputFileName));
@@ -63,12 +135,7 @@ public class PopulationServiceImpl implements PopulationService {
 						    processor,
 						    writer,
 						    outputSeparator);
-	    syntheticPopulation.parse ();
-	    
-	    // verification steps
-	    
-	    File outputFile = new File (outputFileName);
-	    
+	    syntheticPopulation.parse ();	    
 	} catch (IOException e) {
 	    e.printStackTrace ();
 	} finally {
@@ -83,11 +150,15 @@ public class PopulationServiceImpl implements PopulationService {
 	    IOUtils.closeQuietly (writer);
 	}	
     }
-
+ 
     public Object getPopulation (String [] query) {
 	return this.populationDao.getPopulation (query);
     }
 
+    /**
+     * Analyze a series of model output files applying a series of operators.
+     *@param polygonFileName The polygon shapefile to apply.
+     */
     public void geocodePopulation (String polygonFileName) {
 	String modelFileDirectory = getDataLocator ().getModelOutputPath ();
 	String outputFilePath = getDataLocator ().getGeocodedOutputPath ();

@@ -460,7 +460,9 @@ get_Person().num_lesions++;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties>	
-						<Action><![CDATA[get_Person().disease_state.fireEvent("crc_death");
+						<Action><![CDATA[//System.out.println ("           deathage => " + time ());
+
+get_Person().disease_state.fireEvent("crc_death");
 lethal = true;
 end_age = new Double(time());
 
@@ -1895,6 +1897,12 @@ TableFunction death_rate_white_male = new TableFunction(
   TableFunction.INTERPOLATION_STEP, 1, TableFunction.OUTOFRANGE_NEAREST, 0.0
   );
 
+TableFunction [] death_rate_functions = new TableFunction [] {
+	death_rate_black_female,
+	death_rate_black_male,
+	death_rate_white_female,
+	death_rate_white_male
+};
 
 // Define the US age distribution lookup table. Data is for the overall US population
 // from Census publication P25-1130, Table 2, projections for July 1, 2000.
@@ -1911,7 +1919,8 @@ TableFunction us_age_distribution = new TableFunction(
 			<Import><![CDATA[import java.io.BufferedWriter;
 import java.io.FileWriter;
 import al6utils.Format;
-import org.renci.epi.util.ModelIO;]]></Import>
+import org.renci.epi.util.ModelIO;
+import java.io.File;]]></Import>
 			<Generic>false</Generic>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
@@ -2016,9 +2025,22 @@ import org.renci.epi.util.ModelIO;]]></Import>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="true">
 						<Type><![CDATA[ org.renci.epi.util.ModelIO]]></Type>        
 						<InitialValue><![CDATA[new ModelIO ()]]></InitialValue>                 	
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1349204842240</Id>
+					<Name><![CDATA[simulation_count]]></Name>
+					<X>310</X><Y>90</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int]]></Type>        
+						<InitialValue><![CDATA[0]]></InitialValue>                 	
 					</Properties>
 				</Variable>
 				<Variable Class="Parameter">
@@ -4264,6 +4286,186 @@ import org.renci.epi.util.ModelIO;]]></Import>
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1349378790110</Id>
+					<Name><![CDATA[output_dir]]></Name>
+					<X>40</X><Y>2360</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[String]]></Type>        
+						<DefaultValue><![CDATA["out"]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1349378790107</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1349383271257</Id>
+					<Name><![CDATA[death_rate_delay]]></Name>
+					<X>40</X><Y>2380</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[int]]></Type>        
+						<DefaultValue><![CDATA[0]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1349383271255</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1349384018403</Id>
+					<Name><![CDATA[intervention]]></Name>
+					<X>40</X><Y>2400</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[String]]></Type>        
+						<DefaultValue><![CDATA[""]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1349384018401</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1350053085013</Id>
+					<Name><![CDATA[experiment_parameters]]></Name>
+					<X>40</X><Y>2420</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[String]]></Type>        
+						<DefaultValue><![CDATA[null]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1350053085010</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1354811694598</Id>
+					<Name><![CDATA[new_test_compliance_rate_given_prev_compliant]]></Name>
+					<Description><![CDATA[This allows us to set a threshold time at which a new compliance rate will be in effect.
+
+This is used to calculate continuing, rather than initial compliance.
+
+]]></Description> 
+					<X>370</X><Y>2090</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[String]]></Type>        
+						<DefaultValue><![CDATA["0.552,0.512,0.512,0.552"]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1354811694596</Id>
+							<Name><![CDATA[]]></Name>
+							<Label><![CDATA[test_compliance_rate_given_prev_compliant]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1354811715924</Id>
+					<Name><![CDATA[new_test_compliance_rate_given_not_prev_compliant]]></Name>
+					<Description><![CDATA[This allows us to set a threshold time at which a new compliance rate will be in effect.
+
+This is used to calculate continuing, rather than initial compliance.
+
+]]></Description> 
+					<X>370</X><Y>2110</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[String]]></Type>        
+						<DefaultValue><![CDATA["0.339,0.379,0.379,0.339"]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1354811715922</Id>
+							<Name><![CDATA[]]></Name>
+							<Label><![CDATA[test_compliance_rate_given_not_prev_compliant]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1354817305026</Id>
+					<Name><![CDATA[dynamic_compliance_rate_year_offset]]></Name>
+					<X>370</X><Y>2130</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[int]]></Type>        
+						<DefaultValue><![CDATA[-1]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1354817305024</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1358197900025</Id>
+					<Name><![CDATA[intervention_compliance_rate]]></Name>
+					<X>230</X><Y>1430</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1358197900023</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1336336262301</Id>
 					<Name><![CDATA[routine_test_list]]></Name>
@@ -4342,7 +4544,8 @@ else {
 // maybe in AL6 the Main Startup section would be fine, and the
 // need for this timer would be eliminated.
 init_model();
-start_model();]]></Action>
+start_model();
+]]></Action>
 					</Properties>
 				</Event>
 			</Events>
@@ -4415,7 +4618,6 @@ population.start_model();
 // when the AnyLogic "Play" button is clicked (or something analogous).
 
 initializing = true;
-
 
 // Cap the population_rates_sample_size at the population_size.
 if (population_rates_sample_size > population_size) {
@@ -4619,6 +4821,12 @@ for (int i = 0; i < num_tests; i++) {
   
   fields = test_compliance_rate_given_not_prev_compliant.split(",");
   t.compliance_rate_given_not_prev_compliant = Double.parseDouble(fields[i]);
+
+  fields = new_test_compliance_rate_given_prev_compliant.split(",");
+  t.new_compliance_rate_given_prev_compliant = Double.parseDouble(fields[i]);
+  
+  fields = new_test_compliance_rate_given_not_prev_compliant.split(",");
+  t.new_compliance_rate_given_not_prev_compliant = Double.parseDouble(fields[i]);
 }
 
 // Assign the list of available routine tests.
@@ -4628,7 +4836,6 @@ for (int t = 0; t < fields.length; t++) {
     routine_test_list.add(fields[t]);
   }
 }
-
 
 //---------------------------------------------------------
 // Initialize the population.
@@ -4641,6 +4848,19 @@ population.input_population();
 
 
 // Initialize each person in the population.
+String [] lesion_initial_state_s = lesion_initial_state.split (",");
+String [] lesion_risk_alpha_s = lesion_risk_alpha.split (",");
+String [] lesion_risk_beta_s = lesion_risk_beta.split (",");
+double [] lesion_risk_alpha_d = new double [lesion_risk_alpha_s.length];
+for (int c = 0; c < lesion_risk_alpha_s.length; c++) {
+	String risk = lesion_risk_alpha_s [c];
+	lesion_risk_alpha_d [c] = Double.parseDouble (risk);
+}
+double [] lesion_risk_beta_d = new double [lesion_risk_beta_s.length];
+for (int c = 0; c < lesion_risk_beta_s.length; c++) {
+	String risk = lesion_risk_beta_s [c];
+	lesion_risk_beta_d [c] = Double.parseDouble (risk);
+}
 
 for (int j = 0; j < population.people.size(); j++) {
   Person person = population.people.get(j);
@@ -4652,6 +4872,11 @@ for (int j = 0; j < population.people.size(); j++) {
 
     source.type = k;
 
+	source.initial_state = lesion_initial_state_s [k];
+	source.risk_alpha = lesion_risk_alpha_d [k];
+	source.risk_beta = lesion_risk_beta_d [k];
+	
+/*
     fields = lesion_initial_state.split(",");
     source.initial_state = fields[k];
 
@@ -4660,12 +4885,16 @@ for (int j = 0; j < population.people.size(); j++) {
 
     fields = lesion_risk_beta.split(",");
     source.risk_beta = Double.parseDouble(fields[k]);
+*/
   }
 }
 
-
+delay_death_rates (death_rate_delay);
+	    
 //---------------------------------------------------------
 // Open any requested output files.
+
+modelIO.setOutputDir (output_dir);
 
 if (outfile_replication) {
   output_replication_open();
@@ -4676,7 +4905,6 @@ if (outfile_year) {
 if (outfile_state) {
   output_state_open();
 }
-
 
 //---------------------------------------------------------
 // Initialize the model for the population. Population is
@@ -4845,7 +5073,7 @@ catch (Exception e) {
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[try {
   if (outfile_replication_overwrite) {
-    outfile_replication_writer = new BufferedWriter(new FileWriter(outfile_replication_name));
+    outfile_replication_writer = new BufferedWriter(new FileWriter(output_dir + File.separator + outfile_replication_name));
   
     outfile_replication_writer.write(
                  "description"
@@ -4988,7 +5216,7 @@ catch (Exception e) {
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[try {
   if (outfile_state_overwrite) {
-    outfile_state_writer = new BufferedWriter(new FileWriter(outfile_state_name));
+    outfile_state_writer = new BufferedWriter(new FileWriter(output_dir + File.separator + outfile_state_name));
 
     outfile_state_writer.write(
                "description"
@@ -5086,7 +5314,7 @@ catch (Exception e) {
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[try {
   if (outfile_year_overwrite) {
-    outfile_year_writer = new BufferedWriter(new FileWriter(outfile_year_name));
+    outfile_year_writer = new BufferedWriter(new FileWriter(output_dir + File.separator + outfile_year_name));
   
     outfile_year_writer.write(
                  "description"
@@ -5129,6 +5357,72 @@ catch (Exception e) {
 }
 
 ]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>1349372616533</Id>
+					<Name><![CDATA[delay_death_rates]]></Name>
+					<X>690</X><Y>420</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Parameter>
+						<Name><![CDATA[delay]]></Name>
+						<Type><![CDATA[int]]></Type>
+					</Parameter>
+					<Body><![CDATA[for (TableFunction function : death_rate_functions) {
+	double [] values = function.getValues ();
+	for (int c = 0; c < delay; c++) {
+		values [c] = 0.0;
+	}
+	function.setArgumentsAndValues (function.getArguments (), values);
+}]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>1350052091252</Id>
+					<Name><![CDATA[configure_parameters]]></Name>
+					<X>690</X><Y>440</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Parameter>
+						<Name><![CDATA[type]]></Name>
+						<Type><![CDATA[String]]></Type>
+					</Parameter>
+					<Parameter>
+						<Name><![CDATA[parameterSet]]></Name>
+						<Type><![CDATA[String []]]></Type>
+					</Parameter>
+					<Parameter>
+						<Name><![CDATA[outputLines]]></Name>
+						<Type><![CDATA[List<String>]]></Type>
+					</Parameter>
+					<Body><![CDATA[
+if (parameterSet != null) {
+	for (String parameters : parameterSet) {
+	String [] lines = parameters.split ("\n");
+	for (String line : lines) {
+		if (line.length () > 0) {
+			if (line.charAt (0) == '#') { // comment.
+				continue;
+			}
+			String [] nameVal = line.split ("=");
+			if (nameVal != null && nameVal.length == 2) {
+				String fieldName = nameVal [0];
+				String fieldValue = nameVal [1];
+				//traceln ("  [" + type + "] setting: " + fieldName + " => [" + fieldValue + "]");
+				outputLines.add ("  [" + type + "] setting: " + fieldName + " => [" + fieldValue + "]");
+				modelIO.setFieldValue (this, fieldName, fieldValue);
+			} else {
+				//traceln ("ERROR: ill formed line: " + line);
+			}
+		}
+	}
+	}
+}]]></Body>
 				</Function>
 			</Functions>
 			<EmbeddedObjects>
@@ -8145,8 +8439,67 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
     }
     else {
       // Assign the compliance probability based on the user-specified rate.
-
       compliance_prob = get_Population().get_Main().initial_compliance_rate;
+
+	/*
+	System.out.println (" active state: " + screen_state.getActiveSimpleState () +
+		" treatment: " + Person.Treatment + 
+		" surveillance: " + Person.Surveillance + 
+		" routine: " + Person.Routine +
+		" diagnostic: " + Person.Diagnostic + // <<
+		" lowrisk: " + Person.LowRisk);
+	*/
+		           
+	  // number of visits already completed.
+      int routineVisitsCount = routine_compliance_history.size ();
+
+      // 
+	  int dynamicComplianceRateYearOffset =
+		  get_Population().get_Main().dynamic_compliance_rate_year_offset;	
+	  if (dynamicComplianceRateYearOffset > -1) {
+		  boolean interventionActive =
+		  	  time () >= (get_Population().get_Main().death_rate_delay + 
+				 		  dynamicComplianceRateYearOffset);
+		  if (interventionActive) {
+
+			/*
+			 * If we've never calculated compliance probability for this person
+			 * and the intervention is active, we want their iniitial compliance rate
+			 * to use the value appropriate for the intervention.
+			 */	
+			
+			 /*
+			if (routineVisitsCount == 0) {
+			   compliance_prob = test.new_compliance_rate_given_not_prev_compliant;
+			
+			 // If the person has completed visits, then set their compliance rate
+			 // based on compliance history. If the intervention is active, appropriate
+			 // values will be used for the compliance probability.
+
+		    } else if (routineVisitsCount > 0) { 
+	      		if (((Boolean)routine_compliance_history.get(routineVisitsCount - 1)).booleanValue()) {
+   		    		compliance_prob = interventionActive ?
+			    		test.new_compliance_rate_given_prev_compliant :
+			    		test.compliance_rate_given_prev_compliant;
+		      	} else {
+      				compliance_prob = interventionActive ?
+      					test.new_compliance_rate_given_not_prev_compliant : 
+      					test.compliance_rate_given_not_prev_compliant;
+	      		}
+	      		
+			    System.out.println ("**>> interv: " + interventionActive + " age: "
+			    					+ time () + " age_in_2007: " + 
+			  					    get_Population().get_Main().death_rate_delay + 
+			  					    ". compliance_prob: " + compliance_prob);
+			  					    
+	  	  	}
+	  	  	*/
+	  	  	
+		  } 
+	  }
+	
+	
+	
     }
 
     // The compliance probability calculated through the statistical model
@@ -8202,21 +8555,53 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
   }
   else {
 
+
+	/**
+	 * By default, no intervention is active. If dynamic compliance rates are enabled,
+	 * then test whether we have entered the intervention period. If the age of the person
+	 * is greater than or equal to the dynamic compliance rate year offset plus the age
+	 * at which we start simulating death possibilities, then the intervention is active.
+	 */
+
+	boolean interventionActive = false;
+	int dynamicComplianceRateYearOffset =
+		get_Population().get_Main().dynamic_compliance_rate_year_offset;	
+	System.out.println ("****** dcryo: " + dynamicComplianceRateYearOffset + " yeah: " + time ());
+
+	if (dynamicComplianceRateYearOffset > -1) {
+		interventionActive =
+			time () >= (get_Population().get_Main().death_rate_delay + 
+				 		dynamicComplianceRateYearOffset);
+		if (interventionActive)
+			System.out.println ("****** intervention active in " + time ());
+	}
+
+
+
     // We are using conditional probabilities for assigning compliance,
     // and the user has been eligible for routine testing before, so
     // use the rules for conditional compliance. The probability is
     // conditional on whether the person was compliant the last time
     // he was eligible.
 
+	//If the intervention is active, use the new compliance rate.
     if (((Boolean)routine_compliance_history.get(routine_compliance_history.size() - 1)).booleanValue()) {
-      compliance_prob = test.compliance_rate_given_prev_compliant;
+      compliance_prob = interventionActive ?
+		test.new_compliance_rate_given_prev_compliant :
+		test.compliance_rate_given_prev_compliant;
     }
     else {
-      compliance_prob = test.compliance_rate_given_not_prev_compliant;
+      compliance_prob = interventionActive ?
+      	test.new_compliance_rate_given_not_prev_compliant : 
+      	test.compliance_rate_given_not_prev_compliant;
     }
   }
   
   // Return a random indicator of whether the person complied.
+  boolean isCompliant = uniform () < compliance_prob;
+  routine_compliance_history.add (new Boolean (isCompliant));
+  return isCompliant;
+  /*
   if (uniform() < compliance_prob) {
     routine_compliance_history.add(new Boolean(true));
     return true;
@@ -8225,6 +8610,7 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
     routine_compliance_history.add(new Boolean(false));
     return false;
   }
+  */
 }
 else {
   error("Unexpected screen state for person " + getIndex() + ": state=" + screen_state);
@@ -9843,7 +10229,8 @@ for (int i=0; i<people.size(); i++) {
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[// Initialize the model farther down the chain.
+					<Body><![CDATA[
+// Initialize the model farther down the chain.
 
 for (int i=0; i<people.size(); i++) {
   people.get(i).init_model();
@@ -9860,13 +10247,15 @@ for (int i=0; i<people.size(); i++) {
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[try {
-  al6utils.DelimitedFileImporter in = new al6utils.DelimitedFileImporter(get_Main().infile_population_name, "\t", get_Main().population_size);
-
+  String fileName = get_Main().infile_population_name;
+  int populationSize = get_Main().population_size;
+  org.renci.epi.util.DelimitedFileImporter in =
+  		new org.renci.epi.util.DelimitedFileImporter (fileName,
+  													  "\t",
+  													  populationSize);
   Iterator peopleIter = people.iterator();
-
   while (in.hasMoreRows()) {
     in.nextRow();
-
     Person p = (Person)peopleIter.next();
     p.sex_male = in.getBoolean("SEXC");
     p.educ_college = in.getBoolean("EDU");
@@ -9887,13 +10276,19 @@ for (int i=0; i<people.size(); i++) {
     p.region_midwest = in.getBoolean("MW");
     p.region_south = in.getBoolean("SO");
     p.region_west = in.getBoolean("WE");
-    p.latitude = in.getDouble ("LAT");
-    p.longitude = in.getDouble ("LON");
+	try {
+       p.latitude = in.getDouble ("LAT");
+       p.longitude = in.getDouble ("LON");
+    } catch (Exception e) {
+		System.out.println ("no lat/lon");
+    }
   }
+} catch (Exception e) {
+	e.printStackTrace ();
+    error(e.getMessage());
+    throw new RuntimeException (e);
 }
-catch (Exception e) {
-  error(e.getMessage());
-}
+
 
 ]]></Body>
 				</Function>
@@ -9925,7 +10320,6 @@ output_person_close ();]]></Body>
 					<Body><![CDATA[// Perform routine testing on the population.
 test_routine();
 
-
 output_person_open ();]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -9956,13 +10350,17 @@ for (int i=0; i < people.size(); i++) {
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[outfile_person_writer_count++;
-java.text.NumberFormat format = new java.text.DecimalFormat ("00000");
-String suffix = format.format (outfile_person_writer_count);
-String fileName = "person." + suffix;
-outfile_person_writer = 
-	get_Main().modelIO.getModelOutputWriter (fileName, false, true); // append, compress
-]]></Body>
+					<Body><![CDATA[boolean outputPerson = false;
+
+if (outputPerson) {
+	outfile_person_writer_count++;
+	java.text.NumberFormat format =
+		new java.text.DecimalFormat ("00000");
+	String suffix = format.format (outfile_person_writer_count);
+	String fileName = "person." + suffix;
+	outfile_person_writer =
+		Main.modelIO.getModelOutputWriter (fileName, false, true); // append, compress
+}]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
@@ -9973,7 +10371,7 @@ outfile_person_writer =
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[get_Main().modelIO.closeWriter (outfile_person_writer);]]></Body>
+					<Body><![CDATA[if (false) Main.modelIO.closeWriter (outfile_person_writer);]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
@@ -9984,36 +10382,8 @@ outfile_person_writer =
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[
-String [] fieldNames = new String [] {
-	    "cancer_free_years",
-	    "cost_diagnostic",
-	    "death_age",
-	    "lost_years",
-	    "num_lesions",
-	    "never_compliant",
-	    "onset_age_clin",
-	    "onset_age_polyp",
-	    "onset_stage_clin", 
-	    "surveillance_negatives",
-	    "tot_lesions",
-	    "value_life",
-	    "longitude",
-	    "latitude"
-	};
-String newline = "\n";
-char separator = '\t';
-
-get_Main().modelIO.outputRow (outfile_person_writer, fieldNames, separator, newline);
-for (Person person : people) {
-   get_Main().modelIO.outputDataRow (outfile_person_writer,
-              	                     Person.class.getName (),
-                                     person,
-                                     fieldNames,
-                                     separator,
-                                     newline);
-}
-]]></Body>
+					<Body><![CDATA[if (false)
+	Main.modelIO.writePeople (people.iterator (), outfile_person_writer);]]></Body>
 				</Function>
 			</Functions>
 			<EmbeddedObjects>
@@ -10552,6 +10922,60 @@ for (Person person : people) {
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1354823004773</Id>
+					<Name><![CDATA[new_compliance_rate_given_prev_compliant]]></Name>
+					<Description><![CDATA[This allows us to set a threshold time at which a new compliance rate will be in effect.
+
+This is used to calculate continuing, rather than initial compliance.
+
+]]></Description> 
+					<X>60</X><Y>320</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[0]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1354823004756</Id>
+							<Name><![CDATA[]]></Name>
+							<Label><![CDATA[test_compliance_rate_given_prev_compliant]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1354823004776</Id>
+					<Name><![CDATA[new_compliance_rate_given_not_prev_compliant]]></Name>
+					<Description><![CDATA[This allows us to set a threshold time at which a new compliance rate will be in effect.
+
+This is used to calculate continuing, rather than initial compliance.
+
+]]></Description> 
+					<X>60</X><Y>340</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[0]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1354823004774</Id>
+							<Name><![CDATA[]]></Name>
+							<Label><![CDATA[test_compliance_rate_given_not_prev_compliant]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 			</Variables>
 			<Functions>
 				<Function AccessType="default" StaticFunction="false">
@@ -10769,6 +11193,14 @@ return null;
 							<Name><![CDATA[compliance_rate_given_not_prev_compliant]]></Name>
 							<Value><![CDATA[]]></Value>	
 						</Parameter>
+						<Parameter>
+							<Name><![CDATA[new_compliance_rate_given_prev_compliant]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[new_compliance_rate_given_not_prev_compliant]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
 					</Parameters>
 					<CollectionType>ARRAY_LIST_BASED</CollectionType>
 				</EmbeddedObject>
@@ -10853,6 +11285,14 @@ return null;
 						<Parameter>
 							<Name><![CDATA[compliance_rate_given_not_prev_compliant]]></Name>
 							<Value><![CDATA[0]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[new_compliance_rate_given_prev_compliant]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[new_compliance_rate_given_not_prev_compliant]]></Name>
+							<Value><![CDATA[]]></Value>	
 						</Parameter>
 					</Parameters>
 					<Replication><![CDATA[get_Main().num_tests]]></Replication>	
@@ -11377,11 +11817,39 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[parameter]]></ParameterName>
+					<ParameterName><![CDATA[output_dir]]></ParameterName>
 					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[num_tests_displayed]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[death_rate_delay]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[intervention]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[experiment_parameters]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[new_test_compliance_rate_given_prev_compliant]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[new_test_compliance_rate_given_not_prev_compliant]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[dynamic_compliance_rate_year_offset]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[intervention_compliance_rate]]></ParameterName>
 					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
 			</Parameters>			
@@ -11422,7 +11890,896 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 				<FinalDate><![CDATA[1328041345266]]></FinalDate>	
 				<FinalTime><![CDATA[100.0]]></FinalTime>	
 			</ModelTimeProperties>
-		</SimulationExperiment>	
+		</SimulationExperiment>
+		<!--   =========  Parameter Variation Experiment   ========  -->
+		<ParamVariationExperiment ActiveObjectClassId="1328041345290">
+			<Id>1349186625352</Id>
+			<Name><![CDATA[ParametersVariation]]></Name>
+			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
+			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
+			<IconTopGroupPersistent>true</IconTopGroupPersistent>
+			<Frame>
+				<X>0</X>
+				<Y>0</Y>
+				<Width>800</Width>
+				<Height>600</Height>
+				<Maximized>false</Maximized>
+				<CloseConfirmation>false</CloseConfirmation>
+			</Frame>
+			<CommandLineArguments><![CDATA[]]></CommandLineArguments>
+			<MaximumMemory>64</MaximumMemory>
+			<RandomNumberGenerationType>fixedSeed</RandomNumberGenerationType>
+			<CustomGeneratorCode>new Random()</CustomGeneratorCode>
+			<BeforeEachExperimentRunCode><![CDATA[System.out.println ("before experiement...");]]></BeforeEachExperimentRunCode>
+			<BeforeSimulationRunCode><![CDATA[System.out.println ("--------> before " + root.simulation_count);
+root.infile_population_name = root.infile_population_name + "." + root.simulation_count;
+this.configure_intervention (root);]]></BeforeSimulationRunCode>
+			<AfterSimulationRunCode><![CDATA[root.simulation_count++;]]></AfterSimulationRunCode>
+			<SeedValue>1</SeedValue>
+			<RandomSelectionModeForSimultaneousEvents>false</RandomSelectionModeForSimultaneousEvents>
+			<VmArgs><![CDATA[]]></VmArgs>
+			<AbsoluteAccuracy>1.0E-5</AbsoluteAccuracy>
+			<RelativeAccuracy>1.0E-5</RelativeAccuracy>
+			<TimeAccuracy>1.0E-5</TimeAccuracy>
+			<FixedTimeStep>0.0010</FixedTimeStep>
+			<LoadRootFromSnapshot>false</LoadRootFromSnapshot>
+			<SnapshotFile></SnapshotFile>
+			<DiffEquationsNumericalMethod>EULER</DiffEquationsNumericalMethod>
+			<MixedEquationsNumericalMethod>RK45_NEWTON</MixedEquationsNumericalMethod>
+			<AlgebraicEquationsNumericalMethod>MODIFIED_NEWTON</AlgebraicEquationsNumericalMethod>
+			<Functions>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>1349371675070</Id>
+					<Name><![CDATA[configure_intervention]]></Name>
+					<X>470</X><Y>30</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Parameter>
+						<Name><![CDATA[root]]></Name>
+						<Type><![CDATA[Main]]></Type>
+					</Parameter>
+					<Body><![CDATA[/**
+ * Configures an intervention.
+ *
+ *    - Delay death rate calculations to a pre-desingated age.
+ *    - Configure the 
+ */
+
+if (root.simulation_count % 2 == 0) {
+
+	System.out.println ("configuring intervention...");
+
+	// zero death rate probabilities for ages below the target age.
+	root.delay_death_rates (40);
+
+	// set the initial compliance rate.
+	root.initial_compliance_rate = 0.35;
+}
+]]></Body>
+				</Function>
+			</Functions>
+
+			<AfterIterationCode><![CDATA[System.out.println ("after iteration.");]]></AfterIterationCode>
+			<AllowParallelEvaluations>true</AllowParallelEvaluations>
+			<UseFreeformParameters>true</UseFreeformParameters>
+			<NumberOfRuns>5</NumberOfRuns>
+			<FreeformParamValue>	
+				<Id>1328041345577</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345581</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345582</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345583</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345584</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345586</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345587</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345588</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345589</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345590</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345591</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345592</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345593</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345594</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345595</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345596</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345597</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345599</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345600</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345601</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345602</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345603</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345604</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345605</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345606</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345607</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345608</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345609</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345610</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345611</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345612</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345613</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345614</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345615</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345616</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345617</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345618</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345619</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345620</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345621</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345622</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345623</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345624</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345625</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345627</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345628</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345629</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345630</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345631</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345632</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345633</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345634</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345635</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345636</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345637</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345639</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345640</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345641</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345642</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345643</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345644</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345645</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345646</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345647</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345648</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345649</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345650</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345652</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345653</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345654</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345655</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345656</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345657</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345658</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345659</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345660</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345661</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345662</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345664</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345665</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345666</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345667</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345668</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345669</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345670</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345671</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345672</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345673</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345674</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345675</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345676</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345677</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345678</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345679</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345681</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345682</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345683</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345685</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345686</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345687</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1328041345688</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1330274699054</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1349378790110</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1349383271257</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1349384018403</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1350053085013</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1354811694598</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1354811715924</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1354817305026</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1358197900025</Id>
+			</FreeformParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345577</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345581</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345582</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345583</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345584</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345586</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345587</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345588</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345589</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345590</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345591</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345592</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345593</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345594</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345595</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345596</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345597</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345599</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345600</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345601</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345602</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345603</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345604</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345605</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345606</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345607</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345608</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345609</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345610</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345611</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345612</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345613</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345614</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345615</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345616</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345617</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345618</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345619</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345620</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345621</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345622</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345623</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345624</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345625</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345627</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345628</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345629</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345630</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345631</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345632</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345633</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345634</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345635</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345636</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345637</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345639</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345640</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345641</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345642</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345643</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345644</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345645</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345646</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345647</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345648</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345649</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345650</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345652</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345653</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345654</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345655</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345656</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345657</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345658</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345659</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345660</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345661</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345662</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345664</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345665</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345666</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345667</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345668</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345669</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345670</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345671</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345672</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345673</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345674</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345675</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345676</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345677</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345678</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345679</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345681</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345682</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345683</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345685</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345686</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345687</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1328041345688</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1330274699054</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1349378790110</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1349383271257</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1349384018403</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1350053085013</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1354811694598</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1354811715924</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1354817305026</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1358197900025</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<ModelTimeProperties 
+				UseCalendar="false">
+				<StopOption><![CDATA[Stop at specified time]]></StopOption>
+				<InitialDate><![CDATA[1328041345266]]></InitialDate>	
+				<InitialTime><![CDATA[0.0]]></InitialTime>	
+				<FinalDate><![CDATA[1328041345266]]></FinalDate>	
+				<FinalTime><![CDATA[100.0]]></FinalTime>	
+			</ModelTimeProperties>
+			<PresentationProperties 
+				EnableAdaptiveFrameManagement="true" 
+				EnableAntiAliasing="true"
+				EnableEnhancedModelElementsAnimation="true"
+				EnablePanning="true"
+				ToolbarCustomizableAtRuntime="true"
+				EnableZoom="true">
+				<CpuRatio><![CDATA[ratio_1_2]]></CpuRatio>	        
+				<Title><![CDATA[CRCScreening_v49 : ParametersVariation]]></Title>	
+				<FramesPerSecond><![CDATA[20.0]]></FramesPerSecond>
+				<UIProperty Name="Experiment Progress" Value="true"/>
+				<UIProperty Name="Simulation Progress" Value="true"/>
+				<UIProperty Name="Statusbar Events Per Second" Value="false"/>
+				<UIProperty Name="Statusbar Frames Per Second" Value="false"/>
+				<UIProperty Name="Statusbar Memory" Value="true"/>
+				<UIProperty Name="Statusbar Model Date" Value="false"/>
+				<UIProperty Name="Statusbar Model Step" Value="false"/>
+				<UIProperty Name="Statusbar Model Time" Value="false"/>
+				<UIProperty Name="Statusbar Real Time Of Simulation" Value="true"/>
+				<UIProperty Name="Statusbar Status" Value="true"/>
+				<UIProperty Name="Toolbar Animation setup" Value="false"/>
+				<UIProperty Name="Toolbar Execution control" Value="true"/>
+				<UIProperty Name="Toolbar File" Value="false"/>
+				<UIProperty Name="Toolbar View" Value="false"/>
+			</PresentationProperties>
+			<ReplicationsProperties>
+				<UseReplication>true</UseReplication>
+				<FixedReplicationsNumber>true</FixedReplicationsNumber>
+				<ReplicationPerIteration>2</ReplicationPerIteration>
+				<MinimumReplication>2</MinimumReplication>
+				<MaximumReplication>10</MaximumReplication>
+				<ConfidenceLevel>LEVEL_80</ConfidenceLevel>
+				<ErrorPercent>0.5</ErrorPercent>
+				<ExpressionForConfidenceComputation><![CDATA[0]]></ExpressionForConfidenceComputation>
+			</ReplicationsProperties>
+		</ParamVariationExperiment>	
 		<!--   =========  Custom Experiment   ========  -->
 		<CustomExperiment>
 			<Id>0</Id>
@@ -11780,6 +13137,369 @@ traceln("  num_tests_displayed = " + root.num_tests_displayed);
 engine.start(root);
 engine.runFast();]]></Code>
 		</CustomExperiment>
+		<!--   =========  Custom Experiment   ========  -->
+		<CustomExperiment>
+			<Id>1349374749666</Id>
+			<Name><![CDATA[HassmillerCRC]]></Name>
+			<MaximumMemory>2048000</MaximumMemory>
+			<CommandLineArguments><![CDATA[seed 12334 ]]></CommandLineArguments>
+			<VmArgs><![CDATA[-Xms1024m]]></VmArgs>
+			<Import><![CDATA[import java.io.File;
+import java.io.FilenameFilter;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import org.renci.epi.util.Executor;
+import org.renci.epi.util.Outcomes;
+import java.util.concurrent.Future;
+]]></Import>
+			<Code><![CDATA[/**
+ * Configure the population scenario to execute.
+ */
+execute_populations_parallel (1);
+]]></Code>
+			<AdditionalClassCode><![CDATA[private List<Outcomes> _outcomes = null;
+private Executor _executor = new Executor ();
+private static final String CONTROL = "control";
+static int outcomesIndex = 0;
+
+//private int minAge = Integer.MAX_VALUE;
+private int dynamicComplianceRateYearOffset = 6;
+
+/**
+ * Execute the model for a set of populations in parallel.
+ *   - Experiment parameters will be read from a file called experiment.txt
+ *   - Population files will be read from the current directory, assuming a naming convention of *.tsv.[0-9]+
+ *   - Intervention files will be read assuming a convention of intervention.[0-9]+
+ * All replications of a given population run are queued for parallel execution.
+ * Futures for each set of replications are recorded with a scenario name.
+ * The control job is waited for and its outcomes recorded first.
+ * Then each of the intervention replication sets is waited for and its outcomes recorded.
+ *@param replications The number of replications to execute.
+ */
+private void execute_populations_parallel (int replications) {
+
+	// Read parameters common to the entire experiment.
+	String experimentParameters = Main.modelIO.getFileAsString (new File ("experiment.txt"));
+	
+	// Track parallel jobs using futures to allow us to wait for completion.
+	HashMap<String,List<Future>> futures = new HashMap<String,List<Future>> ();
+	//HashMap<String,List<Future>> interventionFutures = new HashMap<String,List<Future>> ();		
+
+	// Track outcomes for the base case and each intervention.
+	_outcomes = new ArrayList<Outcomes> ();
+	HashMap<String,Outcomes> results = new HashMap<String,Outcomes> ();
+		
+	// Iterate over all potential input files. These are <anything>.tsv.<integer> in this directory.	
+	File [] files = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+", new File ("pops"));	
+	for (File file : files) {
+		System.out.println ("file " + file);
+		String controlScenario = file.getName () + "." + CONTROL;
+		futures.put (controlScenario,
+			 		 execute_parallel (file,
+									   controlScenario,
+									   new String [] {
+							  				experimentParameters
+							  		   },
+							  		   replications,
+							  		   results));
+		break;
+	}
+	waitFor (futures, results);
+	futures.clear ();
+	for (File file : files) {
+		File [] interventions = Main.modelIO.getFilesByPattern ("intervention.[0-9]+");
+		for (File intervention : interventions) {
+			String scenario = file.getName () + "." + intervention.getName ();
+	 		traceln ("queueing " + scenario + " reps");
+ 			futures.put (scenario,
+						 execute_parallel (file,
+									 	   scenario,
+									 	   new String [] {
+									 			experimentParameters,
+									 		    Main.modelIO.getFileAsString (intervention)
+							 		 	   },
+							 		 	   replications,
+							 		 	   results));
+	   	}
+	}
+	waitFor (futures, results);
+	System.exit (0);
+}
+/**
+ * Join this thread with a map of collections of other threads.
+ * For each key in the map, get the list of associated futures.
+ *   Wait for each future.
+ * Once all have completed, add outcomes for the scenario.
+ *@param futures A map of lists of futures where scenario ids are keys.
+ *@param results A map of scenarios to outcomes objects.
+ */
+public void waitFor (HashMap<String,List<Future>> futures, HashMap<String,Outcomes> results) {
+	for (String scenario : futures.keySet ()) {
+		try {
+			List<Future> futuresList = futures.get (scenario);
+			trace ("============================= waiting for " + scenario);
+			_executor.waitFor (futuresList);
+			traceln (".");
+			addOutcomes (scenario, results);
+			//traceln ("pending:");
+			for (String scen : futures.keySet ()) {
+				//traceln ("   scenario: " + scen);
+			}
+		} catch (Throwable t) {
+			throw new RuntimeException (t);
+		}
+	}
+}
+/**
+ * Get a configuration instruction to set the input file name.
+ *@param input The input file.
+ */
+private String getInputFileConfiguration (File input) {
+	String value = "";
+	int age = Main.modelIO.getAge (input);
+	if (age > -1) {
+		value = "death_rate_delay=" + age + "\n";
+	}
+
+	int lines = Main.modelIO.countFileLines (input);
+
+	value += "population_size=" + (lines - 1) + "\n";
+	value += "infile_population_name=" + input.getPath () + "\n";
+
+	return value;
+}
+/**
+ * Add replication outcomes for a single replication of a given scenario.
+ *@param name The scenario name to add outcomes for.
+ *@param root The model object containing the values to record.
+ *@param results The map of scenarios to results objects.
+ */
+private synchronized void addReplicationOutcomes (String scenario,
+												  Main root,
+												  HashMap<String,Outcomes> results)
+{
+	Outcomes outcomes = results.get (scenario);
+	if (outcomes == null) {
+		outcomes = new Outcomes (scenario);
+		results.put (scenario, outcomes);
+	}
+	outcomes.read (root.population.people.average ("cost_routine"),
+	               root.population.people.average ("cost_diagnostic"),
+	               root.population.people.average ("cost_surveillance"),
+	               root.population.people.average ("cost_treatment"),
+	               -root.population.people.average ("lost_years"),
+				   root.population.people.average ("discounted_cost_routine"),
+	               root.population.people.average ("discounted_cost_diagnostic"),
+	               root.population.people.average ("discounted_cost_surveillance"),
+	               root.population.people.average ("discounted_cost_treatment"),
+	               -root.population.people.average ("discounted_lost_years"),
+	    		   root.population.prob_crc,
+				   root.population.prob_dead_crc);
+}
+/**
+ * Add outcomes for a set of replications to the final list of outcomes objects.
+ * If this is an intervention, calculate its deltas from the control scenario.
+ *@param name The name of the scenario.
+ *@param results The map of scenarios to results.
+ */
+private synchronized void addOutcomes (String scenario, HashMap<String,Outcomes> results) {
+	Outcomes outcomes = results.get (scenario);
+	if (outcomes != null) {	
+		outcomes.calculateValues ();
+		_outcomes.add (outcomes);
+		String key = getControl (scenario);
+		Outcomes control = results.get (key);
+		traceln ("got control: " + key);
+		if (control != null) {
+			outcomes.calculateDeltas (control);
+		}
+	}
+	Outcomes.writeOutcomes (_outcomes, "out" + File.separator + "outcomes.tsv." + outcomesIndex++, "\t");
+}
+private String getControl (String scenario) {
+	String result = scenario;
+	int index = scenario.indexOf (".intervention");
+	if (index > -1) {
+		result = scenario.substring (0, index);
+	}
+	return result + ".control";
+}
+/**
+ *
+ * Configure the model's output behavior.
+ *@param root The main model object.
+ *@param inputFile The model input file
+ *@param scenario The mode of the experiment (control or intervention)
+ *@return Returns a new model with the given input file and output file appropriately configured.
+ */
+public Main create_model (File input, String scenario, int replication) {
+
+	// Create a new model.
+	Main root = initialize (new Main (createEngine (), null, null),
+						    replication);
+
+	// Set input file name.
+ 	root.infile_population_name = input.getName ();
+
+	// Set output file name.
+	root.output_dir = "out" + File.separator + scenario;
+
+	// Configure the simulation to compute population rates.
+	root.compute_population_rates = true;
+	
+	return root;
+}
+/**
+ * Initialize a model.
+ *@param root The model to initialize.
+ *@return Returns an initialized model object.
+ */
+private Main initialize (Main root, int replication) {
+	// Parse the command-line parameters. For now, we require parameters to
+	// be specified in the form:
+	//
+	//    paramname1 paramvalue1 paramname2 paramvalue2 ...
+	//
+	// A parameter named seed must be provided on the command line. Other
+	// command-line parameter names must match a parameter name for the
+	// Main object. Providing the Main parameters on the command line is
+	// optional.
+	//
+	// The Main parameter run_mode must not be provided on the command
+	// line. This parameter will automatically be set to "batch" because
+	// other values are invalid in command-line runs.
+	boolean foundSeed = false;
+	long seed = 0;
+	root.setParametersToDefaultValues();
+	String[] args = getCommandLineArguments();
+	for (int i = 0; i < args.length; i++) {
+		if (args[i].equalsIgnoreCase("seed")) {
+			seed = Long.parseLong(args[++i]);
+			seed += replication * 100;
+			root.getEngine().getDefaultRandomGenerator().setSeed(seed);
+			foundSeed = true;
+		}
+		//traceln (args [i]);
+	}
+	if (!foundSeed) {
+		throw new RuntimeException("No seed parameter was specified.");
+	}
+	
+	// Configure the model. Use reflection to process command line parameters.
+	HashMap<String,String> skip = new HashMap<String,String> ();
+	skip.put ("seed", "seed");
+	Main.modelIO.configureModel (root, args, skip);
+	return root;
+}
+/**
+ * A runnable job modeling the execution of a model.
+ */
+class ModelRunner implements Runnable {
+	private String scenario;
+	private File input;
+	private String [] parameters;
+	private HashMap<String,Outcomes> results;
+	private int replication = 0;
+	/**
+	 * Create a new model runner.
+	 *@param scenario The scenario name.
+	 *@param root The model object to execute.
+	 *@param results Map of scenario names to outcomes.
+	 */
+	ModelRunner (String scenario, File input, String [] parameters, /*Main root,*/ HashMap<String, Outcomes> results, int rep) {
+		this.scenario = scenario;
+		this.input = input;
+		this.parameters = parameters;
+		this.results = results;
+		this.replication = rep;
+	}
+	/**
+	 * Execute the model and record its outcomes.
+	 */
+	public void run () {
+		try {
+		Main root = create_model (input, scenario, replication);
+		root.setEngine (createEngine ());
+		
+		traceln ("-start: " + root.output_dir + " rep(" + replication + ")");
+		
+		List<String> outputLines = new ArrayList<String> ();
+		outputLines.add ("--replication: " + replication);
+		root.configure_parameters (input.getName () + "-" + scenario, parameters, outputLines);
+		root.configure_parameters (input.getName () + "-" + scenario,
+								   new String [] {
+								   		getInputFileConfiguration (input),
+								   },
+								   outputLines);
+		Main.modelIO.writeConfiguration (root,
+										 root.output_dir,
+										 "configuration.txt." + replication,
+										 outputLines);
+		
+		long start = System.currentTimeMillis ();
+
+		root.outfile_year_name = root.outfile_year_name + "." + replication;
+		root.outfile_state_name = root.outfile_state_name + "." + replication;		
+		root.outfile_replication_name = root.outfile_replication_name + "." + replication;
+
+		synchronized (ModelRunner.class) {
+	    	root.getEngine().start (root);
+	    }
+		root.getEngine().runFast ();
+		addReplicationOutcomes (scenario, root, results);
+		long end = System.currentTimeMillis ();
+		traceln ("-end  : " + root.output_dir + " rep(" + replication + ") in " + 
+				( (end - start) / 1000 ) + " seconds");
+		} catch (Throwable t) {
+			t.printStackTrace ();
+			throw new RuntimeException (scenario + " " + replication + " ", t);
+		}
+	}
+}
+/**
+ * Create and configure the model given a set of input parameters.
+ * Then submit it for concurrent execution.
+ *@param input The input file.
+ *@param mode The scenario being executed.
+ *@param replications The number of replications of the job to run.
+ *@param results A map of scenario names to outcomes.
+ *@return Returns a list of futures containing one element per replication submitted.
+ */
+List<Future> execute_parallel  (File input,
+								String scenario,
+								String [] parameters,
+								int replications,
+								HashMap<String,Outcomes> results)
+{
+	List<Future> futures = new ArrayList<Future> (replications);
+	if (input.exists ()) {
+		for (int c = 0; c < replications; c++) {
+			ModelRunner runner = new ModelRunner (scenario, input, parameters, results, c);
+			futures.add (_executor.queue (runner));
+		}
+	}
+	return futures;
+}
+
+/**
+ * Print outcomes.
+
+private void printOutcomes () {
+	try {
+		PrintWriter out = new PrintWriter (new OutputStreamWriter (System.err));
+		Outcomes.writeOutcomes (_outcomes, out, "\t");
+		out.flush ();
+	} catch (IOException e) {
+		throw new RuntimeException (e);
+	}
+}
+ */
+]]></AdditionalClassCode>
+		</CustomExperiment>
 	</Experiments>
 	<ClassPathEntry>
 		<Location><![CDATA[al6utils-v7.jar]]></Location>
@@ -11799,6 +13519,16 @@ engine.runFast();]]></Code>
 	<ClassPathEntry>
 		<Location><![CDATA[C:/dev/crcsim/common/util/target/epi-util-1.0-SNAPSHOT.jar]]></Location>
 		<Imported>false</Imported>
+		<Folder>false</Folder>
+	</ClassPathEntry>
+	<ClassPathEntry>
+		<Location><![CDATA[commons-logging-1.1.1.jar]]></Location>
+		<Imported>true</Imported>
+		<Folder>false</Folder>
+	</ClassPathEntry>
+	<ClassPathEntry>
+		<Location><![CDATA[log4j-1.2.17.jar]]></Location>
+		<Imported>true</Imported>
 		<Folder>false</Folder>
 	</ClassPathEntry>
 </Model>

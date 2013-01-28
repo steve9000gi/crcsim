@@ -175,9 +175,11 @@ class PopulationPolygonOperator implements PolygonOperator {
 	    CsvValueReader csvReader = new CsvValueReader (reader, delimiter);
 	    while (csvReader.readRecord ()) {
 		try {
+		    /*
 		    if (interrupted (lineNumber)) {
 			break;
 		    }
+		    */
 		    Coordinate coordinate = new Coordinate (csvReader.getDouble (LONGITUDE),
 							    csvReader.getDouble (LATITUDE));
 		    Point point = this.geometryFactory.createPoint (coordinate);

@@ -45,12 +45,12 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
     @Autowired
     protected PopulationService populationService;
 
-    /*
+
     @Test
     public void testModelInputCompiler () throws Exception {
 	
-	BasicConfigurator.configure ();
-	Logger.getRootLogger().setLevel (Level.DEBUG);
+	//BasicConfigurator.configure ();
+	//Logger.getRootLogger().setLevel (Level.DEBUG);
 	//Logger.getRootLogger().setLevel (Level.ERROR);
   
 	char inputSeparator   = '|';
@@ -62,22 +62,27 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
 	    "PRIVA", "EDU", "id", "LAT", "LON"
 	};
 	Assert.assertTrue (this.populationService != null);
+
 	this.populationService.compileModelInput (inputSeparator,
 						  outputSeparator,
 						  outputKeys);
+	/*
+	*/
     }
+    /*
     */
 
     @Test
     public void testGetPopulation () throws Exception {
 	this.populationService.getPopulation (new String [] { "0" });
     }
-
+    /*
     @Test
     public void testGeocodePopulation () throws Exception {
 	String polygonFileName = populationService.getDataLocator().getCountyPolygonFileName ();
 	this.populationService.geocodePopulation (polygonFileName);
     }
+    */
 }
 
 

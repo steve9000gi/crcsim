@@ -10,7 +10,10 @@ public interface PopulationService {
     public void compileModelInput (char inputSeparator,
 				   char outputSeparator,
 				   String [] outputKeys);
-				   
+    public void compileMultipleModelInputs (char inputSeparator,
+					   char outputSeparator,
+					   String [] outputKeys);
+    
     public Object getPopulation (String [] query);
 
     public void geocodePopulation (String polygonFileName);

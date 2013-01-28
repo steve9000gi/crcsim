@@ -111,7 +111,7 @@ public class DelimitedFileImporter {
 
         BufferedReader in = null;
 	try {
-	    in = new BufferedReader (reader, BLOCK_SIZE);
+	    in = new BufferedReader (reader, 4096000); //BLOCK_SIZE);
 
 	    // Read the field names from the first line.
 	    fieldNames = in.readLine().split(delimiter);

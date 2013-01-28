@@ -148,6 +148,31 @@ export_data () {
 " 
 }
 
+export_data_by_age () {
+    local AGE=$1
+    echo "people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
+    execute_sql "
+  select people.sex,
+         people.race,
+         households.hh_income,
+         people.age,
+         households.hh_size,
+         households.latitude,
+         households.longitude,
+         pumsp.hisp,
+         pumsp.schl,
+         pumsp.semp,
+         pumsp.rac1p
+  from people,
+       households,
+       pumsp
+  where people.age      == '${AGE}'
+    and people.hh_id    == households.hh_id
+    and people.serialno == pumsp.serialno
+    and people.pernum   == pumsp.sporder;
+" 
+}
+
 install_data () {
     mkdir -p $APP_HOME/var/crcsim
 
@@ -198,6 +223,10 @@ getarg () {
 }
 
 main () {
+
+	unset MIN_AGE
+	unset MAX_AGE
+
 	configure_system
 	for arg in $*; do
 	    case $arg in
@@ -208,7 +237,19 @@ main () {
 		    import_tables
 		    ;;
 		'--export')
-		    export_data
+		    if [ -z $MIN_AGE -a -z $MAX_AGE ]; then
+			export_data
+		    else
+			for age in $(seq $MIN_AGE $MAX_AGE); do
+			    export_data_by_age $age > export.$age
+			done
+		    fi
+		    ;;
+		--minage\=*)
+		    MIN_AGE=$(getarg $arg)
+		    ;;
+		--maxage\=*)
+		    MAX_AGE=$(getarg $arg)
 		    ;;
 		'--install')
 		    install_data

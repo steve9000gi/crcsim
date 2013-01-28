@@ -29,6 +29,7 @@
       <version>${project.version}</version>
     </dependency>    
 
+<!--
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-shapefile</artifactId>
@@ -39,6 +40,7 @@
       <artifactId>gt-swing</artifactId>
       <version>${geotools.version}</version>
     </dependency>
+-->
 
     <dependency>
       <groupId>org.springframework</groupId>
@@ -72,10 +74,18 @@
       <artifactId>commons-dbcp</artifactId>
       <version>${commons.dbcp.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala.version}</version>
+    </dependency>
+
   </dependencies>
 
   <build>
     <plugins>
+
       <plugin>
 	<groupId>org.apache.maven.plugins</groupId>
 	<artifactId>maven-surefire-plugin</artifactId>
@@ -84,7 +94,149 @@
 	  <argLine>-Xmx702g -server</argLine>
 	</configuration>
       </plugin>
-    </plugins>
+
+      <!-- mvn -o -f common\population\pom.xml exec:exec -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+	<version>${maven.plugin.version.exec}</version>
+        <configuration>
+          <executable>java</executable>
+          <arguments>
+            <argument>-Xms1024m</argument>
+            <argument>-Xmx1024m</argument>
+            <argument>-XX:NewRatio=3</argument>
+            <argument>-XX:+PrintGCTimeStamps</argument>
+            <argument>-XX:+PrintGCDetails</argument>
+            <argument>-Xloggc:gc.log</argument>
+            <argument>-classpath</argument>
+            <classpath/>
+            <argument>org.renci.epi.population.PopulationMain</argument>
+          </arguments>
+        </configuration>
+      </plugin>
+
+
+      <!-- mvn -o -f common\population\pom.xml groovy:exececute -->
+      <!--
+      Classpath issues.
+      -->
+      <plugin>
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+	<version>1.4</version>
+	<configuration>
+
+	  <classpath>
+	    <element>
+	      <groupId>epi</groupId>
+	      <artifactId>population</artifactId>
+	      <version>1.0-SNAPSHOT</version>
+	    </element>
+	  </classpath>
+
+	  <source>
+            classpathElement = "file://" + project.properties ["project.basedir"] + "/src/main/resources"
+	    //URL.class.classLoader.rootLoader.addURL (new URL (classpathElement))
+
+
+        cl = ClassLoader.getSystemClassLoader ()
+ 
+	cl.addURL (new URL ( "file://target/classes" ))
+	getClass().getClassLoader().addURL (new URL ( "file:///dev/crcsim/common/population/target/classes" ))
+
+
+	i = getClass().getClassLoader().getResourceAsStream ("/spring/population-context.xml")
+	System.out.println ("i --------> " + i)
+
+
+ 
+        urls = ((URLClassLoader)cl).getURLs();
+        for(URL url: urls){
+        	System.out.println("-----------> " + url.getFile());
+        }
+
+	    try {
+	       println "hi"
+  	       app = new org.renci.epi.population.PopulationMain ()
+	       app.compileModelInput ()
+	    } catch (Exception e) {
+               e.printStackTrace ()
+	       fail ()
+            }
+	  </source>
+	</configuration>
+      </plugin>
+
+
+      <!-- mvn -o -f common\population\pom.xml scala:script -->
+      <!-- 
+      Resolving the geotools dependencies works in the main portion of the build.
+      But in the context of the scala plugin, it fails. It appears that something 
+      about the scala plugin redefines the jboss repository to a deprectead (and
+      now defunct) value. At any rate, dependencies do not resolve, the build fails.
+
+           jboss.releases (http://repository.jboss.org/maven2, releases)
+      -->
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+	<version>${maven.plugin.version.scala}</version>
+	<configuration>
+	  <checkMultipleScalaVersions>false</checkMultipleScalaVersions>
+	  <scalaVersion>${scala.version}</scalaVersion>
+	  <addToClasspath>${project.build.directory}/classes</addToClasspath>
+	  <script>
+	    import org.renci.epi.population.PopulationMain
+	    println ("Hey")
+	    try {
+  	       val app = new PopulationMain 
+	       app.compileModelInput ()
+	    } catch {
+	       case e: Exception => 
+                  e.printStackTrace ()
+            }
+	  </script>
+	</configuration>
+        <dependencies>
+          <dependency>
+	    <groupId>org.scala-lang</groupId>
+	    <artifactId>scala-library</artifactId>
+	    <version>${scala.version}</version>
+	  </dependency>
+	  <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-jdbc</artifactId>
+	    <version>${org.springframework.version}</version>
+	  </dependency>
+
+	  <dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-jdbc</artifactId>
+	    <version>${org.springframework.version}</version>
+	  </dependency>    
+	  <dependency>
+	    <groupId>net.sf.opencsv</groupId>
+	    <artifactId>opencsv</artifactId>
+	    <version>${net.sf.opencsv.version}</version>
+	  </dependency>
+
+	  <dependency>
+	    <groupId>${project.groupId}</groupId>
+	    <artifactId>util</artifactId>
+	    <version>${project.version}</version>
+	  </dependency>    
+	  <dependency>
+	    <groupId>${project.groupId}</groupId>
+	    <artifactId>geography</artifactId>
+	    <version>${project.version}</version>
+	  </dependency>    
+
+        </dependencies>
+      </plugin>
+      
+      
+   </plugins>
   </build>
 
 </project>
