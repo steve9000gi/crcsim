@@ -4451,6 +4451,48 @@ This is used to calculate continuing, rather than initial compliance.
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1359475170461</Id>
+					<Name><![CDATA[output_population_snapshots]]></Name>
+					<X>40</X><Y>2440</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[boolean]]></Type>        
+						<DefaultValue><![CDATA[false]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1359475170459</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType alpv7value="CHECK_BOX">CHECK_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1359476176055</Id>
+					<Name><![CDATA[output_population_snapshots_compress]]></Name>
+					<X>40</X><Y>2460</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[boolean]]></Type>        
+						<DefaultValue><![CDATA[false]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1359476176053</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType alpv7value="CHECK_BOX">CHECK_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1336336262301</Id>
 					<Name><![CDATA[routine_test_list]]></Name>
@@ -9137,6 +9179,8 @@ else {
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
+			<Import><![CDATA[import java.io.File;
+import java.text.NumberFormat;]]></Import>
 			<Generic>false</Generic>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
@@ -10334,17 +10378,15 @@ for (int i=0; i < people.size(); i++) {
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[boolean outputPerson = false;
-
-if (outputPerson) {
+					<Body><![CDATA[if (get_Main ().output_population_snapshots) {
 	outfile_person_writer_count++;
-	java.text.NumberFormat format =
-		new java.text.DecimalFormat ("00000");
+	NumberFormat format = new java.text.DecimalFormat ("00000");
 	String suffix = format.format (outfile_person_writer_count);
 	String fileName = "person." + suffix;
-	outfile_person_writer =
-		Main.modelIO.getModelOutputWriter (fileName, false, true); // append, compress
-}]]></Body>
+	boolean compress = get_Main().output_population_snapshots_compress;
+	outfile_person_writer = get_Main().modelIO.getModelOutputWriter (fileName, false, compress); // append, compress
+}	
+]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
@@ -10355,7 +10397,18 @@ if (outputPerson) {
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if (false) Main.modelIO.closeWriter (outfile_person_writer);]]></Body>
+					<Body><![CDATA[if (get_Main ().output_population_snapshots) {
+
+
+	System.out.println ("==================");
+	System.out.println ("==================");
+	System.out.println ("== (close) ");
+	System.out.println ("==================");
+	System.out.println ("==================");
+
+    get_Main().modelIO.closeWriter (outfile_person_writer);
+}
+]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
@@ -10366,8 +10419,10 @@ if (outputPerson) {
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if (false)
-	Main.modelIO.writePeople (people.iterator (), outfile_person_writer);]]></Body>
+					<Body><![CDATA[if (get_Main ().output_population_snapshots) {
+	get_Main().modelIO.writePeople (people.iterator (), outfile_person_writer);
+}
+]]></Body>
 				</Function>
 			</Functions>
 			<EmbeddedObjects>
@@ -11836,6 +11891,14 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 					<ParameterName><![CDATA[dynamic_compliance_rate_year_offset]]></ParameterName>
 					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[output_population_snapshots]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[output_population_snapshots_compress]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
 			</Parameters>			
 			<PresentationProperties 
 				EnableAdaptiveFrameManagement="true" 
@@ -12277,6 +12340,12 @@ if (root.simulation_count % 2 == 0) {
 			<FreeformParamValue>	
 				<Id>1354817305026</Id>
 			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1359475170461</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1359476176055</Id>
+			</FreeformParamValue>
 			<RangeVariationParamValue>	
 				<Id>1328041345577</Id>
 				<Type>FIXED</Type>
@@ -12713,6 +12782,14 @@ if (root.simulation_count % 2 == 0) {
 				<Id>1354817305026</Id>
 				<Type>FIXED</Type>
 			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1359475170461</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1359476176055</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
 			<ModelTimeProperties 
 				UseCalendar="false">
 				<StopOption><![CDATA[Stop at specified time]]></StopOption>
@@ -13130,6 +13207,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.renci.epi.util.Executor;
+import org.renci.epi.util.ModelIO;
 import org.renci.epi.util.Outcomes;
 import java.util.concurrent.Future;
 ]]></Import>
@@ -13413,9 +13491,9 @@ class ModelRunner implements Runnable {
 								   },
 								   outputLines);
 		Main.modelIO.writeConfiguration (root,
-										 root.output_dir,
-										 "configuration.txt." + replication,
-										 outputLines);
+									root.output_dir,
+									"configuration.txt." + replication,
+									outputLines);
 		
 		long start = System.currentTimeMillis ();
 
