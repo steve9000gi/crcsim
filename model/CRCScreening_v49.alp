@@ -4452,6 +4452,27 @@ This is used to calculate continuing, rather than initial compliance.
 					</Properties>                 
 				</Variable>
 				<Variable Class="Parameter">
+					<Id>1358197900025</Id>
+					<Name><![CDATA[intervention_compliance_rate]]></Name>
+					<X>230</X><Y>1430</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1358197900023</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
 					<Id>1359475170461</Id>
 					<Name><![CDATA[output_population_snapshots]]></Name>
 					<X>40</X><Y>2440</Y>
@@ -8496,13 +8517,15 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 			 * and the intervention is active, we want their iniitial compliance rate
 			 * to use the value appropriate for the intervention.
 			 */	
+			
+			 /*
 			if (routineVisitsCount == 0) {
 			   compliance_prob = test.new_compliance_rate_given_not_prev_compliant;
-			/*
-			 * If the person has completed visits, then set their compliance rate
-			 * based on compliance history. If the intervention is active, appropriate
-			 * values will be used for the compliance probability.
-			 */ 
+			
+			 // If the person has completed visits, then set their compliance rate
+			 // based on compliance history. If the intervention is active, appropriate
+			 // values will be used for the compliance probability.
+
 		    } else if (routineVisitsCount > 0) { 
 	      		if (((Boolean)routine_compliance_history.get(routineVisitsCount - 1)).booleanValue()) {
    		    		compliance_prob = interventionActive ?
@@ -8518,7 +8541,10 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 			    					+ time () + " age_in_2007: " + 
 			  					    get_Population().get_Main().death_rate_delay + 
 			  					    ". compliance_prob: " + compliance_prob);
+			  					    
 	  	  	}
+	  	  	*/
+	  	  	
 		  } 
 	  }
 	
@@ -10398,14 +10424,6 @@ for (int i=0; i < people.size(); i++) {
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[if (get_Main ().output_population_snapshots) {
-
-
-	System.out.println ("==================");
-	System.out.println ("==================");
-	System.out.println ("== (close) ");
-	System.out.println ("==================");
-	System.out.println ("==================");
-
     get_Main().modelIO.closeWriter (outfile_person_writer);
 }
 ]]></Body>
@@ -11897,6 +11915,10 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[output_population_snapshots_compress]]></ParameterName>
+					<ParameterValue><![CDATA[null]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[intervention_compliance_rate]]></ParameterName>
 					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
 			</Parameters>			
@@ -12341,6 +12363,9 @@ if (root.simulation_count % 2 == 0) {
 				<Id>1354817305026</Id>
 			</FreeformParamValue>
 			<FreeformParamValue>	
+				<Id>1358197900025</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
 				<Id>1359475170461</Id>
 			</FreeformParamValue>
 			<FreeformParamValue>	
@@ -12780,6 +12805,10 @@ if (root.simulation_count % 2 == 0) {
 			</RangeVariationParamValue>
 			<RangeVariationParamValue>	
 				<Id>1354817305026</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1358197900025</Id>
 				<Type>FIXED</Type>
 			</RangeVariationParamValue>
 			<RangeVariationParamValue>	
@@ -13373,7 +13402,10 @@ private synchronized void addOutcomes (String scenario, HashMap<String,Outcomes>
 			outcomes.calculateDeltas (control);
 		}
 	}
-	Outcomes.writeOutcomes (_outcomes, "out" + File.separator + "outcomes.tsv." + outcomesIndex++, "\t");
+	String outputDirectory = "\\\\ad.renci.org\\Projects\\systemsscience\\out";
+	Outcomes.writeOutcomes (_outcomes,
+						    outputDirectory + File.separator + 
+						    "outcomes.tsv." + outcomesIndex++, "\t");
 }
 private String getControl (String scenario) {
 	String result = scenario;

@@ -204,6 +204,10 @@ class PopulationPolygonOperator implements PolygonOperator {
 	}
     }
 
+    public boolean interrupted (int line) {
+	return false;
+    }
+
     /**
      * Close the polygon operator. Called when all polygons have been processed.
      * <p>

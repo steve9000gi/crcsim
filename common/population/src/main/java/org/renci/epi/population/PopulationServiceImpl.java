@@ -27,6 +27,7 @@ import org.renci.epi.geography.PolygonOperator;
 import org.renci.epi.geography.JSONPolygonWriterOperator;
 import org.renci.epi.util.DataLocator;
 
+
 /**
  *
  * A service for manipulating population data.
@@ -89,13 +90,15 @@ public class PopulationServiceImpl implements PopulationService {
 	CSVProcessor syntheticPopulation = null;
 	int c = 0;
 	File [] inputFiles = getDataLocator().getSyntheticPopulationExports ();
-	for (File inputFile : inputFiles) {
-	    File outputFile = new File (getDataLocator().getModelInputFileName ("population.tsv." + c++));
-	    this.createModelInput (inputSeparator,
-				   outputSeparator,
-				   outputKeys,
-				   inputFile,
-				   outputFile);
+	if (inputFiles != null) {
+	    for (File inputFile : inputFiles) {
+		File outputFile = new File (getDataLocator().getModelInputFileName ("population.tsv." + c++));
+		this.createModelInput (inputSeparator,
+				       outputSeparator,
+				       outputKeys,
+				       inputFile,
+				       outputFile);
+	    }
 	}
     }
 
