@@ -1,5 +1,58 @@
 #!/usr/bin/env python
 
+'''
+
+Copyright (c) 2011 RENCI/UNC Chapel Hill
+
+@author Steven Cox
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+and/or hardware specification (the "Work") to deal in the Work without restriction, including
+without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Work, and to permit persons to whom the Work is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or
+substantial portions of the Work.
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE WORK OR THE USE OR OTHER DEALINGS
+IN THE WORK.
+
+Goal:
+   Geocode agent based model output data, scaling to terabyte range.
+Approach: 
+   Overview:
+      Uses RENCI Blueridge's large memory nodes (each with 1TB RAM and 32 hyper-threaded cores),
+      Parses CSV output files recording the state of agents at a series of timeframes
+      Uses output data format of the UNC CRC Agent Based Model.
+   Process:
+      Select:
+         Start a process per CPU to -
+         Load each CSV model output file into an in-memory Sqlite3 database.
+         Select relevant data from the data set
+         Write selected data to text files as timeslice, latitude, longitude tuples.
+      Geocode:
+         Export polygons as JSON.
+         Start a worker process to count point-in-polygon relationships and write the output as a JSON array.
+         Start N-1 worker processes to parse timeslice-location data and send messages to the counter.
+         Wait for all threads to join.
+
+Usage:
+
+     ./geocoder.py /projects/systemsscience/var/census2010/tl_2010_37_county10.shp \
+                   /projects/systemsscience/out/population.tsv.0035.control/       \
+                   --output /projects/systemsscience/var/geo                       \
+                   --archive                                                       \
+                   --loglevel debug
+
+'''
+
 import argparse
 import csv
 import fnmatch
@@ -26,12 +79,12 @@ from multiprocessing import Lock
 
 logger = logging.getLogger (__name__)
 
-class DataCruncher (object):
+class DataImporter (object):
     ''' Load CSV data into SQLLite3 accessible memory to filter. '''
 
     def __init__ (self, columns, database, output_directory = "output"):
+        ''' Initialize connection. '''
         self.con = sqlite3.connect (database)
-        #self.con = sqlite3.connect ("test.db")
         self.cur = self.con.cursor ()
         self.columns = columns
         insert_columns = ", ".join (self.columns)
@@ -40,6 +93,7 @@ class DataCruncher (object):
         self.output_directory = output_directory
 
     def create_table (self):
+        ''' Build the table from a dynamically constructed column list. '''
         column_ddl = map (lambda x : "%s varchar(10)" % x, self.columns)
         column_ddl = ", ".join (column_ddl)
         statement = "CREATE TABLE simulation (%s);" % column_ddl
@@ -62,10 +116,11 @@ class DataCruncher (object):
                 try:
                     self.cur.executemany (self.insert_statement, (row,))
                 except sqlite3.ProgrammingError:
-                    logger.error ("===========> file: %s, index: %s, length(%s): %s", input_file, index, len(row), row)
+                    logger.error ("Invalid Line: file: %s, index: %s, length(%s): %s", input_file, index, len(row), row)
         self.con.commit ()
 
     def get_coordinates (self, file_name):
+        ''' Apply the filter to get location data. '''
         timeslice_id_index = file_name.rindex ('.') + 1
         assert timeslice_id_index < len (file_name), "Problem parsing filename: %s" % file_name
         timeslice_id = file_name [timeslice_id_index:]
@@ -76,8 +131,8 @@ class DataCruncher (object):
             coordinates.append ( (timeslice_id, row[0], row[1]) )
         return coordinates
     
-    def crunch (self, file_name, idx, stats):
-
+    def data_import (self, file_name, stats):
+        ''' Create the output directory, import input data and select and write output data. '''
         fs_lock = Lock ()
         fs_lock.acquire ()
         if not os.path.exists (self.output_directory):
@@ -110,25 +165,23 @@ class Counter (object):
         self.timeline = [
             [ 0 for i in range (timeslices + 1) ] for j in range (polygon_count + 1)
             ]
-        logger.debug ("len timeline: %s", len (self.timeline))
-        logger.debug ("len timeline 0: %s", len (self.timeline[0]))
         
     def increment (self, polygon_id, timeslice):
+        ''' Count a hit at the polygon and timeslice '''
         try:
             logger.debug ("Counter.increment (polygon_id=>%s, timeslice=>%s)", polygon_id, timeslice)
             self.timeline [polygon_id][timeslice] += 1
         except IndexError:
             logger.error ("Index Error: Counter.increment (polygon_id=>%s, timeslice=>%s)", polygon_id, timeslice)
 
-    def write (self):
-        write_json_object ('occurences', { "counts" : self.timeline })
-        
     def __str__ (self):
         return str (self.timeline)
 
 class Geocoder (object):
-    
+    ''' Geocode point data to a set of polygons. '''
+
     def calculate_polygon_intersection (self, geometry, points):
+        ''' Apply nxutils algorithm to determine point-in-polygon relationship. '''
         rings = geometry ['coordinates']
         ring_points = []
         for ring in rings:
@@ -138,6 +191,7 @@ class Geocoder (object):
         return nx.points_inside_poly (points, numpy_geometry)
 
     def find_polygon_intersections_batch (self, shapefile, points):
+        ''' Iterate over polygons in a shapefile, determining point-in-polygon relationships for the given points. '''
         results = []
         with collection (shapefile, "r") as source:
             for feature in source:
@@ -148,7 +202,7 @@ class Geocoder (object):
         return results
 
     def export_polygons (self, shapefile):
-        ''' Write a list of polygons as json. '''
+        ''' Write the list of polygons as json. '''
         polygon_count = -1
         from fiona import collection
         with collection (shapefile, "r") as stream:
@@ -166,81 +220,30 @@ class Geocoder (object):
         with open ('%s.json' % filename_prefix, 'w') as stream:
             stream.write (json.dumps (obj, indent=1, sort_keys=True))
 
-            '''
-    def geocode (self, shapefile, output_dir):
-        logger.debug ("Export polygons...")
-        polygon_count = self.export_polygons (shapefile)
-        logger.debug ("Geocode...")
-        counter = Counter (polygon_count)
-        for root, dirnames, filenames in os.walk (output_dir):
-            for idx, file_name in enumerate (fnmatch.filter (filenames, '*.txt')):
-                coordinate_file = os.path.join (root, file_name)
-                #logger.debug ("geocoding[%s] %s", idx, coordinate_file)
-                with open (coordinate_file, 'rb') as stream:
-                    for line in stream:
-                        print line
-                        coords = line.strip ().split ()
-                        timeslice = int (coords [0])
-                        #points.append ( [ float (coords [1]), float (coords [2]) ] )
-                        try:
-                            lat_s = coords [2]
-                            lon_s = coords [1]
-                            key = "%s-%s" % ( lat_s, lon_s )
-                            lat = float (lat_s)
-                            lon = float (lon_s)
-                            points = [ [ lat, lon ] ]
-                            polygon_id = self.find_polygon_intersections (shapefile, points)
-                            if polygon_id > -1:
-                                counter.increment (polygon_id, timeslice)                                
-                        except ValueError:
-                            pass
-        self.write_json_object ("occurrences", { "counts" : counter.timeline })
-
-    def geocode_batch (self, shapefile, output_dir, buffer_size = 1000):
-        logger.debug ("Export polygons...")
-        polygon_count = self.export_polygons (shapefile)
-        logger.debug ("Geocode...")
-        counter = Counter (polygon_count)
-        for root, dirnames, filenames in os.walk (output_dir):
-            for idx, file_name in enumerate (fnmatch.filter (filenames, '*.txt')):
-                coordinate_file = os.path.join (root, file_name)
-                #logger.debug ("geocoding[%s] %s", idx, coordinate_file)
-                with open (coordinate_file, 'rb') as stream:
-                    points = []
-                    timeslice = None
-                    for line in stream:
-                        coords = line.strip ().split ()
-                        if not timeslice:
-                            timeslice = int (coords [0])
-                        try:
-                            lat_s = coords [2]
-                            lon_s = coords [1]
-                            lat = float (lat_s)
-                            lon = float (lon_s)
-                            points.append ( [ lat, lon ] )
-                        except ValueError:
-                            pass
-                        if len (points) >= buffer_size:
-                            self.calculate_batched_intersections (shapefile, points, timeslice, counter)
-                    if timeslice:
-                        self.calculate_batched_intersections (shapefile, points, timeslice, counter)
-        self.write_json_object ("occurrences", { "counts" : counter.timeline })
-        '''
-        
     def geocode_batch_parallel (self, shapefile, output_dir, buffer_size = 1000):
+        '''
+        Export and count polygons.
+        Create work and result queues. Start a worker to count poin-in-poly relationships.
+        Create and start workers to parse data selected by relational queries in phase one.
+        Enumerate data files, adding each to work queue.
+        Add done markers to the work queue to signal workers to exit, one per worker.
+        Wait for all workers to complete. Then signal the counter to exit.
+        Wait for the counter to exit.
+        '''
         logger.debug ("Export polygons...")
         polygon_count = self.export_polygons (shapefile)
         logger.debug ("Geocode...")
 
         work_Q = multiprocessing.Queue ()
         result_Q = multiprocessing.Queue ()
-        cpus = multiprocessing.cpu_count ()
 
         counting_process = multiprocessing.Process (target=counting_worker, args=(polygon_count, result_Q,))
         counting_process.start ()
 
         workers = []
-        for c in range (cpus - 1):
+        num_workers = multiprocessing.cpu_count ()
+        if num_workers > 1: num_workers -= 1
+        for c in range (num_workers):
             logger.debug ("Starting worker %s.", c)
             process = multiprocessing.Process (target=point_in_poly_worker, args=(work_Q, result_Q, shapefile, buffer_size))
             workers.append (process)
@@ -264,48 +267,31 @@ class Geocoder (object):
         result_Q.put ('done')
             
         counting_process.join ()
-
-    def calculate_batched_intersections (self, shapefile, points, timeslice, counter):
-        if len (points) > 0:
-            logger.debug ("Calculating intersections of batched points: %s", points)
-            c = 0
-            polygon_matches = self.find_polygon_intersections_batch (shapefile, points)
-            for polygon_id, matches in enumerate (polygon_matches):
-                for point_idx, state in enumerate (matches):
-                    if state == True:
-                        #logger.info ("%s: poly:%s point:%s => state:%s.", c, polygon_id, point_idx, state)
-                        counter.increment (polygon_id, timeslice)
-                        c += 1
-            logger.info ("Recorded %s/%s matches at timeslice: %s", c, len (points), timeslice)
-            del points [0 : len (points)]
+        logger.debug ("Counter process joined.")
 
     def calculate_batched_intersections_parallel (self, shapefile, points, timeslice, result_Q):
+        ''' Calculate point-in-polygon relationships for an array of points. '''
         if len (points) > 0:
-            #logger.debug ("Calculating intersections of batched points: %s (parallel)", points)
             c = 0
             polygon_matches = self.find_polygon_intersections_batch (shapefile, points)
             for polygon_id, matches in enumerate (polygon_matches):
                 for point_idx, state in enumerate (matches):
                     if state == True:
-                        #logger.info ("%s: poly:%s point:%s => state:%s.", c, polygon_id, point_idx, state)
                         result_Q.put ( [ polygon_id, timeslice ] )
                         c += 1
             logger.info ("Recorded %s/%s matches at timeslice: %s", c, len (points), timeslice)
             del points [0 : len (points)]
 
 def counting_worker (polygon_count, result_Q):
+    ''' Read intersection result data from the result queue and record. Record occurrences. '''
     counter = Counter (polygon_count)
     geocoder = Geocoder ()
     while True:
-        #logger.debug ("Getting counting work")
         work = result_Q.get (timeout = 5)
         if not work:
-            logger.debug ("Got null work on result Q.")
             continue
         if work == 'done':
-            logger.debug ("Counter process notified of completion.")
             break
-        #logger.debug ("** Got counting work: %s", work)
         if len (work) < 2:
             continue
         try:
@@ -316,9 +302,9 @@ def counting_worker (polygon_count, result_Q):
     geocoder.write_json_object ("occurrences", obj)
 
 def point_in_poly_worker (work_Q, result_Q, shapefile, buffer_size = 1000):
+    ''' Take filenames of data from the work queue. Process these to determine point/polygon intersections. '''
     geocoder = Geocoder ()
     while True:
-        logger.debug ("Taking work from queue.")
         work = work_Q.get (timeout = 2)
         logger.debug ("Took geocoder work %s from queue.", work)
         if not work:
@@ -346,32 +332,58 @@ def point_in_poly_worker (work_Q, result_Q, shapefile, buffer_size = 1000):
             if len (points) > 0:
                 geocoder.calculate_batched_intersections_parallel (shapefile, points, timeslice, result_Q)
 
-def crunch (file_name, database, idx, output_dir):
+def data_import0 (file_name, database, output_dir):
+    ''' Determine column names, create a data cruncher and process the input file. '''
     stats = defaultdict (int)
     columns = None
     with open (file_name, 'rb') as stream:
         columns = stream.readline ().strip().split ('\t')
-    cruncher = DataCruncher (columns, database, output_dir)
-    cruncher.crunch (file_name, idx, stats)
-    
-def select_coordinates (database, snapshotDB, output_dir):
+    data_importer = DataImporter (columns, database, output_dir)
+    data_importer.data_import (file_name, stats)
+
+def data_import (database, output_dir, work_Q):
+    ''' Determine column names, create a data cruncher and process the input file. '''
+    stats = defaultdict (int)
+    while True:
+        snapshot_file = work_Q.get (timeout = 2)
+        logger.debug ("Took geocoder work %s from queue.", snapshot_file)
+        if not work:
+            continue
+        if snapshot_file == 'done':
+            logger.info ("Ending point in poly worker process.")
+            break
+        columns = None
+        with open (snapshot_file, 'rb') as stream:
+            columns = stream.readline ().strip().split ('\t')
+            data_importer = DataImporter (columns, database, output_dir)
+            data_importer.data_import (file_name, stats)
+
+def select_coordinates_worker (database, snapshotDB, output_dir):
+    ''' Start workers - one per cpu - to import data and select items.'''
     workers = []
-    logger.debug ("Queueing import/select work...")
+    num_workers = multiprocessing.cpu_count ()
+    work_Q = multiprocessing.Queue ()
+    for c in range (num_workers):
+        logger.debug ("Starting import/select worker %s.", c)
+        data_import_args = (database, output_dir, work_Q)
+        process = multiprocessing.Process (target=select_coordinates_worker, args = data_import_args)
+        workers.append (process)
+        
+    for process in workers:
+        process.start ()
+
     for root, dirnames, filenames in os.walk (snapshotDB):
         for idx, file_name in enumerate (fnmatch.filter (filenames, 'person.*')):
             snapshot_file = os.path.join (root, file_name)
             logger.debug ("launch-snap[%s] %s", idx, snapshot_file)
-            crunch_args = (snapshot_file, database, idx, output_dir)
-            worker_name = 'worker:%s' % snapshot_file
-            process = multiprocessing.Process (name = worker_name, target = crunch, args = crunch_args)
-            workers.append (process)
-    for worker in workers:
-        worker.start ()        
+            work_Q.put (snapshot_file)
+    work_Q.put ('done')
+
     for worker in workers:
         worker.join ()
         logger.debug ("Joined process[%s]: %s", worker.pid, worker.name)
 
-def archive (archive_name="out.tar.gz"):
+def archive (archive_name = "out.tar.gz"):
     ''' Archive and remove the output files. '''
     logger.debug ("Creating output archive: %s", archive_name)
     with tarfile.open (archive_name, "w:gz") as archive:
@@ -426,58 +438,10 @@ if __name__ == '__main__':
 
 
 
-
-
-    '''
-    def find_polygon_intersections (self, shapefile, points):
-        polygon_id = -1
-        result = polygon_id
-        from fiona import collection
-        with collection (shapefile, "r") as source:
-            # cache features on big memory machine for performance...?
-            for feature in source:
-                polygon_id += 1
-                geometry = feature ['geometry']
-                assert geometry ['type'] == "Polygon", "Non-polygon object encountered reading %s" % shapefile
-                results = self.calculate_polygon_intersection (geometry, points)
-                #logger.debug ("Results: %s", results)
-                if True in results:
-                    #logger.debug ("  ** match ** ")
-                    result = polygon_id
-                    break
-        return result
-    '''
-    
-
-
-    '''
-    def get_tables (self):
-        self.cur.execute ("SELECT * FROM sqlite_master WHERE type='table'")
-        rows = self.cur.fetchall ()
-        for row in rows:
-            print row
-            '''
             
 '''
-./count.py --loglevel debug /projects/systemsscience/var/census2010/tl_2010_37_county10.shp /projects/systemsscience/out/population.tsv.0035.control/ --output /projects/systemsscience/var/geo
 
 '''
-
-
-
-
-
-'''
-def run_parallel (cruncher, file_name):
-    job_server = pp.Server ()
-    jobs = []
-    jobs.append (job_server.submit (crunch,
-                                    (cruncher, file_name),
-                                    (),
-                                    ('csv', 'sqlite3', 'sys', 'time' )))
-    job_server.wait ()
-    job_server.print_stats ()
-'''    
 
 
 ''' disk
