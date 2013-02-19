@@ -97,8 +97,6 @@ public class ModelIO {
 	    }
 	} catch (IOException e) {
 	    throw new RuntimeException (e + " : " + fileName);
-	} finally {
-	    IOUtils.closeQuietly (writer);
 	}
 	return new BufferedWriter (writer, BLOCK_SIZE); //new FileWriter (fileName, append));
     }
