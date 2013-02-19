@@ -24,20 +24,35 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE WORK OR THE USE OR OTHER DEALINGS
 IN THE WORK.
 
+
 Goal:
+
    Geocode agent based model output data, scaling to terabyte range.
+
 Approach: 
+
    Overview:
-      Uses RENCI Blueridge's large memory nodes (each with 1TB RAM and 32 hyper-threaded cores),
+
+      Designed for RENCI Blueridge's large memory nodes [ 1TB RAM / 32 hyper-threaded cores ],
       Parses CSV output files recording the state of agents at a series of timeframes
       Uses output data format of the UNC CRC Agent Based Model.
+
    Process:
+
+      Overview:
+
+         Import data, select location and timeslice information from relevant rows. Geocode 
+         and output summary data as JSON, optionally, archiving output data files.
+
       Select:
+
          Start a process per CPU to -
          Load each CSV model output file into an in-memory Sqlite3 database.
-         Select relevant data from the data set
+         Select relevant data from the data set.
          Write selected data to text files as timeslice, latitude, longitude tuples.
+
       Geocode:
+
          Export polygons as JSON.
          Start a worker process to count point-in-polygon relationships and write the output as a JSON array.
          Start N-1 worker processes to parse timeslice-location data and send messages to the counter.
