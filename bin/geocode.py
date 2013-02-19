@@ -420,7 +420,7 @@ def main ():
 
     ''' Parse arguments. '''
     parser = argparse.ArgumentParser ()
-    parser.add_argument ("shapefile",  help="Path to a shapefile")
+    parser.add_argument ("shapefile",  help="Path to an ESRI shapefile")
     parser.add_argument ("snapshotDB", help="Path to a directory hierarchy containing population snapshot files.")
     parser.add_argument ("--archive",  help="Archive output files.", dest='archive', action='store_true', default=False)
     parser.add_argument ("--output",   help="Output directory. Default is 'output'.", default="output")
