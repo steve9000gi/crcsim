@@ -347,15 +347,6 @@ def point_in_poly_worker (work_Q, result_Q, shapefile, buffer_size = 1000):
             if len (points) > 0:
                 geocoder.calculate_batched_intersections_parallel (shapefile, points, timeslice, result_Q)
 
-def data_import0 (file_name, database, output_dir):
-    ''' Determine column names, create a data cruncher and process the input file. '''
-    stats = defaultdict (int)
-    columns = None
-    with open (file_name, 'rb') as stream:
-        columns = stream.readline ().strip().split ('\t')
-    data_importer = DataImporter (columns, database, output_dir)
-    data_importer.data_import (file_name, stats)
-
 def select_coordinates_worker (database, output_dir, work_Q):
     ''' Determine column names, create a data cruncher and process the input file. '''
     stats = defaultdict (int)
