@@ -29,7 +29,7 @@ Goal:
 
    Geocode agent based model output data, scaling to terabyte range.
 
-Approach: 
+Approach:
 
    Overview:
 
@@ -41,7 +41,7 @@ Approach:
 
       Overview:
 
-         Import data, select location and timeslice information from relevant rows. Geocode 
+         Import data, select location and timeslice information from relevant rows. Geocode
          and output summary data as JSON, optionally, archiving output data files.
 
       Select:
@@ -356,24 +356,27 @@ def data_import0 (file_name, database, output_dir):
     data_importer = DataImporter (columns, database, output_dir)
     data_importer.data_import (file_name, stats)
 
-def data_import (database, output_dir, work_Q):
+def select_coordinates_worker (database, output_dir, work_Q):
     ''' Determine column names, create a data cruncher and process the input file. '''
     stats = defaultdict (int)
     while True:
-        snapshot_file = work_Q.get (timeout = 2)
-        logger.debug ("Took geocoder work %s from queue.", snapshot_file)
-        if not work:
-            continue
-        if snapshot_file == 'done':
-            logger.info ("Ending point in poly worker process.")
-            break
-        columns = None
-        with open (snapshot_file, 'rb') as stream:
-            columns = stream.readline ().strip().split ('\t')
-            data_importer = DataImporter (columns, database, output_dir)
-            data_importer.data_import (file_name, stats)
+        try:
+            snapshot_file = work_Q.get (timeout = 2)
+            logger.debug ("Took geocoder work %s from queue.", snapshot_file)
+            if not snapshot_file:
+                continue
+            if snapshot_file == 'done':
+                logger.info ("Ending point in poly worker process.")
+                break
+            columns = None
+            with open (snapshot_file, 'rb') as stream:
+                columns = stream.readline ().strip().split ('\t')
+                data_importer = DataImporter (columns, database, output_dir)
+                data_importer.data_import (snapshot_file, stats)
+        except Empty:
+            pass
 
-def select_coordinates_worker (database, snapshotDB, output_dir):
+def select_coordinates (database, snapshotDB, output_dir):
     ''' Start workers - one per cpu - to import data and select items.'''
     workers = []
     num_workers = multiprocessing.cpu_count ()
@@ -392,8 +395,8 @@ def select_coordinates_worker (database, snapshotDB, output_dir):
             snapshot_file = os.path.join (root, file_name)
             logger.debug ("launch-snap[%s] %s", idx, snapshot_file)
             work_Q.put (snapshot_file)
-    work_Q.put ('done')
-
+    for worker in workers:
+        work_Q.put ('done')
     for worker in workers:
         worker.join ()
         logger.debug ("Joined process[%s]: %s", worker.pid, worker.name)
