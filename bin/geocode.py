@@ -47,7 +47,7 @@ Approach:
       Select:
 
          Start a process per CPU to -
-         Load each CSV model output file into an in-memory Sqlite3 database.
+         Load each CSV model output file into an in-memory SQLite3 database.
          Select relevant data from the data set.
          Write selected data to text files as timeslice, latitude, longitude tuples.
 
@@ -95,11 +95,12 @@ from multiprocessing import Lock
 logger = logging.getLogger (__name__)
 
 class DataImporter (object):
-    ''' Load CSV data into SQLLite3 accessible memory to filter. '''
+    ''' Load CSV data into SQLite3 accessible memory to filter. '''
 
     def __init__ (self, columns, database, output_directory = "output"):
         ''' Initialize connection. '''
         self.con = sqlite3.connect (database)
+        #self.con = sqlite3.connect ("test.db")
         self.cur = self.con.cursor ()
         self.columns = columns
         insert_columns = ", ".join (self.columns)
@@ -131,7 +132,7 @@ class DataImporter (object):
                 try:
                     self.cur.executemany (self.insert_statement, (row,))
                 except sqlite3.ProgrammingError:
-                    logger.error ("Invalid Line: file: %s, index: %s, length(%s): %s", input_file, index, len(row), row)
+                    pass #logger.error ("Invalid Line: file: %s, index: %s, length(%s): %s", input_file, index, len(row), row)
         self.con.commit ()
 
     def get_coordinates (self, file_name):
@@ -139,7 +140,7 @@ class DataImporter (object):
         timeslice_id_index = file_name.rindex ('.') + 1
         assert timeslice_id_index < len (file_name), "Problem parsing filename: %s" % file_name
         timeslice_id = file_name [timeslice_id_index:]
-        self.cur.execute ("select latitude, longitude from simulation where num_lesions > 3 and never_compliant = 'true'")
+        self.cur.execute ("select latitude, longitude from simulation where num_lesions > 0 and never_compliant = 'true'")
         rows = self.cur.fetchall ()
         coordinates = []
         for row in rows:
@@ -169,6 +170,8 @@ class DataImporter (object):
         path = file_name.split (os.path.sep)
         path = "_".join (path [-2:])
         output_file_path = os.path.join (self.output_directory, path)
+        if not output_file_path.endswith (".txt"):
+            output_file_path = "%s.txt" % output_file_path
         with open (output_file_path, 'w') as stream:
             for tuple in coordinates:
                 stream.write ("%s\n" % " ".join (tuple))        
@@ -180,11 +183,17 @@ class Counter (object):
         self.timeline = [
             [ 0 for i in range (timeslices + 1) ] for j in range (polygon_count + 1)
             ]
-        
+        self.increment_count = 0
+
     def increment (self, polygon_id, timeslice):
         ''' Count a hit at the polygon and timeslice '''
+        self.increment_count += 1
         try:
-            logger.debug ("Counter.increment (polygon_id=>%s, timeslice=>%s)", polygon_id, timeslice)
+            if self.increment_count % 1000 == 0:               
+                logger.debug ("Counter.increment (increment count: %s) (polygon_id=>%s, timeslice=>%s)",
+                              self.increment_count,
+                              polygon_id,
+                              timeslice)
             self.timeline [polygon_id][timeslice] += 1
         except IndexError:
             logger.error ("Index Error: Counter.increment (polygon_id=>%s, timeslice=>%s)", polygon_id, timeslice)
@@ -351,22 +360,19 @@ def select_coordinates_worker (database, output_dir, work_Q):
     ''' Determine column names, create a data cruncher and process the input file. '''
     stats = defaultdict (int)
     while True:
-        try:
-            snapshot_file = work_Q.get (timeout = 2)
-            logger.debug ("Took geocoder work %s from queue.", snapshot_file)
-            if not snapshot_file:
-                continue
-            if snapshot_file == 'done':
-                logger.info ("Ending point in poly worker process.")
-                break
-            columns = None
-            with open (snapshot_file, 'rb') as stream:
-                columns = stream.readline ().strip().split ('\t')
-                data_importer = DataImporter (columns, database, output_dir)
-                data_importer.data_import (snapshot_file, stats)
-        except Empty:
-            pass
-
+        snapshot_file = work_Q.get (timeout = 2)
+        logger.debug ("Took geocoder work %s from queue.", snapshot_file)
+        if not snapshot_file:
+            continue
+        if snapshot_file == 'done':
+            logger.info ("Ending point in poly worker process.")
+            break
+        columns = None
+        with open (snapshot_file, 'rb') as stream:
+            columns = stream.readline ().strip().split ('\t')
+            data_importer = DataImporter (columns, database, output_dir)
+            data_importer.data_import (snapshot_file, stats)
+            
 def select_coordinates (database, snapshotDB, output_dir):
     ''' Start workers - one per cpu - to import data and select items.'''
     workers = []
@@ -388,6 +394,9 @@ def select_coordinates (database, snapshotDB, output_dir):
             work_Q.put (snapshot_file)
     for worker in workers:
         work_Q.put ('done')
+    work_Q.close ()
+    work_Q.join_thread ()
+
     for worker in workers:
         worker.join ()
         logger.debug ("Joined process[%s]: %s", worker.pid, worker.name)
@@ -426,7 +435,6 @@ def main ():
     numeric_level = getattr (logging, args.loglevel.upper (), None)
     assert isinstance (numeric_level, int), "Undefined log level: %s" % args.loglevel
     logging.basicConfig (level=numeric_level, format='%(asctime)-15s %(message)s')
-    #logger.setLevel (logging.DEBUG)
 
     database = args.database if args.database else ":memory:"
     shapefile = args.shapefile
