@@ -100,7 +100,6 @@ class DataImporter (object):
     def __init__ (self, columns, database, output_directory = "output"):
         ''' Initialize connection. '''
         self.con = sqlite3.connect (database)
-        #self.con = sqlite3.connect ("test.db")
         self.cur = self.con.cursor ()
         self.columns = columns
         insert_columns = ", ".join (self.columns)
@@ -149,7 +148,6 @@ class DataImporter (object):
     
     def data_import (self, file_name, stats):
         ''' Create the output directory, import input data and select and write output data. '''
-        fs_lock = Lock ()
         fs_lock.acquire ()
         if not os.path.exists (self.output_directory):
             os.makedirs (self.output_directory)
@@ -451,6 +449,7 @@ def main ():
     sys.exit (0)
 
 if __name__ == '__main__':
+    fs_lock = Lock ()
     main ()
 
 
