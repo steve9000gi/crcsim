@@ -97,7 +97,7 @@ logger = logging.getLogger (__name__)
 class DataImporter (object):
     ''' Load CSV data into SQLite3 accessible memory to filter. '''
 
-    def __init__ (self, columns, database, output_directory = "output"):
+    def __init__ (self, query, columns, database, output_directory = "output"):
         ''' Initialize connection. '''
         self.con = sqlite3.connect (database)
         self.cur = self.con.cursor ()
@@ -106,6 +106,7 @@ class DataImporter (object):
         value_slots = ",".join ([ "?" for x in self.columns ])
         self.insert_statement = "INSERT INTO simulation (%s) VALUES (%s);" % (insert_columns, value_slots)
         self.output_directory = output_directory
+        self.query = query
 
     def create_table (self):
         ''' Build the table from a dynamically constructed column list. '''
@@ -139,7 +140,9 @@ class DataImporter (object):
         timeslice_id_index = file_name.rindex ('.') + 1
         assert timeslice_id_index < len (file_name), "Problem parsing filename: %s" % file_name
         timeslice_id = file_name [timeslice_id_index:]
-        self.cur.execute ("select latitude, longitude from simulation where num_lesions > 0 and never_compliant = 'true'")
+        
+        #self.cur.execute ("select latitude, longitude from simulation where num_lesions > 0 and never_compliant = 'true'")
+        self.cur.execute (self.query)
         rows = self.cur.fetchall ()
         coordinates = []
         for row in rows:
@@ -354,7 +357,7 @@ def point_in_poly_worker (work_Q, result_Q, shapefile, buffer_size = 1000):
             if len (points) > 0:
                 geocoder.calculate_batched_intersections_parallel (shapefile, points, timeslice, result_Q)
 
-def select_coordinates_worker (database, output_dir, work_Q):
+def select_coordinates_worker (query, database, output_dir, work_Q):
     ''' Determine column names, create a data cruncher and process the input file. '''
     stats = defaultdict (int)
     while True:
@@ -368,17 +371,17 @@ def select_coordinates_worker (database, output_dir, work_Q):
         columns = None
         with open (snapshot_file, 'rb') as stream:
             columns = stream.readline ().strip().split ('\t')
-            data_importer = DataImporter (columns, database, output_dir)
+            data_importer = DataImporter (query, columns, database, output_dir)
             data_importer.data_import (snapshot_file, stats)
             
-def select_coordinates (database, snapshotDB, output_dir):
+def select_coordinates (query, database, snapshotDB, output_dir):
     ''' Start workers - one per cpu - to import data and select items.'''
     workers = []
     num_workers = multiprocessing.cpu_count ()
     work_Q = multiprocessing.Queue ()
     for c in range (num_workers):
         logger.debug ("Starting import/select worker %s.", c)
-        data_import_args = (database, output_dir, work_Q)
+        data_import_args = (query, database, output_dir, work_Q)
         process = multiprocessing.Process (target=select_coordinates_worker, args = data_import_args)
         workers.append (process)
         
@@ -414,19 +417,32 @@ def signal_handler (signum, frame):
     logger.info ('Signal handler called with signal: %s', signum)
     sys.exit (0)
 
+class DefaultPaths (object):
+
+    def __init__ (self):
+        self.root = os.path.join ( "projects", "systemsscience" )
+        self.shapefile = self.form_data_path ([ "var", "census2010", "tl_2010_37_country10.shp" ])
+        self.snapDB = self.form_data_path ("out")
+        self.query_store = self.form_data_path ("query")
+
+    def form_data_path (args):
+        tail = os.path.join (*args) if isinstance (args, list) else args
+        return os.path.join (self.root, tail)
+
 def main ():
 
     ''' Register signal handler. '''
     signal.signal (signal.SIGINT, signal_handler)
 
+
     ''' Parse arguments. '''
     parser = argparse.ArgumentParser ()
-    parser.add_argument ("shapefile",  help="Path to an ESRI shapefile")
-    parser.add_argument ("snapshotDB", help="Path to a directory hierarchy containing population snapshot files.")
-    parser.add_argument ("--archive",  help="Archive output files.", dest='archive', action='store_true', default=False)
-    parser.add_argument ("--output",   help="Output directory. Default is 'output'.", default="output")
-    parser.add_argument ("--database", help="Database path. Default is in-memory.")
-    parser.add_argument ("--loglevel", help="Log level", default="error")
+    parser.add_argument ("--shapefile",  help="Path to an ESRI shapefile", default=default_shapefile)
+    parser.add_argument ("--snapshotDB", help="Path to a directory hierarchy containing population snapshot files.", default=default_snapDB)
+    parser.add_argument ("--output",     help="Output directory. Default is 'output'.", default="output")
+    parser.add_argument ("--database",   help="Database path. Default is in-memory.")
+    parser.add_argument ("--loglevel",   help="Log level", default="error")
+    parser.add_argument ("--archive",    help="Archive output files.", dest='archive', action='store_true', default=False)
     args = parser.parse_args ()
 
     ''' Configure logging. '''
@@ -439,7 +455,7 @@ def main ():
     snapshotDB = args.snapshotDB
     output_dir = args.output if args.output else "output"
     
-    select_coordinates (database, snapshotDB, output_dir)
+    select_coordinates (query, database, snapshotDB, output_dir)
     geocoder = Geocoder ()
     geocoder.geocode_batch_parallel (shapefile, output_dir)
 
