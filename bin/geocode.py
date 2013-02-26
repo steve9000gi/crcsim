@@ -428,12 +428,12 @@ class GeocodeArguments (object):
         self.database = ":memory:"
         self.loglevel = "error"
         self.archive = True
-        
+
     def form_data_path (self, args):
         tail = os.path.join (*args) if isinstance (args, list) else args
         return os.path.join (self.root, tail)
 
-def geocode (arguments = GeocodeArguments ()):
+def geocode (arguments = GeocodeArguments (), callback = None):
 
     ''' Configure logging. '''
     numeric_level = getattr (logging, arguments.loglevel.upper (), None)
@@ -454,6 +454,7 @@ def geocode (arguments = GeocodeArguments ()):
 
     if arguments.archive:
         archive ()
+        callback ('out.tar.gz')
         
 def main ():
 
