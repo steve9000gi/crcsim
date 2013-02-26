@@ -433,7 +433,7 @@ class GeocodeArguments (object):
         tail = os.path.join (*args) if isinstance (args, list) else args
         return os.path.join (self.root, tail)
 
-def geocode (arguments):
+def geocode (arguments = GeocodeArguments ()):
 
     ''' Configure logging. '''
     numeric_level = getattr (logging, arguments.loglevel.upper (), None)
