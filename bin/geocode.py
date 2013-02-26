@@ -417,26 +417,80 @@ def signal_handler (signum, frame):
     logger.info ('Signal handler called with signal: %s', signum)
     sys.exit (0)
 
-class DefaultArgs (object):
+class GeocodeArguments (object):
 
     def __init__ (self):
         self.root = os.path.join ( os.path.sep, "projects", "systemsscience" )
         self.shapefile = self.form_data_path ([ "var", "census2010", "tl_2010_37_country10.shp" ])
-        self.snapDB = self.form_data_path ("out")
-        self.query_store = self.form_data_path ("query")
-        self.output_path = "output"
+        self.snapshotDB = self.form_data_path ("out")
+        self.output = "output"
         self.query = "select latitude, longitude from simulation where num_lesions > 0 and never_compliant = 'true'"
-
+        self.database = ":memory:"
+        self.loglevel = "error"
+        self.archive = True
+        
     def form_data_path (self, args):
         tail = os.path.join (*args) if isinstance (args, list) else args
         return os.path.join (self.root, tail)
 
+def geocode (arguments):
+
+    ''' Configure logging. '''
+    numeric_level = getattr (logging, arguments.loglevel.upper (), None)
+    assert isinstance (numeric_level, int), "Undefined log level: %s" % arguments.loglevel
+    logging.basicConfig (level=numeric_level, format='%(asctime)-15s %(message)s')
+
+    logger.info (" shapefile: %s", arguments.shapefile)
+    logger.info ("snapshotDB: %s", arguments.snapshotDB)
+    logger.info ("    output: %s", arguments.output)
+    logger.info ("  loglevel: %s", arguments.loglevel)
+
+    select_coordinates (arguments.query,
+                        arguments.database,
+                        arguments.snapshotDB,
+                        arguments.output)
+    geocoder = Geocoder ()
+    geocoder.geocode_batch_parallel (arguments.shapefile, arguments.output)
+
+    if arguments.archive:
+        archive ()
+        
 def main ():
 
     ''' Register signal handler. '''
     signal.signal (signal.SIGINT, signal_handler)
 
-    defaults = DefaultArgs ()
+    parameters = GeocodeArguments ()
+
+    ''' Parse arguments. '''
+    parser = argparse.ArgumentParser ()
+    parser.add_argument ("--shapefile",  help="Path to an ESRI shapefile", default=parameters.shapefile)
+    parser.add_argument ("--snapshotDB", help="Path to a directory hierarchy containing population snapshot files.", default=parameters.snapshotDB)
+    parser.add_argument ("--output",     help="Output directory. Default is 'output'.", default=parameters.output)
+    parser.add_argument ("--database",   help="Database path. Default is in-memory.", default=parameters.database)
+    parser.add_argument ("--loglevel",   help="Log level", default=parameters.loglevel)
+    parser.add_argument ("--archive",    help="Archive output files.", dest='archive', action='store_true', default=parameters.archive)
+    parser.add_argument ("--query",      help="Query to apply.", default=parameters.query)
+    args = parser.parse_args ()
+
+    parameters.shapefile = args.shapefile
+    parameters.snapshotDB = args.snapshotDB
+    parameters.output = args.output
+    parameters.database = args.database
+    parameters.loglevel = args.loglevel
+    parameters.archive = args.archive
+    parameters.query = args.query
+
+    geocode (parameters)
+
+    sys.exit (0)
+
+def main0 ():
+
+    ''' Register signal handler. '''
+    signal.signal (signal.SIGINT, signal_handler)
+
+    parameters = DefaultArgs ()
 
     ''' Parse arguments. '''
     parser = argparse.ArgumentParser ()
@@ -445,7 +499,7 @@ def main ():
     parser.add_argument ("--output",     help="Output directory. Default is 'output'.", default=defaults.output_path)
     parser.add_argument ("--database",   help="Database path. Default is in-memory.")
     parser.add_argument ("--loglevel",   help="Log level", default="error")
-    parser.add_argument ("--archive",    help="Archive output files.", dest='archive', action='store_true', default=False)
+    parser.add_argument ("--archive",    help="Archive output files.", dest='archive', action='store_true', default=parameters.archive)
     parser.add_argument ("--query",      help="Query to apply.", default=defaults.query)
     args = parser.parse_args ()
 
