@@ -417,15 +417,17 @@ def signal_handler (signum, frame):
     logger.info ('Signal handler called with signal: %s', signum)
     sys.exit (0)
 
-class DefaultPaths (object):
+class DefaultArgs (object):
 
     def __init__ (self):
-        self.root = os.path.join ( "projects", "systemsscience" )
+        self.root = os.path.join ( os.path.sep, "projects", "systemsscience" )
         self.shapefile = self.form_data_path ([ "var", "census2010", "tl_2010_37_country10.shp" ])
         self.snapDB = self.form_data_path ("out")
         self.query_store = self.form_data_path ("query")
+        self.output_path = "output"
+        self.query = "select latitude, longitude from simulation where num_lesions > 0 and never_compliant = 'true'"
 
-    def form_data_path (args):
+    def form_data_path (self, args):
         tail = os.path.join (*args) if isinstance (args, list) else args
         return os.path.join (self.root, tail)
 
@@ -434,15 +436,17 @@ def main ():
     ''' Register signal handler. '''
     signal.signal (signal.SIGINT, signal_handler)
 
+    defaults = DefaultArgs ()
 
     ''' Parse arguments. '''
     parser = argparse.ArgumentParser ()
-    parser.add_argument ("--shapefile",  help="Path to an ESRI shapefile", default=default_shapefile)
-    parser.add_argument ("--snapshotDB", help="Path to a directory hierarchy containing population snapshot files.", default=default_snapDB)
-    parser.add_argument ("--output",     help="Output directory. Default is 'output'.", default="output")
+    parser.add_argument ("--shapefile",  help="Path to an ESRI shapefile", default=defaults.shapefile)
+    parser.add_argument ("--snapshotDB", help="Path to a directory hierarchy containing population snapshot files.", default=defaults.snapDB)
+    parser.add_argument ("--output",     help="Output directory. Default is 'output'.", default=defaults.output_path)
     parser.add_argument ("--database",   help="Database path. Default is in-memory.")
     parser.add_argument ("--loglevel",   help="Log level", default="error")
     parser.add_argument ("--archive",    help="Archive output files.", dest='archive', action='store_true', default=False)
+    parser.add_argument ("--query",      help="Query to apply.", default=defaults.query)
     args = parser.parse_args ()
 
     ''' Configure logging. '''
@@ -450,12 +454,17 @@ def main ():
     assert isinstance (numeric_level, int), "Undefined log level: %s" % args.loglevel
     logging.basicConfig (level=numeric_level, format='%(asctime)-15s %(message)s')
 
+    logger.info (" shapefile: %s", args.shapefile)
+    logger.info ("snapshotDB: %s", args.snapshotDB)
+    logger.info ("    output: %s", args.output)
+    logger.info ("  loglevel: %s", args.loglevel)
+
     database = args.database if args.database else ":memory:"
     shapefile = args.shapefile
     snapshotDB = args.snapshotDB
     output_dir = args.output if args.output else "output"
     
-    select_coordinates (query, database, snapshotDB, output_dir)
+    select_coordinates (args.query, database, snapshotDB, output_dir)
     geocoder = Geocoder ()
     geocoder.geocode_batch_parallel (shapefile, output_dir)
 
