@@ -485,48 +485,6 @@ def main ():
 
     sys.exit (0)
 
-def main0 ():
-
-    ''' Register signal handler. '''
-    signal.signal (signal.SIGINT, signal_handler)
-
-    parameters = DefaultArgs ()
-
-    ''' Parse arguments. '''
-    parser = argparse.ArgumentParser ()
-    parser.add_argument ("--shapefile",  help="Path to an ESRI shapefile", default=defaults.shapefile)
-    parser.add_argument ("--snapshotDB", help="Path to a directory hierarchy containing population snapshot files.", default=defaults.snapDB)
-    parser.add_argument ("--output",     help="Output directory. Default is 'output'.", default=defaults.output_path)
-    parser.add_argument ("--database",   help="Database path. Default is in-memory.")
-    parser.add_argument ("--loglevel",   help="Log level", default="error")
-    parser.add_argument ("--archive",    help="Archive output files.", dest='archive', action='store_true', default=parameters.archive)
-    parser.add_argument ("--query",      help="Query to apply.", default=defaults.query)
-    args = parser.parse_args ()
-
-    ''' Configure logging. '''
-    numeric_level = getattr (logging, args.loglevel.upper (), None)
-    assert isinstance (numeric_level, int), "Undefined log level: %s" % args.loglevel
-    logging.basicConfig (level=numeric_level, format='%(asctime)-15s %(message)s')
-
-    logger.info (" shapefile: %s", args.shapefile)
-    logger.info ("snapshotDB: %s", args.snapshotDB)
-    logger.info ("    output: %s", args.output)
-    logger.info ("  loglevel: %s", args.loglevel)
-
-    database = args.database if args.database else ":memory:"
-    shapefile = args.shapefile
-    snapshotDB = args.snapshotDB
-    output_dir = args.output if args.output else "output"
-    
-    select_coordinates (args.query, database, snapshotDB, output_dir)
-    geocoder = Geocoder ()
-    geocoder.geocode_batch_parallel (shapefile, output_dir)
-
-    if args.archive:
-        archive ()
-        
-    sys.exit (0)
-
 if __name__ == '__main__':
     fs_lock = Lock ()
     main ()
