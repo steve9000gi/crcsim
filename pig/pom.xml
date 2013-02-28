@@ -3,7 +3,7 @@
 	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>pig</artifactId>
+  <artifactId>epi-pig</artifactId>
   <version>1.0-SNAPSHOT</version>
   <parent>
     <groupId>epi</groupId>
@@ -37,6 +37,11 @@
       <version>${pig.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.python</groupId>
+      <artifactId>jython-standalone</artifactId>
+      <version>${jython.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>org.springframework.test</artifactId>
       <version>${org.springframework.version}</version>
@@ -48,7 +53,6 @@
       <version>${junit.springsource.version}</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
   <build>
     <plugins>
@@ -60,16 +64,17 @@
 	  <argLine>-Xmx702g -server</argLine>
 	</configuration>
       </plugin>
-
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
+<!--
             <descriptor>src/main/assembly/jar-with-dependencies.xml</descriptor>
+-->
+            <descriptor>src/main/assembly/dist.xml</descriptor>
           </descriptors>
         </configuration>
       </plugin>
-
    </plugins>
   </build>
 </project>

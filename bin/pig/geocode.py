@@ -57,6 +57,7 @@ Usage:
 
 """
 
+import glob
 import os
 import json
 import logging
@@ -71,8 +72,10 @@ class Snout (object):
     def __init__ (self, jars = [], properties = {}):
         ''' Initialize Pig. '''
         for jar in jars:
+            logger.debug (" >>> register jar: %s", jar)
             Pig.registerJar (jar)
         for key in properties:
+            logger.debug (" >>> set property: %s => %s", key, properties[key])
             Pig.set (key, properties [key]) 
 
     def mkparams (self, input_file, timeslice):
@@ -112,12 +115,20 @@ class Snout (object):
 
 class Geocoder (Snout):
     def __init__(self):
-        ROOT="/home/scox"
-        APP = os.path.join (ROOT, "app")
-        DEV = os.path.join (ROOT, "dev")
         jars = []
-        jars.append (os.path.join (DEV, "crcsim", "pig", "target", "pig-1.0-SNAPSHOT.jar"))
-        jars.append (os.path.join (DEV, "crcsim", "common", "geography", "target", "epi-geography-1.0-SNAPSHOT-deps.jar"))
+        #lib_dir = os.path.join ( os.path.dirname (os.path.realpath (__file__)), "lib")
+        lib_dir = "lib" #os.path.join ( ".", "lib")
+        jar_pattern = os.path.join (lib_dir, "*jar")
+        if os.path.exists (lib_dir):
+            for lib in glob.glob (jar_pattern):
+                jars.append (lib)
+        else:
+            ROOT="/home/scox"
+            APP = os.path.join (ROOT, "app")
+            DEV = os.path.join (ROOT, "dev")
+            jars.append (os.path.join (DEV, "crcsim", "pig", "target", "pig-1.0-SNAPSHOT.jar"))
+            jars.append (os.path.join (DEV, "crcsim", "common", "geography", "target", "epi-geography-1.0-SNAPSHOT-deps.jar"))
+
         properties = { "default_parallel" : "100" }
 
         super (Geocoder, self).__init__(jars, properties)
@@ -160,6 +171,6 @@ if __name__ == '__main__':
 
     geocoder.run (params      = params,
                   script_name = "geocode",
-                  script_file = "geocode.pig",
+                  script_file = "geocode.pig" if os.path.exists ("geocode.pig") else os.path.join ("bin", "geocode.pig"),
                   elements    = [ "polygon_count" ])
 

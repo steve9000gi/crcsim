@@ -45,6 +45,6 @@ DESCRIBE subtotals;
 */
 
 -- store output
---STORE polygon_count INTO 'output/occurrences.json' USING JsonStorage ();
+--STORE polygon_count INTO 'output' USING JsonStorage ();
 
 

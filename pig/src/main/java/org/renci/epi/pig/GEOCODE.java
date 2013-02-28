@@ -71,32 +71,11 @@ public class GEOCODE extends EvalFunc<String> {
 		Float longitude = (Float)input.get (1);
 		Float latitude = (Float)input.get (2);
 		result = String.valueOf (findPolygon (longitude, latitude));
-		/*
-		Tuple output = TupleFactory.getInstance ().newTuple (2);
-		output.set (0, input.get (1));
-		output.set (1, input.get (0));
-		*/
 	    } catch (Exception e) {
-		e.printStackTrace ();
-		//throw WrappedIOException.wrap ("Caught exception processing input row ", e);
+		//e.printStackTrace ();
+		throw WrappedIOException.wrap ("Caught exception processing input row ", e);
 	    }
 	}
 	return result;
     }
-    /*
-    public Schema outputSchema (Schema input) {
-	Schema result = null;
-        try {
-            Schema tupleSchema = new Schema ();
-            tupleSchema.add (input.getField (1));
-            result = new Schema (new Schema.FieldSchema (getSchemaName (this.getClass().getName().toLowerCase(), input),
-							 tupleSchema,
-							 DataType.TUPLE));
-        } catch (Exception e){
-	    throw new RuntimeException (e);
-        }
-	return result;
-    }
-    */
-
 }
