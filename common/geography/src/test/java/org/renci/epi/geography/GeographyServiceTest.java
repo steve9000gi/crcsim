@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.commons.io.IOUtils;
@@ -26,6 +27,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+
+
+import com.vividsolutions.jts.geom.prep.PreparedGeometry;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"/spring/geography-context.xml"})
@@ -46,6 +50,21 @@ public class GeographyServiceTest extends AbstractJUnit4SpringContextTests {
 
 	String fileName = this.geographyService.getDataLocator().getCountyPolygonFileName ();
 	this.geographyService.getPolygons (fileName);
+    }
+
+    @Test
+    public void testGetPreparedPolygons () throws Exception {
+
+	BasicConfigurator.configure ();
+	Logger.getRootLogger().setLevel (Level.DEBUG);
+
+	Assert.assertTrue (this.geographyService != null);
+
+	String fileName = this.geographyService.getDataLocator().getCountyPolygonFileName ();
+	List<PreparedGeometry> prepared = this.geographyService.getPreparedPolygons (fileName);
+	for (PreparedGeometry geometry : prepared) {
+	    logger.info ("Prepared geometry instance: " + geometry.hashCode ());
+	}
     }
 }
 

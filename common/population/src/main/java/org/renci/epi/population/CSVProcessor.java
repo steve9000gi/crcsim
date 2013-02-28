@@ -120,6 +120,9 @@ class SynthPopAnnotationProcessor implements Processor {
 	/** A unique id */
 	record.put ("id", String.valueOf (_id++));
 
+	/** Synthetic population id */
+	record.put ("p_id", record.get ("people.p_id"));
+
 	/**
 	 * In the synthetic population data, sex is
 	 *   1 - male

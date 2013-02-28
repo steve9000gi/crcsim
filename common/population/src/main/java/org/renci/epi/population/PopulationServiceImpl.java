@@ -62,6 +62,12 @@ public class PopulationServiceImpl implements PopulationService {
     {
 	File inputFile = new File (getDataLocator().getSyntheticPopulationPath ("syntheticpopulation.out"));
 	File outputFile = new File (getDataLocator().getModelInputFileName ("population.tsv"));
+	try {
+	    System.out.println ("Input: " + inputFile.getCanonicalPath ());
+	    System.out.println ("Output: " + outputFile.getCanonicalPath ());
+	} catch (IOException e) {
+	    throw new RuntimeException (e);
+	}
 	this.createModelInput (inputSeparator,
 			       outputSeparator,
 			       outputKeys,
