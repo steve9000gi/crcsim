@@ -454,7 +454,8 @@ def geocode (arguments = GeocodeArguments (), callback = None):
 
     if arguments.archive:
         archive ()
-        callback ('out.tar.gz')
+        if callback:
+            callback ('out.tar.gz')
         
 def main ():
 
