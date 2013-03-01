@@ -236,7 +236,7 @@ class Geocoder (object):
                 geometry = feature ['geometry']
                 obj = {
                     'count' : polygon_count,
-                    'points' : geometry ['coordinates']
+                    'points' : geometry ['coordinates'][0]
                     }
                 self.write_json_object ('polygon-%s' % polygon_count, obj)
         return polygon_count
