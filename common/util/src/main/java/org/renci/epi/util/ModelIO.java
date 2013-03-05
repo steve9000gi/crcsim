@@ -140,7 +140,7 @@ public class ModelIO {
      *@param population A list of people objects
      *@param writer A writer.
      */
-    public void writePeople (Iterator people, Writer writer) {
+    public void writePeople (Iterator people, BufferedWriter writer) {
 	String [] fieldNames = new String [] {
 	    "cancer_free_years",
 	    "cost_diagnostic",
@@ -179,11 +179,15 @@ public class ModelIO {
      *@param separator The separator character.
      *@param newline The newline sequence.
      */
-    public void outputRow (Writer writer, String [] values, char separator, String newline) {
+    public void outputRow (BufferedWriter writer, String [] values, char separator, String newline) {
 	try {
-	    String row = StringUtils.join (values, separator);
-	    writer.write (row);
-	    writer.write (newline);
+	    synchronized (writer) {
+		String row = StringUtils.join (values, separator);
+		writer.write (row);
+		//writer.write (newline);
+		writer.newLine ();
+		writer.flush ();
+	    }
 	} catch (IOException e) {
 	    throw new RuntimeException (e);
 	}
@@ -197,7 +201,7 @@ public class ModelIO {
      *@param separator The separator to use between fields
      *@param newline The newline sequence to use.
      */
-    public void outputDataRow (Writer writer, Object object, String [] fieldNames, char separator, String newline) {
+    public void outputDataRow (BufferedWriter writer, Object object, String [] fieldNames, char separator, String newline) {
 	String [] values = Util.getFieldValues (object, fieldNames);
 	this.outputRow (writer, values, separator, newline);
     }

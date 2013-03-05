@@ -10437,7 +10437,7 @@ for (int i=0; i < people.size(); i++) {
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if (get_Main ().output_population_snapshots) {
+					<Body><![CDATA[if (get_Main ().output_population_snapshots && time () > 38) {
 	get_Main().modelIO.writePeople (people.iterator (), outfile_person_writer);
 }
 ]]></Body>
@@ -13249,7 +13249,8 @@ execute_populations_parallel (1);
 private Executor _executor = new Executor ();
 private static final String CONTROL = "control";
 static int outcomesIndex = 0;
-
+private String outputDirectory = "\\\\ad.renci.org\\Projects\\systemsscience\\out";
+	
 //private int minAge = Integer.MAX_VALUE;
 private int dynamicComplianceRateYearOffset = 6;
 
@@ -13402,7 +13403,6 @@ private synchronized void addOutcomes (String scenario, HashMap<String,Outcomes>
 			outcomes.calculateDeltas (control);
 		}
 	}
-	String outputDirectory = "\\\\ad.renci.org\\Projects\\systemsscience\\out";
 	Outcomes.writeOutcomes (_outcomes,
 						    outputDirectory + File.separator + 
 						    "outcomes.tsv." + outcomesIndex++, "\t");
@@ -13433,8 +13433,9 @@ public Main create_model (File input, String scenario, int replication) {
  	root.infile_population_name = input.getName ();
 
 	// Set output file name.
-	root.output_dir = "out" + File.separator + scenario;
-
+	//root.output_dir = "out" + File.separator + scenario;
+	root.output_dir = outputDirectory + File.separator + scenario;
+	
 	// Configure the simulation to compute population rates.
 	root.compute_population_rates = true;
 	
