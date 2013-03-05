@@ -3,44 +3,43 @@
 	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>geography</artifactId>
+  <artifactId>epi-pig</artifactId>
   <version>1.0-SNAPSHOT</version>
-
   <parent>
     <groupId>epi</groupId>
-    <artifactId>common</artifactId>
+    <artifactId>root</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
   <packaging>jar</packaging>
   <name>${project.groupId}-${project.artifactId}</name>
   <url>http://maven.apache.org</url>
-    
+  
   <dependencies>
-
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>util</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>geography</artifactId>
+      <version>${project.version}</version>
     </dependency>    
-
     <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-shapefile</artifactId>
-      <version>${geotools.version}</version>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-common</artifactId>
+      <version>0.23.6</version>
     </dependency>
     <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-swing</artifactId>
-      <version>${geotools.version}</version>
+      <groupId>org.apache.pig</groupId>
+      <artifactId>pig</artifactId>
+      <version>${pig.version}</version>
     </dependency>
-
-    <!-- test -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
+      <groupId>org.python</groupId>
+      <artifactId>jython-standalone</artifactId>
+      <version>${jython.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -54,20 +53,28 @@
       <version>${junit.springsource.version}</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
-
   <build>
     <plugins>
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-surefire-plugin</artifactId>
+	<version>2.12.2</version>
+	<configuration>
+	  <argLine>-Xmx702g -server</argLine>
+	</configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
+<!--
             <descriptor>src/main/assembly/jar-with-dependencies.xml</descriptor>
+-->
+            <descriptor>src/main/assembly/dist.xml</descriptor>
           </descriptors>
         </configuration>
       </plugin>
-    </plugins>
+   </plugins>
   </build>
-  
 </project>

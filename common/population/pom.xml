@@ -75,12 +75,6 @@
       <version>${commons.dbcp.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-compiler</artifactId>
-      <version>${scala.version}</version>
-    </dependency>
-
   </dependencies>
 
   <build>
@@ -177,7 +171,7 @@
       now defunct) value. At any rate, dependencies do not resolve, the build fails.
 
            jboss.releases (http://repository.jboss.org/maven2, releases)
-      -->
+
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
@@ -234,7 +228,7 @@
 
         </dependencies>
       </plugin>
-      
+      -->      
       
    </plugins>
   </build>

@@ -1,4 +1,4 @@
-var epiMap = null;
+var epiController = null;
 
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(from, to) {
@@ -21,103 +21,117 @@ function getURLParameter(name) {
  * Applies counts for each polygon across a timeframe.
  *
  */
-function EpiMap () {
-    this.mapPlugins = {
-	'google'     : new EpiMapGooglePlugin (),
-	'openlayers' : new EpiMapOpenLayersPlugin (),
-	'leaflet'    : new EpiMapLeafletPlugin ()
-    };
-
-    var mapType = getURLParameter ('maptype');
-    if (mapType === "null") {
-	mapType = 'leaflet';
-    }
-    this.mapPlugin = this.mapPlugins [mapType];
-    this.map = this.mapPlugin.createMap ();
-    $.ajaxSetup({
-	"error" : function (XMLHttpRequest, textStatus, errorThrown) {
-	    console.log (textStatus + ' ' + errorThrown + ' ' + XMLHttpRequest.responseText);
-	}
-    });
-
+function EpiMap (plugin) {
     this.gradient = new Rainbow (); // by default, range is 0 to 100
     this.frame = 0;
     this.occurrences = null;
+    this.initializeMap (this);
+    this.plugin = plugin;
     this.polygons = [];
-    this.initializeMap ();
-
-    $("#menu").click (this.animateMap);
 };
 // set the matrix of occurrences. this is a list of frames per observation with values per polygon.
 EpiMap.prototype.setOccurrences = function (occurrences) {
-    var map = epiMap;
-    map.occurrences = occurrences;
+    this.occurrences = occurrences;
     var max = 0;
-    var endpoint = map.occurrences.counts [map.occurrences.counts.length - 1];
+    var endpoint = this.occurrences.counts [this.occurrences.counts.length - 1];
     for (var c = 0; c < endpoint.length; c++) {
 	var value = endpoint [c];
 	max = Math.max (value, max);
     }
-    map.gradient.setNumberRange (0, max);
-    map.gradient.setSpectrum ('blue', 'green', '#33FF33', 'yellow', '#FF0000', 'red');
-};
-// begin the map animation.
-EpiMap.prototype.animateMap = function () {
-    var map = epiMap;
-    map.frame = 35; //0;
-    map.nextFrame ();
+    this.gradient.setNumberRange (0, max);
+    this.gradient.setSpectrum ('blue', 'green', '#33FF33', 'yellow', '#FF0000', 'red');
 };
 // initialize the map. load frame matrix, polygon index and render individual polygons.
 EpiMap.prototype.initializeMap = function (map) {
     $.getJSON ("resources/occurrences.json", function (occurrences) {
-	epiMap.setOccurrences (occurrences);
-	$.getJSON ("resources/polygon-index.json", function (obj) {
-	    for (var c = 0; c < obj.index.length; c++) {
-		var polygonName = obj.index [c];
-		$.getJSON ("resources/" + polygonName, function (polygon) {
-		    epiMap.drawPolygon (polygon, 0, map);
-		});
-	    }
-	});
+	map.setOccurrences (occurrences);
     });
 };
 // render the next frame.
-EpiMap.prototype.nextFrame = function () {
-    var map = epiMap;
-    $("#status").html (map.frame + "%");
-    $("#progress").progressbar ({
-	value : map.frame + 1
-    });
-    if (map.frame < map.occurrences.counts.length) {
-	for (var c = 0; c < map.polygons.length; c++) {
-	    var polygon = map.polygons [c];
+EpiMap.prototype.renderFrame = function (frame) {
+    if (frame < this.occurrences.counts.length) {
+	for (var c = 0; c < this.polygons.length; c++) {
+	    var polygon = this.polygons [c];
+	    var value = this.occurrences.counts [frame][polygon.index];
+	    var fillColor = this.gradient.colorAt (value);
 	    polygon.polygon.setStyle ({
-		fillColor    : map.getColorForValue (map.occurrences.counts [map.frame][polygon.index]),
-		fillOpacity  : 0.4,
-		strokeWeight : 0.1
-	    });
+		    fillColor    : fillColor,
+			fillOpacity  : 0.4,
+			strokeWeight : 0.1
+			});
 	}
     }
-    map.frame++;
-    if (map.frame <= map.occurrences.counts.length) {
-	setTimeout ("epiMap.nextFrame ()", 200);
-    }
-};
-// get the color from the calculated gradient associated with the value.
-EpiMap.prototype.getColorForValue = function (value) {
-    var color = '#' + epiMap.gradient.colorAt (value);
-    //console.log ('color: ' + value + " " + color);
-    return color;
 };
 // process a polygon
-EpiMap.prototype.drawPolygon = function (polygon, value) {
+EpiMap.prototype.drawPolygon = function (polygon, value, plugin) {
     this.polygons.push ({
-	polygon : epiMap.mapPlugin.createPolygon (polygon, value),
-	index   : polygon.count
-    });
+	    polygon : plugin.createPolygon (polygon, value, this.gradient),
+	    index   : polygon.count
+	});
     this.polygons.sort (function (a, b) {
-	return a.index - b.index;
-    });
+	    return a.index - b.index;
+	});
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ *
+ * Cloudmade Leaflet Plugin
+ *
+ */
+function EpiMapLeafletPlugin () {
+}
+// create a leaflet map
+EpiMapLeafletPlugin.prototype.createMap = function (mapId) {
+    this.map = L.map (mapId).setView ([ 35.9131, -79.0561], 7);
+    //L.tileLayer('http://{s}.tile.cloudmade.com/d21d2ad31cfd4e589c5c8b2d0c6e91ad/997/256/{z}/{x}/{y}.png', {
+    L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+	attribution : [ 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> ',
+			' contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ',
+			' Imagery © <a href="http://cloudmade.com">CloudMade</a>' ].join (''),
+	maxZoom : 18
+    }).addTo (this.map);
+};
+// create a polygon
+EpiMapLeafletPlugin.prototype.createPolygon = function (polygon, count, gradient) {
+    var coordinates = [];
+    for (var q = 0; q < polygon.points.length; q++) {
+	var point = polygon.points [q];
+	coordinates.push ([ point [1], point [0] ]);
+    }
+    var fillColor = gradient.colorAt (count);
+    var vPolygon = 
+    L.polygon (coordinates).
+    addTo (this.map).
+    setStyle ({
+	    fillColor     : fillColor,
+	    strokeColor   : "#111",
+	    strokeOpacity : 0.5,
+	    strokeWeight  : 0.1,
+	    fillOpacity   : 0.7
+	});
+    return new LeafletPolygon (vPolygon);
+};
+// wrap a leaflet polygon
+function LeafletPolygon (polygon) {
+    this.polygon = polygon;
+};
+// set a leaflet polygon's style
+LeafletPolygon.prototype.setStyle = function (style) {
+    this.polygon.setStyle (style);
 };
 
 /**
@@ -128,14 +142,14 @@ EpiMap.prototype.drawPolygon = function (polygon, value) {
 function EpiMapGooglePlugin () {
 }
 // create map
-EpiMapGooglePlugin.prototype.createMap = function () {
+EpiMapGooglePlugin.prototype.createMap = function (mapId) {
     var center = new google.maps.LatLng (35.9131, -79.0561);
     var mapOptions = {
 	center: center,
 	zoom: 7,
 	mapTypeId: google.maps.MapTypeId.TERRAIN //ROADMAP
     };
-    this.map = new google.maps.Map ($("#map_canvas")[0], mapOptions);
+    this.map = new google.maps.Map ($("#" + mapId)[0], mapOptions);
 };
 // create polygon
 EpiMapGooglePlugin.prototype.createPolygon = function (polygon, value) {
@@ -168,58 +182,12 @@ GooglePolygon.prototype.setStyle = function (style) {
 
 /**
  *
- * Cloudmade Leaflet Plugin
- *
- */
-function EpiMapLeafletPlugin () {
-}
-// create a leaflet map
-EpiMapLeafletPlugin.prototype.createMap = function () {
-    this.map = L.map ('map_canvas').setView ([ 35.9131, -79.0561], 7);
-    //L.tileLayer('http://{s}.tile.cloudmade.com/d21d2ad31cfd4e589c5c8b2d0c6e91ad/997/256/{z}/{x}/{y}.png', {
-    L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
-	attribution : [ 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> ',
-			' contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ',
-			' Imagery © <a href="http://cloudmade.com">CloudMade</a>' ].join (''),
-	maxZoom : 18
-    }).addTo (this.map);
-};
-// create a polygon
-EpiMapLeafletPlugin.prototype.createPolygon = function (polygon, count) {
-    var coordinates = [];
-    for (var q = 0; q < polygon.points.length; q++) {
-	var point = polygon.points [q];
-	coordinates.push ([ point [1], point [0] ]);
-    }
-    var vPolygon = 
-	L.polygon (coordinates).
-	addTo (this.map).
-	setStyle ({
-	    fillColor     : epiMap.getColorForValue (count),
-	    strokeColor   : "#111",
-	    strokeOpacity : 0.5,
-	    strokeWeight  : 0.1,
-	    fillOpacity   : 0.7
-	});
-    return new LeafletPolygon (vPolygon);
-};
-// wrap a leaflet polygon
-function LeafletPolygon (polygon) {
-    this.polygon = polygon;
-};
-// set a leaflet polygon's style
-LeafletPolygon.prototype.setStyle = function (style) {
-    this.polygon.setStyle (style);
-};
-
-/**
- *
  * OpenLayers Plugin
  *
  */
 function EpiMapOpenLayersPlugin () {
 }
-EpiMapOpenLayersPlugin.prototype.createMap = function () {
+EpiMapOpenLayersPlugin.prototype.createMap = function (mapId) {
     var baseLayer = new OpenLayers.Layer.XYZ(
 	"MapBox Streets",
 	[
@@ -240,7 +208,7 @@ EpiMapOpenLayersPlugin.prototype.createMap = function () {
             numZoomLevels: 17
 	}
     );
-    this.map = new OpenLayers.Map ('map_canvas');
+    this.map = new OpenLayers.Map (mapId);
     this.map.addLayer (baseLayer);
 
     this.projection = new OpenLayers.Projection ("EPSG:4326");
@@ -316,9 +284,153 @@ OpenLayersPolygonProxy.prototype.setStyle = function (style) {
 
 
 
+
+
+/**
+ * 
+ * Control a set of maps.
+ *
+ */
+function EpiController () {
+    $.ajaxSetup({
+	"error" : function (XMLHttpRequest, textStatus, errorThrown) {
+	    console.log (textStatus + ' ' + errorThrown + ' ' + XMLHttpRequest.responseText);
+	}
+    });
+    this.mapPlugins = {
+	'google'     : EpiMapGooglePlugin,
+	'openlayers' : EpiMapOpenLayersPlugin,
+	'leaflet'    : EpiMapLeafletPlugin
+    };
+
+    var mapType = getURLParameter ('maptype');
+    if (mapType === "null") {
+	mapType = 'leaflet';
+    }
+    this.mapPluginType = mapType; //this.mapPlugins [mapType];
+
+    this.maps = [];
+    this.frame = 35;
+    this.animationHandle = null;
+
+    $("#menu").click (this.animate);
+    this.polygons = [];
+};
+/**
+ *
+ * Initialize maps.
+ *
+ */
+EpiController.prototype.initializeMaps = function (count) {
+    for (var c = 0; c < count; c++) {
+	epiController.addMap ();
+    }
+};
+/**
+ *
+ * Initialize maps.
+ *
+ */
+EpiController.prototype.renderPolygons = function () {
+    var polys = epiController.polygons;
+    $.getJSON ("resources/polygon-index.json", function (obj) {
+	    for (var c = 0; c < obj.index.length; c++) {
+		var polygonName = obj.index [c];
+		$.getJSON ("resources/" + polygonName, function (polygon) {
+			polys.push (polygon);
+			for (var k = 0; k < epiController.maps.length; k++) {
+			    var map = epiController.maps [k];
+			    map.drawPolygon (polygon, 0, map.plugin);
+			}
+		    });
+	    }
+	});
+};
+/**
+ *
+ * Create a new plugin object.
+ *
+ */
+EpiController.prototype.createPlugin = function () {
+    return new epiController.mapPlugins [epiController.mapPluginType] ();
+};
+/**
+ *
+ * Add a map.
+ *
+ */
+EpiController.prototype.addMap = function () {
+    var mapId = "map_canvas" + epiController.maps.length;
+    var text = [ "<div class='map_container'>",
+		 "   <div class='map' id='", mapId, "' ></div>",
+		 "</div>" ].join ('');
+    $('#maps').append (text);
+    var pluginMap = epiController.createPlugin ();
+    pluginMap.createMap (mapId);
+    var map = new EpiMap (pluginMap);
+    epiController.maps.push (map);
+};
+/** 
+ *
+ * Animate the set of maps.
+ *
+ */
+EpiController.prototype.animate = function () {
+    epiController.frame = 35;
+    epiController.animationHandle = setInterval (epiController.renderFrame, 500);
+};
+/**
+ *
+ * Render a frame in all maps.
+ *
+ */
+EpiController.prototype.renderFrame = function () {
+    $("#status").html (epiController.frame + "%");
+    $("#progress").progressbar ({
+	value : epiController.frame + 1
+    });
+    var occurrences = null;
+    for (var c = 0; c < epiController.maps.length; c++) {	
+	var map = epiController.maps [c];
+	occurrences = map.occurrences
+	map.renderFrame (epiController.frame++);
+    }
+    if (epiController.frame > occurrences.counts.length) {
+	clearInterval (epiController.animationHandle);
+    }
+};
+/**
+ *
+ * Initialize.
+ *
+ */
 function initialize() {
-    epiMap = new EpiMap ();
+    epiController = new EpiController ();
+    epiController.initializeMaps (4);
+    epiController.renderPolygons ();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /**

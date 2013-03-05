@@ -7,6 +7,12 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.GeometryFactory;
+
+
+import com.vividsolutions.jts.geom.prep.PreparedGeometry;
+import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
+
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -104,7 +110,7 @@ public class GeographyServiceImpl implements GeographyService {
 		}
 	    }
 	} catch (Throwable e) {
-	    e.printStackTrace ();
+	    throw new RuntimeException (e);
 	}
     }
 
@@ -124,4 +130,40 @@ public class GeographyServiceImpl implements GeographyService {
 	}
 	return (Point [])points.toArray (new Point [points.size ()]);
     }
+
+
+    public List<PreparedGeometry> getPreparedPolygons (String fileName) {
+	List<PreparedGeometry> result = new ArrayList<PreparedGeometry> ();
+	File file = new File (fileName);
+	FeatureIterator iterator = null;
+	PreparedGeometryFactory preparedGeometryFactory = new PreparedGeometryFactory ();
+	try {
+	    Map connect = new HashMap ();
+	    connect.put ("url", file.toURL ());
+	    DataStore dataStore = DataStoreFinder.getDataStore (connect);
+	    String[] typeNames = dataStore.getTypeNames ();
+	    String typeName = typeNames [0];
+	    FeatureSource featureSource = dataStore.getFeatureSource (typeName);
+	    FeatureCollection collection = featureSource.getFeatures ();
+	    iterator = collection.features ();
+	    while (iterator.hasNext ()) {
+		Feature feature = iterator.next ();
+		GeometryAttribute geometryAttribute = feature.getDefaultGeometryProperty (); 
+		GeometryType geometryType = geometryAttribute.getType ();
+		MultiPolygon multiPolygon = (MultiPolygon)geometryAttribute.getValue ();
+		PreparedGeometry prepared = preparedGeometryFactory.prepare (multiPolygon);
+		result.add (prepared);
+	    }
+	    iterator.close ();
+	} catch (Throwable e) {
+	    throw new RuntimeException (e);
+	} finally {
+	    if (iterator != null) {
+		iterator.close ();
+	    }
+	}
+	
+	return result;
+    }
+
 }

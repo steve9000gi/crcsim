@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+#set -x
 #set -e
 
 ###################################################################
@@ -43,14 +43,15 @@ set -x
 ###################################################################
 
 configure_system () {    
-    APP_HOME=~/dev/                 # scox.europa.renci.org
     APP_HOME=/cygdrive/c/scox/dev/  # blueridge largemem
     APP_HOME=/cygdrive/c/dev       # x301
+    APP_HOME=~/dev/                 # scox.europa.renci.org
 
     DATA_HOME=$APP_HOME/var/crcsim
     synth_data_home=$APP_HOME/var/crcsim/rti/syntheticpopulation/
 
-    DATABASE=$(cygpath -w $APP_HOME/var/crcsim/generated/population.db)
+    #DATABASE=$(cygpath -w $APP_HOME/var/crcsim/generated/population.db)
+    DATABASE=$APP_HOME/var/crcsim/generated/population.db
 
     input_files="
 2005_2009_ver1_37_synth_people.txt 
@@ -126,9 +127,10 @@ import_tables () {
 }
 
 export_data () {
-    echo "people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
+    echo "people.p_id|people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
     execute_sql "
-  select people.sex,
+  select people.p_id,
+         people.sex,
          people.race,
          households.hh_income,
          people.age,
@@ -150,9 +152,10 @@ export_data () {
 
 export_data_by_age () {
     local AGE=$1
-    echo "people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
+    echo "people.p_id|people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
     execute_sql "
-  select people.sex,
+  select people.p_id,
+         people.sex,
          people.race,
          households.hh_income,
          people.age,
