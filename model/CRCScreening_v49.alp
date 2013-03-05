@@ -6004,6 +6004,19 @@ if (parameterSet != null) {
 						<Type><![CDATA[double]]></Type>        
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1362510520292</Id>
+					<Name><![CDATA[num_colonoscopies]]></Name>
+					<X>-210</X><Y>-100</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int]]></Type>        
+						<InitialValue><![CDATA[0]]></InitialValue>                 	
+					</Properties>
+				</Variable>
 				<Variable Class="Parameter">
 					<Id>1328041345823</Id>
 					<Name><![CDATA[sex_male]]></Name>
@@ -8912,6 +8925,12 @@ if (    screen_state.isStateActive(Person.Routine)
     && !disease_state.isStateActive(Person.ClinicalCancer)
     && !disease_state.isStateActive(Person.Dead)
    ) {
+   
+  if (routine_test.name.equals ("Colonoscopy")) {
+	// Keep a count of colonoscopies per person.
+  	num_colonoscopies++;
+  }
+  
   if (routine_test.name.equals(diagnostic_test.name)) {
     // If the test used for routine screening is the same as the test
     // used for diagnostic testing, then we won't perform the actions
@@ -9798,13 +9817,26 @@ import java.text.NumberFormat;]]></Import>
 						<Type><![CDATA[int]]></Type>        
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1362511367477</Id>
+					<Name><![CDATA[outfile_person_min_age]]></Name>
+					<X>-290</X><Y>-20</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int]]></Type>        
+						<InitialValue><![CDATA[38]]></InitialValue>                 	
+					</Properties>
+				</Variable>
 			</Variables>
 			<Functions>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345965</Id>
 					<Name><![CDATA[compute_event_probs]]></Name>
-					<X>-200</X><Y>100</Y>
+					<X>-150</X><Y>20</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9881,7 +9913,7 @@ else {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345966</Id>
 					<Name><![CDATA[compute_pop_rates]]></Name>
-					<X>-200</X><Y>120</Y>
+					<X>-150</X><Y>40</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10243,7 +10275,7 @@ for (int j = 0; j < crc_incidence.length; j++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345967</Id>
 					<Name><![CDATA[end_model]]></Name>
-					<X>-200</X><Y>140</Y>
+					<X>-150</X><Y>60</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10262,7 +10294,7 @@ compute_event_probs();
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345968</Id>
 					<Name><![CDATA[start_model]]></Name>
-					<X>-200</X><Y>160</Y>
+					<X>-150</X><Y>80</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10278,7 +10310,7 @@ for (int i=0; i<people.size(); i++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345969</Id>
 					<Name><![CDATA[init_model]]></Name>
-					<X>-200</X><Y>180</Y>
+					<X>-150</X><Y>100</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10295,7 +10327,7 @@ for (int i=0; i<people.size(); i++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345971</Id>
 					<Name><![CDATA[input_population]]></Name>
-					<X>-200</X><Y>220</Y>
+					<X>-150</X><Y>140</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10350,7 +10382,7 @@ for (int i=0; i<people.size(); i++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345972</Id>
 					<Name><![CDATA[on_end_year]]></Name>
-					<X>-200</X><Y>240</Y>
+					<X>-150</X><Y>160</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10366,7 +10398,7 @@ output_person_close ();]]></Body>
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345973</Id>
 					<Name><![CDATA[on_new_year]]></Name>
-					<X>-200</X><Y>260</Y>
+					<X>-150</X><Y>180</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10380,7 +10412,7 @@ output_person_open ();]]></Body>
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345974</Id>
 					<Name><![CDATA[test_routine]]></Name>
-					<X>-200</X><Y>280</Y>
+					<X>-150</X><Y>200</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10399,7 +10431,7 @@ for (int i=0; i < people.size(); i++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1345732499800</Id>
 					<Name><![CDATA[output_person_open]]></Name>
-					<X>690</X><Y>420</Y>
+					<X>-310</X><Y>20</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10410,7 +10442,9 @@ for (int i=0; i < people.size(); i++) {
 	String suffix = format.format (outfile_person_writer_count);
 	String fileName = "person." + suffix;
 	boolean compress = get_Main().output_population_snapshots_compress;
-	outfile_person_writer = get_Main().modelIO.getModelOutputWriter (fileName, false, compress); // append, compress
+	boolean append = false;
+	outfile_person_writer =
+		Main.modelIO.getModelOutputWriter (fileName, append, compress);
 }	
 ]]></Body>
 				</Function>
@@ -10418,13 +10452,13 @@ for (int i=0; i < people.size(); i++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1345732509669</Id>
 					<Name><![CDATA[output_person_close]]></Name>
-					<X>690</X><Y>460</Y>
+					<X>-310</X><Y>60</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[if (get_Main ().output_population_snapshots) {
-    get_Main().modelIO.closeWriter (outfile_person_writer);
+    Main.modelIO.closeWriter (outfile_person_writer);
 }
 ]]></Body>
 				</Function>
@@ -10432,13 +10466,13 @@ for (int i=0; i < people.size(); i++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1345732512733</Id>
 					<Name><![CDATA[output_person_data]]></Name>
-					<X>690</X><Y>440</Y>
+					<X>-310</X><Y>40</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if (get_Main ().output_population_snapshots && time () > 38) {
-	get_Main().modelIO.writePeople (people.iterator (), outfile_person_writer);
+					<Body><![CDATA[if (get_Main ().output_population_snapshots && time () > outfile_person_min_age) {
+	Main.modelIO.writePeople (people.iterator (), outfile_person_writer);
 }
 ]]></Body>
 				</Function>
@@ -13252,7 +13286,7 @@ static int outcomesIndex = 0;
 private String outputDirectory = "\\\\ad.renci.org\\Projects\\systemsscience\\out";
 	
 //private int minAge = Integer.MAX_VALUE;
-private int dynamicComplianceRateYearOffset = 6;
+//private int dynamicComplianceRateYearOffset = 6;
 
 /**
  * Execute the model for a set of populations in parallel.

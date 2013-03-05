@@ -84,7 +84,8 @@ class Util {
 	for (int c = 0; c < fieldNames.length; c++) {
 	    String fieldName = fieldNames [c];
 	    Object value = Util.getFieldValue (object, fieldName);
-	    values.add (String.valueOf (value));
+	    String stringValue = String.valueOf (value);
+	    values.add (String.valueOf (stringValue));
 	}
 	return (String [])values.toArray (new String [values.size ()]);
     }

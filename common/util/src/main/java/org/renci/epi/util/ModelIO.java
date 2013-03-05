@@ -89,7 +89,12 @@ public class ModelIO {
 	throws IOException
     {
 	Writer writer = null;
+
 	try {
+	    File outputFile = new File (fileName);
+	    if (outputFile.exists ()) {
+		outputFile.delete ();
+	    }	    
 	    if (compress) {
 		writer = new OutputStreamWriter (new GZIPOutputStream (new FileOutputStream (fileName + ".gz", append)));
 	    } else {
@@ -153,12 +158,13 @@ public class ModelIO {
 	    "onset_stage_clin", 
 	    "surveillance_negatives",
 	    "tot_lesions",
+	    "num_colonoscopies",
 	    "value_life",
 	    "longitude",
 	    "latitude"
 	};
 	String newline = "\n";
-	char separator = '\t';	
+	char separator = '\t';
 	this.outputRow (writer, fieldNames, separator, newline);
 	if (people.hasNext ()) {
 	    for (Object person = people.next (); people.hasNext (); person = people.next ()) {
@@ -184,9 +190,7 @@ public class ModelIO {
 	    synchronized (writer) {
 		String row = StringUtils.join (values, separator);
 		writer.write (row);
-		//writer.write (newline);
 		writer.newLine ();
-		writer.flush ();
 	    }
 	} catch (IOException e) {
 	    throw new RuntimeException (e);
