@@ -13277,16 +13277,14 @@ import java.util.concurrent.Future;
 			<Code><![CDATA[/**
  * Configure the population scenario to execute.
  */
-execute_populations_parallel (1);
+execute_populations_parallel (100);
 ]]></Code>
 			<AdditionalClassCode><![CDATA[private List<Outcomes> _outcomes = null;
 private Executor _executor = new Executor ();
 private static final String CONTROL = "control";
 static int outcomesIndex = 0;
-private String outputDirectory = "\\\\ad.renci.org\\Projects\\systemsscience\\out";
-	
-//private int minAge = Integer.MAX_VALUE;
-//private int dynamicComplianceRateYearOffset = 6;
+
+private String outputDirectory = "out"; //"\\\\ad.renci.org\\Projects\\systemsscience\\out";
 
 /**
  * Execute the model for a set of populations in parallel.
@@ -13501,8 +13499,10 @@ private Main initialize (Main root, int replication) {
 	for (int i = 0; i < args.length; i++) {
 		if (args[i].equalsIgnoreCase("seed")) {
 			seed = Long.parseLong(args[++i]);
-			seed += replication * 100;
+			seed += replication * 10000;
 			root.getEngine().getDefaultRandomGenerator().setSeed(seed);
+
+			System.out.println ("\nset seed: " + seed);
 			foundSeed = true;
 		}
 		//traceln (args [i]);
@@ -13515,6 +13515,10 @@ private Main initialize (Main root, int replication) {
 	HashMap<String,String> skip = new HashMap<String,String> ();
 	skip.put ("seed", "seed");
 	Main.modelIO.configureModel (root, args, skip);
+
+	root.getEngine().getDefaultRandomGenerator().setSeed (seed);
+	System.out.println ("\nREAL seed: " + seed);
+
 	return root;
 }
 /**
@@ -13545,7 +13549,7 @@ class ModelRunner implements Runnable {
 	public void run () {
 		try {
 		Main root = create_model (input, scenario, replication);
-		root.setEngine (createEngine ());
+		//root.setEngine (createEngine ());
 		
 		traceln ("-start: " + root.output_dir + " rep(" + replication + ")");
 		
