@@ -4,7 +4,7 @@
  *
  */
 
-DEFINE renci_geocoder org.renci.epi.pig.GEOCODE ('timeslice', 'longitude', 'latitude');
+DEFINE renci_geocoder org.renci.epi.pig.GEOCODE ('shapefile', 'timeslice', 'longitude', 'latitude');
 
 -- load data.
 all_rows = LOAD '$input' USING PigStorage ('\t') 
@@ -27,7 +27,7 @@ all_rows = LOAD '$input' USING PigStorage ('\t')
 target_rows = FILTER all_rows BY (num_lesions > 0) AND (never_compliant == 'true');
 
 -- transform data
-output_polygons = FOREACH target_rows GENERATE renci_geocoder ($timeslice, longitude, latitude);
+output_polygons = FOREACH target_rows GENERATE renci_geocoder ('$shapefile', $timeslice, longitude, latitude);
 
 -- group output polygons 
 polygons = GROUP output_polygons BY $0;
@@ -36,13 +36,6 @@ polygons = GROUP output_polygons BY $0;
 polygon_count = FOREACH polygons GENERATE group, '$input', COUNT (output_polygons);
 DUMP polygon_count;
 DESCRIBE polygon_count;
-
-
-/*
-subtotals = FOREACH polygon_count GENERATE group, SUM ($2);
-DUMP subtotals;
-DESCRIBE subtotals;
-*/
 
 -- store output
 --STORE polygon_count INTO 'output' USING JsonStorage ();

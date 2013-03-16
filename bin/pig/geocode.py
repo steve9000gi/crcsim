@@ -57,10 +57,13 @@ Usage:
 
 """
 
+import argparse
 import glob
 import os
+import fnmatch
 import json
 import logging
+import socket
 
 from org.apache.pig.scripting import Pig
 
@@ -78,7 +81,7 @@ class Snout (object):
             logger.debug (" >>> set property: %s => %s", key, properties[key])
             Pig.set (key, properties [key]) 
 
-    def mkparams (self, input_file, timeslice):
+    def mkparams (self, input_file, shapefile, timeslice):
         ''' Create parameters. '''
         return {}
 
@@ -116,17 +119,15 @@ class Snout (object):
 class Geocoder (Snout):
     def __init__(self):
         jars = []
-        #lib_dir = os.path.join ( os.path.dirname (os.path.realpath (__file__)), "lib")
-        lib_dir = "lib" #os.path.join ( ".", "lib")
+        lib_dir = "lib"
         jar_pattern = os.path.join (lib_dir, "*jar")
         if os.path.exists (lib_dir):
             for lib in glob.glob (jar_pattern):
                 jars.append (lib)
         else:
             ROOT="/home/scox"
-            APP = os.path.join (ROOT, "app")
             DEV = os.path.join (ROOT, "dev")
-            jars.append (os.path.join (DEV, "crcsim", "pig", "target", "pig-1.0-SNAPSHOT.jar"))
+            jars.append (os.path.join (DEV, "crcsim", "pig", "target", "epi-pig-1.0-SNAPSHOT.jar"))
             jars.append (os.path.join (DEV, "crcsim", "common", "geography", "target", "epi-geography-1.0-SNAPSHOT-deps.jar"))
 
         properties = { "default_parallel" : "100" }
@@ -135,12 +136,13 @@ class Geocoder (Snout):
 
         self.count = [ [ 0 for k in range (99) ] for j in range (100) ]
 
-    def mkparams (self, input_file, timeslice):
+    def mkparams (self, input_file, shapefile, timeslice):
         ''' Create parameters. '''
         return {
             'timeslice' : timeslice,
-            'input'     : os.path.join ('input', input_file)
-            }
+            'shapefile' : shapefile,
+            'input'     : input_file
+	    }
 
     def process_result (self, element_id, a_tuple):        
         ''' Process an element. '''
@@ -153,24 +155,61 @@ class Geocoder (Snout):
     def complete (self):        
         print json.dumps (self.count)        
 
-if __name__ == '__main__':
+
+def main ():
+
+    ''' Parse arguments. '''
+    parser = argparse.ArgumentParser ()
+    parser.add_argument ("--shapefile",  help="Path to an ESRI shapefile", default="/home/scox/dev/var/crcsim/census2010/tl_2010_37_county10.shp")
+    parser.add_argument ("--snapshotDB", help="Path to a directory hierarchy containing population snapshot files.", default='')
+    parser.add_argument ("--loglevel",   help="Log level", default='error')
+    parser.add_argument ("--dev",        help="Devlopment settings", dest='development', action='store_true', default=False)
+    args = parser.parse_args ()
 
     logging.basicConfig (level=3, format='%(asctime)-15s %(message)s')
 
     geocoder = Geocoder ()
-    
+
+    environment_config_context = {
+        'scox.europa.renci.org' : {
+            'input_dir'    : '/home/scox/dev/hadoop/pig/input',
+            #'input_files' : [ 'person.00001', 'person.00002', 'person.00003' ],
+            'shapefile'   : '/home/scox/dev/var/crcsim/census2010/tl_2010_37_county10.shp'
+            },
+        'topsail-sn.unc.edu' : {
+            'input_dir'   : '/scratch/projects/systemsscience/inputs',
+            #'input_files' : [ 'person.00001', 'person.00002', 'person.00003' ],
+            'shapefile'   : '/export/home/scox/dev/pig/shapefile/tl_2010_37_county10.shp'
+           }
+        }
+
+    fqdn = socket.getfqdn ()
+    config = environment_config_context [fqdn]
+    logger.debug ("config @ %s => %s", fqdn, config)
+    input_dir = config ['input_dir']
+    shapefile = config ['shapefile']
+    #input_files = config ['input_files']
+
+    input_files = []
+    for root, dirnames, filenames in os.walk (input_dir):
+        #for idx, file_name in enumerate (fnmatch.filter (filenames, '.*')):
+        for idx, file_name in enumerate (filenames):
+            full_path = os.path.join (root, file_name)
+            input_files.append (full_path)
+
     single = True
     if single:
-        params = geocoder.mkparams ('person.00001', 0)
+        params = geocoder.mkparams (input_files [0], shapefile, 0)
     else:
-        params = [
-            geocoder.mkparams ('person.00001', 0),
-            geocoder.mkparams ('person.00002', 0),
-            geocoder.mkparams ('person.00003', 0)
-            ]
+        params = []
+        for f in input_files:
+            params.append (geocoder.mkparams (f, shapefile, 0))
 
     geocoder.run (params      = params,
                   script_name = "geocode",
                   script_file = "geocode.pig" if os.path.exists ("geocode.pig") else os.path.join ("bin", "geocode.pig"),
                   elements    = [ "polygon_count" ])
 
+
+if __name__ == '__main__':
+    main ()

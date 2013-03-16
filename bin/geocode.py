@@ -87,6 +87,7 @@ import sys
 import tarfile
 import time
 import traceback
+import Queue
 
 from fiona import collection
 from collections import defaultdict
@@ -126,7 +127,7 @@ class DataImporter (object):
         ''' Clean the database, create the table and import data from CSV. '''
         self.drop_table ()
         self.create_table ()
-        with open (input_file, 'rb') as stream:
+        with open (input_file, 'rbU') as stream:
             data = csv.reader (stream, delimiter = delimiter)
             for index, row in enumerate (data):
                 try:
@@ -140,13 +141,34 @@ class DataImporter (object):
         timeslice_id_index = file_name.rindex ('.') + 1
         assert timeslice_id_index < len (file_name), "Problem parsing filename: %s" % file_name
         timeslice_id = file_name [timeslice_id_index:]
-        
+
+        # /population/population.tsv.0045.intervention.0004
+        scenario_dir = file_name.split ('/')[-2].split ('.')
+        scenario = '.'.join ( [ scenario_dir [-2], scenario_dir [-1] ] )
+
         #self.cur.execute ("select latitude, longitude from simulation where num_lesions > 0 and never_compliant = 'true'")
+
+        coordinates = []
+        for metric in self.query:
+            query = self.query [metric]
+            self.cur.execute (query)
+            rows = self.cur.fetchall ()
+            count = 0
+            for row in rows:
+                count += 1
+                if count == 1:
+                    continue # skip header.
+                #logger.debug ("appending %s %s %s %s %s", metric, scenario, timeslice_id, row[0], row[1])
+                coordinates.append ( (metric, scenario, timeslice_id, row[0], row[1]) )            
+
+        '''
         self.cur.execute (self.query)
         rows = self.cur.fetchall ()
         coordinates = []
         for row in rows:
             coordinates.append ( (timeslice_id, row[0], row[1]) )
+            '''
+
         return coordinates
     
     def data_import (self, file_name, stats):
@@ -255,9 +277,9 @@ class Geocoder (object):
         Wait for all workers to complete. Then signal the counter to exit.
         Wait for the counter to exit.
         '''
-        logger.debug ("Export polygons...")
+        logger.info ("Export polygons...")
         polygon_count = self.export_polygons (shapefile)
-        logger.debug ("Geocode...")
+        logger.info ("Geocode...")
 
         work_Q = multiprocessing.Queue ()
         result_Q = multiprocessing.Queue ()
@@ -269,7 +291,7 @@ class Geocoder (object):
         num_workers = multiprocessing.cpu_count ()
         if num_workers > 1: num_workers -= 1
         for c in range (num_workers):
-            logger.debug ("Starting worker %s.", c)
+            logger.info ("Starting worker %s.", c)
             process = multiprocessing.Process (target=point_in_poly_worker, args=(work_Q, result_Q, shapefile, buffer_size))
             workers.append (process)
 
@@ -292,9 +314,9 @@ class Geocoder (object):
         result_Q.put ('done')
             
         counting_process.join ()
-        logger.debug ("Counter process joined.")
+        logger.info ("Counter process joined.")
 
-    def calculate_batched_intersections_parallel (self, shapefile, points, timeslice, result_Q):
+    def calculate_batched_intersections_parallel (self, shapefile, points, metric, scenario, timeslice, result_Q):
         ''' Calculate point-in-polygon relationships for an array of points. '''
         if len (points) > 0:
             c = 0
@@ -302,85 +324,112 @@ class Geocoder (object):
             for polygon_id, matches in enumerate (polygon_matches):
                 for point_idx, state in enumerate (matches):
                     if state == True:
-                        result_Q.put ( [ polygon_id, timeslice ] )
+                        result_Q.put ( [ metric, scenario, polygon_id, timeslice ] )
                         c += 1
-            logger.info ("Recorded %s/%s matches at timeslice: %s", c, len (points), timeslice)
+            logger.debug ("Recorded %s/%s matches at timeslice: %s", c, len (points), timeslice)
             del points [0 : len (points)]
+
+def get_counter (counters, metric, scenario, polygon_count):
+    metric_map = {}
+    if metric in counters:
+        metric_map = counters [metric]
+    else:
+        counters [metric] = metric_map
+
+    scenario_counter = None
+    if scenario in metric_map:
+        scenario_counter = metric_map [scenario]
+    else:
+        scenario_counter = Counter (polygon_count)
+        metric_map [scenario] = scenario_counter
+
+    return scenario_counter
 
 def counting_worker (polygon_count, result_Q):
     ''' Read intersection result data from the result queue and record. Record occurrences. '''
-    counter = Counter (polygon_count)
+    counters = {}
     geocoder = Geocoder ()
     while True:
-        work = result_Q.get (timeout = 5)
-        if not work:
-            continue
-        if work == 'done':
-            break
-        if len (work) < 2:
-            continue
         try:
-            counter.increment (work [0], work [1])
-        except e:
+            work = result_Q.get (timeout = 5)
+            if not work or len(work) < 2:
+                continue
+            if work == 'done':
+                break
+            metric, scenario, timeslice_id, polygon_id = work
+            counter = get_counter (counters, metric, scenario, polygon_count)
+            counter.increment (timeslice_id, polygon_id)
+        except Queue.Empty:
+            pass
+        except ValueError, e:
             traceback.print_exc (e)
-    obj = { "counts" : counter.timeline }
-    geocoder.write_json_object ("occurrences", obj)
 
+    for metric_key in counters:
+        metric_scenarios = counters [metric]
+        for scenario_key in metric_scenarios:
+            counter = metric_scenarios [scenario_key]
+            object_name = "%s-%s-occurrences" % (metric_key, scenario_key)
+            obj = { "counts" : counter.timeline }
+            geocoder.write_json_object (object_name, obj)
+            
 def point_in_poly_worker (work_Q, result_Q, shapefile, buffer_size = 1000):
     ''' Take filenames of data from the work queue. Process these to determine point/polygon intersections. '''
     geocoder = Geocoder ()
     while True:
-        work = work_Q.get (timeout = 2)
-        logger.debug ("Took geocoder work %s from queue.", work)
-        if not work:
-            continue
-        if work == 'done':
-            logger.info ("Ending point in poly worker process.")
-            break
-        with open (work, 'rb') as stream:
-            timeslice = None
-            points = []
-            for line in stream:
-                coords = line.strip ().split ()
-                if not timeslice:
-                    timeslice = int (coords [0])
-                try:
-                    lat_s = coords [2]
-                    lon_s = coords [1]
-                    lat = float (lat_s)
-                    lon = float (lon_s)
-                    points.append ( [ lat, lon ] )
-                except ValueError:
-                    pass
-                if len (points) >= buffer_size:
-                    geocoder.calculate_batched_intersections_parallel (shapefile, points, timeslice, result_Q)
-            if len (points) > 0:
-                geocoder.calculate_batched_intersections_parallel (shapefile, points, timeslice, result_Q)
+        try:
+            work = work_Q.get (timeout = 2)
+            logger.info ("Took geocoder work %s from queue.", work)
+            if not work:
+                continue
+            if work == 'done':
+                logger.info ("Ending point in poly worker process.")
+                break
+            with open (work, 'rb') as stream:
+                points = []
+                for line in stream:
+                    coords = line.strip ().split ()
+                    metric, scenario, timeslice, lat_s, lon_s = coords
+                    try:
+                        timeslice = int (timeslice)
+                        lat = float (lat_s)
+                        lon = float (lon_s)
+                        points.append ( [ lon, lat ] )
+                    except ValueError, e:
+                        traceback.print_exc (e)
+                    if len (points) >= buffer_size:
+                        geocoder.calculate_batched_intersections_parallel (shapefile, points, metric, scenario, timeslice, result_Q)
+                if len (points) > 0:
+                    geocoder.calculate_batched_intersections_parallel (shapefile, points, metric, scenario, timeslice, result_Q)
+        except Queue.Empty:
+            pass
 
 def select_coordinates_worker (query, database, output_dir, work_Q):
     ''' Determine column names, create a data cruncher and process the input file. '''
     stats = defaultdict (int)
     while True:
-        snapshot_file = work_Q.get (timeout = 2)
-        logger.debug ("Took geocoder work %s from queue.", snapshot_file)
-        if not snapshot_file:
-            continue
-        if snapshot_file == 'done':
-            logger.info ("Ending point in poly worker process.")
-            break
-        columns = None
-        with open (snapshot_file, 'rb') as stream:
-            columns = stream.readline ().strip().split ('\t')
-            data_importer = DataImporter (query, columns, database, output_dir)
-            data_importer.data_import (snapshot_file, stats)
-            
+        try:
+            snapshot_file = work_Q.get (timeout = 2)
+            logger.info ("Took geocoder work %s from queue.", snapshot_file)
+            if not snapshot_file:
+                continue
+            if snapshot_file == 'done':
+                logger.info ("Ending point in poly worker process.")
+                break
+            columns = None
+            with open (snapshot_file, 'rb') as stream:
+                columns = stream.readline ().strip().split ('\t')
+                data_importer = DataImporter (query, columns, database, output_dir)
+                data_importer.data_import (snapshot_file, stats)
+        except Queue.Empty:
+            pass
+
 def select_coordinates (query, database, snapshotDB, output_dir):
     ''' Start workers - one per cpu - to import data and select items.'''
     workers = []
-    num_workers = multiprocessing.cpu_count ()
+    num_workers = multiprocessing.cpu_count () * 10
     work_Q = multiprocessing.Queue ()
     for c in range (num_workers):
-        logger.debug ("Starting import/select worker %s.", c)
+        logger.info ("Starting import/select worker %s.", c)
         data_import_args = (query, database, output_dir, work_Q)
         process = multiprocessing.Process (target=select_coordinates_worker, args = data_import_args)
         workers.append (process)
@@ -391,8 +440,14 @@ def select_coordinates (query, database, snapshotDB, output_dir):
     for root, dirnames, filenames in os.walk (snapshotDB):
         for idx, file_name in enumerate (fnmatch.filter (filenames, 'person.*')):
             snapshot_file = os.path.join (root, file_name)
-            logger.debug ("launch-snap[%s] %s", idx, snapshot_file)
-            work_Q.put (snapshot_file)
+
+            base = os.path.basename (snapshot_file)
+            last = base.split ('.')[1]
+            timeslice = int (last)
+
+            if timeslice > 38:
+                logger.debug ("launch-snap[%s] %s", idx, snapshot_file)
+                work_Q.put (snapshot_file)
     for worker in workers:
         work_Q.put ('done')
     work_Q.close ()
@@ -400,11 +455,11 @@ def select_coordinates (query, database, snapshotDB, output_dir):
 
     for worker in workers:
         worker.join ()
-        logger.debug ("Joined process[%s]: %s", worker.pid, worker.name)
+        logger.info ("Joined process[%s]: %s", worker.pid, worker.name)
 
 def archive (archive_name = "out.tar.gz"):
     ''' Archive and remove the output files. '''
-    logger.debug ("Creating output archive: %s", archive_name)
+    logger.info ("Creating output archive: %s", archive_name)
     with tarfile.open (archive_name, "w:gz") as archive:
         files = glob.glob ("*.json")
         for output in files:
@@ -421,13 +476,14 @@ class GeocodeArguments (object):
 
     def __init__ (self):
         self.root = os.path.join ( os.path.sep, "projects", "systemsscience" )
-        self.shapefile = self.form_data_path ([ "var", "census2010", "tl_2010_37_country10.shp" ])
+        self.shapefile = self.form_data_path ([ "var", "census2010", "tl_2010_37_county10.shp" ])
         self.snapshotDB = self.form_data_path ("out")
         self.output = "output"
         self.query = "select latitude, longitude from simulation where num_lesions > 0 and never_compliant = 'true'"
         self.database = ":memory:"
         self.loglevel = "error"
-        self.archive = True
+        self.archive = False
+        self.geocode_only = False
 
     def form_data_path (self, args):
         tail = os.path.join (*args) if isinstance (args, list) else args
@@ -445,10 +501,11 @@ def geocode (arguments = GeocodeArguments (), callback = None):
     logger.info ("    output: %s", arguments.output)
     logger.info ("  loglevel: %s", arguments.loglevel)
 
-    select_coordinates (arguments.query,
-                        arguments.database,
-                        arguments.snapshotDB,
-                        arguments.output)
+    if not arguments.geocode_only:
+        select_coordinates (arguments.query,
+                            arguments.database,
+                            arguments.snapshotDB,
+                            arguments.output)
     geocoder = Geocoder ()
     geocoder.geocode_batch_parallel (arguments.shapefile, arguments.output)
 
@@ -467,6 +524,7 @@ def main ():
     ''' Parse arguments. '''
     parser = argparse.ArgumentParser ()
     parser.add_argument ("--shapefile",  help="Path to an ESRI shapefile", default=parameters.shapefile)
+    parser.add_argument ("--geocode_only",help="Geocode only - no select", dest='geocode_only', action='store_true', default=parameters.geocode_only)
     parser.add_argument ("--snapshotDB", help="Path to a directory hierarchy containing population snapshot files.", default=parameters.snapshotDB)
     parser.add_argument ("--output",     help="Output directory. Default is 'output'.", default=parameters.output)
     parser.add_argument ("--database",   help="Database path. Default is in-memory.", default=parameters.database)
@@ -482,6 +540,11 @@ def main ():
     parameters.loglevel = args.loglevel
     parameters.archive = args.archive
     parameters.query = args.query
+    parameters.geocode_only = args.geocode_only
+    parameters.query = {
+        "crc"         : "select latitude, longitude from simulation where cancer_free_years > 0",
+        "colonoscopy" : "select latitude, longitude from simulation where num_colonoscopies > 0"
+        }
 
     geocode (parameters)
 

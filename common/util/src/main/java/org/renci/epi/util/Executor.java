@@ -38,7 +38,10 @@ public class Executor {
      *
      */
     public Executor () {
-	int maxThreads = Runtime.getRuntime().availableProcessors ();
+	this (Runtime.getRuntime().availableProcessors ());
+    }
+    public Executor (int maxThreads) {
+	//int maxThreads = Runtime.getRuntime().availableProcessors ();
 	//BlockingQueue queue = new ArrayBlockingQueue<Runnable> (maxThreads, true);
 	BlockingQueue queue = new LinkedBlockingQueue<Runnable> ();
 	_executorService =

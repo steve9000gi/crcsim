@@ -21,12 +21,13 @@ function getURLParameter(name) {
  * Applies counts for each polygon across a timeframe.
  *
  */
-function EpiMap (plugin) {
+function EpiMap (divId, plugin, scenario) {
     this.gradient = new Rainbow (); // by default, range is 0 to 100
     this.frame = 0;
     this.occurrences = null;
-    this.initializeMap (this);
+    this.initializeMap (this, scenario);
     this.plugin = plugin;
+    this.divId = divId;
     this.polygons = [];
 };
 // set the matrix of occurrences. this is a list of frames per observation with values per polygon.
@@ -41,11 +42,18 @@ EpiMap.prototype.setOccurrences = function (occurrences) {
     this.gradient.setNumberRange (0, max);
     this.gradient.setSpectrum ('blue', 'green', '#33FF33', 'yellow', '#FF0000', 'red');
 };
+EpiMap.prototype.setTitle = function (title) {
+    $('#' + this.divId + '_title').html (title);
+};
 // initialize the map. load frame matrix, polygon index and render individual polygons.
-EpiMap.prototype.initializeMap = function (map) {
-    $.getJSON ("resources/occurrences.json", function (occurrences) {
-	map.setOccurrences (occurrences);
-    });
+EpiMap.prototype.initializeMap = function (map, scenario) {
+
+    var path = "resources/" + scenario + "-occurrences.json";
+    //$.getJSON ("resources/occurrences.json", function (occurrences) {
+    $.getJSON (path, function (occurrences) {
+	    map.setTitle (occurrences.title);
+	    map.setOccurrences (occurrences);
+	});
 };
 // render the next frame.
 EpiMap.prototype.renderFrame = function (frame) {
@@ -59,6 +67,8 @@ EpiMap.prototype.renderFrame = function (frame) {
 			fillOpacity  : 0.4,
 			strokeWeight : 0.1
 			});
+
+	    this.setTitle (this.occurrences.title + "  - " + frame);
 	}
     }
 };
@@ -322,8 +332,13 @@ function EpiController () {
  *
  */
 EpiController.prototype.initializeMaps = function (count) {
+    var scenarios = [ "crc-control",
+		      "crc-intervention01",
+		      "colonosc-control",
+		      "colonosc-intervention01" ];
     for (var c = 0; c < count; c++) {
-	epiController.addMap ();
+	var scenario = scenarios [c];
+	epiController.addMap (scenario);
     }
 };
 /**
@@ -359,15 +374,16 @@ EpiController.prototype.createPlugin = function () {
  * Add a map.
  *
  */
-EpiController.prototype.addMap = function () {
+EpiController.prototype.addMap = function (scenario) {
     var mapId = "map_canvas" + epiController.maps.length;
     var text = [ "<div class='map_container'>",
 		 "   <div class='map' id='", mapId, "' ></div>",
+		 "   <div class='map_title' id='", mapId, "_title' ></div>",
 		 "</div>" ].join ('');
     $('#maps').append (text);
     var pluginMap = epiController.createPlugin ();
     pluginMap.createMap (mapId);
-    var map = new EpiMap (pluginMap);
+    var map = new EpiMap (mapId, pluginMap, scenario);
     epiController.maps.push (map);
 };
 /** 
@@ -393,11 +409,12 @@ EpiController.prototype.renderFrame = function () {
     for (var c = 0; c < epiController.maps.length; c++) {	
 	var map = epiController.maps [c];
 	occurrences = map.occurrences
-	map.renderFrame (epiController.frame++);
+	map.renderFrame (epiController.frame);
     }
     if (epiController.frame > occurrences.counts.length) {
 	clearInterval (epiController.animationHandle);
     }
+    epiController.frame++;
 };
 /**
  *

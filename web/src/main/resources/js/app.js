@@ -1,3 +1,5 @@
+alert ('hi');
+
 // 
 var epiMaps = null;
 

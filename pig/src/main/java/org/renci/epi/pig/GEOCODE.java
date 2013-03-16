@@ -5,7 +5,10 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.prep.PreparedGeometry;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 import org.apache.pig.EvalFunc;
 import org.apache.pig.data.DataType;
@@ -21,8 +24,8 @@ import org.renci.epi.geography.GeographyServiceImpl;
  */
 public class GEOCODE extends EvalFunc<String> {
 
-    private static final String POLYGON_FILE = "/home/scox/dev/var/crcsim/census2010/tl_2010_37_county10.shp";
-    private static List <PreparedGeometry> geometries = null;    
+    private static Map<String, List <PreparedGeometry>> geometryLists =
+	new HashMap<String, List<PreparedGeometry>> ();
     private static GeometryFactory geometryFactory = new GeometryFactory ();
 
     /**
@@ -31,15 +34,7 @@ public class GEOCODE extends EvalFunc<String> {
     public GEOCODE (String [] names) {	
     }
 
-    private static final void initialize () {
-	if (geometries == null) {
-	    GeographyService geographyService = new GeographyServiceImpl ();
-	    geometries = geographyService.getPreparedPolygons (POLYGON_FILE);
-	}
-    }
-
-    private final static int findPolygon (float longitude, float latitude) {
-	initialize ();
+    private final static int findPolygon (List<PreparedGeometry> geometries, float longitude, float latitude) {
 	int polygon_index = -1;
 	int total_polygons = geometries.size ();
 	Coordinate coordinate = new Coordinate (longitude, latitude);
@@ -65,12 +60,27 @@ public class GEOCODE extends EvalFunc<String> {
 
     public String exec (Tuple input) throws IOException {
 	String result = null;
-	if (input != null && input.size () == 3) {
+	if (input != null && input.size () == 4) {
 	    try {
-		Integer timeslice = (Integer)input.get (0);
-		Float longitude = (Float)input.get (1);
-		Float latitude = (Float)input.get (2);
-		result = String.valueOf (findPolygon (longitude, latitude));
+		String shapefile = (String)input.get (0);
+
+		//Get the list of polygons.
+		List<PreparedGeometry> geometries = null;
+		synchronized (geometryLists) {
+		    geometries = geometryLists.get (shapefile);
+		    if (geometries == null) {
+			geometries = new ArrayList<PreparedGeometry> ();
+			GeographyService geographyService = new GeographyServiceImpl ();
+			geometries = geographyService.getPreparedPolygons (shapefile);
+			geometryLists.put (shapefile, geometries);
+		    }
+		}
+
+		// Determine the polygon containing the given point
+		Integer timeslice = (Integer)input.get (1);
+		Float longitude = (Float)input.get (2);
+		Float latitude = (Float)input.get (3);
+		result = String.valueOf (findPolygon (geometries, longitude, latitude));
 	    } catch (Exception e) {
 		//e.printStackTrace ();
 		throw WrappedIOException.wrap ("Caught exception processing input row ", e);

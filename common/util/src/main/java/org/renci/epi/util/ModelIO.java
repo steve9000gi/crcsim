@@ -189,8 +189,16 @@ public class ModelIO {
 	try {
 	    synchronized (writer) {
 		String row = StringUtils.join (values, separator);
+		//System.out.println (row + "\n");
 		writer.write (row);
+		/*
+		writer.write ("\n");
+		writer.write ("\n");
+		writer.write ("\n");
+		writer.write ("\n");
+		*/
 		writer.newLine ();
+		writer.flush ();
 	    }
 	} catch (IOException e) {
 	    throw new RuntimeException (e);
