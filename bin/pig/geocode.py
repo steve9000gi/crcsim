@@ -177,9 +177,11 @@ def main ():
             'shapefile'   : '/home/scox/dev/var/crcsim/census2010/tl_2010_37_county10.shp'
             },
         'topsail-sn.unc.edu' : {
-            'input_dir'   : '/scratch/projects/systemsscience/inputs',
+            #'input_dir'   : '/scratch/projects/systemsscience/inputs',
+            'input_dir'    : '/user/scox/geocode/inputs',
             #'input_files' : [ 'person.00001', 'person.00002', 'person.00003' ],
-            'shapefile'   : '/export/home/scox/dev/pig/shapefile/tl_2010_37_county10.shp'
+            #'shapefile'   : '/export/home/scox/dev/pig/shapefile/tl_2010_37_county10.shp'
+            'shapefile'   : '/user/scox/geocode/shapefile/tl_2010_37_tabblock10.shp'
            }
         }
 
@@ -190,12 +192,19 @@ def main ():
     shapefile = config ['shapefile']
     #input_files = config ['input_files']
 
+    '''
     input_files = []
     for root, dirnames, filenames in os.walk (input_dir):
         #for idx, file_name in enumerate (fnmatch.filter (filenames, '.*')):
         for idx, file_name in enumerate (filenames):
             full_path = os.path.join (root, file_name)
             input_files.append (full_path)
+            '''
+
+    input_files = [ '/user/scox/geocode/inputs/person.00001',
+                    '/user/scox/geocode/inputs/person.00002',
+                    '/user/scox/geocode/inputs/person.00003' ]
+
 
     single = True
     if single:
