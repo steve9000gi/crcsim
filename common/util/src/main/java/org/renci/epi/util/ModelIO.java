@@ -114,6 +114,7 @@ public class ModelIO {
 	BufferedWriter writer = null;
 	try {
 	    fileName = StringUtils.join (new String [] { _outputRoot, fileName }, File.separator);
+	    logger.debug ("writing " + fileName);
 	    writer = getModelOutputWriterInternal (fileName, !overwrite, compress);
 	    if (overwrite) {
 		String text = StringUtils.join (new String [] {
@@ -145,6 +146,17 @@ public class ModelIO {
      *@param population A list of people objects
      *@param writer A writer.
      */
+    public synchronized void writePeople (Iterator people, String outputDir, String fileName) {
+	setOutputDir (outputDir);
+	BufferedWriter writer = null;
+	try {
+	    writer = getModelOutputWriter (fileName, true, false);
+	    writePeople (people, writer);
+	} finally {
+	    IOUtils.closeQuietly (writer);
+	}
+    }
+
     public void writePeople (Iterator people, BufferedWriter writer) {
 	String [] fieldNames = new String [] {
 	    "cancer_free_years",
@@ -189,16 +201,8 @@ public class ModelIO {
 	try {
 	    synchronized (writer) {
 		String row = StringUtils.join (values, separator);
-		//System.out.println (row + "\n");
 		writer.write (row);
-		/*
-		writer.write ("\n");
-		writer.write ("\n");
-		writer.write ("\n");
-		writer.write ("\n");
-		*/
 		writer.newLine ();
-		writer.flush ();
 	    }
 	} catch (IOException e) {
 	    throw new RuntimeException (e);

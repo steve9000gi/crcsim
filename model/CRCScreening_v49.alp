@@ -10436,7 +10436,8 @@ for (int i=0; i < people.size(); i++) {
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if (get_Main ().output_population_snapshots) {
+					<Body><![CDATA[/*
+if (get_Main ().output_population_snapshots) {
 	outfile_person_writer_count++;
 	NumberFormat format = new java.text.DecimalFormat ("00000");
 	String suffix = format.format (outfile_person_writer_count);
@@ -10446,7 +10447,7 @@ for (int i=0; i < people.size(); i++) {
 	outfile_person_writer =
 		Main.modelIO.getModelOutputWriter (fileName, append, compress);
 }	
-]]></Body>
+*/]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
@@ -10457,10 +10458,11 @@ for (int i=0; i < people.size(); i++) {
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if (get_Main ().output_population_snapshots) {
+					<Body><![CDATA[/*
+if (get_Main ().output_population_snapshots) {
     Main.modelIO.closeWriter (outfile_person_writer);
 }
-]]></Body>
+*/]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
@@ -10471,9 +10473,28 @@ for (int i=0; i < people.size(); i++) {
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if (get_Main ().output_population_snapshots && time () > outfile_person_min_age) {
+					<Body><![CDATA[/*
+if (get_Main ().output_population_snapshots && time () > outfile_person_min_age) {
 	Main.modelIO.writePeople (people.iterator (), outfile_person_writer);
 }
+*/
+
+int year = (int)time ();
+if (get_Main ().output_population_snapshots && 
+    year > outfile_person_min_age)
+{
+	//Main.modelIO.writePeople (people.iterator (), outfile_person_writer);
+
+	//outfile_person_writer_count++;
+	NumberFormat format = new java.text.DecimalFormat ("00000");
+	String suffix = format.format (year);
+	String outputDir = get_Main ().output_dir;
+	String fileName = File.separator + "person." + suffix;
+	boolean compress = get_Main().output_population_snapshots_compress;
+	boolean append = false;
+	Main.modelIO.writePeople (people.iterator (), outputDir, fileName);
+} 
+
 ]]></Body>
 				</Function>
 			</Functions>
@@ -11949,7 +11970,7 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[output_population_snapshots_compress]]></ParameterName>
-					<ParameterValue><![CDATA[null]]></ParameterValue>
+					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[intervention_compliance_rate]]></ParameterName>
@@ -13277,14 +13298,15 @@ import java.util.concurrent.Future;
 			<Code><![CDATA[/**
  * Configure the population scenario to execute.
  */
-execute_populations_parallel (100);
+execute_populations_parallel (1); //00);
 ]]></Code>
 			<AdditionalClassCode><![CDATA[private List<Outcomes> _outcomes = null;
 private Executor _executor = new Executor ();
 private static final String CONTROL = "control";
 static int outcomesIndex = 0;
 
-private String outputDirectory = "out"; //"\\\\ad.renci.org\\Projects\\systemsscience\\out";
+//private String outputDirectory = "out"; //"\\\\ad.renci.org\\Projects\\systemsscience\\out";
+private String outputDirectory = "\\\\ad.renci.org\\Projects\\systemsscience\\out";
 
 /**
  * Execute the model for a set of populations in parallel.
@@ -13502,7 +13524,6 @@ private Main initialize (Main root, int replication) {
 			seed += replication * 10000;
 			root.getEngine().getDefaultRandomGenerator().setSeed(seed);
 
-			System.out.println ("\nset seed: " + seed);
 			foundSeed = true;
 		}
 		//traceln (args [i]);
@@ -13517,7 +13538,6 @@ private Main initialize (Main root, int replication) {
 	Main.modelIO.configureModel (root, args, skip);
 
 	root.getEngine().getDefaultRandomGenerator().setSeed (seed);
-	System.out.println ("\nREAL seed: " + seed);
 
 	return root;
 }
@@ -13573,7 +13593,8 @@ class ModelRunner implements Runnable {
 		root.outfile_replication_name = root.outfile_replication_name + "." + replication;
 
 		synchronized (ModelRunner.class) {
-	    	root.getEngine().start (root);
+		// This appears to workaround an occasional deadlock in the classloader in some vms.
+	    	//root.getEngine().start (root);
 	    }
 		root.getEngine().runFast ();
 		addReplicationOutcomes (scenario, root, results);
