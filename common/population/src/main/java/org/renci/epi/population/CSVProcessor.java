@@ -158,6 +158,9 @@ class SynthPopAnnotationProcessor implements Processor {
 	} catch (NumberFormatException e) {
 	    throw new RuntimeException ("unable to parse household size: " + householdSizeString, e);
 	}
+	
+	/** State and county FIPS codes **/
+	record.put ("stcotrbg", record.get ("households.stcotrbg"));
 
 	/** Everyone's in North Carolina, therefore in the South. */
 	record.put ("SO", "1");

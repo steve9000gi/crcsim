@@ -173,7 +173,8 @@ public class ModelIO {
 	    "num_colonoscopies",
 	    "value_life",
 	    "longitude",
-	    "latitude"
+	    "latitude",
+	    "stcotrbg"
 	};
 	String newline = "\n";
 	char separator = '\t';
