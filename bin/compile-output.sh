@@ -31,9 +31,8 @@ do
     fi
 
     # Output a row.
-    text=$(head -2 $f | grep -v description | sed -e "s,\t, ,g")
     printf "%s\t%s\t%s\t" $age $intervention $replication >> $OUT
-    echo $(head -2 $f | grep -v description) >> $OUT
+    grep baseline $f >> $OUT
 done
 
 exit 0

@@ -4,7 +4,7 @@
 	         AnyLogic Project File 
 *************************************************	         
 -->
-<AnyLogicWorkspace WorkspaceVersion="1.9" AnyLogicVersion="6.9.0.201212241532" AlpVersion="6.6.0">
+<AnyLogicWorkspace WorkspaceVersion="1.9" AnyLogicVersion="6.8.1.201206071455" AlpVersion="6.6.0">
 <Model>
 	<Id>1328041345188</Id>
 	<Name><![CDATA[CRCScreening_v49]]></Name>
@@ -23,8 +23,6 @@
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
 			<SamplesToKeep>100</SamplesToKeep>
-			<LimitNumberOfArrayElements>false</LimitNumberOfArrayElements>
-			<ElementsLimitValue>100</ElementsLimitValue>
 			<MakeDefaultViewArea>true</MakeDefaultViewArea>
 			<SceneGridColor/>
 			<SceneBackgroundColor/>
@@ -184,7 +182,7 @@
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[type]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -206,7 +204,7 @@
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[initial_state]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -1537,8 +1535,6 @@ return uniform() < sensitivity;
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
 			<SamplesToKeep>100</SamplesToKeep>
-			<LimitNumberOfArrayElements>false</LimitNumberOfArrayElements>
-			<ElementsLimitValue>100</ElementsLimitValue>
 			<MakeDefaultViewArea>true</MakeDefaultViewArea>
 			<SceneGridColor/>
 			<SceneBackgroundColor/>
@@ -1929,8 +1925,6 @@ import java.io.File;]]></Import>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
 			<SamplesToKeep>100</SamplesToKeep>
-			<LimitNumberOfArrayElements>false</LimitNumberOfArrayElements>
-			<ElementsLimitValue>100</ElementsLimitValue>
 			<MakeDefaultViewArea>true</MakeDefaultViewArea>
 			<SceneGridColor/>
 			<SceneBackgroundColor/>
@@ -2064,7 +2058,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[model_description]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2086,7 +2080,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[num_lesion_types]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2108,7 +2102,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[num_tests]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2130,7 +2124,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[population_size]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2152,7 +2146,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[max_age]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2174,7 +2168,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[infile_population_name]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2196,7 +2190,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[outfile_replication]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2218,7 +2212,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[outfile_replication_name]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2240,7 +2234,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[outfile_year]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2262,7 +2256,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[outfile_replication_overwrite]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2284,7 +2278,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[outfile_year_name]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2306,7 +2300,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[outfile_year_overwrite]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2328,7 +2322,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[outfile_year_start_age]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2350,7 +2344,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[outfile_year_end_age]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2372,7 +2366,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[outfile_state]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2394,7 +2388,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[outfile_state_name]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2416,7 +2410,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[outfile_state_overwrite]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2438,7 +2432,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_polyp1_polyp2]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2460,7 +2454,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_polyp2_polyp3]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2482,7 +2476,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_polyp1_pre]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2504,7 +2498,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_polyp2_pre]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2526,7 +2520,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_polyp3_pre]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2548,7 +2542,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_pre1_pre2]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2570,7 +2564,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_pre2_pre3]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2592,7 +2586,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_pre3_pre4]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2614,7 +2608,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_pre1_dead]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2636,7 +2630,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_pre2_dead]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2658,7 +2652,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_pre3_dead]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2680,7 +2674,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_pre4_dead]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2702,7 +2696,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_clin1_dead]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2724,7 +2718,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_clin2_dead]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2746,7 +2740,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_clin3_dead]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2768,7 +2762,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_clin4_dead]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2790,7 +2784,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_pre1_clin1]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2812,7 +2806,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_pre2_clin2]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2834,7 +2828,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_pre3_clin3]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2856,7 +2850,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_pre4_clin4]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2878,7 +2872,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_clin1_clin2]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2900,7 +2894,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_clin2_clin3]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2922,7 +2916,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[mean_duration_clin3_clin4]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2944,7 +2938,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[proportion_survive_clin1]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2966,7 +2960,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[proportion_survive_clin2]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -2988,7 +2982,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[proportion_survive_clin3]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3010,7 +3004,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[proportion_survive_clin4]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3032,7 +3026,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[cost_polypectomy]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3054,7 +3048,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[cost_polyp_pathology]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3076,7 +3070,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[cost_treatment1]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3098,7 +3092,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[cost_treatment2]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3120,7 +3114,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[cost_treatment3]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3142,7 +3136,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[cost_treatment4]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3164,7 +3158,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[proportion_treatment_cure]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3186,7 +3180,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lifespan_multiplier_no_treatment]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3208,7 +3202,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[value_loss_cancer]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3230,7 +3224,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[value_life_year_ages]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3252,7 +3246,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[value_life_year_dollars]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3274,7 +3268,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[model_test_probability]]></Label>
-							<EditorContolType alpv7value="CHECK_BOX">CHECK_BOX</EditorContolType>
+							<EditorContolType>CHECK_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3296,7 +3290,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[duration_screen_low_risk]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3318,7 +3312,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[surveillance_interval]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3340,7 +3334,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[max_surveillance_negatives]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3362,7 +3356,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[use_conditional_compliance]]></Label>
-							<EditorContolType alpv7value="CHECK_BOX">CHECK_BOX</EditorContolType>
+							<EditorContolType>CHECK_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3384,7 +3378,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[model_initial_compliance]]></Label>
-							<EditorContolType alpv7value="CHECK_BOX">CHECK_BOX</EditorContolType>
+							<EditorContolType>CHECK_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3406,7 +3400,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[initial_compliance_rate]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3428,7 +3422,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[never_compliant_rate]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3450,7 +3444,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[diagnostic_compliance_rate]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3472,7 +3466,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[surveillance_compliance_rate]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3494,7 +3488,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[treatment_compliance_rate]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3516,7 +3510,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[routine_tests]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3538,7 +3532,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lesion_initial_state]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3560,7 +3554,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lesion_incidence_black_female_ages]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3582,7 +3576,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lesion_incidence_black_female_rates]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3604,7 +3598,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lesion_incidence_black_male_ages]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3626,7 +3620,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lesion_incidence_black_male_rates]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3648,7 +3642,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lesion_incidence_white_female_ages]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3670,7 +3664,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lesion_incidence_white_female_rates]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3692,7 +3686,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lesion_incidence_white_male_ages]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3714,7 +3708,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lesion_incidence_white_male_rates]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3736,7 +3730,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lesion_risk_alpha]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3758,7 +3752,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lesion_risk_beta]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3780,7 +3774,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_name]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3802,7 +3796,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_routine_start]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3824,7 +3818,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_routine_end]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3846,7 +3840,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_routine_freq]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3868,7 +3862,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_specificity]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3890,7 +3884,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_sensitivity_polyp1]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3912,7 +3906,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_sensitivity_polyp2]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3934,7 +3928,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_sensitivity_polyp3]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3956,7 +3950,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_sensitivity_cancer]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -3978,7 +3972,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_cost]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4000,7 +3994,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_proportion_lethal]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4022,7 +4016,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_proportion_perforation]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4044,7 +4038,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_cost_perforation]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4066,7 +4060,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_proportion]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4088,7 +4082,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_compliance_rate_given_prev_compliant]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4110,7 +4104,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_compliance_rate_given_not_prev_compliant]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4132,7 +4126,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[compute_population_rates]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4154,7 +4148,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[population_rates_sample_size]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4176,7 +4170,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[num_population_rates]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4198,7 +4192,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[cost_discount_age]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4220,7 +4214,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[cost_discount_rate]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4242,7 +4236,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lifespan_discount_age]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4264,7 +4258,7 @@ import java.io.File;]]></Import>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[lifespan_discount_rate]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4285,7 +4279,7 @@ import java.io.File;]]></Import>
 						<ParameterEditor>
 							<Id>1330274699052</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4306,7 +4300,7 @@ import java.io.File;]]></Import>
 						<ParameterEditor>
 							<Id>1349378790107</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4327,7 +4321,7 @@ import java.io.File;]]></Import>
 						<ParameterEditor>
 							<Id>1349383271255</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4348,7 +4342,7 @@ import java.io.File;]]></Import>
 						<ParameterEditor>
 							<Id>1349384018401</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4369,7 +4363,7 @@ import java.io.File;]]></Import>
 						<ParameterEditor>
 							<Id>1350053085010</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4396,7 +4390,7 @@ This is used to calculate continuing, rather than initial compliance.
 							<Id>1354811694596</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_compliance_rate_given_prev_compliant]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4423,7 +4417,7 @@ This is used to calculate continuing, rather than initial compliance.
 							<Id>1354811715922</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_compliance_rate_given_not_prev_compliant]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4444,7 +4438,7 @@ This is used to calculate continuing, rather than initial compliance.
 						<ParameterEditor>
 							<Id>1354817305024</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4465,7 +4459,7 @@ This is used to calculate continuing, rather than initial compliance.
 						<ParameterEditor>
 							<Id>1358197900023</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4486,7 +4480,7 @@ This is used to calculate continuing, rather than initial compliance.
 						<ParameterEditor>
 							<Id>1359475170459</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType alpv7value="CHECK_BOX">CHECK_BOX</EditorContolType>
+							<EditorContolType>CHECK_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4507,7 +4501,7 @@ This is used to calculate continuing, rather than initial compliance.
 						<ParameterEditor>
 							<Id>1359476176053</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType alpv7value="CHECK_BOX">CHECK_BOX</EditorContolType>
+							<EditorContolType>CHECK_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -5522,8 +5516,6 @@ if (parameterSet != null) {
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
 			<SamplesToKeep>100</SamplesToKeep>
-			<LimitNumberOfArrayElements>false</LimitNumberOfArrayElements>
-			<ElementsLimitValue>100</ElementsLimitValue>
 			<MakeDefaultViewArea>true</MakeDefaultViewArea>
 			<SceneGridColor/>
 			<SceneBackgroundColor/>
@@ -6017,6 +6009,18 @@ if (parameterSet != null) {
 						<InitialValue><![CDATA[0]]></InitialValue>                 	
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1365631949233</Id>
+					<Name><![CDATA[stcotrbg]]></Name>
+					<X>-210</X><Y>-80</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[String]]></Type>        
+					</Properties>
+				</Variable>
 				<Variable Class="Parameter">
 					<Id>1328041345823</Id>
 					<Name><![CDATA[sex_male]]></Name>
@@ -6032,7 +6036,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[sex_male]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6054,7 +6058,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[educ_college]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6076,7 +6080,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[income_gt_20k]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6098,7 +6102,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[insure_none]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6120,7 +6124,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[insure_private]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6142,7 +6146,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[race_white]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6164,7 +6168,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[race_black]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6186,7 +6190,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[race_hispanic]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6208,7 +6212,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[race_other]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6230,7 +6234,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[alone_yes]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6252,7 +6256,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[source_yes]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6274,7 +6278,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[famhist_med_high]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6296,7 +6300,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[smoke_former]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6318,7 +6322,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[smoke_never]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6340,7 +6344,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[vitamin_yes]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6362,7 +6366,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[flushot_yes]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6384,7 +6388,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[region_midwest]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6406,7 +6410,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[region_south]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -6428,7 +6432,7 @@ if (parameterSet != null) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[region_west]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -9230,8 +9234,6 @@ import java.text.NumberFormat;]]></Import>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
 			<SamplesToKeep>100</SamplesToKeep>
-			<LimitNumberOfArrayElements>false</LimitNumberOfArrayElements>
-			<ElementsLimitValue>100</ElementsLimitValue>
 			<MakeDefaultViewArea>true</MakeDefaultViewArea>
 			<SceneGridColor/>
 			<SceneBackgroundColor/>
@@ -9652,7 +9654,7 @@ import java.text.NumberFormat;]]></Import>
 				<Variable Class="PlainVariable">
 					<Id>1328041345946</Id>
 					<Name><![CDATA[crc_mortality_rate_variance]]></Name>
-					<X>-290</X><Y>-120</Y>
+					<X>-290</X><Y>-150</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9678,7 +9680,7 @@ import java.text.NumberFormat;]]></Import>
 				<Variable Class="PlainVariable">
 					<Id>1328041345948</Id>
 					<Name><![CDATA[polyp_prevalence_rate_variance]]></Name>
-					<X>-290</X><Y>-160</Y>
+					<X>-290</X><Y>-190</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9704,7 +9706,7 @@ import java.text.NumberFormat;]]></Import>
 				<Variable Class="PlainVariable">
 					<Id>1328041345950</Id>
 					<Name><![CDATA[crc_survival_rate_variance]]></Name>
-					<X>-290</X><Y>-100</Y>
+					<X>-290</X><Y>-130</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9717,7 +9719,7 @@ import java.text.NumberFormat;]]></Import>
 				<Variable Class="PlainVariable">
 					<Id>1328041345951</Id>
 					<Name><![CDATA[crc_incidence_rate_variance]]></Name>
-					<X>-290</X><Y>-140</Y>
+					<X>-290</X><Y>-170</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9830,13 +9832,25 @@ import java.text.NumberFormat;]]></Import>
 						<InitialValue><![CDATA[38]]></InitialValue>                 	
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1365520042015</Id>
+					<Name><![CDATA[county]]></Name>
+					<X>-290</X><Y>-80</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[String]]></Type>        
+					</Properties>
+				</Variable>
 			</Variables>
 			<Functions>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345965</Id>
 					<Name><![CDATA[compute_event_probs]]></Name>
-					<X>-150</X><Y>20</Y>
+					<X>-150</X><Y>60</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9913,7 +9927,7 @@ else {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345966</Id>
 					<Name><![CDATA[compute_pop_rates]]></Name>
-					<X>-150</X><Y>40</Y>
+					<X>-150</X><Y>80</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10275,7 +10289,7 @@ for (int j = 0; j < crc_incidence.length; j++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345967</Id>
 					<Name><![CDATA[end_model]]></Name>
-					<X>-150</X><Y>60</Y>
+					<X>-150</X><Y>100</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10294,7 +10308,7 @@ compute_event_probs();
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345968</Id>
 					<Name><![CDATA[start_model]]></Name>
-					<X>-150</X><Y>80</Y>
+					<X>-150</X><Y>120</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10310,7 +10324,7 @@ for (int i=0; i<people.size(); i++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345969</Id>
 					<Name><![CDATA[init_model]]></Name>
-					<X>-150</X><Y>100</Y>
+					<X>-150</X><Y>140</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10327,7 +10341,7 @@ for (int i=0; i<people.size(); i++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345971</Id>
 					<Name><![CDATA[input_population]]></Name>
-					<X>-150</X><Y>140</Y>
+					<X>-150</X><Y>180</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10368,6 +10382,7 @@ for (int i=0; i<people.size(); i++) {
     } catch (Exception e) {
 		System.out.println ("no lat/lon");
     }
+    p.stcotrbg = in.getString ("stcotrbg");
   }
 } catch (Exception e) {
 	e.printStackTrace ();
@@ -10382,7 +10397,7 @@ for (int i=0; i<people.size(); i++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345972</Id>
 					<Name><![CDATA[on_end_year]]></Name>
-					<X>-150</X><Y>160</Y>
+					<X>-150</X><Y>200</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10398,7 +10413,7 @@ output_person_close ();]]></Body>
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345973</Id>
 					<Name><![CDATA[on_new_year]]></Name>
-					<X>-150</X><Y>180</Y>
+					<X>-150</X><Y>220</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10412,7 +10427,7 @@ output_person_open ();]]></Body>
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345974</Id>
 					<Name><![CDATA[test_routine]]></Name>
-					<X>-150</X><Y>200</Y>
+					<X>-150</X><Y>240</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10431,12 +10446,13 @@ for (int i=0; i < people.size(); i++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1345732499800</Id>
 					<Name><![CDATA[output_person_open]]></Name>
-					<X>-310</X><Y>20</Y>
+					<X>-310</X><Y>60</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if (get_Main ().output_population_snapshots) {
+					<Body><![CDATA[/*
+if (get_Main ().output_population_snapshots) {
 	outfile_person_writer_count++;
 	NumberFormat format = new java.text.DecimalFormat ("00000");
 	String suffix = format.format (outfile_person_writer_count);
@@ -10446,34 +10462,54 @@ for (int i=0; i < people.size(); i++) {
 	outfile_person_writer =
 		Main.modelIO.getModelOutputWriter (fileName, append, compress);
 }	
-]]></Body>
+*/]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1345732509669</Id>
 					<Name><![CDATA[output_person_close]]></Name>
-					<X>-310</X><Y>60</Y>
+					<X>-310</X><Y>100</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if (get_Main ().output_population_snapshots) {
+					<Body><![CDATA[/*
+if (get_Main ().output_population_snapshots) {
     Main.modelIO.closeWriter (outfile_person_writer);
 }
-]]></Body>
+*/]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1345732512733</Id>
 					<Name><![CDATA[output_person_data]]></Name>
-					<X>-310</X><Y>40</Y>
+					<X>-310</X><Y>80</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if (get_Main ().output_population_snapshots && time () > outfile_person_min_age) {
+					<Body><![CDATA[/*
+if (get_Main ().output_population_snapshots && time () > outfile_person_min_age) {
 	Main.modelIO.writePeople (people.iterator (), outfile_person_writer);
 }
+*/
+
+int year = (int)time ();
+if (get_Main ().output_population_snapshots && 
+    year > outfile_person_min_age)
+{
+	//Main.modelIO.writePeople (people.iterator (), outfile_person_writer);
+
+	//outfile_person_writer_count++;
+	NumberFormat format = new java.text.DecimalFormat ("00000");
+	String suffix = format.format (year);
+	String outputDir = get_Main ().output_dir;
+	String fileName = File.separator + "person." + suffix;
+	boolean compress = get_Main().output_population_snapshots_compress;
+	boolean append = false;
+	Main.modelIO.writePeople (people.iterator (), outputDir, fileName);
+} 
+
 ]]></Body>
 				</Function>
 			</Functions>
@@ -10586,8 +10622,6 @@ for (int i=0; i < people.size(); i++) {
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
 			<SamplesToKeep>100</SamplesToKeep>
-			<LimitNumberOfArrayElements>false</LimitNumberOfArrayElements>
-			<ElementsLimitValue>100</ElementsLimitValue>
 			<MakeDefaultViewArea>true</MakeDefaultViewArea>
 			<SceneGridColor/>
 			<SceneBackgroundColor/>
@@ -10656,7 +10690,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[name]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10678,7 +10712,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[routine_start]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10700,7 +10734,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[routine_end]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10722,7 +10756,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[routine_freq]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10744,7 +10778,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[specificity]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10766,7 +10800,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[sensitivity_polyp1]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10788,7 +10822,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[sensitivity_polyp2]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10810,7 +10844,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[sensitivity_polyp3]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10832,7 +10866,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[sensitivity_cancer]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10854,7 +10888,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[cost]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10876,7 +10910,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[proportion]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10898,7 +10932,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[have_model]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10920,7 +10954,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[proportion_lethal]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10942,7 +10976,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[proportion_perforation]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10964,7 +10998,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[cost_perforation]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -10986,7 +11020,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[compliance_rate_given_prev_compliant]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -11008,7 +11042,7 @@ for (int i=0; i < people.size(); i++) {
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[compliance_rate_given_not_prev_compliant]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -11035,7 +11069,7 @@ This is used to calculate continuing, rather than initial compliance.
 							<Id>1354823004756</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_compliance_rate_given_prev_compliant]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -11062,7 +11096,7 @@ This is used to calculate continuing, rather than initial compliance.
 							<Id>1354823004774</Id>
 							<Name><![CDATA[]]></Name>
 							<Label><![CDATA[test_compliance_rate_given_not_prev_compliant]]></Label>
-							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -11106,8 +11140,6 @@ This is used to calculate continuing, rather than initial compliance.
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
 			<SamplesToKeep>100</SamplesToKeep>
-			<LimitNumberOfArrayElements>false</LimitNumberOfArrayElements>
-			<ElementsLimitValue>100</ElementsLimitValue>
 			<MakeDefaultViewArea>true</MakeDefaultViewArea>
 			<SceneGridColor/>
 			<SceneBackgroundColor/>
@@ -11949,7 +11981,7 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[output_population_snapshots_compress]]></ParameterName>
-					<ParameterValue><![CDATA[null]]></ParameterValue>
+					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[intervention_compliance_rate]]></ParameterName>
@@ -13277,7 +13309,7 @@ import java.util.concurrent.Future;
 			<Code><![CDATA[/**
  * Configure the population scenario to execute.
  */
-execute_populations_parallel (100);
+execute_populations_parallel (1); //00);
 ]]></Code>
 			<AdditionalClassCode><![CDATA[private List<Outcomes> _outcomes = null;
 private Executor _executor = new Executor ();
@@ -13285,6 +13317,7 @@ private static final String CONTROL = "control";
 static int outcomesIndex = 0;
 
 private String outputDirectory = "out"; //"\\\\ad.renci.org\\Projects\\systemsscience\\out";
+//private String outputDirectory = "\\\\ad.renci.org\\Projects\\systemsscience\\out";
 
 /**
  * Execute the model for a set of populations in parallel.
@@ -13399,6 +13432,10 @@ private synchronized void addReplicationOutcomes (String scenario,
 												  Main root,
 												  HashMap<String,Outcomes> results)
 {
+System.out.println ("scenario: " + scenario);
+System.out.println ("root: " + root);
+System.out.println ("results: " + results);
+System.out.println ("root.population: " + root.population);
 	Outcomes outcomes = results.get (scenario);
 	if (outcomes == null) {
 		outcomes = new Outcomes (scenario);
@@ -13502,7 +13539,6 @@ private Main initialize (Main root, int replication) {
 			seed += replication * 10000;
 			root.getEngine().getDefaultRandomGenerator().setSeed(seed);
 
-			System.out.println ("\nset seed: " + seed);
 			foundSeed = true;
 		}
 		//traceln (args [i]);
@@ -13517,7 +13553,6 @@ private Main initialize (Main root, int replication) {
 	Main.modelIO.configureModel (root, args, skip);
 
 	root.getEngine().getDefaultRandomGenerator().setSeed (seed);
-	System.out.println ("\nREAL seed: " + seed);
 
 	return root;
 }
@@ -13573,6 +13608,7 @@ class ModelRunner implements Runnable {
 		root.outfile_replication_name = root.outfile_replication_name + "." + replication;
 
 		synchronized (ModelRunner.class) {
+		// This appears to workaround an occasional deadlock in the classloader in some vms.
 	    	root.getEngine().start (root);
 	    }
 		root.getEngine().runFast ();

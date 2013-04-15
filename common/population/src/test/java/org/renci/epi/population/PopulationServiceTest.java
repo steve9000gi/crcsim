@@ -37,6 +37,15 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
     private static Log logger = LogFactory.getLog (PopulationServiceTest.class); 
     private DataLocator _dataLocator = new DataLocator ();
 
+    private static char inputSeparator   = '|';
+    private static char outputSeparator  = '\t';
+    private static String [] outputKeys  = {
+	"sex", "race", "SEXC", "INCOME", "FRISK", "VITALE", "AGE_G2",
+	"AGE_G3", "AGE_G4", "FLU", "BLACK", "HISP", "OTHER", "FORMER",
+	"NEVER", "ALONE", "MW", "SO", "WE", "USUAL", "NOINS",
+	"PRIVA", "EDU", "id", "p_id", "LAT", "LON", "county", "stcotrbg"
+    };
+
     static {
 	BasicConfigurator.configure ();
 	Logger.getRootLogger().setLevel (Level.ERROR);
@@ -45,30 +54,26 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
     @Autowired
     protected PopulationService populationService;
 
-
+    /*
     @Test
     public void testModelInputCompiler () throws Exception {
-	
-	//BasicConfigurator.configure ();
-	//Logger.getRootLogger().setLevel (Level.DEBUG);
-	//Logger.getRootLogger().setLevel (Level.ERROR);
-  
-	char inputSeparator   = '|';
-	char outputSeparator  = '\t';
-	String [] outputKeys  = {
-	    "sex", "race", "SEXC", "INCOME", "FRISK", "VITALE", "AGE_G2",
-	    "AGE_G3", "AGE_G4", "FLU", "BLACK", "HISP", "OTHER", "FORMER",
-	    "NEVER", "ALONE", "MW", "SO", "WE", "USUAL", "NOINS",
-	    "PRIVA", "EDU", "id", "p_id", "LAT", "LON"
-	};
 	Assert.assertTrue (this.populationService != null);
-
 	this.populationService.compileModelInput (inputSeparator,
 						  outputSeparator,
 						  outputKeys);
+    }
+    */
+
+    @Test
+    public void testModelMultipleInputCompiler () throws Exception {
+	Assert.assertTrue (this.populationService != null);
 	/*
+	this.populationService.compileMultipleModelInputs (inputSeparator,
+							  outputSeparator,
+							  outputKeys);
 	*/
     }
+
     /*
     */
 
@@ -76,19 +81,12 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
     public void testGetPopulation () throws Exception {
 	this.populationService.getPopulation (new String [] { "0" });
     }
-    /*
-    @Test
-    public void testGeocodePopulation () throws Exception {
-	String polygonFileName = populationService.getDataLocator().getCountyPolygonFileName ();
-	this.populationService.geocodePopulation (polygonFileName);
-    }
-    */
 }
 
 
 
 
-
+/*
 class DataLocator {
     private String _dataRoot =
 	StringUtils.join (new String [] { "",
@@ -126,3 +124,4 @@ class DataLocator {
     }
 
 }
+*/

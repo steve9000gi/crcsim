@@ -21,21 +21,8 @@ public class PopulationMain {
 
     public static final ApplicationContext getApplicationContext() {
 	if (appCtx == null) {
-
-	    try {
-
-		ClassLoader cl = ClassLoader.getSystemClassLoader ();
- 
-
-		java.io.InputStream i = PopulationMain.class.getClassLoader().getResourceAsStream ("spring/population-context.xml");
-		System.out.println ("i --------> " + i);
-
-		System.out.println ("++++++++ pwd: " + new java.io.File(".").getCanonicalPath ());
-	    } catch (Exception e) {
-		e.printStackTrace ();
-	    }
 	    appCtx = new ClassPathXmlApplicationContext ( new String [] {
-		    "/spring/population-context.xml"
+		    "spring/population-context.xml"
 		});
 	}
         return appCtx;
@@ -51,7 +38,7 @@ public class PopulationMain {
 	    "sex", "race", "SEXC", "INCOME", "FRISK", "VITALE", "AGE_G2",
 	    "AGE_G3", "AGE_G4", "FLU", "BLACK", "HISP", "OTHER", "FORMER",
 	    "NEVER", "ALONE", "MW", "SO", "WE", "USUAL", "NOINS",
-	    "PRIVA", "EDU", "id", "LAT", "LON"
+	    "PRIVA", "EDU", "id", "LAT", "LON", "stcotrbg"
 	};
 
 	PopulationService populationService =

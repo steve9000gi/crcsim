@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#set -x
+set -x
 #set -e
 
 ###################################################################
@@ -44,8 +44,8 @@
 
 configure_system () {    
     APP_HOME=/cygdrive/c/scox/dev/  # blueridge largemem
-    APP_HOME=/cygdrive/c/dev       # x301
     APP_HOME=~/dev/                 # scox.europa.renci.org
+    APP_HOME=/cygdrive/c/dev       # x301
 
     DATA_HOME=$APP_HOME/var/crcsim
     synth_data_home=$APP_HOME/var/crcsim/rti/syntheticpopulation/
@@ -127,7 +127,7 @@ import_tables () {
 }
 
 export_data () {
-    echo "people.p_id|people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
+    echo "people.p_id|people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|households.stcotrbg|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
     execute_sql "
   select people.p_id,
          people.sex,
@@ -137,6 +137,7 @@ export_data () {
          households.hh_size,
          households.latitude,
          households.longitude,
+         households.stcotrbg,
          pumsp.hisp,
          pumsp.schl,
          pumsp.semp,
@@ -152,7 +153,7 @@ export_data () {
 
 export_data_by_age () {
     local AGE=$1
-    echo "people.p_id|people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
+    echo "people.p_id|people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|households.stcotrbg|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
     execute_sql "
   select people.p_id,
          people.sex,
@@ -162,6 +163,7 @@ export_data_by_age () {
          households.hh_size,
          households.latitude,
          households.longitude,
+         households.stcotrbg,
          pumsp.hisp,
          pumsp.schl,
          pumsp.semp,
@@ -175,6 +177,8 @@ export_data_by_age () {
     and people.pernum   == pumsp.sporder;
 " 
 }
+
+#  where stcotrbg like '37193%';
 
 install_data () {
     mkdir -p $APP_HOME/var/crcsim
@@ -261,6 +265,7 @@ main () {
 		    rm -rf $DATA_HOME
 		    ;;
 		*)
+		    echo unknown argument $arg 
 		    usage 
 		    ;;
 	    esac

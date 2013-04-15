@@ -96,15 +96,22 @@ public class PopulationServiceImpl implements PopulationService {
 	CSVProcessor syntheticPopulation = null;
 	int c = 0;
 	File [] inputFiles = getDataLocator().getSyntheticPopulationExports ();
-	if (inputFiles != null) {
-	    for (File inputFile : inputFiles) {
-		File outputFile = new File (getDataLocator().getModelInputFileName ("population.tsv." + c++));
-		this.createModelInput (inputSeparator,
-				       outputSeparator,
-				       outputKeys,
-				       inputFile,
-				       outputFile);
+	try {
+	    if (inputFiles != null) {
+		for (File inputFile : inputFiles) {
+		    String extension = StringUtils.substringAfter (inputFile.getPath (), ".");
+		    File outputFile = new File (getDataLocator().getModelInputFileName ("population.tsv." + extension));
+		    System.out.println ("input: " + inputFile.getCanonicalPath ());
+		    System.out.println ("output: " + outputFile.getCanonicalPath ());
+		    this.createModelInput (inputSeparator,
+					   outputSeparator,
+					   outputKeys,
+					   inputFile,
+					   outputFile);
+		}
 	    }
+	} catch (IOException e) {
+	    throw new RuntimeException (e);
 	}
     }
 
