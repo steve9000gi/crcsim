@@ -49,25 +49,29 @@ EpiMap.prototype.setTitle = function (title) {
 EpiMap.prototype.initializeMap = function (map, scenario) {
 
     var path = "resources/" + scenario + "-occurrences.json";
+    console.log (path);
     //$.getJSON ("resources/occurrences.json", function (occurrences) {
     $.getJSON (path, function (occurrences) {
 	    map.setTitle (occurrences.title);
 	    map.setOccurrences (occurrences);
+	}).
+    fail (function () {
+	    console.log ("--fail:");
 	});
 };
 // render the next frame.
 EpiMap.prototype.renderFrame = function (frame) {
-    if (frame < this.occurrences.counts.length) {
+    if (this.occurrences != null && frame < this.occurrences.counts.length) {
 	for (var c = 0; c < this.polygons.length; c++) {
 	    var polygon = this.polygons [c];
 	    var value = this.occurrences.counts [frame][polygon.index];
 	    var fillColor = this.gradient.colorAt (value);
+	    console.log ('color: ' + fillColor + ' value: ' + value);
 	    polygon.polygon.setStyle ({
-		    fillColor    : fillColor,
+		    fillColor    : '#' + fillColor,
 			fillOpacity  : 0.4,
 			strokeWeight : 0.1
 			});
-
 	    this.setTitle (this.occurrences.title + "  - " + frame);
 	}
     }
@@ -82,7 +86,6 @@ EpiMap.prototype.drawPolygon = function (polygon, value, plugin) {
 	    return a.index - b.index;
 	});
 };
-
 
 
 
@@ -123,6 +126,7 @@ EpiMapLeafletPlugin.prototype.createPolygon = function (polygon, count, gradient
 	coordinates.push ([ point [1], point [0] ]);
     }
     var fillColor = gradient.colorAt (count);
+    console.log ('color: ' + fillColor + ' value: ' + count);
     var vPolygon = 
     L.polygon (coordinates).
     addTo (this.map).
@@ -336,8 +340,14 @@ EpiController.prototype.initializeMaps = function (count) {
 		      "crc-intervention01",
 		      "colonosc-control",
 		      "colonosc-intervention01" ];
+    var scenarios = [ "crc-0035.control",
+		      "crc-intervention.0012",
+		      "colonoscopy-0035.control",
+		      "colonoscopy-intervention.0012" ];
     for (var c = 0; c < count; c++) {
 	var scenario = scenarios [c];
+
+	scenario = 'prod/' + scenario;
 	epiController.addMap (scenario);
     }
 };
@@ -406,7 +416,7 @@ EpiController.prototype.renderFrame = function () {
 	value : epiController.frame + 1
     });
     var occurrences = null;
-    for (var c = 0; c < epiController.maps.length; c++) {	
+    for (var c = 0; c < epiController.maps.length; c++) {
 	var map = epiController.maps [c];
 	occurrences = map.occurrences
 	map.renderFrame (epiController.frame);
