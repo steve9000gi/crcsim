@@ -75,6 +75,7 @@ EpiMap.prototype.initializeMap = function (map) {
 	
     });
 };
+alert ('hi');
 // render the next frame.
 EpiMap.prototype.nextFrame = function (map, index) {
     var controller = epiController;
@@ -96,7 +97,7 @@ EpiMap.prototype.nextFrame = function (map, index) {
 // get the color from the calculated gradient associated with the value.
 EpiMap.prototype.getColorForValue = function (epiMap, value) {
     var color = '#' + epiMap.gradient.colorAt (value);
-    //console.log ('color: ' + value + " " + color);
+    console.log ('color: ' + value + " " + color);
     return color;
 };
 // process a polygon
