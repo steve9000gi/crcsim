@@ -117,6 +117,7 @@ public class ModelIO {
 	    logger.debug ("writing " + fileName);
 	    writer = getModelOutputWriterInternal (fileName, !overwrite, compress);
 	    if (overwrite) {
+		/*
 		String text = StringUtils.join (new String [] {
 			"description",
 			"person",
@@ -126,6 +127,7 @@ public class ModelIO {
 		    }, '\t');
 		writer.write (text);
 		writer.write ("\r\n");
+		*/
 	    }
 	} catch (IOException e) {
 	    throw new RuntimeException (e);
