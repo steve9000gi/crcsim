@@ -1,5 +1,12 @@
+# generate and submit run jobs
+
+./geo.py --snapshotDB=/projects/systemsscience/test --output=/projects/systemsscience/testprod --shapefile=/projects/systemsscience/var/census2010/tl_2010_37_county10.shp --loglevel=debug
+
+# remove existing outputs
+
 rm /projects/systemsscience/testprod/*
 run/job/job-0000.sh 
+
 
 ./geo.py --count --output /projects/systemsscience/testprod/ --loglevel debug
 
