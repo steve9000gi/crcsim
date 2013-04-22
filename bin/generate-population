@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -x
-#set -e
+set -e
 
 ###################################################################
 ###################################################################
@@ -44,8 +44,8 @@ set -x
 
 configure_system () {    
     APP_HOME=/cygdrive/c/scox/dev/  # blueridge largemem
-    APP_HOME=~/dev/                 # scox.europa.renci.org
     APP_HOME=/cygdrive/c/dev       # x301
+    APP_HOME=~/dev/                 # scox.europa.renci.org
 
     DATA_HOME=$APP_HOME/var/crcsim
     synth_data_home=$APP_HOME/var/crcsim/rti/syntheticpopulation/
@@ -56,7 +56,8 @@ configure_system () {
     input_files="
 2005_2009_ver1_37_synth_people.txt 
 2005_2009_ver1_37_synth_households.txt 
-2005_2009_ver1_37_pums_p.txt"
+2005_2009_ver1_37_pums_p.txt
+synth_hh_2005_2009_v1_NC_tsv_zipcode.txt"
     unset subset
     unset tables
     unset cygwin    
@@ -79,7 +80,10 @@ SQL_ENTRY_TAG_1
 
 drop_tables () {
     for table in $*; do
-	execute_sql "drop table $table;"
+	exists=$( execute_sql "SELECT name FROM sqlite_master WHERE type='table' and name = '$table';" )
+	if [ ! -z "$exists" ]; then
+	    execute_sql "drop table $table;"
+	fi
     done
 }
 
@@ -118,7 +122,8 @@ import_tables () {
 	table="$table:${synth_data_home}/$file"
 	tables="$tables $table"
     done
-    drop_tables people households pumsp
+
+    drop_tables people households pumsp zipcode
     for table in $tables; do
 	input=$(echo $table | sed -e "s,:, ," | awk '{ print $2 }')
 	table=$(echo $table | sed -e "s,:, ," | awk '{ print $1 }')
@@ -153,7 +158,7 @@ export_data () {
 
 export_data_by_age () {
     local AGE=$1
-    echo "people.p_id|people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|households.stcotrbg|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
+    echo "people.p_id|people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|zipcode.zipcode|households.stcotrbg|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
     execute_sql "
   select people.p_id,
          people.sex,
@@ -163,6 +168,7 @@ export_data_by_age () {
          households.hh_size,
          households.latitude,
          households.longitude,
+         zipcode.zipcode,
          households.stcotrbg,
          pumsp.hisp,
          pumsp.schl,
@@ -170,8 +176,11 @@ export_data_by_age () {
          pumsp.rac1p
   from people,
        households,
-       pumsp
+       pumsp,
+       zipcode
   where people.age      == '${AGE}'
+    and zipcode.hh_id   == households.hh_id
+    and people.hh_id    == zipcode.hh_id
     and people.hh_id    == households.hh_id
     and people.serialno == pumsp.serialno
     and people.pernum   == pumsp.sporder;

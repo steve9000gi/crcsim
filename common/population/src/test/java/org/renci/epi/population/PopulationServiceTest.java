@@ -43,7 +43,7 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
 	"sex", "race", "SEXC", "INCOME", "FRISK", "VITALE", "AGE_G2",
 	"AGE_G3", "AGE_G4", "FLU", "BLACK", "HISP", "OTHER", "FORMER",
 	"NEVER", "ALONE", "MW", "SO", "WE", "USUAL", "NOINS",
-	"PRIVA", "EDU", "id", "p_id", "LAT", "LON", "county", "stcotrbg"
+	"PRIVA", "EDU", "id", "p_id", "LAT", "LON", "county", "stcotrbg", "zipcode"
     };
 
     static {
@@ -67,11 +67,11 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void testModelMultipleInputCompiler () throws Exception {
 	Assert.assertTrue (this.populationService != null);
-	/*
+
 	this.populationService.compileMultipleModelInputs (inputSeparator,
 							  outputSeparator,
 							  outputKeys);
-	*/
+
     }
 
     /*

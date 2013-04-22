@@ -162,6 +162,9 @@ class SynthPopAnnotationProcessor implements Processor {
 	/** State and county FIPS codes **/
 	record.put ("stcotrbg", record.get ("households.stcotrbg"));
 
+	/** Zip codes **/
+	record.put ("zipcode", record.get ("zipcode.zipcode"));
+
 	/** Everyone's in North Carolina, therefore in the South. */
 	record.put ("SO", "1");
 	record.put ("MW", "0");
