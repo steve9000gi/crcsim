@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#PBS -q serial
+#PBS -A scox
+#PBS -l nodes=1:ppn=${processors}
+#PBS -l pmem=1gb
+#PBS -l walltime=18:00:00
+#PBS -e ${log}/${job_id}-error.txt
+#PBS -o ${log}/${job_id}-output.txt
+
+app=/home/scox/dev/crcsim
+
+set -e
+set -x
+
+cd $$app
+source venv/bin/activate
+
+inputs="${inputs}"
+
+db=${snapshot_db}
+out=${output_dir}
+shapes=${shapefile}
+
+for input in $$inputs; do
+   bin/geo.py --snapshotDB $$db --output $$out --shapefile $$shapes --input $$input --loglevel debug
+done
+
+exit 0

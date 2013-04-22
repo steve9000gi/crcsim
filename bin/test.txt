@@ -1,0 +1,6 @@
+rm /projects/systemsscience/testprod/*
+run/job/job-0000.sh 
+
+./geo.py --count --output /projects/systemsscience/testprod/ --loglevel debug
+
+for f in $( find /projects/systemsscience/testprod/ -name "*son" -print ); do echo $f; egrep -v "\[|\]|\{|\}|0" $f; done 

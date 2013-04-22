@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+set -x
+
+echo launching jobs
+for job in ${job_dir}/job*.sh; do
+   echo launching $$job
+   qsub $$job
+#   break
+done
+
+exit 0
+
