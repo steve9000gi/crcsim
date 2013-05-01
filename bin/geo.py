@@ -6,8 +6,8 @@ import fnmatch
 import glob
 import json
 import logging
-import matplotlib.nxutils as nx
-import multiprocessing
+#import matplotlib.nxutils as nx
+#import multiprocessing
 import numpy
 import os
 import pp
@@ -83,8 +83,6 @@ class DataImporter (object):
         coordinates = []
         for metric in self.query:
             query = self.query [metric]
-            print "Query metric: %s" % metric
-            print fips_county_map
             for idx, county_code in enumerate (fips_county_map):
                 formatted_query = query.format (county_code)
                 self.cur.execute (formatted_query)
@@ -270,6 +268,10 @@ def crunch (output_dir, polygon_count):
                 scenario = scenario.split ('.')[1]
                 counter = get_counter (counters, metric, scenario, polygon_count)
                 count = int(count)
+
+                #logger.debug ("metric: %s scenario: %s timeslice: %s county: %s polygon: %s count: %s",
+                #              metric, scenario, timeslice, county_code, polygon_id, count)
+
                 if count > 0:
                     polygon_id = int(polygon_id)-1
                     timeslice = int(timeslice)
@@ -366,7 +368,7 @@ class Geocoder (object):
                     }
                 file_name = os.path.join (output_dir, "polygon-{0:03d}.json".format (polygon_count))
                 write_json_object (file_name, obj)
-                polygon_list.append (file_name)
+                polygon_list.append (os.path.basename (file_name))
         obj = { 'index' : polygon_list }
         file_name = os.path.join (output_dir, "polygon-index.json")
         write_json_object (file_name, obj)
@@ -383,6 +385,7 @@ def form_output_select_file_path (output_dir, file_name):
 def archive (output_dir, archive_name = "out.tar.gz"):
     ''' Archive and remove the output files. '''
     logger.info ("Creating output archive: %s", archive_name)
+
     with tarfile.open (archive_name, "w:gz") as archive:
         pattern = os.path.join (output_dir, "*.json")
         files = glob.glob (pattern)
@@ -390,8 +393,28 @@ def archive (output_dir, archive_name = "out.tar.gz"):
             basename = os.path.basename (output)
             logger.debug ("   archive + %s => %s", output, basename)
             archive.add (output, arcname = basename)
+
+
+            '''
+    archive = None
+    try:
+        archive = tarfile.open (archive_name, "w:gz")
+        pattern = os.path.join (output_dir, "*.json")
+        files = glob.glob (pattern)
+        for output in files:
+            basename = os.path.basename (output)
+            logger.debug ("   archive + %s => %s", output, basename)
+            archive.add (output, arcname = basename)
+    finally:
+        if archive:
+            archive.close ()
+            '''
+
+
+        '''
         for output in files:
             os.remove (output)
+            '''
 
 def signal_handler (signum, frame):
     logger.info ('Signal handler called with signal: %s', signum)
@@ -508,7 +531,7 @@ def main ():
     parameters.snapshotDB = args.snapshotDB
     parameters.input = args.input
     parameters.output = args.output
-    parameters.count = args.select
+    parameters.select = args.select
     parameters.count = args.count
     parameters.database = args.database
     parameters.loglevel = args.loglevel
