@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#set -x
+set -e
+
+snapshotdb=/projects/systemsscience/archive/pop0/out/
+outputdir=/projects/systemsscience/prod
+shapefile=/projects/systemsscience/var/census2010/tl_2010_37_county10.shp
+loglevel=debug
+
+snapshotdb=/projects/systemsscience/test
+outputdir=/projects/systemsscience/testout
+
+./geo.py --select                 \
+         --snapshotDB=$snapshotdb \
+         --output=$outputdir      \
+         --shapefile=$shapefile   \
+         --loglevel=$loglevel
+
+while [ "$( qstat -u $USER | grep -c 'job-' )" -gt 0 ]; do
+    echo waiting
+    sleep 10      
+done
+
+./geo.py --count                  \
+         --snapshotDB=$snapshotdb \
+         --output=$outputdir      \
+         --shapefile=$shapefile   \
+         --loglevel=$loglevel
+
+./geo.py --archive                \
+         --snapshotDB=$snapshotdb \
+         --output=$outputdir      \
+         --loglevel=$loglevel
+
+egrep "[0-9]+" $outputdir/*occur* \
+    | egrep -v "0,"               \
+    | egrep -v "0$"               \
+    | sed s/,//                   \
+    | grep -v "^$"                \
+    | awk '{ print $2 }'          \
+    | awk 'BEGIN { n = 0 } { n += $1 } END { print n }'
+
+exit 0
