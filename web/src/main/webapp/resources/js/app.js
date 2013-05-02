@@ -1,3 +1,4 @@
+
 var epiController = null;
 
 // Array Remove - By John Resig (MIT Licensed)
@@ -33,12 +34,16 @@ function EpiMap (divId, plugin, scenario) {
 // set the matrix of occurrences. this is a list of frames per observation with values per polygon.
 EpiMap.prototype.setOccurrences = function (occurrences) {
     this.occurrences = occurrences;
+
+    // TODO: figure out max in a better way...
     var max = 0;
     var endpoint = this.occurrences.counts [this.occurrences.counts.length - 1];
     for (var c = 0; c < endpoint.length; c++) {
 	var value = endpoint [c];
 	max = Math.max (value, max);
     }
+
+    max=4000;
     this.gradient.setNumberRange (0, max);
     this.gradient.setSpectrum ('blue', 'green', '#33FF33', 'yellow', '#FF0000', 'red');
 };
@@ -52,7 +57,8 @@ EpiMap.prototype.initializeMap = function (map, scenario) {
     console.log (path);
     //$.getJSON ("resources/occurrences.json", function (occurrences) {
     $.getJSON (path, function (occurrences) {
-	    map.setTitle (occurrences.title);
+	    occurrences ['title'] = scenario;
+	    map.setTitle (scenario); //occurrences.title);
 	    map.setOccurrences (occurrences);
 	}).
     fail (function () {
@@ -64,15 +70,18 @@ EpiMap.prototype.renderFrame = function (frame) {
     if (this.occurrences != null && frame < this.occurrences.counts.length) {
 	for (var c = 0; c < this.polygons.length; c++) {
 	    var polygon = this.polygons [c];
-	    var value = this.occurrences.counts [frame][polygon.index];
+	    //var value = this.occurrences.counts [frame][polygon.index];
+	    var value = this.occurrences.counts [polygon.index][frame];
 	    var fillColor = this.gradient.colorAt (value);
-	    console.log ('color: ' + fillColor + ' value: ' + value);
+	    //console.log ('color: ' + fillColor + ' value: ' + value);
 	    polygon.polygon.setStyle ({
 		    fillColor    : '#' + fillColor,
 			fillOpacity  : 0.4,
 			strokeWeight : 0.1
 			});
-	    this.setTitle (this.occurrences.title + "  - " + frame);
+	    //this.setTitle (this.occurrences.title + "  - " + frame);
+	    this.setTitle (this.occurrences['title'] + "  - " + frame);
+	    //console.log ('-> ' + this.occurrences ['title']);
 	}
     }
 };
@@ -126,7 +135,7 @@ EpiMapLeafletPlugin.prototype.createPolygon = function (polygon, count, gradient
 	coordinates.push ([ point [1], point [0] ]);
     }
     var fillColor = gradient.colorAt (count);
-    console.log ('color: ' + fillColor + ' value: ' + count);
+    //console.log ('color: ' + fillColor + ' value: ' + count);
     var vPolygon = 
     L.polygon (coordinates).
     addTo (this.map).
@@ -335,15 +344,20 @@ function EpiController () {
  * Initialize maps.
  *
  */
+EpiController.prototype.getScenarios = function (intervention) {
+    return [ "crc-control",
+	     "crc-" + intervention,
+	     "colonoscopy-control",
+	     "colonoscopy-" + intervention ];
+};
 EpiController.prototype.initializeMaps = function (count) {
+    /*
     var scenarios = [ "crc-control",
-		      "crc-intervention01",
-		      "colonosc-control",
-		      "colonosc-intervention01" ];
-    var scenarios = [ "crc-0035.control",
-		      "crc-intervention.0012",
-		      "colonoscopy-0035.control",
-		      "colonoscopy-intervention.0012" ];
+		      "crc-0012",
+		      "colonoscopy-control",
+		      "colonoscopy-0012" ];
+    */
+    var scenarios = this.getScenarios ('0006');
     for (var c = 0; c < count; c++) {
 	var scenario = scenarios [c];
 
@@ -351,6 +365,7 @@ EpiController.prototype.initializeMaps = function (count) {
 	epiController.addMap (scenario);
     }
 };
+
 /**
  *
  * Initialize maps.
@@ -358,10 +373,10 @@ EpiController.prototype.initializeMaps = function (count) {
  */
 EpiController.prototype.renderPolygons = function () {
     var polys = epiController.polygons;
-    $.getJSON ("resources/polygon-index.json", function (obj) {
+    $.getJSON ("resources/prod/polygon-index.json", function (obj) {
 	    for (var c = 0; c < obj.index.length; c++) {
 		var polygonName = obj.index [c];
-		$.getJSON ("resources/" + polygonName, function (polygon) {
+		$.getJSON ("resources/prod/" + polygonName, function (polygon) {
 			polys.push (polygon);
 			for (var k = 0; k < epiController.maps.length; k++) {
 			    var map = epiController.maps [k];
@@ -371,6 +386,7 @@ EpiController.prototype.renderPolygons = function () {
 	    }
 	});
 };
+
 /**
  *
  * Create a new plugin object.
@@ -379,6 +395,7 @@ EpiController.prototype.renderPolygons = function () {
 EpiController.prototype.createPlugin = function () {
     return new epiController.mapPlugins [epiController.mapPluginType] ();
 };
+
 /**
  *
  * Add a map.
@@ -395,7 +412,9 @@ EpiController.prototype.addMap = function (scenario) {
     pluginMap.createMap (mapId);
     var map = new EpiMap (mapId, pluginMap, scenario);
     epiController.maps.push (map);
+    map.setTitle (scenario);
 };
+
 /** 
  *
  * Animate the set of maps.
@@ -405,6 +424,7 @@ EpiController.prototype.animate = function () {
     epiController.frame = 35;
     epiController.animationHandle = setInterval (epiController.renderFrame, 500);
 };
+
 /**
  *
  * Render a frame in all maps.
