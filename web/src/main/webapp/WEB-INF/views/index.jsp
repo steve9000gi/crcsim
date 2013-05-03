@@ -14,6 +14,10 @@
     <div id="progress"></div>
     <div id="status"></div>
     <div id="maps"></div>
+    
+    <div id="interventionlabel">Select Intervention</div>
+    <select id="intervention"></select>
+
   </body>  
   <script type="text/javascript"
 	  src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB0s6Ao4hTmGq9qcVhuRZ2ecldLL_68Zd4&sensor=false&libraries=visualization"></script>

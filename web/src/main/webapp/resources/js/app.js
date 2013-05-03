@@ -18,6 +18,12 @@ function getURLParameter(name) {
         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
     );
 }
+// http://stackoverflow.com/questions/2998784/how-to-output-integers-with-leading-zeros-in-javascript
+function zeropad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
 
 /**
  *
@@ -38,7 +44,7 @@ function EpiMap (divId, plugin, scenario) {
 // set the matrix of occurrences. this is a list of frames per observation with values per polygon.
 EpiMap.prototype.setOccurrences = function (occurrences) {
     this.occurrences = occurrences;
-    var max = 20000;
+    var max = 40000;
     this.gradient.setNumberRange (0, max);
     this.gradient.setSpectrum ('blue', 'green', '#33FF33', 'yellow', '#FF0000', 'red');
 };
@@ -104,11 +110,11 @@ function EpiMapLeafletPlugin () {
 // create a leaflet map
 EpiMapLeafletPlugin.prototype.createMap = function (mapId) {
     this.map = L.map (mapId).setView ([ 35.0131, -79.9061], 6);
-    L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+    var layer = L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
 	attribution : [ 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> ',
 			' contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ',
 			' Imagery © <a href="http://cloudmade.com">CloudMade</a>' ].join (''),
-	maxZoom : 18
+	maxZoom : 18,
     }).addTo (this.map);
 };
 // create a polygon
@@ -314,7 +320,7 @@ function EpiController () {
     this.frame = 38;
     this.animationHandle = null;
 
-    $("#menu").click (this.animate);
+    $("#animate").click (this.animate);
     this.polygons = [];
 };
 /**
@@ -326,12 +332,13 @@ EpiController.prototype.getScenarios = function (intervention) {
     return [
 	{ name : 'crc-control',                 desc : 'Cancer Free Years (baseline)' },
 	{ name : 'crc-' + intervention,         desc : 'Cancer Free Years > 0.0 (' + intervention + ')' },
-	{ name : 'colonoscopy-control',         desc : 'Colonoscopies Performed (control)' },
+	{ name : 'colonoscopy-control',         desc : 'Colonoscopies Performed (baselnie)' },
 	{ name : 'colonoscopy-' + intervention, desc : 'Colonoscopies Performed (' + intervention + ')' }
     ]
 };
 EpiController.prototype.initializeMaps = function (count) {
-    var scenarios = this.getScenarios ('0006');
+    var interventionId = $('#intervention').val ();
+    var scenarios = this.getScenarios (interventionId);
     for (var c = 0; c < count; c++) {
 	epiController.addMap (scenarios [c]);
     }
@@ -421,6 +428,16 @@ EpiController.prototype.renderFrame = function () {
  *
  */
 function initialize() {
+
+    for (var c = 0; c < 13; c++) {
+	var value = zeropad (c, 4);
+	$('#intervention').append ( $('<option>', { 
+            value: value,
+            text : 'Intervention ' + value 
+	}));
+
+	//append ('<option value="' + value + '">' + value + '</option>');
+    }
     epiController = new EpiController ();
     epiController.initializeMaps (4);
     epiController.renderPolygons ();
