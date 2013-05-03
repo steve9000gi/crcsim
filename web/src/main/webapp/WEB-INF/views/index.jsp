@@ -9,7 +9,7 @@
   </head>
   <body>
     <div id="menu">
-      <div id="animate">Animate</div>
+      <button id="animate">Animate</button>
     </div>
     <div id="progress"></div>
     <div id="status"></div>

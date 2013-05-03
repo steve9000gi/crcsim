@@ -1,4 +1,3 @@
-
 var epiController = null;
 
 // Array Remove - By John Resig (MIT Licensed)
@@ -7,7 +6,12 @@ Array.prototype.remove = function(from, to) {
     this.length = from < 0 ? this.length + from : from;
     return this.push.apply(this, rest);
 };
-
+// http://stackoverflow.com/questions/646628/javascript-startswith
+if (typeof String.prototype.startsWith != 'function') {
+  String.prototype.startsWith = function (str){
+    return this.slice(0, str.length) == str;
+  };
+}
 // get url parameter
 function getURLParameter(name) {
     return decodeURI(
@@ -34,38 +38,32 @@ function EpiMap (divId, plugin, scenario) {
 // set the matrix of occurrences. this is a list of frames per observation with values per polygon.
 EpiMap.prototype.setOccurrences = function (occurrences) {
     this.occurrences = occurrences;
-
-    // TODO: figure out max in a better way...
-    var max = 0;
-    var endpoint = this.occurrences.counts [this.occurrences.counts.length - 1];
-    for (var c = 0; c < endpoint.length; c++) {
-	var value = endpoint [c];
-	max = Math.max (value, max);
-    }
-
-    max=4000;
+    var max = 20000;
     this.gradient.setNumberRange (0, max);
     this.gradient.setSpectrum ('blue', 'green', '#33FF33', 'yellow', '#FF0000', 'red');
 };
 EpiMap.prototype.setTitle = function (title) {
+    if (title.startsWith ('prod/')) {
+	title = title.substring (prefix.length - 1);
+    }
     $('#' + this.divId + '_title').html (title);
 };
-// initialize the map. load frame matrix, polygon index and render individual polygons.
+// Initialize the map. load frame matrix, polygon index and render individual polygons.
 EpiMap.prototype.initializeMap = function (map, scenario) {
 
-    var path = "resources/" + scenario + "-occurrences.json";
+    var path = "resources/prod/" + scenario.name + "-occurrences.json";
     console.log (path);
     //$.getJSON ("resources/occurrences.json", function (occurrences) {
     $.getJSON (path, function (occurrences) {
-	    occurrences ['title'] = scenario;
-	    map.setTitle (scenario); //occurrences.title);
+	    occurrences ['title'] = scenario.desc;
+	    map.setTitle (scenario.desc);
 	    map.setOccurrences (occurrences);
 	}).
     fail (function () {
 	    console.log ("--fail:");
 	});
 };
-// render the next frame.
+// Render the next frame.
 EpiMap.prototype.renderFrame = function (frame) {
     if (this.occurrences != null && frame < this.occurrences.counts.length) {
 	for (var c = 0; c < this.polygons.length; c++) {
@@ -85,7 +83,7 @@ EpiMap.prototype.renderFrame = function (frame) {
 	}
     }
 };
-// process a polygon
+// Process a polygon
 EpiMap.prototype.drawPolygon = function (polygon, value, plugin) {
     this.polygons.push ({
 	    polygon : plugin.createPolygon (polygon, value, this.gradient),
@@ -96,19 +94,6 @@ EpiMap.prototype.drawPolygon = function (polygon, value, plugin) {
 	});
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  *
  * Cloudmade Leaflet Plugin
@@ -118,8 +103,7 @@ function EpiMapLeafletPlugin () {
 }
 // create a leaflet map
 EpiMapLeafletPlugin.prototype.createMap = function (mapId) {
-    this.map = L.map (mapId).setView ([ 35.9131, -79.0561], 7);
-    //L.tileLayer('http://{s}.tile.cloudmade.com/d21d2ad31cfd4e589c5c8b2d0c6e91ad/997/256/{z}/{x}/{y}.png', {
+    this.map = L.map (mapId).setView ([ 35.0131, -79.9061], 6);
     L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
 	attribution : [ 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> ',
 			' contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ',
@@ -135,7 +119,6 @@ EpiMapLeafletPlugin.prototype.createPolygon = function (polygon, count, gradient
 	coordinates.push ([ point [1], point [0] ]);
     }
     var fillColor = gradient.colorAt (count);
-    //console.log ('color: ' + fillColor + ' value: ' + count);
     var vPolygon = 
     L.polygon (coordinates).
     addTo (this.map).
@@ -201,7 +184,6 @@ function GooglePolygon (polygon) {
 GooglePolygon.prototype.setStyle = function (style) {
     this.polygon.setOptions (style);
 };
-
 
 /**
  *
@@ -305,10 +287,6 @@ OpenLayersPolygonProxy.prototype.setStyle = function (style) {
     this.layer.drawFeature (this.feature, style);
 };
 
-
-
-
-
 /**
  * 
  * Control a set of maps.
@@ -333,7 +311,7 @@ function EpiController () {
     this.mapPluginType = mapType; //this.mapPlugins [mapType];
 
     this.maps = [];
-    this.frame = 35;
+    this.frame = 38;
     this.animationHandle = null;
 
     $("#menu").click (this.animate);
@@ -345,24 +323,17 @@ function EpiController () {
  *
  */
 EpiController.prototype.getScenarios = function (intervention) {
-    return [ "crc-control",
-	     "crc-" + intervention,
-	     "colonoscopy-control",
-	     "colonoscopy-" + intervention ];
+    return [
+	{ name : 'crc-control',                 desc : 'Cancer Free Years (baseline)' },
+	{ name : 'crc-' + intervention,         desc : 'Cancer Free Years > 0.0 (' + intervention + ')' },
+	{ name : 'colonoscopy-control',         desc : 'Colonoscopies Performed (control)' },
+	{ name : 'colonoscopy-' + intervention, desc : 'Colonoscopies Performed (' + intervention + ')' }
+    ]
 };
 EpiController.prototype.initializeMaps = function (count) {
-    /*
-    var scenarios = [ "crc-control",
-		      "crc-0012",
-		      "colonoscopy-control",
-		      "colonoscopy-0012" ];
-    */
     var scenarios = this.getScenarios ('0006');
     for (var c = 0; c < count; c++) {
-	var scenario = scenarios [c];
-
-	scenario = 'prod/' + scenario;
-	epiController.addMap (scenario);
+	epiController.addMap (scenarios [c]);
     }
 };
 
@@ -412,7 +383,7 @@ EpiController.prototype.addMap = function (scenario) {
     pluginMap.createMap (mapId);
     var map = new EpiMap (mapId, pluginMap, scenario);
     epiController.maps.push (map);
-    map.setTitle (scenario);
+    map.setTitle (scenario.desc);
 };
 
 /** 
@@ -421,7 +392,7 @@ EpiController.prototype.addMap = function (scenario) {
  *
  */
 EpiController.prototype.animate = function () {
-    epiController.frame = 35;
+    epiController.frame = 38;
     epiController.animationHandle = setInterval (epiController.renderFrame, 500);
 };
 
@@ -433,16 +404,14 @@ EpiController.prototype.animate = function () {
 EpiController.prototype.renderFrame = function () {
     $("#status").html (epiController.frame + "%");
     $("#progress").progressbar ({
-	value : epiController.frame + 1
+	value : epiController.frame
     });
-    var occurrences = null;
     for (var c = 0; c < epiController.maps.length; c++) {
 	var map = epiController.maps [c];
-	occurrences = map.occurrences
+	if (epiController.frame >= map.occurrences.counts.length - 1) {
+	    clearInterval (epiController.animationHandle);
+	}
 	map.renderFrame (epiController.frame);
-    }
-    if (epiController.frame > occurrences.counts.length) {
-	clearInterval (epiController.animationHandle);
     }
     epiController.frame++;
 };
