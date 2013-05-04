@@ -93,7 +93,7 @@ EpiMap.prototype.renderFrame = function (frame) {
 EpiMap.prototype.drawPolygon = function (polygon, value, plugin) {
     this.polygons.push ({
 	    polygon : plugin.createPolygon (polygon, value, this.gradient),
-	    index   : polygon.count
+	    index   : parseInt (polygon['id']) //polygon.count
 	});
     this.polygons.sort (function (a, b) {
 	    return a.index - b.index;
@@ -120,8 +120,9 @@ EpiMapLeafletPlugin.prototype.createMap = function (mapId) {
 // create a polygon
 EpiMapLeafletPlugin.prototype.createPolygon = function (polygon, count, gradient) {
     var coordinates = [];
-    for (var q = 0; q < polygon.points.length; q++) {
-	var point = polygon.points [q];
+    var points = polygon.geometry.coordinates[0];
+    for (var q = 0; q < points.length; q++) {
+	var point = points [q];
 	coordinates.push ([ point [1], point [0] ]);
     }
     var fillColor = gradient.colorAt (count);
