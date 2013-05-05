@@ -74,18 +74,18 @@ EpiMap.prototype.renderFrame = function (frame) {
     if (this.occurrences != null && frame < this.occurrences.counts.length) {
 	for (var c = 0; c < this.polygons.length; c++) {
 	    var polygon = this.polygons [c];
-	    //var value = this.occurrences.counts [frame][polygon.index];
 	    var value = this.occurrences.counts [polygon.index][frame];
+
+	    var polygonId = polygon.index + '';
+ 	    this.plugin.polygonValue [polygonId] = value;
+
 	    var fillColor = this.gradient.colorAt (value);
-	    //console.log ('color: ' + fillColor + ' value: ' + value);
 	    polygon.polygon.setStyle ({
 		    fillColor    : '#' + fillColor,
 			fillOpacity  : 0.4,
 			strokeWeight : 0.1
 			});
-	    //this.setTitle (this.occurrences.title + "  - " + frame);
 	    this.setTitle (this.occurrences['title'] + "  - " + frame);
-	    //console.log ('-> ' + this.occurrences ['title']);
 	}
     }
 };
@@ -115,27 +115,86 @@ EpiMapLeafletPlugin.prototype.createMap = function (mapId) {
 			' contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ',
 			' Imagery © <a href="http://cloudmade.com">CloudMade</a>' ].join (''),
 	maxZoom : 18,
-    }).addTo (this.map);
+	}).addTo (this.map);
+
+    /**
+     * geojson layer.
+     */
+    var popup = new L.Popup ();
+    var polygonIndex = 0;
+    var theMap = this.map;
+    var plugin = this;
+    this.featureLayer = L.geoJson (null,  {
+	    style : function (feature) {
+		return {
+		    "z-index"   : 10,
+		    strokeColor : "#ff0000" 
+		};
+	    },
+	    onEachFeature: function (feature, layer) {
+		(function (layer, feature) {
+		    layer.on ("mouseover", function (e) {
+			    //layer.setStyle(highlightStyle);
+			    var popup = $("<div></div>", {
+				    id: "popup-" + feature.properties.NAME10,
+				    css: {
+					position : "absolute",
+					bottom   : "5px",
+					left     : "10px",
+					zIndex   : 1002,
+					backgroundColor : "white",
+					padding  : "8px",
+					border   : "1px solid #ccc"
+				    }
+				});
+			    var info = [ 'County: ' + feature.properties.NAME10,
+					 'FIPS  : ' + feature.properties.COUNTYFP10,
+					 'Value : ' + plugin.polygonValue [feature.id] ].join (', ');
+
+			    var header = $("<div></div>", {
+				    text : info,
+				    css : {
+					fontSize     : "16px",
+					marginBottom : "3px"
+				    }
+				}).appendTo (popup);
+			    popup.appendTo ('#' + mapId); //"#map");
+			});
+		    layer.on ("mouseout", function (e) {
+			    //layer.setStyle(defaultStyle); 
+			    $("#popup-" + feature.properties.NAME10).remove ();
+			});
+		    // Close the "anonymous" wrapper function, and call it while passing
+		    // in the variables necessary to make the events work the way we want.
+		})(layer, feature);
+	    }
+	});
+    this.map.addLayer (this.featureLayer);
+
+    this.polygonValue = {};
 };
 // create a polygon
 EpiMapLeafletPlugin.prototype.createPolygon = function (polygon, count, gradient) {
     var coordinates = [];
-    var points = polygon.geometry.coordinates[0];
+    var points = polygon.geometry.coordinates [0];
     for (var q = 0; q < points.length; q++) {
 	var point = points [q];
 	coordinates.push ([ point [1], point [0] ]);
     }
     var fillColor = gradient.colorAt (count);
-    var vPolygon = 
-    L.polygon (coordinates).
+    var vPolygon = L.polygon (coordinates).
     addTo (this.map).
     setStyle ({
 	    fillColor     : fillColor,
+	    'z-index'       : 0,
 	    strokeColor   : "#111",
 	    strokeOpacity : 0.5,
 	    strokeWeight  : 0.1,
-	    fillOpacity   : 0.7
+	    fillOpacity   : 0.2
 	});
+
+    this.polygonValue [polygon.id] = count;
+
     return new LeafletPolygon (vPolygon);
 };
 // wrap a leaflet polygon
@@ -359,7 +418,9 @@ EpiController.prototype.renderPolygons = function () {
 			polys.push (polygon);
 			for (var k = 0; k < epiController.maps.length; k++) {
 			    var map = epiController.maps [k];
+			    // order matters here...
 			    map.drawPolygon (polygon, 0, map.plugin);
+			    map.plugin.featureLayer.addData (polygon);
 			}
 		    });
 	    }
