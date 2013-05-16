@@ -4872,6 +4872,7 @@ for (int i = 0; i < num_tests; i++) {
 
   fields = new_test_compliance_rate_given_prev_compliant.split(",");
   t.new_compliance_rate_given_prev_compliant = Double.parseDouble(fields[i]);
+  //System.out.println ("TEST-ncrgpc " + t.new_compliance_rate_given_prev_compliant);
   
   fields = new_test_compliance_rate_given_not_prev_compliant.split(",");
   t.new_compliance_rate_given_not_prev_compliant = Double.parseDouble(fields[i]);
@@ -5081,6 +5082,26 @@ catch (Exception e) {
     + "\t" + population.time_clin_to_dead.mean()
     + "\t" + population.polyp_prevalence_rate
     + "\t" + population.polyp_prevalence_rate_variance
+    
+    + "\t: " + population.people.average ("diagnostic_test_count")
+    + "\t" + population.people.sum("lifespan")
+    + "\t" + population.people.sum("discounted_lifespan")
+    + "\t" + population.people.sum("death_age")
+    + "\t" + population.people.sum("discounted_death_age")
+    + "\t" + -population.people.sum("lost_years")
+    + "\t" + -population.people.sum("discounted_lost_years")
+    + "\t" + population.people.sum("cancer_free_years")
+    + "\t" + population.people.sum("cost_routine")
+    + "\t" + population.people.sum("discounted_cost_routine")
+    + "\t" + population.people.sum("cost_diagnostic")
+    + "\t" + population.people.sum("discounted_cost_diagnostic")
+    + "\t" + population.people.sum("cost_surveillance")
+    + "\t" + population.people.sum("discounted_cost_surveillance")
+    + "\t" + population.people.sum("cost_treatment")
+    + "\t" + population.people.sum("discounted_cost_treatment")
+    + "\t" + population.people.sum("value_life")
+    + "\t" + (population.people.size () - population.dead_before_50)
+        
   );
 
   for (int j = 0; j <= NUM_CANCER_STAGES; j++) {
@@ -5122,7 +5143,7 @@ catch (Exception e) {
 					<Body><![CDATA[try {
   if (outfile_replication_overwrite) {
     outfile_replication_writer = new BufferedWriter(new FileWriter(output_dir + File.separator + outfile_replication_name));
-  
+       
     outfile_replication_writer.write(
                  "description"
         + "\t" + "date"
@@ -5162,6 +5183,26 @@ catch (Exception e) {
         + "\t" + "polyp_prevalence_rate_variance"
         + "\t" + "crc_incidence_rate"
         + "\t" + "crc_incidence_rate_variance"
+
+        + "\t" + "diagnostic_test_count_avg"
+        + "\t" + "lifeexp_t"
+        + "\t" + "discounted_lifeexp_t"
+        + "\t" + "lifeobs_t"
+        + "\t" + "discounted_lifeobs_t"
+        + "\t" + "lifelost_t"
+        + "\t" + "discounted_lifelost_t"
+        + "\t" + "crcfree_t"
+        + "\t" + "cost_routine_t"
+        + "\t" + "discounted_cost_routine_t"
+        + "\t" + "cost_diagnostic_t"
+        + "\t" + "discounted_cost_diagnostic_t"
+        + "\t" + "cost_surveillance_t"
+        + "\t" + "discounted_cost_surveillance_t"
+        + "\t" + "cost_treatment_t"
+        + "\t" + "discounted_cost_treatment_t"
+        + "\t" + "value_t"
+        + "\t" + "population_size_at_50"
+    
       );
 
     for (int i = 1; i <= NUM_CANCER_STAGES; i++) {
@@ -6029,6 +6070,30 @@ if (parameterSet != null) {
 						<Type><![CDATA[String]]></Type>        
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1366653907836</Id>
+					<Name><![CDATA[zipcode]]></Name>
+					<X>-210</X><Y>-60</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[String]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1368222583153</Id>
+					<Name><![CDATA[diagnostic_test_count]]></Name>
+					<X>-520</X><Y>-320</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
 				<Variable Class="Parameter">
 					<Id>1328041345823</Id>
 					<Name><![CDATA[sex_male]]></Name>
@@ -6787,6 +6852,11 @@ get_Population().tot_state_dead_crc++;
 // them to the Population-level lists.
 
 death_age = time();
+
+if (death_age < 50) {
+   get_Population().dead_before_50++;
+}
+
 lost_years = death_age - lifespan;
 
 discounted_lifespan = discount_age(lifespan);
@@ -8020,6 +8090,8 @@ else {
 
 // Add the costs to the appropriate cost totals.
 if (type.equals("routine")) {
+
+  diagnostic_test_count++;
   cost_routine += dollars;
   discounted_cost_routine += discounted_dollars;
 }
@@ -8087,7 +8159,7 @@ surveillance_test = get_Population().get_Main().test_set.get_test_by_name("Colon
 //   2) using directly specified probabilities for all tests
 //
 // The choice of method is determined by the parameter
-// get_Population().model_test_probability. In the case of method (2), we simply
+// get_Population().model_test_probabilityf. In the case of method (2), we simply
 // use the specified probabilities without adjustment. In the case of
 // method (1), however, we do the following:
 //
@@ -8527,8 +8599,6 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 		           
 	  // number of visits already completed.
       int routineVisitsCount = routine_compliance_history.size ();
-
-      // 
 	  int dynamicComplianceRateYearOffset =
 		  get_Population().get_Main().dynamic_compliance_rate_year_offset;	
 	  if (dynamicComplianceRateYearOffset > -1) {
@@ -8536,14 +8606,19 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 		  	  time () >= (get_Population().get_Main().death_rate_delay + 
 				 		  dynamicComplianceRateYearOffset);
 		  if (interventionActive) {
-
+		      compliance_prob = get_Population().get_Main().intervention_compliance_rate;
+		      System.out.print (compliance_prob + ".");
+		  }
+		  
+		  
+		  
+		  
+		  if (false) {
 			/*
 			 * If we've never calculated compliance probability for this person
 			 * and the intervention is active, we want their iniitial compliance rate
 			 * to use the value appropriate for the intervention.
-			 */	
-			
-			 /*
+			 */
 			if (routineVisitsCount == 0) {
 			   compliance_prob = test.new_compliance_rate_given_not_prev_compliant;
 			
@@ -8561,16 +8636,14 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
       					test.new_compliance_rate_given_not_prev_compliant : 
       					test.compliance_rate_given_not_prev_compliant;
 	      		}
-	      		
+	      		/*
 			    System.out.println ("**>> interv: " + interventionActive + " age: "
 			    					+ time () + " age_in_2007: " + 
 			  					    get_Population().get_Main().death_rate_delay + 
-			  					    ". compliance_prob: " + compliance_prob);
-			  					    
+			  					    ". compliance_prob: " + compliance_prob);			  					
+                */
 	  	  	}
-	  	  	*/
-	  	  	
-		  } 
+		 } 
 	  }
 	
 	
@@ -8641,7 +8714,7 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 	boolean interventionActive = false;
 	int dynamicComplianceRateYearOffset =
 		get_Population().get_Main().dynamic_compliance_rate_year_offset;	
-	System.out.println ("****** dcryo: " + dynamicComplianceRateYearOffset + " yeah: " + time ());
+	//	System.out.println ("****** dcryo: " + dynamicComplianceRateYearOffset + " yeah: " + time ());
 
 	if (dynamicComplianceRateYearOffset > -1) {
 		interventionActive =
@@ -9854,6 +9927,18 @@ import java.text.NumberFormat;]]></Import>
 						<Type><![CDATA[String]]></Type>        
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1368647733117</Id>
+					<Name><![CDATA[dead_before_50]]></Name>
+					<X>-130</X><Y>-80</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int]]></Type>        
+					</Properties>
+				</Variable>
 			</Variables>
 			<Functions>
 				<Function AccessType="default" StaticFunction="false">
@@ -10363,6 +10448,7 @@ for (int i=0; i<people.size(); i++) {
   		new org.renci.epi.util.DelimitedFileImporter (fileName,
   													  "\t",
   													  populationSize);
+	int populationSizeActual = 0;
   Iterator peopleIter = people.iterator();
   while (in.hasMoreRows()) {
     in.nextRow();
@@ -10393,7 +10479,16 @@ for (int i=0; i<people.size(); i++) {
 		System.out.println ("no lat/lon");
     }
     p.stcotrbg = in.getString ("stcotrbg");
+    p.zipcode = in.getString ("zipcode");
+    populationSizeActual++;
+	if (populationSizeActual >= populationSize) {
+       break;
+	}
   }
+
+  //System.out.println ("      PopulationSize: " + populationSize);
+  //System.out.println ("PopulationSizeActual: " + populationSizeActual);
+
 } catch (Exception e) {
 	e.printStackTrace ();
     error(e.getMessage());
@@ -13319,6 +13414,7 @@ import org.renci.epi.util.Executor;
 import org.renci.epi.util.ModelIO;
 import org.renci.epi.util.Outcomes;
 import java.util.concurrent.Future;
+import org.apache.commons.lang3.StringUtils;
 ]]></Import>
 			<Code><![CDATA[/**
  * Configure the population scenario to execute.
@@ -13338,8 +13434,18 @@ private String outputDirectory = "out";
 
 // For production runs.
 private String inputDirectory  = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\pop0\\pops";
-private String outputDirectory = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\pop0\\out";
+private String outputDirectory = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\pop0\\out2";
 
+private String experimentId = "000";
+
+private String formExperimentPath (String element) {
+	return StringUtils.join ( new String [] {
+	    "experiment",
+	    experimentId,
+	    element
+	    },
+	    File.separator);
+}
 /**
  * Execute the model for a set of populations in parallel.
  *   - Experiment parameters will be read from a file called experiment.txt
@@ -13354,7 +13460,8 @@ private String outputDirectory = "\\\\ad.renci.org\\projects\\systemsscience\\ar
 private void execute_populations_parallel (int replications) {
 
 	// Read parameters common to the entire experiment.
-	String experimentParameters = Main.modelIO.getFileAsString (new File ("experiment.txt"));
+	String experimentDefinition = formExperimentPath ("experiment.txt");
+	String experimentParameters = Main.modelIO.getFileAsString (new File (experimentDefinition));
 	
 	// Track parallel jobs using futures to allow us to wait for completion.
 	HashMap<String,List<Future>> futures = new HashMap<String,List<Future>> ();
@@ -13381,7 +13488,10 @@ private void execute_populations_parallel (int replications) {
 	waitFor (futures, results);
 	futures.clear ();
 	for (File file : files) {
-		File [] interventions = Main.modelIO.getFilesByPattern ("intervention.[0-9]+");
+	    String interventionDefinition = formExperimentPath ("intervention.[0-9]+");
+	    File experimentDir = new File ("experiement\\000\\");
+	    interventionDefinition = "experiement\\000\\intervention.[0-9]+";
+		File [] interventions = Main.modelIO.getFilesByPattern (interventionDefinition, experimentDir);
 		for (File intervention : interventions) {
 			String scenario = file.getName () + "." + intervention.getName ();
 	 		traceln ("queueing " + scenario + " reps");
@@ -13411,9 +13521,9 @@ public void waitFor (HashMap<String,List<Future>> futures, HashMap<String,Outcom
 	for (String scenario : futures.keySet ()) {
 		try {
 			List<Future> futuresList = futures.get (scenario);
-			trace ("============================= waiting for " + scenario);
+			//trace ("============================= waiting for " + scenario);
 			_executor.waitFor (futuresList);
-			traceln (".");
+			//traceln (".");
 			addOutcomes (scenario, results);
 			//traceln ("pending:");
 			for (String scen : futures.keySet ()) {
@@ -13439,7 +13549,7 @@ private String getInputFileConfiguration (File input) {
 
 	value += "population_size=" + (lines - 1) + "\n";
 	value += "infile_population_name=" + input.getPath () + "\n";
-
+	
 	return value;
 }
 /**
@@ -13452,10 +13562,12 @@ private synchronized void addReplicationOutcomes (String scenario,
 												  Main root,
 												  HashMap<String,Outcomes> results)
 {
+/*
 System.out.println ("scenario: " + scenario);
 System.out.println ("root: " + root);
 System.out.println ("results: " + results);
 System.out.println ("root.population: " + root.population);
+*/
 	Outcomes outcomes = results.get (scenario);
 	if (outcomes == null) {
 		outcomes = new Outcomes (scenario);
@@ -13487,7 +13599,7 @@ private synchronized void addOutcomes (String scenario, HashMap<String,Outcomes>
 		_outcomes.add (outcomes);
 		String key = getControl (scenario);
 		Outcomes control = results.get (key);
-		traceln ("got control: " + key);
+		//traceln ("got control: " + key);
 		if (control != null) {
 			outcomes.calculateDeltas (control);
 		}
@@ -13610,12 +13722,15 @@ class ModelRunner implements Runnable {
 		
 		List<String> outputLines = new ArrayList<String> ();
 		outputLines.add ("--replication: " + replication);
-		root.configure_parameters (input.getName () + "-" + scenario, parameters, outputLines);
+
 		root.configure_parameters (input.getName () + "-" + scenario,
 								   new String [] {
 								   		getInputFileConfiguration (input),
 								   },
 								   outputLines);
+		root.configure_parameters (input.getName () + "-" + scenario, parameters, outputLines);
+
+
 		Main.modelIO.writeConfiguration (root,
 									root.output_dir,
 									"configuration.txt." + replication,
