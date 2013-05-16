@@ -6,12 +6,23 @@ Array.prototype.remove = function(from, to) {
     this.length = from < 0 ? this.length + from : from;
     return this.push.apply(this, rest);
 };
-
+// http://stackoverflow.com/questions/646628/javascript-startswith
+if (typeof String.prototype.startsWith != 'function') {
+  String.prototype.startsWith = function (str){
+    return this.slice(0, str.length) == str;
+  };
+}
 // get url parameter
 function getURLParameter(name) {
     return decodeURI(
         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
     );
+}
+// http://stackoverflow.com/questions/2998784/how-to-output-integers-with-leading-zeros-in-javascript
+function zeropad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
 }
 
 /**
@@ -33,72 +44,61 @@ function EpiMap (divId, plugin, scenario) {
 // set the matrix of occurrences. this is a list of frames per observation with values per polygon.
 EpiMap.prototype.setOccurrences = function (occurrences) {
     this.occurrences = occurrences;
-    var max = 0;
-    var endpoint = this.occurrences.counts [this.occurrences.counts.length - 1];
-    for (var c = 0; c < endpoint.length; c++) {
-	var value = endpoint [c];
-	max = Math.max (value, max);
-    }
+    var max = 40000;
     this.gradient.setNumberRange (0, max);
     this.gradient.setSpectrum ('blue', 'green', '#33FF33', 'yellow', '#FF0000', 'red');
 };
 EpiMap.prototype.setTitle = function (title) {
+    if (title.startsWith ('prod/')) {
+	title = title.substring (prefix.length - 1);
+    }
     $('#' + this.divId + '_title').html (title);
 };
-// initialize the map. load frame matrix, polygon index and render individual polygons.
+// Initialize the map. load frame matrix, polygon index and render individual polygons.
 EpiMap.prototype.initializeMap = function (map, scenario) {
 
-    var path = "resources/" + scenario + "-occurrences.json";
+    var path = "resources/prod/" + scenario.name + "-occurrences.json";
     console.log (path);
     //$.getJSON ("resources/occurrences.json", function (occurrences) {
     $.getJSON (path, function (occurrences) {
-	    map.setTitle (occurrences.title);
+	    occurrences ['title'] = scenario.desc;
+	    map.setTitle (scenario.desc);
 	    map.setOccurrences (occurrences);
 	}).
     fail (function () {
 	    console.log ("--fail:");
 	});
 };
-// render the next frame.
+// Render the next frame.
 EpiMap.prototype.renderFrame = function (frame) {
     if (this.occurrences != null && frame < this.occurrences.counts.length) {
 	for (var c = 0; c < this.polygons.length; c++) {
 	    var polygon = this.polygons [c];
-	    var value = this.occurrences.counts [frame][polygon.index];
+	    var value = this.occurrences.counts [polygon.index][frame];
+
+	    var polygonId = polygon.index + '';
+ 	    this.plugin.polygonValue [polygonId] = value;
+
 	    var fillColor = this.gradient.colorAt (value);
-	    console.log ('color: ' + fillColor + ' value: ' + value);
 	    polygon.polygon.setStyle ({
 		    fillColor    : '#' + fillColor,
 			fillOpacity  : 0.4,
 			strokeWeight : 0.1
 			});
-	    this.setTitle (this.occurrences.title + "  - " + frame);
+	    this.setTitle (this.occurrences['title'] + "  - " + frame);
 	}
     }
 };
-// process a polygon
+// Process a polygon
 EpiMap.prototype.drawPolygon = function (polygon, value, plugin) {
     this.polygons.push ({
 	    polygon : plugin.createPolygon (polygon, value, this.gradient),
-	    index   : polygon.count
+	    index   : parseInt (polygon['id']) //polygon.count
 	});
     this.polygons.sort (function (a, b) {
 	    return a.index - b.index;
 	});
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  *
@@ -109,34 +109,92 @@ function EpiMapLeafletPlugin () {
 }
 // create a leaflet map
 EpiMapLeafletPlugin.prototype.createMap = function (mapId) {
-    this.map = L.map (mapId).setView ([ 35.9131, -79.0561], 7);
-    //L.tileLayer('http://{s}.tile.cloudmade.com/d21d2ad31cfd4e589c5c8b2d0c6e91ad/997/256/{z}/{x}/{y}.png', {
-    L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+    this.map = L.map (mapId).setView ([ 35.0131, -79.9061], 6);
+    var layer = L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
 	attribution : [ 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> ',
 			' contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ',
 			' Imagery © <a href="http://cloudmade.com">CloudMade</a>' ].join (''),
-	maxZoom : 18
-    }).addTo (this.map);
+	maxZoom : 18,
+	}).addTo (this.map);
+
+    /**
+     * geojson layer.
+     */
+    var popup = new L.Popup ();
+    var polygonIndex = 0;
+    var theMap = this.map;
+    var plugin = this;
+    this.featureLayer = L.geoJson (null,  {
+	    style : function (feature) {
+		return {
+		    "z-index"   : 10,
+		    strokeColor : "#ff0000" 
+		};
+	    },
+	    onEachFeature: function (feature, layer) {
+		(function (layer, feature) {
+		    layer.on ("mouseover", function (e) {
+			    //layer.setStyle(highlightStyle);
+			    var popup = $("<div></div>", {
+				    id: "popup-" + feature.properties.NAME10,
+				    css: {
+					position : "absolute",
+					bottom   : "5px",
+					left     : "10px",
+					zIndex   : 1002,
+					backgroundColor : "white",
+					padding  : "8px",
+					border   : "1px solid #ccc"
+				    }
+				});
+			    var info = [ 'County: ' + feature.properties.NAME10,
+					 'FIPS  : ' + feature.properties.COUNTYFP10,
+					 'Value : ' + plugin.polygonValue [feature.id] ].join (', ');
+
+			    var header = $("<div></div>", {
+				    text : info,
+				    css : {
+					fontSize     : "16px",
+					marginBottom : "3px"
+				    }
+				}).appendTo (popup);
+			    popup.appendTo ('#' + mapId); //"#map");
+			});
+		    layer.on ("mouseout", function (e) {
+			    //layer.setStyle(defaultStyle); 
+			    $("#popup-" + feature.properties.NAME10).remove ();
+			});
+		    // Close the "anonymous" wrapper function, and call it while passing
+		    // in the variables necessary to make the events work the way we want.
+		})(layer, feature);
+	    }
+	});
+    this.map.addLayer (this.featureLayer);
+
+    this.polygonValue = {};
 };
 // create a polygon
 EpiMapLeafletPlugin.prototype.createPolygon = function (polygon, count, gradient) {
     var coordinates = [];
-    for (var q = 0; q < polygon.points.length; q++) {
-	var point = polygon.points [q];
+    var points = polygon.geometry.coordinates [0];
+    for (var q = 0; q < points.length; q++) {
+	var point = points [q];
 	coordinates.push ([ point [1], point [0] ]);
     }
     var fillColor = gradient.colorAt (count);
-    console.log ('color: ' + fillColor + ' value: ' + count);
-    var vPolygon = 
-    L.polygon (coordinates).
+    var vPolygon = L.polygon (coordinates).
     addTo (this.map).
     setStyle ({
 	    fillColor     : fillColor,
+	    'z-index'       : 0,
 	    strokeColor   : "#111",
 	    strokeOpacity : 0.5,
 	    strokeWeight  : 0.1,
-	    fillOpacity   : 0.7
+	    fillOpacity   : 0.2
 	});
+
+    this.polygonValue [polygon.id] = count;
+
     return new LeafletPolygon (vPolygon);
 };
 // wrap a leaflet polygon
@@ -192,7 +250,6 @@ function GooglePolygon (polygon) {
 GooglePolygon.prototype.setStyle = function (style) {
     this.polygon.setOptions (style);
 };
-
 
 /**
  *
@@ -296,10 +353,6 @@ OpenLayersPolygonProxy.prototype.setStyle = function (style) {
     this.layer.drawFeature (this.feature, style);
 };
 
-
-
-
-
 /**
  * 
  * Control a set of maps.
@@ -324,10 +377,10 @@ function EpiController () {
     this.mapPluginType = mapType; //this.mapPlugins [mapType];
 
     this.maps = [];
-    this.frame = 35;
+    this.frame = 38;
     this.animationHandle = null;
 
-    $("#menu").click (this.animate);
+    $("#animate").click (this.animate);
     this.polygons = [];
 };
 /**
@@ -335,22 +388,22 @@ function EpiController () {
  * Initialize maps.
  *
  */
+EpiController.prototype.getScenarios = function (intervention) {
+    return [
+	{ name : 'crc-control',                 desc : 'Cancer Free Years (baseline)' },
+	{ name : 'crc-' + intervention,         desc : 'Cancer Free Years > 0.0 (' + intervention + ')' },
+	{ name : 'colonoscopy-control',         desc : 'Colonoscopies Performed (baselnie)' },
+	{ name : 'colonoscopy-' + intervention, desc : 'Colonoscopies Performed (' + intervention + ')' }
+    ]
+};
 EpiController.prototype.initializeMaps = function (count) {
-    var scenarios = [ "crc-control",
-		      "crc-intervention01",
-		      "colonosc-control",
-		      "colonosc-intervention01" ];
-    var scenarios = [ "crc-0035.control",
-		      "crc-intervention.0012",
-		      "colonoscopy-0035.control",
-		      "colonoscopy-intervention.0012" ];
+    var interventionId = $('#intervention').val ();
+    var scenarios = this.getScenarios (interventionId);
     for (var c = 0; c < count; c++) {
-	var scenario = scenarios [c];
-
-	scenario = 'prod/' + scenario;
-	epiController.addMap (scenario);
+	epiController.addMap (scenarios [c]);
     }
 };
+
 /**
  *
  * Initialize maps.
@@ -358,19 +411,22 @@ EpiController.prototype.initializeMaps = function (count) {
  */
 EpiController.prototype.renderPolygons = function () {
     var polys = epiController.polygons;
-    $.getJSON ("resources/polygon-index.json", function (obj) {
+    $.getJSON ("resources/prod/polygon-index.json", function (obj) {
 	    for (var c = 0; c < obj.index.length; c++) {
 		var polygonName = obj.index [c];
-		$.getJSON ("resources/" + polygonName, function (polygon) {
+		$.getJSON ("resources/prod/" + polygonName, function (polygon) {
 			polys.push (polygon);
 			for (var k = 0; k < epiController.maps.length; k++) {
 			    var map = epiController.maps [k];
+			    // order matters here...
 			    map.drawPolygon (polygon, 0, map.plugin);
+			    map.plugin.featureLayer.addData (polygon);
 			}
 		    });
 	    }
 	});
 };
+
 /**
  *
  * Create a new plugin object.
@@ -379,6 +435,7 @@ EpiController.prototype.renderPolygons = function () {
 EpiController.prototype.createPlugin = function () {
     return new epiController.mapPlugins [epiController.mapPluginType] ();
 };
+
 /**
  *
  * Add a map.
@@ -395,16 +452,19 @@ EpiController.prototype.addMap = function (scenario) {
     pluginMap.createMap (mapId);
     var map = new EpiMap (mapId, pluginMap, scenario);
     epiController.maps.push (map);
+    map.setTitle (scenario.desc);
 };
+
 /** 
  *
  * Animate the set of maps.
  *
  */
 EpiController.prototype.animate = function () {
-    epiController.frame = 35;
+    epiController.frame = 38;
     epiController.animationHandle = setInterval (epiController.renderFrame, 500);
 };
+
 /**
  *
  * Render a frame in all maps.
@@ -413,16 +473,14 @@ EpiController.prototype.animate = function () {
 EpiController.prototype.renderFrame = function () {
     $("#status").html (epiController.frame + "%");
     $("#progress").progressbar ({
-	value : epiController.frame + 1
+	value : epiController.frame
     });
-    var occurrences = null;
     for (var c = 0; c < epiController.maps.length; c++) {
 	var map = epiController.maps [c];
-	occurrences = map.occurrences
+	if (epiController.frame >= map.occurrences.counts.length - 1) {
+	    clearInterval (epiController.animationHandle);
+	}
 	map.renderFrame (epiController.frame);
-    }
-    if (epiController.frame > occurrences.counts.length) {
-	clearInterval (epiController.animationHandle);
     }
     epiController.frame++;
 };
@@ -432,6 +490,16 @@ EpiController.prototype.renderFrame = function () {
  *
  */
 function initialize() {
+
+    for (var c = 0; c < 13; c++) {
+	var value = zeropad (c, 4);
+	$('#intervention').append ( $('<option>', { 
+            value: value,
+            text : 'Intervention ' + value 
+	}));
+
+	//append ('<option value="' + value + '">' + value + '</option>');
+    }
     epiController = new EpiController ();
     epiController.initializeMaps (4);
     epiController.renderPolygons ();
