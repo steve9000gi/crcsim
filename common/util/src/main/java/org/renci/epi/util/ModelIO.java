@@ -176,7 +176,8 @@ public class ModelIO {
 	    "value_life",
 	    "longitude",
 	    "latitude",
-	    "stcotrbg"
+	    "stcotrbg",
+	    "zipcode"
 	};
 	String newline = "\n";
 	char separator = '\t';
