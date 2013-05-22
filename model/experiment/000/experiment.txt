@@ -13,6 +13,6 @@ surveillance_compliance_rate=1.0
 treatment_compliance_rate=1.0
 compute_population_rates=false
 #population_size=135870
-population_size=10000
+population_size=100
 dynamic_compliance_rate_year_offset=6
 output_population_snapshots=false

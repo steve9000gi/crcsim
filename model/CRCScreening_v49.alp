@@ -2049,6 +2049,19 @@ import java.io.File;]]></Import>
 						<InitialValue><![CDATA[0]]></InitialValue>                 	
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1369163469670</Id>
+					<Name><![CDATA[geography]]></Name>
+					<X>310</X><Y>450</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[java.util.Hashtable]]></Type>        
+						<InitialValue><![CDATA[new java.util.Hashtable ()]]></InitialValue>                 	
+					</Properties>
+				</Variable>
 				<Variable Class="Parameter">
 					<Id>1328041345577</Id>
 					<Name><![CDATA[model_description]]></Name>
@@ -4963,6 +4976,8 @@ if (outfile_state) {
 population.init_model();
 
 
+population.init_geography ();
+
 //=========================================================
 // Initialization is complete.
 //=========================================================
@@ -5083,7 +5098,7 @@ catch (Exception e) {
     + "\t" + population.polyp_prevalence_rate
     + "\t" + population.polyp_prevalence_rate_variance
     
-    + "\t: " + population.people.average ("diagnostic_test_count")
+    + "\t" + population.people.average ("diagnostic_test_count")
     + "\t" + population.people.sum("lifespan")
     + "\t" + population.people.sum("discounted_lifespan")
     + "\t" + population.people.sum("death_age")
@@ -5181,9 +5196,10 @@ catch (Exception e) {
         + "\t" + "time_clin_to_dead"
         + "\t" + "polyp_prevalence_rate"
         + "\t" + "polyp_prevalence_rate_variance"
+/* - apparently no values are output for these...
         + "\t" + "crc_incidence_rate"
         + "\t" + "crc_incidence_rate_variance"
-
+*/
         + "\t" + "diagnostic_test_count_avg"
         + "\t" + "lifeexp_t"
         + "\t" + "discounted_lifeexp_t"
@@ -8607,7 +8623,9 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 				 		  dynamicComplianceRateYearOffset);
 		  if (interventionActive) {
 		      compliance_prob = get_Population().get_Main().intervention_compliance_rate;
-		      System.out.print (compliance_prob + ".");
+		      if (compliance_prob > 0) {
+		      	//System.out.println ("dyn-comp: => " + compliance_prob + "\t @: " + time());
+              }
 		  }
 		  
 		  
@@ -10615,6 +10633,32 @@ if (get_Main ().output_population_snapshots &&
 	Main.modelIO.writePeople (people.iterator (), outputDir, fileName);
 } 
 
+]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>1369163609746</Id>
+					<Name><![CDATA[init_geography]]></Name>
+					<X>-150</X><Y>270</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[try {
+  String fileName = "nearest_dist_simulation.csv";
+  int unlimited = -1;
+  org.renci.epi.util.DelimitedFileImporter in =
+  		new org.renci.epi.util.DelimitedFileImporter (fileName, ",", unlimited);
+
+  while (in.hasMoreRows ()) {
+    in.nextRow ();
+    String zipcode = in.getString ("zip");
+    Double distance = new Double (in.getDouble ("nearest_distance"));
+    get_Main().geography.put (zipcode, distance);
+  }
+} catch (Exception e) {
+	e.printStackTrace ();
+}
 ]]></Body>
 				</Function>
 			</Functions>
@@ -13434,17 +13478,21 @@ private String outputDirectory = "out";
 
 // For production runs.
 private String inputDirectory  = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\pop0\\pops";
-private String outputDirectory = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\pop0\\out2";
+private String outputDirectory = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\pop0\\dynamiccompliance";
 
 private String experimentId = "000";
 
+private String formPath (String [] elements) {
+	return StringUtils.join (elements, File.separator);
+}
+private String formExperimentDirPath () {
+	return formPath (new String [] { "experiment", experimentId });
+}
 private String formExperimentPath (String element) {
-	return StringUtils.join ( new String [] {
-	    "experiment",
-	    experimentId,
+	return formPath (new String [] {
+	    formExperimentDirPath (),
 	    element
-	    },
-	    File.separator);
+	});
 }
 /**
  * Execute the model for a set of populations in parallel.
@@ -13474,7 +13522,7 @@ private void execute_populations_parallel (int replications) {
 	// Iterate over all potential input files. These are <anything>.tsv.<integer> in this directory.	
 	File [] files = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+", new File (inputDirectory) /*"pops")*/ );	
 	for (File file : files) {
-		System.out.println ("file " + file);
+		System.out.println ("file: " + file);
 		String controlScenario = file.getName () + "." + CONTROL;
 		futures.put (controlScenario,
 			 		 execute_parallel (file,
@@ -13487,11 +13535,9 @@ private void execute_populations_parallel (int replications) {
 	}
 	waitFor (futures, results);
 	futures.clear ();
+    File experimentDir = new File (formExperimentDirPath ());
 	for (File file : files) {
-	    String interventionDefinition = formExperimentPath ("intervention.[0-9]+");
-	    File experimentDir = new File ("experiement\\000\\");
-	    interventionDefinition = "experiement\\000\\intervention.[0-9]+";
-		File [] interventions = Main.modelIO.getFilesByPattern (interventionDefinition, experimentDir);
+		File [] interventions = Main.modelIO.getFilesByPattern ("intervention.[0-9]+", experimentDir);
 		for (File intervention : interventions) {
 			String scenario = file.getName () + "." + intervention.getName ();
 	 		traceln ("queueing " + scenario + " reps");
