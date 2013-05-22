@@ -2058,8 +2058,8 @@ import java.io.File;]]></Import>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[java.util.Hashtable]]></Type>        
-						<InitialValue><![CDATA[new java.util.Hashtable ()]]></InitialValue>                 	
+						<Type><![CDATA[org.renci.epi.util.Geography]]></Type>        
+						<InitialValue><![CDATA[new org.renci.epi.util.Geography()]]></InitialValue>                 	
 					</Properties>
 				</Variable>
 				<Variable Class="Parameter">
@@ -5575,6 +5575,7 @@ if (parameterSet != null) {
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
+			<Import><![CDATA[import org.renci.epi.util.CountyIntercepts;]]></Import>
 			<Generic>false</Generic>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
@@ -8612,7 +8613,6 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 		" diagnostic: " + Person.Diagnostic + // <<
 		" lowrisk: " + Person.LowRisk);
 	*/
-		           
 	  // number of visits already completed.
       int routineVisitsCount = routine_compliance_history.size ();
 	  int dynamicComplianceRateYearOffset =
@@ -10644,8 +10644,9 @@ if (get_Main ().output_population_snapshots &&
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[try {
-  String fileName = "nearest_dist_simulation.csv";
+					<Body><![CDATA[/*
+try {
+  String fileName = "nearest_dist_simulation.2.csv";
   int unlimited = -1;
   org.renci.epi.util.DelimitedFileImporter in =
   		new org.renci.epi.util.DelimitedFileImporter (fileName, ",", unlimited);
@@ -10659,7 +10660,7 @@ if (get_Main ().output_population_snapshots &&
 } catch (Exception e) {
 	e.printStackTrace ();
 }
-]]></Body>
+*/]]></Body>
 				</Function>
 			</Functions>
 			<EmbeddedObjects>
