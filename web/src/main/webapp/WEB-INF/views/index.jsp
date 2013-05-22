@@ -9,12 +9,14 @@
   </head>
   <body>
     <div id="menu">
-      <div id="animate">Animate</div>
+      <div id="interventionlabel">Select Intervention</div>
+      <select id="intervention"></select>
+      <button id="animate">Animate</button>
+      <div id="progress"></div>
+      <div id="status"></div>
     </div>
-    <div id="progress"></div>
-    <div id="status"></div>
     <div id="maps"></div>
-  </body>  
+  </body>
   <script type="text/javascript"
 	  src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB0s6Ao4hTmGq9qcVhuRZ2ecldLL_68Zd4&sensor=false&libraries=visualization"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>

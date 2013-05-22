@@ -46,8 +46,11 @@ public class DataLocator {
     public String getModelInputFileName () {
 	return this.join (new String [] { _dataRoot, "..", "crcsim", "model", "population.tsv" });
     }
+    public String getModelInputPath () {
+	return this.join (new String [] { _dataRoot, "..", "crcsim", "model", "pops" });
+    }    
     public String getModelInputFileName (String inputFileName) {
-	return this.join (new String [] { _dataRoot, "..", "crcsim", "model", inputFileName });
+	return this.join (new String [] { _dataRoot, "..", "crcsim", "model", "pops", inputFileName });
     }
 
     // geocoding census shapefile data
