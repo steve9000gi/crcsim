@@ -17,7 +17,7 @@ public class Geography {
      */
     public Geography () {
 	try {
-	    String fileName = "nearest_dist_simulation.2.csv";
+	    String fileName = "nearest_dist_simulation.csv";
 	    int unlimited = -1;
 	    DelimitedFileImporter in = new DelimitedFileImporter (fileName, ",", unlimited);
 	    while (in.hasMoreRows ()) {
