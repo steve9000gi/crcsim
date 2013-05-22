@@ -3,42 +3,73 @@
 #set -x
 set -e
 
-snapshotdb=/projects/systemsscience/archive/pop0/out/
-outputdir=/projects/systemsscience/prod
 shapefile=/projects/systemsscience/var/census2010/tl_2010_37_county10.shp
 loglevel=debug
 
-snapshotdb=/projects/systemsscience/test
-outputdir=/projects/systemsscience/testout
+snapshotdb=/projects/systemsscience/archive/pop0/out/
+outputdir=/projects/systemsscience/prod
 
-./geo.py --select                 \
-         --snapshotDB=$snapshotdb \
-         --output=$outputdir      \
-         --shapefile=$shapefile   \
-         --loglevel=$loglevel
-
-while [ "$( qstat -u $USER | grep -c 'job-' )" -gt 0 ]; do
-    echo waiting
-    sleep 10      
+conf_test () {
+    snapshotdb=/projects/systemsscience/test
+    outputdir=/projects/systemsscience/testout
+}
+geoselect () {
+    ./geo.py --select            \
+        --snapshotDB=$snapshotdb \
+        --output=$outputdir      \
+        --shapefile=$shapefile   \
+        --loglevel=$loglevel
+}
+geowait () {
+    while [ "$( qstat -u $USER | grep -c 'job-' )" -gt 0 ]; do
+	echo waiting
+	sleep 10      
+    done
+}
+geocount () {
+    ./geo.py --count             \
+        --snapshotDB=$snapshotdb \
+        --output=$outputdir      \
+        --shapefile=$shapefile   \
+        --loglevel=$loglevel
+}
+geoarchive () {
+    ./geo.py --archive           \
+        --snapshotDB=$snapshotdb \
+        --output=$outputdir      \
+        --loglevel=$loglevel
+}
+geovalidate () {
+    egrep "[0-9]+" $outputdir/*occur* \
+	| egrep -v "0,"               \
+	| egrep -v "0$"               \
+	| sed s/,//                   \
+	| grep -v "^$"                \
+	| awk '{ print $2 }'          \
+	| awk 'BEGIN { n = 0 } { n += $1 } END { print n }'
+}
+for arg in $*; do
+    case $arg in
+	-t | --test ) conf_test
+	    ;;
+	-c | --count) geocount
+	    ;;
+	-a | --archive) geoarchive
+	    ;;
+	-s | --select) geoselect
+	    ;;
+	-v | --val) geovalidate
+	    ;;
+	-a | --all)
+	    geoselect
+	    geowait
+	    geocount
+	    geoarchive
+	    ;;
+	*) echo "Unknown argument $arg"
+	    exit 1
+	    ;;
+    esac
 done
-
-./geo.py --count                  \
-         --snapshotDB=$snapshotdb \
-         --output=$outputdir      \
-         --shapefile=$shapefile   \
-         --loglevel=$loglevel
-
-./geo.py --archive                \
-         --snapshotDB=$snapshotdb \
-         --output=$outputdir      \
-         --loglevel=$loglevel
-
-egrep "[0-9]+" $outputdir/*occur* \
-    | egrep -v "0,"               \
-    | egrep -v "0$"               \
-    | sed s/,//                   \
-    | grep -v "^$"                \
-    | awk '{ print $2 }'          \
-    | awk 'BEGIN { n = 0 } { n += $1 } END { print n }'
-
+	    
 exit 0
