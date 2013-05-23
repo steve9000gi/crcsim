@@ -1,4 +1,4 @@
-package al6utils;
+package org.renci.epi.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -36,7 +36,6 @@ class X {
     public String z = "z0";
 };
 
-
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations={"/spring/population-context.xml"})
 public class ModelIOTest { //extends AbstractJUnit4SpringContextTests {
@@ -51,26 +50,41 @@ public class ModelIOTest { //extends AbstractJUnit4SpringContextTests {
     @Test
     public void testGetFieldValue () throws Exception {
 	X x = new X ();
-	ModelIO modelIO = new ModelIO ();
-	Object value = modelIO.getFieldValue ("al6utils.X", x, "x");
+	Object value = Util.getFieldValue (x, "x");
 	logger.debug ("==> " + value);
     }
     @Test
     public void test () throws Exception {
 	X object = new X ();
 	ModelIO modelIO = new ModelIO ();
-	Writer writer = new BufferedWriter (new OutputStreamWriter (System.out));
+	BufferedWriter writer = new BufferedWriter (new OutputStreamWriter (System.out));
 	String [] fieldNames = new String [] {
 	    "w", "x", "y", "z"
 	};
-	String className = "al6utils.X";
+	String className = "org.renci.epi.util.X";
 	String newline = "\n";
 
 	modelIO.outputRow (writer, fieldNames, '\t', newline);
 	for (int c = 0; c < 10; c++) {
-	    modelIO.outputDataRow (writer, className, object, fieldNames, '\t', newline);
+	    modelIO.outputDataRow (writer, object, fieldNames, '\t', newline);
 	}	
 	writer.flush ();
     }
+
+    @Test
+    public void testGeography () throws Exception {
+	Geography geography = new Geography ();
+
+	double distance = geography.getDistanceToNearestEndoscopyFacilityByZipCode ("27517");
+	CountyIntercepts countyIntercepts = geography.getCountyInterceptsByStcotrbg ("3700199999900000");
+   
+	System.out.println ("zip code -> distance: " + distance + "\n" +
+			    "stcotrbg -> county intercepts -> medicaid: " + countyIntercepts.getMedicaidOnly ());
+
+	assert distance == 4.4922130495 : "Distance by zip code failed.";
+
+	assert countyIntercepts.getMedicaidOnly () == 0.0016 : "Medicaid by county FIPS failed";
+    }
+
 }
 
