@@ -2,13 +2,11 @@
 
 import argparse
 import csv
+import fiona
 import fnmatch
 import glob
 import json
 import logging
-import matplotlib.nxutils as nx
-import multiprocessing
-import numpy
 import os
 import pp
 import signal
@@ -20,12 +18,9 @@ import sys
 import tarfile
 import time
 import traceback
-import Queue
-import fiona
 
 from fiona import collection
 from collections import defaultdict
-from multiprocessing import Lock
 from string import Template
 
 logger = logging.getLogger (__name__)
@@ -83,8 +78,6 @@ class DataImporter (object):
         coordinates = []
         for metric in self.query:
             query = self.query [metric]
-            print "Query metric: %s" % metric
-            print fips_county_map
             for idx, county_code in enumerate (fips_county_map):
                 formatted_query = query.format (county_code)
                 self.cur.execute (formatted_query)
@@ -119,94 +112,6 @@ class DataImporter (object):
                 text = "%s %s %s %s %s %s\n" % (tup[0], tup[1], tup[2], tup[3], tup[4], tup[5][0])
                 stream.write (text)
 
-def select_worker (query, database, output_dir, fips_county_map, work_Q):
-    ''' Determine column names, create a data cruncher and process the input file. '''
-    while True:
-        try:
-            snapshot_file = work_Q.get (timeout = 2)
-            logger.debug ("Took geocoder work %s from queue.", snapshot_file)
-            if not snapshot_file:
-                continue
-            if snapshot_file == 'done':
-                logger.info ("Ending point in poly worker process.")
-                break
-            columns = None
-            with open (snapshot_file, 'rb') as stream:
-                line = stream.readline ()
-                if line.startswith ("description"):
-                    line = stream.readline ()
-                columns = line.strip().split ('\t')
-                output_file_path = form_output_select_file_path (output_dir, snapshot_file)
-                if not os.path.exists (output_file_path):
-                    data_importer = DataImporter (query, columns, database, output_dir)
-                    data_importer.data_import (snapshot_file, output_file_path, fips_county_map)
-        except Queue.Empty:
-            pass
-
-def select (query, database, snapshotDB, output_dir, fips_county_map):
-    ''' Start workers - one per cpu - to import data and select items.'''
-    workers = []
-    num_workers = multiprocessing.cpu_count ()
-    work_Q = multiprocessing.Queue () 
-    logger.info ("Starting %s import/select workers.", num_workers)
-    for c in range (num_workers):
-        data_import_args = (query, database, output_dir, fips_county_map, work_Q)
-        process = multiprocessing.Process (target=select_worker, args = data_import_args)
-        workers.append (process)
-        
-    for process in workers:
-        process.start ()
-
-    for root, dirnames, filenames in os.walk (snapshotDB):
-        for idx, file_name in enumerate (fnmatch.filter (filenames, 'person.*')):
-            snapshot_file = os.path.join (root, file_name)
-
-            base = os.path.basename (snapshot_file)
-            last = base.split ('.')[1]
-            timeslice = int (last)
-
-            if timeslice > 38:
-                logger.debug ("launch-snap[%s] %s", idx, snapshot_file)
-                work_Q.put (snapshot_file)
-    for worker in workers:
-        work_Q.put ('done')
-    work_Q.close ()
-    work_Q.join_thread ()
-
-    for worker in workers:
-        worker.join ()
-        logger.info ("Joined process[%s]: %s", worker.pid, worker.name)
-        '''
-def select_pbs_job (query, database, snapshotDB, output_dir, fips_county_map, snapshots):
-    workers = []
-    num_workers = multiprocessing.cpu_count ()
-    work_Q = multiprocessing.Queue () 
-    logger.info ("Starting %s import/select workers.", num_workers)
-    for c in range (num_workers):
-        data_import_args = (query, database, output_dir, fips_county_map, work_Q)
-        process = multiprocessing.Process (target=select_worker, args = data_import_args)
-        workers.append (process)
-        
-    for process in workers:
-        process.start ()
-
-    for snapshot_file in snapshots:
-        base = os.path.basename (snapshot_file)
-        last = base.split ('.')[1]
-        timeslice = int (last)
-        if timeslice > 38:
-            logger.debug ("launch-snap[%s] %s", idx, snapshot_file)
-            work_Q.put (snapshot_file)
-
-    for worker in workers:
-        work_Q.put ('done')
-    work_Q.close ()
-    work_Q.join_thread ()
-
-    for worker in workers:
-        worker.join ()
-        logger.info ("Joined process[%s]: %s", worker.pid, worker.name)
-        '''
 def calculate_geo_intersection (arguments, snapshot_file):
     logger.info ("getting county information...")
     geocoder = Geocoder ()
@@ -227,7 +132,7 @@ def get_template (file_name):
         template = Template (template.read ())
     return template
 
-def select_pbs (arguments):
+def select (arguments):
     ''' Start workers - one per cpu - to import data and select items.'''
 
     job_list = []
@@ -303,14 +208,14 @@ def crunch (output_dir, polygon_count):
                 if count > 0:
                     polygon_id = int(polygon_id)-1
                     timeslice = int(timeslice)
-                    logger.debug ("metric: %s scenario: %s timeslice: %s county: %s polygon: %s count: %s",
-                                  metric, scenario, timeslice, county_code, polygon_id, count)
+                    #logger.debug ("metric: %s scenario: %s timeslice: %s county: %s polygon: %s count: %s",
+                    #              metric, scenario, timeslice, county_code, polygon_id, count)
                     counter.increment (int(polygon_id)-1, int(timeslice), int(count))
-
+    
     for i, metric in enumerate (counters):
         for j, scenario in enumerate (counters [metric]):
             counter = counters[metric][scenario]
-            #print "---------> metric %s scenario %s repr %s" % (metric, scenario, repr(counter))
+            ''' print "---------> metric %s scenario %s repr %s" % (metric, scenario, repr(counter)) '''
             object_name = "%s-%s-occurrences" % (metric, scenario)
             obj = { "counts" : counter.timeline }
             file_name = "%s.json" % os.path.join (output_dir, object_name)
@@ -372,33 +277,38 @@ class Counter (object):
 
     def __str__ (self):
         return str (self.timeline)
-    '''
-    def __repr__ (self):
-        return str (self.timeline)
-        '''
-
 
 class Geocoder (object):
     ''' Geocode point data to a set of polygons. '''
     def export_polygons (self, shapefile, output_dir):
         ''' Write the list of polygons as json. '''
+        polygon_list = []
         fips_map = []
-        polygon_count = -1
-        from fiona import collection
+        polygon_id = -1
         with fiona.open (shapefile, "r") as stream:
             for feature in stream:
-                #print feature['properties']
-                county_name = feature['properties']['NAME10']
+                #county_name = feature['properties']['NAME10']
                 fips_county_code = feature['properties']['COUNTYFP10']
                 fips_map.append (fips_county_code)
-                #print "%s : %s" % (county_name, fips_county_code)
+                polygon_id = int (feature ['id'])
 
-                polygon_count = int (feature ['id'])
-                geometry = feature ['geometry']
+                feature ['type'] = 'Feature'
+                file_name = os.path.join (output_dir, "polygon-{0:03d}.json".format (polygon_id))
+                write_json_object (file_name, feature)
+                polygon_list.append (os.path.basename (file_name))
+                '''
+                geometry = feature ['geometry']                
                 obj = {
                     'count' : polygon_count,
                     'points' : geometry ['coordinates'][0]
                     }
+                file_name = os.path.join (output_dir, "polygon-{0:03d}.json".format (polygon_count))
+                write_json_object (file_name, obj)
+                polygon_list.append (os.path.basename (file_name))
+                '''
+        obj = { 'index' : polygon_list }
+        file_name = os.path.join (output_dir, "polygon-index.json")
+        write_json_object (file_name, obj)
         return fips_map
 
 def form_output_select_file_path (output_dir, file_name):
@@ -409,23 +319,22 @@ def form_output_select_file_path (output_dir, file_name):
         output_file_path = "%s.txt" % output_file_path
     return output_file_path
 
-def archive (archive_name = "out.tar.gz"):
-    ''' Archive and remove the output files. '''
+def archive (output_dir, archive_name = "out.tar.gz"):
+    ''' Archive output files. '''
     logger.info ("Creating output archive: %s", archive_name)
     with tarfile.open (archive_name, "w:gz") as archive:
-        files = glob.glob ("*.json")
+        pattern = os.path.join (output_dir, "*.json")
+        files = glob.glob (pattern)
         for output in files:
-            logger.debug ("   archive + %s", output)
-            archive.add (output)
-        for output in files:
-            os.remove (output)
+            basename = os.path.basename (output)
+            logger.debug ("   archive + %s => %s", output, basename)
+            archive.add (output, arcname = basename)
 
 def signal_handler (signum, frame):
     logger.info ('Signal handler called with signal: %s', signum)
     sys.exit (0)
 
 class GeocodeArguments (object):
-
     def __init__ (self):
         self.root = os.path.join ( os.path.sep, "projects", "systemsscience" )
         self.shapefile = self.form_data_path ([ "var", "census2010", "tl_2010_37_county10.shp" ])
@@ -442,40 +351,7 @@ class GeocodeArguments (object):
         tail = os.path.join (*args) if isinstance (args, list) else args
         return os.path.join (self.root, tail)
 
-def process_pipeline (arguments = GeocodeArguments (), callback = None):
-
-    ''' Configure logging. '''
-    numeric_level = getattr (logging, arguments.loglevel.upper (), None)
-    assert isinstance (numeric_level, int), "Undefined log level: %s" % arguments.loglevel
-    logging.basicConfig (level=numeric_level, format='%(asctime)-15s %(message)s')
-
-    logger.info (" shapefile: %s", arguments.shapefile)
-    logger.info ("snapshotDB: %s", arguments.snapshotDB)
-    if arguments.input:
-        logger.info ("    input: %s", arguments.input)
-    logger.info ("    output: %s", arguments.output)
-    logger.info ("  loglevel: %s", arguments.loglevel)
-
-    logger.info ("Geocoding...")
-    geocoder = Geocoder ()
-    fips_county_map = geocoder.export_polygons (arguments.shapefile, arguments.output)
-
-    logger.info ("Select...")
-    
-    select (arguments.query,
-            arguments.database,
-            arguments.snapshotDB,
-            arguments.output,
-            fips_county_map)
-
-    exported_polygons = os.path.join (arguments.output, "polygon*json")
-
-    if arguments.archive:
-        archive ()
-        if callback:
-            callback ('out.tar.gz')
-        
-def process_pipeline_pbs (arguments = GeocodeArguments ()):
+def process_pipeline (arguments = GeocodeArguments ()):
 
     ''' Configure logging. '''
     numeric_level = getattr (logging, arguments.loglevel.upper (), None)
@@ -490,20 +366,25 @@ def process_pipeline_pbs (arguments = GeocodeArguments ()):
     logger.info ("  loglevel: %s", arguments.loglevel)
 
     if arguments.input:
+        # Process a specific input file.
         logger.info ("    input: %s", arguments.input)
         geocoder = Geocoder ()
         fips_county_map = geocoder.export_polygons (arguments.shapefile, arguments.output)
         calculate_geo_intersection (arguments, fips_county_map)
-    elif not arguments.count:
-        select_pbs (arguments)
+
+    if arguments.select:
+        # Generate and launch PBS jobs - one per input file.
+        select (arguments)
         exported_polygons = os.path.join (arguments.output, "polygon*json")        
-    else:
+
+    if arguments.count:
+        # Count calculated occurrences from output files.
         geocoder = Geocoder ()
         fips_county_map = geocoder.export_polygons (arguments.shapefile, arguments.output)
         crunch (arguments.output, len (fips_county_map))
-    
+
     if arguments.archive:
-        archive ()
+        archive (arguments.output)
 
 def main ():
 
@@ -516,12 +397,13 @@ def main ():
     parser = argparse.ArgumentParser ()
     parser.add_argument ("--shapefile",    help="Path to an ESRI shapefile", default=parameters.shapefile)
     parser.add_argument ("--snapshotDB",   help="Path to a directory hierarchy containing population snapshot files.", default=parameters.snapshotDB)
-    parser.add_argument ("--input",        help="A specific snapshot file to process.", default=parameters.input)
-    parser.add_argument ("--output",       help="Output directory. Default is 'output'.", default=parameters.output)
-    parser.add_argument ("--select",       help="Select.", action='store_true', default=parameters.select)
-    parser.add_argument ("--count",        help="Count.", action='store_true', default=parameters.count)
     parser.add_argument ("--database",     help="Database path. Default is in-memory.", default=parameters.database)
     parser.add_argument ("--loglevel",     help="Log level", default=parameters.loglevel)
+    parser.add_argument ("--output",       help="Output directory. Default is 'output'.", default=parameters.output)
+
+    parser.add_argument ("--input",        help="A specific snapshot file to process.", default=parameters.input)
+    parser.add_argument ("--select",       help="Select.", action='store_true', default=parameters.select)
+    parser.add_argument ("--count",        help="Count.", action='store_true', default=parameters.count)
     parser.add_argument ("--archive",      help="Archive output files.", dest='archive', action='store_true', default=parameters.archive)
     args = parser.parse_args ()
 
@@ -529,7 +411,7 @@ def main ():
     parameters.snapshotDB = args.snapshotDB
     parameters.input = args.input
     parameters.output = args.output
-    parameters.count = args.select
+    parameters.select = args.select
     parameters.count = args.count
     parameters.database = args.database
     parameters.loglevel = args.loglevel
@@ -539,12 +421,11 @@ def main ():
         "colonoscopy" : "select count(*) from simulation where num_colonoscopies > 0.0 and stcotrbg like '37{0}%' "
         }
 
-    process_pipeline_pbs (parameters)
+    process_pipeline (parameters)
 
     sys.exit (0)
 
 if __name__ == '__main__':
-    fs_lock = Lock ()
     main ()
 
 
