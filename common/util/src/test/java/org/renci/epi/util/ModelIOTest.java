@@ -81,6 +81,8 @@ public class ModelIOTest { //extends AbstractJUnit4SpringContextTests {
 	System.out.println ("zip code -> distance: " + distance + "\n" +
 			    "stcotrbg -> county intercepts -> medicaid: " + countyIntercepts.getMedicaidOnly ());
 
+	assert countyIntercepts.getMedicaidOnly () != Geography.UNKNOWN_DOUBLE : "Unexpected unknown value.";
+
 	assert distance == 4.4922130495 : "Distance by zip code failed.";
 
 	assert countyIntercepts.getMedicaidOnly () == 0.0016 : "Medicaid by county FIPS failed";

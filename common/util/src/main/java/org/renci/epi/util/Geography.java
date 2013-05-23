@@ -27,6 +27,7 @@ public class Geography {
 	new Hashtable<String, CountyIntercepts> ();
 
     private static final String DATA = "data";
+    public static final double UNKNOWN_DOUBLE = -Double.MAX_VALUE;
 
     static {
 	BasicConfigurator.configure ();
@@ -98,7 +99,7 @@ public class Geography {
      */
     private double getDouble (DelimitedFileImporter importer, String field) {
 	String value = importer.getString (field);
-	double result = -Double.MAX_VALUE;
+	double result = UNKNOWN_DOUBLE;
 	if (! value.equals (".") && value.length () > 0 ) {
 	    result = Double.parseDouble (value);
 	}
