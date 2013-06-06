@@ -5097,7 +5097,6 @@ catch (Exception e) {
     + "\t" + population.time_clin_to_dead.mean()
     + "\t" + population.polyp_prevalence_rate
     + "\t" + population.polyp_prevalence_rate_variance
-    
     + "\t" + population.people.average ("diagnostic_test_count")
     + "\t" + population.people.sum("lifespan")
     + "\t" + population.people.sum("discounted_lifespan")
@@ -13861,17 +13860,17 @@ private void printOutcomes () {
 		<Folder>false</Folder>
 	</ClassPathEntry>
 	<ClassPathEntry>
-		<Location><![CDATA[C:/dev/crcsim/common/util/target/epi-util-1.0-SNAPSHOT.jar]]></Location>
-		<Imported>false</Imported>
-		<Folder>false</Folder>
-	</ClassPathEntry>
-	<ClassPathEntry>
 		<Location><![CDATA[commons-logging-1.1.1.jar]]></Location>
 		<Imported>true</Imported>
 		<Folder>false</Folder>
 	</ClassPathEntry>
 	<ClassPathEntry>
 		<Location><![CDATA[log4j-1.2.17.jar]]></Location>
+		<Imported>true</Imported>
+		<Folder>false</Folder>
+	</ClassPathEntry>
+	<ClassPathEntry>
+		<Location><![CDATA[epi-util-1.0-SNAPSHOT.jar]]></Location>
 		<Imported>true</Imported>
 		<Folder>false</Folder>
 	</ClassPathEntry>
