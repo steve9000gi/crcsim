@@ -2043,6 +2043,19 @@ import java.io.File;]]></Import>
 						<InitialValue><![CDATA[0]]></InitialValue>                 	
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1370967307936</Id>
+					<Name><![CDATA[outfile_agent_writer]]></Name>
+					<X>500</X><Y>330</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[BufferedWriter]]></Type>        
+						<InitialValue><![CDATA[null]]></InitialValue>                 	
+					</Properties>
+				</Variable>
 				<Variable Class="Parameter">
 					<Id>1328041345577</Id>
 					<Name><![CDATA[model_description]]></Name>
@@ -3395,7 +3408,7 @@ import java.io.File;]]></Import>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Dynamic="false">
 						<Type><![CDATA[double]]></Type>        
-						<DefaultValue><![CDATA[0.346]]></DefaultValue>
+						<DefaultValue><![CDATA[1]]></DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
@@ -3417,7 +3430,7 @@ import java.io.File;]]></Import>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Dynamic="false">
 						<Type><![CDATA[double]]></Type>        
-						<DefaultValue><![CDATA[0.20]]></DefaultValue>
+						<DefaultValue><![CDATA[0]]></DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
@@ -4508,6 +4521,72 @@ This is used to calculate continuing, rather than initial compliance.
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1370967096229</Id>
+					<Name><![CDATA[outfile_agent_name]]></Name>
+					<X>-220</X><Y>290</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[String]]></Type>        
+						<DefaultValue><![CDATA["summary_agent.tsv"]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1370967096227</Id>
+							<Name><![CDATA[]]></Name>
+							<Label><![CDATA[outfile_replication_name]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1370967122078</Id>
+					<Name><![CDATA[outfile_agent_overwrite]]></Name>
+					<X>-220</X><Y>310</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[boolean]]></Type>        
+						<DefaultValue><![CDATA[true]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1370967122076</Id>
+							<Name><![CDATA[]]></Name>
+							<Label><![CDATA[outfile_replication_overwrite]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1370967132530</Id>
+					<Name><![CDATA[outfile_agent]]></Name>
+					<X>-220</X><Y>270</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[boolean]]></Type>        
+						<DefaultValue><![CDATA[true]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1370967132528</Id>
+							<Name><![CDATA[]]></Name>
+							<Label><![CDATA[outfile_replication]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1336336262301</Id>
 					<Name><![CDATA[routine_test_list]]></Name>
@@ -4610,10 +4689,16 @@ population.end_model();
 if (outfile_replication) {
   output_replication_data();
 }
+if (outfile_agent) {
+  output_agent_data();
+}
 
 // Close any requested output files.
 if (outfile_replication) {
   output_replication_close();
+}
+if (outfile_agent) {
+  output_agent_close();
 }
 if (outfile_year) {
   output_year_close();
@@ -4942,6 +5027,9 @@ modelIO.setOutputDir (output_dir);
 if (outfile_replication) {
   output_replication_open();
 }
+if (outfile_agent) {
+  output_agent_open();
+}
 if (outfile_year) {
   output_year_open();
 }
@@ -5116,7 +5204,7 @@ catch (Exception e) {
       + "\t" + population.crc_survival_rate_variance[j]
     );
   }
-
+  
   outfile_replication_writer.write("\r\n");
 }
 catch (Exception e) {
@@ -5372,6 +5460,7 @@ catch (Exception e) {
       + "\t" + population.people.average("discounted_cost_diagnostic")
       + "\t" + population.people.average("discounted_cost_surveillance")
       + "\t" + population.people.average("discounted_cost_treatment")
+
   );
 
   for (int t = 0; t < test_set.size(); t++) {
@@ -5379,7 +5468,7 @@ catch (Exception e) {
         "\t" + test_set.get_test_by_id(t).tot_performed
     );
   }
-
+  
   outfile_year_writer.write("\r\n");
 }
 catch (Exception e) {
@@ -5507,6 +5596,88 @@ if (parameterSet != null) {
 	}
 	}
 }]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>1370966842837</Id>
+					<Name><![CDATA[output_agent_close]]></Name>
+					<X>910</X><Y>240</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[try {
+  outfile_agent_writer.close();
+}
+catch (Exception e) {
+  error(e.getMessage());
+}
+
+]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>1370966851932</Id>
+					<Name><![CDATA[output_agent_data]]></Name>
+					<X>910</X><Y>260</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[try {
+ // java.util.Date now = new java.util.Date();
+ // java.text.SimpleDateFormat date_fmt = new java.text.SimpleDateFormat("MM/dd/yyyy kk:mm:ss");
+  
+
+  for (int j = 0; j <= population_size -1; j++) {
+	outfile_agent_writer.write(
+    "\n" + (j+1) 	+ "\t" + population.people.get(j).cost_routine
+    			+ "\t" + population.people.get(j).cost_diagnostic
+    			+ "\t" + population.people.get(j).cost_surveillance
+    			+ "\t" + population.people.get(j).cost_treatment
+    );
+  } 
+
+  outfile_agent_writer.write("\r\n");
+}
+catch (Exception e) {
+  error(e.getMessage());
+}
+
+]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>1370966856846</Id>
+					<Name><![CDATA[output_agent_open]]></Name>
+					<X>910</X><Y>280</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[try {
+  if (outfile_agent_overwrite) {
+    outfile_agent_writer = new BufferedWriter(new FileWriter(output_dir + File.separator + outfile_agent_name));
+       
+    outfile_agent_writer.write(
+                 "agent number"
+        + "\t" + "routine cost"
+        + "\t" + "diagnostic cost"
+        + "\t" + "surveillance cost"
+        + "\t" + "treatment cost"
+      );
+
+    outfile_agent_writer.write("\r");
+  }
+  else {
+    outfile_agent_writer = new BufferedWriter(new FileWriter(outfile_agent_name, true));
+  }
+}
+catch (Exception e) {
+  error(e.getMessage());
+}
+
+]]></Body>
 				</Function>
 			</Functions>
 			<EmbeddedObjects>
@@ -6933,7 +7104,7 @@ for (int i=0; i<lesion_sources.size(); i++) {
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="100" Height="40">
-						<EntryAction><![CDATA[test_diagnostic();]]></EntryAction>
+						<EntryAction><![CDATA[test_diagnostic(); ]]></EntryAction>
 						<ExitAction><![CDATA[routine_is_diagnostic = false;]]></ExitAction>
 						<FillColor/>
 					</Properties>
@@ -10477,8 +10648,8 @@ for (int i=0; i<people.size(); i++) {
 	}
   }
 
-  //System.out.println ("      PopulationSize: " + populationSize);
-  //System.out.println ("PopulationSizeActual: " + populationSizeActual);
+ // System.out.println ("      PopulationSize: " + populationSize);
+ // System.out.println ("PopulationSizeActual: " + populationSizeActual);
 
 } catch (Exception e) {
 	e.printStackTrace ();
@@ -10533,6 +10704,7 @@ output_person_open ();]]></Body>
 for (int i=0; i < people.size(); i++) {
   if (people.get(i).routine_test.is_routine_age(get_Main().age)) {
     people.get(i).test_routine();
+    
   }
 }
 
@@ -10548,7 +10720,7 @@ for (int i=0; i < people.size(); i++) {
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[/*
-if (get_Main ().output_population_snapshots) {
+if (get_Main().output_population_snapshots) {
 	outfile_person_writer_count++;
 	NumberFormat format = new java.text.DecimalFormat ("00000");
 	String suffix = format.format (outfile_person_writer_count);
@@ -10557,8 +10729,8 @@ if (get_Main ().output_population_snapshots) {
 	boolean append = false;
 	outfile_person_writer =
 		Main.modelIO.getModelOutputWriter (fileName, append, compress);
-}	
-*/]]></Body>
+}	*/
+]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
@@ -10570,7 +10742,7 @@ if (get_Main ().output_population_snapshots) {
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[/*
-if (get_Main ().output_population_snapshots) {
+if (get_Main().output_population_snapshots) {
     Main.modelIO.closeWriter (outfile_person_writer);
 }
 */]]></Body>
@@ -10585,18 +10757,18 @@ if (get_Main ().output_population_snapshots) {
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[/*
-if (get_Main ().output_population_snapshots && time () > outfile_person_min_age) {
-	Main.modelIO.writePeople (people.iterator (), outfile_person_writer);
+if (get_Main().output_population_snapshots && time () > outfile_person_min_age ) {
+	Main.modelIO.writePeople (people.iterator(), outfile_person_writer);
 }
-*/
+
 
 int year = (int)time ();
-if (get_Main ().output_population_snapshots && 
+if (get_Main().output_population_snapshots&& 
     year > outfile_person_min_age)
 {
-	//Main.modelIO.writePeople (people.iterator (), outfile_person_writer);
+	Main.modelIO.writePeople (people.iterator(), outfile_person_writer);
 
-	//outfile_person_writer_count++;
+	outfile_person_writer_count++;
 	NumberFormat format = new java.text.DecimalFormat ("00000");
 	String suffix = format.format (year);
 	String outputDir = get_Main ().output_dir;
@@ -10604,7 +10776,7 @@ if (get_Main ().output_population_snapshots &&
 	boolean compress = get_Main().output_population_snapshots_compress;
 	boolean append = false;
 	Main.modelIO.writePeople (people.iterator (), outputDir, fileName);
-} 
+} */
 
 ]]></Body>
 				</Function>
@@ -12083,6 +12255,18 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 					<ParameterName><![CDATA[intervention_compliance_rate]]></ParameterName>
 					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[outfile_agent_name]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[outfile_agent_overwrite]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[outfile_agent]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
 			</Parameters>			
 			<PresentationProperties 
 				EnableAdaptiveFrameManagement="true" 
@@ -12533,6 +12717,15 @@ if (root.simulation_count % 2 == 0) {
 			<FreeformParamValue>	
 				<Id>1359476176055</Id>
 			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1370967096229</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1370967122078</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1370967132530</Id>
+			</FreeformParamValue>
 			<RangeVariationParamValue>	
 				<Id>1328041345577</Id>
 				<Type>FIXED</Type>
@@ -12981,6 +13174,18 @@ if (root.simulation_count % 2 == 0) {
 				<Id>1359476176055</Id>
 				<Type>FIXED</Type>
 			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1370967096229</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1370967122078</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1370967132530</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
 			<ModelTimeProperties 
 				UseCalendar="false">
 				<StopOption><![CDATA[Stop at specified time]]></StopOption>
@@ -13076,6 +13281,12 @@ for (int i = 0; i < args.length; i++) {
 		root.outfile_replication_name = args[++i];
 	else if (args[i].equalsIgnoreCase("outfile_replication_overwrite"))
 		root.outfile_replication_overwrite = Boolean.parseBoolean(args[++i]);
+	else if (args[i].equalsIgnoreCase("outfile_agent"))
+		root.outfile_agent = Boolean.parseBoolean(args[++i]);
+	else if (args[i].equalsIgnoreCase("outfile_agent_name"))
+		root.outfile_agent_name = args[++i];
+	else if (args[i].equalsIgnoreCase("outfile_replication_overwrite"))
+		root.outfile_agent_overwrite = Boolean.parseBoolean(args[++i]);
 	else if (args[i].equalsIgnoreCase("outfile_year"))
 		root.outfile_year = Boolean.parseBoolean(args[++i]);
 	else if (args[i].equalsIgnoreCase("outfile_year_name"))
@@ -13284,6 +13495,9 @@ traceln("  infile_population_name = " + root.infile_population_name);
 traceln("  outfile_replication = " + root.outfile_replication);
 traceln("  outfile_replication_name = " + root.outfile_replication_name);
 traceln("  outfile_replication_overwrite = " + root.outfile_replication_overwrite);
+traceln("  outfile_agent = " + root.outfile_agent);
+traceln("  outfile_agent_name = " + root.outfile_agent_name);
+traceln("  outfile_agent_overwrite = " + root.outfile_agent_overwrite);
 traceln("  outfile_year = " + root.outfile_year);
 traceln("  outfile_year_name = " + root.outfile_year_name);
 traceln("  outfile_year_overwrite = " + root.outfile_year_overwrite);
@@ -13377,6 +13591,7 @@ traceln("  cost_discount_rate = " + root.cost_discount_rate);
 traceln("  lifespan_discount_age = " + root.lifespan_discount_age);
 traceln("  lifespan_discount_rate = " + root.lifespan_discount_rate);
 traceln("  num_tests_displayed = " + root.num_tests_displayed);
+
 
 
 engine.start(root);
@@ -13728,6 +13943,7 @@ class ModelRunner implements Runnable {
 		root.outfile_year_name = root.outfile_year_name + "." + replication;
 		root.outfile_state_name = root.outfile_state_name + "." + replication;		
 		root.outfile_replication_name = root.outfile_replication_name + "." + replication;
+		root.outfile_agent_name = root.outfile_agent_name + "." + replication;
 
 		synchronized (ModelRunner.class) {
 		// This appears to workaround an occasional deadlock in the classloader in some vms.
