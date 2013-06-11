@@ -16,3 +16,4 @@ compute_population_rates=false
 population_size=100
 dynamic_compliance_rate_year_offset=6
 output_population_snapshots=false
+death_rate_delay=50

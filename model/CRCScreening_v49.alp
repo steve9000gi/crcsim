@@ -2063,7 +2063,7 @@ import java.io.File;]]></Import>
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
-					<Id>1370967307936</Id>
+					<Id>1370967307936</Id> 
 					<Name><![CDATA[outfile_agent_writer]]></Name>
 					<X>500</X><Y>330</Y>
 					<Label><X>10</X><Y>0</Y></Label>
@@ -6699,6 +6699,27 @@ catch (Exception e) {
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1370526830305</Id>
+					<Name><![CDATA[age]]></Name>
+					<X>-200</X><Y>400</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[int]]></Type>        
+						<DefaultValue><![CDATA[0]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1370526830303</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1328041345733</Id>
 					<Name><![CDATA[routine_compliance_history]]></Name>
@@ -8251,7 +8272,7 @@ surveillance_negatives = 0;
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345842</Id>
 					<Name><![CDATA[add_cost]]></Name>
-					<X>-200</X><Y>420</Y>
+					<X>-350</X><Y>550</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8305,7 +8326,7 @@ else {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345843</Id>
 					<Name><![CDATA[add_lesion]]></Name>
-					<X>-200</X><Y>440</Y>
+					<X>-350</X><Y>570</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8326,7 +8347,7 @@ tot_lesions++;
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345844</Id>
 					<Name><![CDATA[choose_tests]]></Name>
-					<X>-200</X><Y>460</Y>
+					<X>-350</X><Y>590</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8608,7 +8629,7 @@ if (routine_test == null) {
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1328041345845</Id>
 					<Name><![CDATA[discount_age]]></Name>
-					<X>-200</X><Y>480</Y>
+					<X>-350</X><Y>610</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8638,7 +8659,7 @@ else {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345847</Id>
 					<Name><![CDATA[exhibit_symptoms]]></Name>
-					<X>-200</X><Y>520</Y>
+					<X>-350</X><Y>640</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8651,7 +8672,7 @@ else {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345848</Id>
 					<Name><![CDATA[start_model]]></Name>
-					<X>-200</X><Y>540</Y>
+					<X>-350</X><Y>660</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8670,7 +8691,7 @@ for (int i=0; i<lesion_sources.size(); i++) {
 					<ReturnType><![CDATA[void]]></ReturnType>
 					<Id>1328041345849</Id>
 					<Name><![CDATA[init_model]]></Name>
-					<X>-200</X><Y>560</Y>
+					<X>-350</X><Y>680</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8693,7 +8714,7 @@ for (int i=0; i<lesion_sources.size(); i++) {
 					<ReturnType><![CDATA[boolean]]></ReturnType>
 					<Id>1328041345850</Id>
 					<Name><![CDATA[is_compliant]]></Name>
-					<X>-200</X><Y>580</Y>
+					<X>-350</X><Y>700</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8784,12 +8805,14 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 		" lowrisk: " + Person.LowRisk);
 	*/
 	  // number of visits already completed.
+
+	//System.out.println ("==> drd " + get_Population().get_Main().death_rate_delay);
       int routineVisitsCount = routine_compliance_history.size ();
 	  int dynamicComplianceRateYearOffset =
 		  get_Population().get_Main().dynamic_compliance_rate_year_offset;	
 	  if (dynamicComplianceRateYearOffset > -1) {
 		  boolean interventionActive =
-		  	  time () >= (get_Population().get_Main().death_rate_delay + 
+		  	  time () >= (age + //get_Population().get_Main().death_rate_delay + 
 				 		  dynamicComplianceRateYearOffset);
 		  if (interventionActive) {
 		      compliance_prob = get_Population().get_Main().intervention_compliance_rate;
@@ -8959,7 +8982,7 @@ else {
 					<ReturnType><![CDATA[boolean]]></ReturnType>
 					<Id>1328041345851</Id>
 					<Name><![CDATA[is_false_positive]]></Name>
-					<X>-200</X><Y>600</Y>
+					<X>-350</X><Y>720</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10660,6 +10683,8 @@ for (int i=0; i<people.size(); i++) {
     p.region_midwest = in.getBoolean("MW");
     p.region_south = in.getBoolean("SO");
     p.region_west = in.getBoolean("WE");
+	p.age = in.getInt ("AGE_G2");
+	//System.out.println ("-===============> " + p.age);
 	try {
        p.latitude = in.getDouble ("LAT");
        p.longitude = in.getDouble ("LON");
@@ -10923,6 +10948,10 @@ try {
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[region_west]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[age]]></Name>
 							<Value><![CDATA[]]></Value>	
 						</Parameter>
 					</Parameters>
@@ -13801,11 +13830,13 @@ public void waitFor (HashMap<String,List<Future>> futures, HashMap<String,Outcom
  */
 private String getInputFileConfiguration (File input) {
 	String value = "";
+	/*
 	int age = Main.modelIO.getAge (input);
 	if (age > -1) {
 		value = "death_rate_delay=" + age + "\n";
 	}
-
+	*/
+	
 	int lines = Main.modelIO.countFileLines (input);
 
 	value += "population_size=" + (lines - 1) + "\n";
