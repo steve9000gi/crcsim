@@ -10618,7 +10618,7 @@ for (int i=0; i<people.size(); i++) {
 for (int i=0; i<people.size(); i++) {
   people.get(i).init_model();
 }
-]]></Body>
+]]></Body> 
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnType><![CDATA[void]]></ReturnType>
