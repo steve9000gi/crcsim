@@ -1,33 +1,38 @@
 package org.renci.epi.util;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.BufferedOutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.LogFactory; 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.commons.logging.Log; 
-import org.apache.commons.logging.LogFactory; 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 class X {
     public String w = "w0";
@@ -88,5 +93,23 @@ public class ModelIOTest { //extends AbstractJUnit4SpringContextTests {
 	assert countyIntercepts.getMedicaidOnly () == 0.0016 : "Medicaid by county FIPS failed";
     }
 
+    @Test
+    public void testScriptEngine () throws Exception {
+	try {
+	    List<String> iterations = IterationUtil.generateIterations ("/script/testrandom.js");
+	    assert iterations.size () == 10;
+	    for (String element : iterations) {
+		System.out.println ("----------------\n" + element);
+		String [] parts = element.split ("\n");
+		for (String part : parts) {
+		    assert part.indexOf ("=") > 0;
+		    String [] nameValue = part.split ("=");
+		    double val = Double.parseDouble (nameValue [1]);
+		}
+	    }
+	} catch (Exception e) {
+	    e.printStackTrace ();
+	}
+    }
 }
 
