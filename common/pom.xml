@@ -46,8 +46,9 @@
   </dependencies>
 
   <modules>
-    <module>geography</module>
-    <module>population</module>
+    <!--
+	<module>geography</module>
+    <module>population</module> -->
     <module>util</module>
   </modules>
 

@@ -95,6 +95,11 @@ public class PopulationServiceImpl implements PopulationService {
 	Writer writer = null;
 	CSVProcessor syntheticPopulation = null;
 	int c = 0;
+
+	File outputPath = new File (getDataLocator().getModelInputPath ());
+	if (! outputPath.exists ()) {
+	    outputPath.mkdirs ();
+	}
 	File [] inputFiles = getDataLocator().getSyntheticPopulationExports ();
 	try {
 	    if (inputFiles != null) {
