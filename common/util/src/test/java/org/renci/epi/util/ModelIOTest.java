@@ -95,11 +95,23 @@ public class ModelIOTest { //extends AbstractJUnit4SpringContextTests {
 
     @Test
     public void testScriptEngine () throws Exception {
+	List<String> iterations = IterationUtil.generateIterations ("/script/testrandom.js");
+	assert iterations.size () == 10;
+	for (String element : iterations) {
+	    String [] parts = element.split ("\n");
+	    for (String part : parts) {
+		assert part.indexOf ("=") > 0;
+		String [] nameValue = part.split ("=");
+		double val = Double.parseDouble (nameValue [1]);
+	    }
+	}
+    }
+    @Test
+    public void testScriptEngineDetectDuplicateParameter () throws Exception {
 	try {
-	    List<String> iterations = IterationUtil.generateIterations ("/script/testrandom.js");
+	    List<String> iterations = IterationUtil.generateIterations ("/script/testrandom-duplicate.js");
 	    assert iterations.size () == 10;
 	    for (String element : iterations) {
-		System.out.println ("----------------\n" + element);
 		String [] parts = element.split ("\n");
 		for (String part : parts) {
 		    assert part.indexOf ("=") > 0;
@@ -108,7 +120,7 @@ public class ModelIOTest { //extends AbstractJUnit4SpringContextTests {
 		}
 	    }
 	} catch (Exception e) {
-	    e.printStackTrace ();
+	    assert e.getMessage ().indexOf ("Parameter: param-A appears twice in the configuration matrix.") > -1;
 	}
     }
 }
