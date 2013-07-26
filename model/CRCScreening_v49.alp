@@ -5022,13 +5022,13 @@ This is used to calculate continuing, rather than initial compliance.
 				<Variable Class="Parameter">
 					<Id>1373988815907</Id>
 					<Name><![CDATA[cohort]]></Name>
-					<X>1340</X><Y>210</Y>
+					<X>1330</X><Y>190</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Dynamic="false">
-						<Type><![CDATA[double]]></Type>        
+						<Type><![CDATA[int]]></Type>        
 						<DefaultValue><![CDATA[]]></DefaultValue>
 						<ParameterEditor>
 							<Id>1373988815905</Id>
@@ -5143,7 +5143,7 @@ if (outfile_replication) {
   output_replication_data();
 }
 if (outfile_agent) {
-  output_agent_data();
+  //output_agent_data();
 }
 
 // Close any requested output files.
@@ -9307,6 +9307,7 @@ for (int i=0; i<lesion_sources.size(); i++) {
 Main main = get_Population().get_Main();
 double distance = main.geography.getDistanceToNearestEndoscopyFacilityByZipCode (zipcode);
 
+//Determine distance is between given ranges
 //boolean distance_00_05 = distance < 5 ;
 boolean distance_05_10 = distance >= 5 && distance <10;
 boolean distance_10_15 = distance >= 10 && distance <15;
@@ -9317,11 +9318,15 @@ boolean distance_gt_25 = distance >= 25;
 //Call county intercept values from geography module
 CountyIntercepts countyIntercepts = main.geography.getCountyInterceptsByStcotrbg (stcotrbg);
 
-//System.out.println (
-//"zip code -> distance: " + distance + "\n" +
-//"zip code -> : " + zipcode + "\n" +
-//"stcotrbg -> county intercepts -> medicaid: " + countyIntercepts.getMedicaidOnly () + "\n" +
-//"stcotrbg -> county intercepts -> medicare: " + countyIntercepts.getMedicareOnly ()); 
+/*System.out.println (
+"zip code -> distance: " + distance + "\n" +
+"zip code -> : " + zipcode + "\n" +
+"cohort :" + get_Population().get_Main().cohort + " \n" +
+"stcotrbg -> county intercepts -> medicaid: " + countyIntercepts.getMedicaidOnly () + "\n" +
+"stcotrbg -> county intercepts -> medicare: " + countyIntercepts.getMedicareOnly () + "\n" +
+"stcotrbg -> county intercepts -> Dual: " + countyIntercepts.getDual () + "\n" + 
+"stcotrbg -> county intercepts -> BCBS: " + countyIntercepts.getBCBS () 
+); */
 
 if (screen_state.isStateActive(Person.Diagnostic) && !routine_is_diagnostic) {
   return uniform() < get_Population().get_Main().diagnostic_compliance_rate;
@@ -9361,7 +9366,7 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
       boolean age_gt_80 = (get_Population().get_Main().age > 80);
       
       // Calculate the sum of the X*Beta terms.
-   /*   double xbeta =
+     /* double xbeta =
         log(get_Population().get_Main().or_compliance_intercept)
         + (age_65_80 ? 1 : 0) * log(get_Population().get_Main().or_compliance_age_65_80)
         + (age_gt_80 ? 1 : 0) * log(get_Population().get_Main().or_compliance_age_gt_80)
@@ -9385,29 +9390,31 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
         + (region_west ? 1 : 0) * log(get_Population().get_Main().or_compliance_region_west)
         ; */
       
-      double xbeta =
+     double xbeta =
         get_Population().get_Main().beta_compliance_intercept
         + (1-(sex_male ? 1 : 0)) * get_Population().get_Main().beta_sex_female
         + (race_black ? 1 : 0) * get_Population().get_Main().beta_race_black
-        + (race_hispanic ? 1 : 0) * get_Population().get_Main().beta_race_other
+       // + (race_hispanic ? 1 : 0) * get_Population().get_Main().beta_race_other
         + (race_other ? 1 : 0) * get_Population().get_Main().beta_race_other
-       // + (insure_none ? 1 : 0) * log(get_Population().get_Main().or_compliance_insure_none)
-       // + (insure_private ? 1 : 0) * log(get_Population().get_Main().or_compliance_insure_private)
         + (distance_05_10 ? 1 : 0) * get_Population().get_Main().beta_distance_5_10
         + (distance_10_15 ? 1 : 0) * get_Population().get_Main().beta_distance_10_15
         + (distance_15_20 ? 1 : 0) * get_Population().get_Main().beta_distance_15_20
         + (distance_20_25 ? 1 : 0) * get_Population().get_Main().beta_distance_20_25
         + (distance_gt_25 ? 1 : 0) * get_Population().get_Main().beta_distance_gt_25
+        //+ get_Population().get_Main().beta_year50_2003
         + countyIntercepts.getMedicareOnly ()
         ; 
       
-      // Calculate the probability using the model.
+      // Calculate the probability using the model. If using old stat model, compliance_prob =  exp(xbeta)/ (1+exp(xbeta))
+      //compliance_prob = exp(xbeta)/(1+exp(xbeta));
+      //If using new stat model, compliance_prob= xbeta/(1+xbeta)
       compliance_prob = xbeta/(1+xbeta);
     }
     else {
       // Assign the compliance probability based on the user-specified rate.
       compliance_prob = get_Population().get_Main().initial_compliance_rate;
-
+	//should use_conditional_compliance end here?
+	}
 	/*
 	System.out.println (" active state: " + screen_state.getActiveSimpleState () +
 		" treatment: " + Person.Treatment + 
@@ -9470,8 +9477,8 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 	  }
 	
 	
-	
-    }
+   //original use_conditional_compliance end 	
+   // }
 
     // The compliance probability calculated through the statistical model
     // or specified by the user is intended to be a probability based on
@@ -14513,7 +14520,7 @@ engine.runFast();]]></Code>
 		<CustomExperiment>
 			<Id>1349374749666</Id>
 			<Name><![CDATA[HassmillerCRC]]></Name>
-			<MaximumMemory>2048000</MaximumMemory>
+			<MaximumMemory>4096</MaximumMemory>
 			<CommandLineArguments><![CDATA[seed 12334 ]]></CommandLineArguments>
 			<VmArgs><![CDATA[-Xms1024m]]></VmArgs>
 			<Import><![CDATA[import java.io.File;
@@ -14533,7 +14540,7 @@ import org.apache.commons.lang3.StringUtils;
 			<Code><![CDATA[/**
  * Configure the population scenario to execute.
  */
-execute_populations_parallel (50); //00);
+execute_populations_parallel (10); //00);
 ]]></Code>
 			<AdditionalClassCode><![CDATA[private List<Outcomes> _outcomes = null;
 private Executor _executor = new Executor ();
@@ -14593,19 +14600,13 @@ private void execute_populations_parallel (int replications) {
 	File [] files = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+", new File (inputDirectory) /*"pops")*/ );
 	
 	for (File file : files) {
-		//Input cohort number
-		String str = file.getName ();
-		String substring = str.length() > 2 ? str.substring(str.length() - 2) : str;
-		Integer cohort = Integer.parseInt(substring);
-		System.out.println ("cohort: " + cohort);
-		
 		System.out.println ("file: " + file);
 		String controlScenario = file.getName () + "." + CONTROL;
 		futures.put (controlScenario,
 			 		 execute_parallel (file,  
 									   controlScenario,
 									   new String [] {
-							  				experimentParameters
+							  				experimentParameters 
 							  		   },
 							  		   replications,
 							  		   results));
@@ -14663,12 +14664,12 @@ public void waitFor (HashMap<String,List<Future>> futures, HashMap<String,Outcom
  */
 private String getInputFileConfiguration (File input) {
 	String value = "";
-	/*
-	int age = Main.modelIO.getAge (input);
-	if (age > -1) {
-		value = "death_rate_delay=" + age + "\n";
+	
+	int cohort = Main.modelIO.getAge (input);
+	if (cohort > -1) {
+		value = "cohort=" + cohort + "\n";
 	}
-	*/
+	
 	
 	int lines = Main.modelIO.countFileLines (input);
 

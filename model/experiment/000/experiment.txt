@@ -1,10 +1,10 @@
 routine_tests=FOBT,Sigmoidoscopy,Colonoscopy;null
 test_routine_end=80,80,80,80
 model_test_probability=false
-model_initial_compliance=false
+model_initial_compliance=true
 use_conditional_compliance=false
 initial_compliance_rate=0.346
-test_cost=18,349,818,795
+test_cost=18,349,818,795	
 test_sensitivity_polyp3=0.10,0.95,0.95,0.65
 cost_polypectomy=380
 never_compliant_rate=0.0
