@@ -120,7 +120,47 @@ public class ModelIOTest { //extends AbstractJUnit4SpringContextTests {
 		}
 	    }
 	} catch (Exception e) {
-	    assert e.getMessage ().indexOf ("Parameter: param-A appears twice in the configuration matrix.") > -1;
+	    boolean match = false;
+	    for (Throwable cause = e.getCause (); cause != null; cause = cause.getCause ()) {
+		System.out.println ("cause: " + cause.getClass().getName () + " : " + cause.getMessage ());
+		if (cause.getMessage ().indexOf ("Parameter: param-A appears twice in the configuration matrix.") > -1) {
+		    match = true;
+		    break;
+		}
+	    }
+	    assert match;
+	}
+    }
+
+
+    @Test
+    public void testCalibrator () {
+	System.out.println ("-------------------------------(calibrate)");
+
+	class People {
+	    public double average (String value) {
+		return 9.3;
+	    }
+	};
+	class Population {
+	    public People people = new People ();
+	}
+	class Root {
+	    public boolean model_initial_compliance = true;
+	    public boolean use_conditional_compliance = true;
+	    public Population population = new Population ();
+	}
+	Root object = new Root ();
+
+	try {
+	    Calibrate calibrate = new JavaScriptCalibrate ("/script/calibrate.js");
+	    calibrate.onInitExperiment ();
+	    calibrate.onInitRun (object);
+	    calibrate.onRunComplete (object);
+	    calibrate.onIterationComplete ();
+	} catch (Exception e) {
+	    e.printStackTrace ();
+	    throw new RuntimeException (e);
 	}
     }
 }

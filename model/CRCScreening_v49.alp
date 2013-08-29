@@ -12396,7 +12396,9 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 		<!--   =========  Optimization Experiment   ========  -->
 		<OptimizationExperiment ActiveObjectClassId="1328041345290">
 			<Id>1372788310203</Id>
-			<Name><![CDATA[Calibration]]></Name>
+			<Name><![CDATA[CalibrationTest]]></Name>
+			<AdditionalClassCode><![CDATA[private  org.renci.epi.util.Calibration calibration = new TestCalibration (0, 9);
+private List<Pair<Double,Double>> observations = new ArrayList<Pair<Double,Double>> ();]]></AdditionalClassCode>
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
@@ -12408,21 +12410,47 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 				<Maximized>false</Maximized>
 				<CloseConfirmation>false</CloseConfirmation>
 			</Frame>
+			<Import><![CDATA[import org.renci.epi.util.TestCalibration;
+import java.util.List;
+import java.util.ArrayList;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;]]></Import>
 			<CommandLineArguments><![CDATA[seed 12334 ]]></CommandLineArguments>
 			<MaximumMemory>2048000</MaximumMemory>
-			<RandomNumberGenerationType>randomSeed</RandomNumberGenerationType>
+			<RandomNumberGenerationType>fixedSeed</RandomNumberGenerationType>
 			<CustomGeneratorCode>new Random()</CustomGeneratorCode>
 			<BeforeEachExperimentRunCode><![CDATA[datasetCurrentObjective.reset();
 datasetBestInfeasibleObjective.reset();
-datasetBestFeasibleObjective.reset();
-]]></BeforeEachExperimentRunCode>
+datasetBestFeasibleObjective.reset();]]></BeforeEachExperimentRunCode>
 			<BeforeSimulationRunCode><![CDATA[root.model_initial_compliance = false;
-root.use_conditional_compliance = false;
-]]></BeforeSimulationRunCode>
-			<AfterSimulationRunCode><![CDATA[observable_1 = root.initial_compliance_rate; //todo
+root.use_conditional_compliance = false;]]></BeforeSimulationRunCode>
+			<AfterSimulationRunCode><![CDATA[
+/*
+observable_1 = root.initial_compliance_rate; //todo
 variable = root.initial_compliance_rate; //todo
+observations.add (new ImmutablePair<Double, Double> (root.initial_compliance_rate,
+                                            root.population.people.average ("lifespan")));
+for (Pair<Double,Double> pair : observations) {
+	System.out.println (pair.getLeft () + " => " + pair.getRight ());
+}
+
+*/
+
+calibration.getValue ();
+
+double value = calibration.getValue ();
+observable_1 = value;
+variable = value;
+
+
+/*
+double lifespan = root.population.people.average ("lifespan");
+observable_1 = lifespan;
+variable = lifespan;
+*/
+
 ]]></AfterSimulationRunCode>
-			<SeedValue>1</SeedValue>
+			<SeedValue>12345</SeedValue>
 			<RandomSelectionModeForSimultaneousEvents>false</RandomSelectionModeForSimultaneousEvents>
 			<VmArgs><![CDATA[-Xms1024m]]></VmArgs>
 			<AbsoluteAccuracy>1.0E-5</AbsoluteAccuracy>
@@ -16131,7 +16159,8 @@ copyToClipboard( s );
 				<Step><![CDATA[]]></Step>
 				<Suggested><![CDATA[]]></Suggested>
 			</Parameter>
-			<ObjectiveFunctionCode><![CDATA[root.population.people.average ("lifespan")]]></ObjectiveFunctionCode>
+			<ObjectiveFunctionCode><![CDATA[//this.calibration.getValue ()
+root.population.people.average ("lifespan")]]></ObjectiveFunctionCode>
 			<Objective>MAXIMIZE</Objective>
 			<AfterIterationCode><![CDATA[if (isBestSolutionFeasible()) {
 	datasetBestFeasibleObjective.update();
@@ -16148,7 +16177,7 @@ if( isBestSolutionFeasible() && isCurrentSolutionBest() ) {
 ]]></AfterIterationCode>
 			<AllowParallelEvaluations>true</AllowParallelEvaluations>
 			<ReplicationsProperties>
-				<UseReplication>true</UseReplication>
+				<UseReplication>false</UseReplication>
 				<FixedReplicationsNumber>true</FixedReplicationsNumber>
 				<ReplicationPerIteration>10</ReplicationPerIteration>
 				<MinimumReplication>2</MinimumReplication>
@@ -16189,7 +16218,7 @@ if( isBestSolutionFeasible() && isCurrentSolutionBest() ) {
 				<FinalDate><![CDATA[1328041345266]]></FinalDate>	
 				<FinalTime><![CDATA[100.0]]></FinalTime>	
 				<StopAfterIterationCount>true</StopAfterIterationCount>
-				<IterationCount>500</IterationCount>
+				<IterationCount>50</IterationCount>
 				<AutomaticStop>false</AutomaticStop>
 			</ModelTimeProperties>
 		</OptimizationExperiment>
@@ -17499,6 +17528,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.renci.epi.util.Calibrate;
+import org.renci.epi.util.JavaScriptCalibrate;
 import org.renci.epi.util.Executor;
 import org.renci.epi.util.ModelIO;
 import org.renci.epi.util.IterationUtil;
@@ -17509,8 +17540,8 @@ import org.apache.commons.lang3.StringUtils;
 			<Code><![CDATA[/**
  * Configure the population scenario to execute.
  */
-execute_populations_parallel (1); //00);
-]]></Code>
+//execute_populations_parallel (1); //00);
+calibrate (1);]]></Code>
 			<AdditionalClassCode><![CDATA[private List<Outcomes> _outcomes = null;
 private Executor _executor = new Executor ();
 private static final String CONTROL = "control";
@@ -17526,20 +17557,193 @@ private String outputDirectory = "out";
 private String inputDirectory  = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\pop0\\pops";
 private String outputDirectory = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\pop0\\dynamiccompliance";
 
+/**
+ * Change this to select a different experment.
+ */
 private String experimentId = "000";
 
+/**
+ * Forms the path to experiment specific data.
+ */
 private String formPath (String [] elements) {
 	return StringUtils.join (elements, File.separator);
 }
+/**
+ * Forms path to the experiment directory.
+ */
 private String formExperimentDirPath () {
 	return formPath (new String [] { "experiment", experimentId });
 }
+/**
+ * Forms path to a specific data element within the experiment directory.
+ */
 private String formExperimentPath (String element) {
 	return formPath (new String [] {
 	    formExperimentDirPath (),
 	    element
 	});
 }
+/**
+ * Get a scenario name normalizing between control and intervention scenarios.
+ */
+private String get_scenario_name (File cohort, File scenario) {
+	return scenario == null ? 
+		cohort.getName () + "." + CONTROL : 
+		cohort.getName () + "." + scenario.getName ();
+}
+/**
+ * Get model parameters by reading a scenario configuration file.
+ */
+private String get_scenario_parameters (File scenario) {
+	return scenario == null ? "" : Main.modelIO.getFileAsString (scenario);
+}
+/**
+ * Execute the model for a set of control scenarios in parallel.
+ * @param cohorts A list of file names where each is an agent cohort.
+ * @param iterationParameters Parameters controlling random draws for an iteration.
+ * @param replications Number of times to run the model with this set of parameters.
+ * @param futures For tracking parallel execution.
+ * @param results Model execution results.
+ */
+private void model_population (File [] cohorts,
+                               String experimentParameters,
+                               String iterationParameters,
+                               int replications,
+                               HashMap<String,List<Future>> futures,
+                               HashMap<String,Outcomes> results,
+                               Calibrate calibrate)
+{
+	model_population (cohorts,
+					  new File [] { null },
+					  experimentParameters, 
+	                  iterationParameters,
+	                  replications,
+	                  futures,
+	                  null, //results,
+	                  calibrate);
+}                               
+/**
+ * Execute the model for each of a set of intervention scenarios in parallel.
+ * @param cohorts A list of file names where each is an agent cohort.
+ * @param interventions A list of files containing intervention specific parameters.
+ * @param iterationParameters Parameters controlling random draws for an iteration.
+ * @param replications Number of times to run the model with this set of parameters.
+ * @param futures For tracking parallel execution.
+ * @param results Model execution results.
+ */
+ private void model_population (File [] cohorts,
+							    File [] interventions,
+                                String experimentParameters,
+                                String iterationParameters,
+                                int replications,
+                                HashMap<String,List<Future>> futures,
+                                HashMap<String,Outcomes> results,
+                                Calibrate calibrate)
+{
+    System.out.println ("iteration params: ==> \n(" + iterationParameters + ")");		
+	for (File cohort : cohorts) {
+		System.out.println ("cohort: " + cohort);
+		for (File intervention : interventions) {
+		    String scenario = get_scenario_name (cohort, intervention);
+	        String scenarioParameters = get_scenario_parameters (intervention);
+			futures.put (scenario,
+					     execute_parallel (cohort,
+										   scenario,
+										   new String [] {
+									 	      experimentParameters,
+									 		  scenarioParameters,
+									 		  iterationParameters
+							 		 	   },
+							  			   replications,
+							  		   	   results,
+							  		   	   calibrate));
+	    }
+	}
+	waitFor (futures, results);
+	futures.clear ();
+}
+/**
+ * Execute the given number of replications for the model.
+ */
+private void execute_populations_parallel (int replications) {
+
+	// Read parameters common to the entire experiment.
+	String experimentDefinition = formExperimentPath ("experiment.txt");
+	String experimentParameters = Main.modelIO.getFileAsString (new File (experimentDefinition));
+	
+	// Track parallel jobs using futures to allow us to wait for completion.
+	HashMap<String,List<Future>> futures = new HashMap<String,List<Future>> ();		
+
+	// Track outcomes for the base case and each intervention.
+	_outcomes = new ArrayList<Outcomes> ();
+	HashMap<String,Outcomes> results = new HashMap<String,Outcomes> ();
+		
+	List<String> iterationParameterSets = IterationUtil.generateIterations (formExperimentPath ("iterations.conf"));
+	for (String iterationParameters : iterationParameterSets) {
+
+        File [] cohorts = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+", new File (inputDirectory));
+		model_population (cohorts,
+					      experimentParameters,
+                          iterationParameters,
+                          replications,
+                          futures,
+                          null, //results,
+                          null);
+
+        File experimentDir = new File (formExperimentDirPath ());
+        File [] interventions = Main.modelIO.getFilesByPattern ("intervention.[0-9]+", experimentDir);
+    	model_population (cohorts,
+    	                  interventions,
+					      experimentParameters,
+                          iterationParameters,
+                          replications,
+                          futures,
+                          null, //results
+                          null);
+	}
+	System.exit (0);
+}
+
+
+/**
+ * Calibrate the model.
+ */
+private void calibrate (int replications) {
+
+	// Read parameters common to the entire experiment.
+	String experimentDefinition = formExperimentPath ("experiment.txt");
+	String experimentParameters = Main.modelIO.getFileAsString (new File (experimentDefinition));
+	
+	// Track parallel jobs using futures to allow us to wait for completion.
+	HashMap<String,List<Future>> futures = new HashMap<String,List<Future>> ();		
+
+	/* Specify
+	 *   # of iterations and distributions specified by configuration file
+	 *   random number seed (or use default)
+	 *   objective function.
+	 *   Engine tolerances can be set using: setATOL/setRTOL (absolute/relative)
+	 *   Engine solvers can be set with 
+	 *      setSolverODE 
+	 *      setSolverNAE
+	 *      setSolverDAE
+	 *   http://www.anylogic.com/anylogic/help/index.jsp?topic=/com.xj.anylogic.help/html/javadoc/com/xj/anylogic/engine/Engine.html
+	 */
+	Calibrate calibrate = new JavaScriptCalibrate (formExperimentPath ("calibrate.js"));
+	List<String> iterationParameterSets = IterationUtil.generateIterations (formExperimentPath ("iterations.conf"));
+	for (String iterationParameters : iterationParameterSets) {
+	    File [] cohorts = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+", new File (inputDirectory));
+		model_population (cohorts,
+						  experimentParameters,
+   		                  iterationParameters,
+   	                   	  replications,
+                          futures,
+                          null, //results,
+                          calibrate);
+        calibrate.onIterationComplete ();
+    }
+	System.exit (0);
+}
+
 /**
  * Execute the model for a set of populations in parallel.
  *   - Experiment parameters will be read from a file called experiment.txt
@@ -17550,8 +17754,8 @@ private String formExperimentPath (String element) {
  * The control job is waited for and its outcomes recorded first.
  * Then each of the intervention replication sets is waited for and its outcomes recorded.
  *@param replications The number of replications to execute.
- */
-private void execute_populations_parallel (int replications) {
+
+private void execute_populations_parallel0 (int replications) {
 
 	// Read parameters common to the entire experiment.
 	String experimentDefinition = formExperimentPath ("experiment.txt");
@@ -17571,7 +17775,7 @@ private void execute_populations_parallel (int replications) {
 	System.out.println ("iteration params: ==> \n(" + iterationParameterSet + ")");
 	
 	// Iterate over all potential input files. These are <anything>.tsv.<integer> in this directory.	
-	File [] files = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+", new File (inputDirectory) /*"pops")*/ );	
+	File [] files = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+", new File (inputDirectory) );	
 	for (File file : files) {
 		System.out.println ("file: " + file);
 		String controlScenario = file.getName () + "." + CONTROL;
@@ -17610,6 +17814,9 @@ private void execute_populations_parallel (int replications) {
 
 	System.exit (0);
 }
+ */
+ 
+ 
 /**
  * Join this thread with a map of collections of other threads.
  * For each key in the map, get the list of associated futures.
@@ -17625,7 +17832,7 @@ public void waitFor (HashMap<String,List<Future>> futures, HashMap<String,Outcom
 			//trace ("============================= waiting for " + scenario);
 			_executor.waitFor (futuresList);
 			//traceln (".");
-			addOutcomes (scenario, results);
+			//addOutcomes (scenario, results);
 			//traceln ("pending:");
 			for (String scen : futures.keySet ()) {
 				//traceln ("   scenario: " + scen);
@@ -17800,62 +18007,79 @@ class ModelRunner implements Runnable {
 	private String [] parameters;
 	private HashMap<String,Outcomes> results;
 	private int replication = 0;
+	private Calibrate calibrate = null;
+
 	/**
 	 * Create a new model runner.
 	 *@param scenario The scenario name.
 	 *@param root The model object to execute.
 	 *@param results Map of scenario names to outcomes.
 	 */
-	ModelRunner (String scenario, File input, String [] parameters, /*Main root,*/ HashMap<String, Outcomes> results, int rep) {
+	ModelRunner (String scenario,
+				 File input,
+				 String [] parameters,
+				 HashMap<String,Outcomes> results,
+				 int rep,
+				 Calibrate calibrate)
+	{
 		this.scenario = scenario;
 		this.input = input;
 		this.parameters = parameters;
-		this.results = results;
+		//this.results = results;
 		this.replication = rep;
+		this.calibrate = calibrate;
 	}
 	/**
 	 * Execute the model and record its outcomes.
 	 */
 	public void run () {
 		try {
-		Main root = create_model (input, scenario, replication);
-		// Must keep same engine to retain initialization results.
-		//root.setEngine (createEngine ());
+			Main root = create_model (input, scenario, replication);
+			// Must keep same engine to retain initialization results.
+			//root.setEngine (createEngine ());
 		
-		traceln ("-start: " + root.output_dir + " rep(" + replication + ")");
+			traceln ("-start: " + root.output_dir + " rep(" + replication + ")");
 		
-		List<String> outputLines = new ArrayList<String> ();
-		outputLines.add ("--replication: " + replication);
+			List<String> outputLines = new ArrayList<String> ();
+			outputLines.add ("--replication: " + replication);
 
-		root.configure_parameters (input.getName () + "-" + scenario,
-								   new String [] {
-								   		getInputFileConfiguration (input),
-								   },
-								   outputLines);
-		root.configure_parameters (input.getName () + "-" + scenario, parameters, outputLines);
+			root.configure_parameters (input.getName () + "-" + scenario,
+									   new String [] {
+									   		getInputFileConfiguration (input),
+									   },
+									   outputLines);
+			root.configure_parameters (input.getName () + "-" + scenario, parameters, outputLines);
 
-
-		Main.modelIO.writeConfiguration (root,
-									root.output_dir,
-									"configuration.txt." + replication,
-									outputLines);
+			Main.modelIO.writeConfiguration (root,
+										root.output_dir,
+										"configuration.txt." + replication,
+										outputLines);
 		
-		long start = System.currentTimeMillis ();
+			long start = System.currentTimeMillis ();
 
-		root.outfile_year_name = root.outfile_year_name + "." + replication;
-		root.outfile_state_name = root.outfile_state_name + "." + replication;		
-		root.outfile_replication_name = root.outfile_replication_name + "." + replication;
-		root.outfile_agent_name = root.outfile_agent_name + "." + replication;
+			root.outfile_year_name = root.outfile_year_name + "." + replication;
+			root.outfile_state_name = root.outfile_state_name + "." + replication;		
+			root.outfile_replication_name = root.outfile_replication_name + "." + replication;
+			root.outfile_agent_name = root.outfile_agent_name + "." + replication;
 
-		synchronized (ModelRunner.class) {
-		    // This appears to workaround an occasional deadlock in the classloader in some vms.
-	    	root.getEngine().start (root);
-	    }
-		root.getEngine().runFast ();
-		addReplicationOutcomes (scenario, root, results);
-		long end = System.currentTimeMillis ();
-		traceln ("-end  : " + root.output_dir + " rep(" + replication + ") in " + 
-				( (end - start) / 1000 ) + " seconds");
+			synchronized (ModelRunner.class) {
+		   	 // This appears to workaround an occasional deadlock in the classloader in some vms.
+	    		root.getEngine().start (root);
+	    	}
+	    	
+	    	if (calibrate != null) {
+	    		calibrate.onInitRun (root);
+	    	}
+			root.getEngine().runFast ();
+			//addReplicationOutcomes (scenario, root, results);
+
+			if (calibrate != null) {
+				calibrate.onRunComplete (root);
+			}
+			
+			long end = System.currentTimeMillis ();
+			traceln ("-end  : " + root.output_dir + " rep(" + replication + ") in " + 
+					( (end - start) / 1000 ) + " seconds");
 		} catch (Throwable t) {
 			t.printStackTrace ();
 			throw new RuntimeException (scenario + " " + replication + " ", t);
@@ -17875,12 +18099,13 @@ List<Future> execute_parallel  (File input,
 								String scenario,
 								String [] parameters,
 								int replications,
-								HashMap<String,Outcomes> results)
+								HashMap<String,Outcomes> results,
+								Calibrate calibrate)
 {
 	List<Future> futures = new ArrayList<Future> (replications);
 	if (input.exists ()) {
 		for (int c = 0; c < replications; c++) {
-			ModelRunner runner = new ModelRunner (scenario, input, parameters, results, c);
+			ModelRunner runner = new ModelRunner (scenario, input, parameters, results, c, calibrate);
 			futures.add (_executor.queue (runner));
 		}
 	}
