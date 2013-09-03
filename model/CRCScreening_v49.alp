@@ -1925,6 +1925,26 @@ import java.io.FileWriter;
 import al6utils.Format;
 import org.renci.epi.util.ModelIO;
 import java.io.File;]]></Import>
+			<StartupCode><![CDATA[set_beta_compliance_intercept(excelFile.getCellNumericValue( "Sheet1!C2") ); 
+set_beta_sex_female(excelFile.getCellNumericValue( "Sheet1!C3") ); 
+set_beta_race_black(excelFile.getCellNumericValue( "Sheet1!C4") );
+set_beta_race_other(excelFile.getCellNumericValue( "Sheet1!C5") );
+set_beta_instype_dual(excelFile.getCellNumericValue( "Sheet1!C6") );
+set_beta_instype_medicaid(excelFile.getCellNumericValue( "Sheet1!C7") );
+set_beta_maritial_married(excelFile.getCellNumericValue( "Sheet1!C8") );
+set_beta_maritial_unknown(excelFile.getCellNumericValue( "Sheet1!C9") );
+set_beta_SEHP_yes(excelFile.getCellNumericValue( "Sheet1!C10") );
+set_beta_year50_2003(excelFile.getCellNumericValue( "Sheet1!C11") );
+set_beta_year50_2004(excelFile.getCellNumericValue( "Sheet1!C12") );
+set_beta_year50_2005(excelFile.getCellNumericValue( "Sheet1!C13") );
+set_beta_year50_2006(excelFile.getCellNumericValue( "Sheet1!C14") );
+set_beta_year50_2007(excelFile.getCellNumericValue( "Sheet1!C15") );
+set_beta_distance_5_10(excelFile.getCellNumericValue( "Sheet1!C16") );
+set_beta_distance_10_15(excelFile.getCellNumericValue( "Sheet1!C17") );
+set_beta_distance_15_20(excelFile.getCellNumericValue( "Sheet1!C18") );
+set_beta_distance_20_25(excelFile.getCellNumericValue( "Sheet1!C19") );
+set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
+]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
@@ -2052,7 +2072,7 @@ import java.io.File;]]></Import>
 				<Variable Class="PlainVariable">
 					<Id>1369163469670</Id>
 					<Name><![CDATA[geography]]></Name>
-					<X>0</X><Y>0</Y>
+					<X>10</X><Y>10</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -3427,7 +3447,7 @@ import java.io.File;]]></Import>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Dynamic="false">
 						<Type><![CDATA[double]]></Type>        
-						<DefaultValue><![CDATA[0.346]]></DefaultValue>
+						<DefaultValue><![CDATA[1]]></DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
 							<Name><![CDATA[]]></Name>
@@ -4487,7 +4507,7 @@ This is used to calculate continuing, rather than initial compliance.
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Dynamic="false">
 						<Type><![CDATA[double]]></Type>        
-						<DefaultValue><![CDATA[]]></DefaultValue>
+						<DefaultValue><![CDATA[0.346]]></DefaultValue>
 						<ParameterEditor>
 							<Id>1358197900023</Id>
 							<Name><![CDATA[]]></Name>
@@ -4606,6 +4626,532 @@ This is used to calculate continuing, rather than initial compliance.
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1370967096229</Id>
+					<Name><![CDATA[outfile_agent_name]]></Name>
+					<X>-220</X><Y>290</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[String]]></Type>        
+						<DefaultValue><![CDATA["summary_agent.tsv"]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1370967096227</Id>
+							<Name><![CDATA[]]></Name>
+							<Label><![CDATA[outfile_replication_name]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1370967122078</Id>
+					<Name><![CDATA[outfile_agent_overwrite]]></Name>
+					<X>-220</X><Y>310</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[boolean]]></Type>        
+						<DefaultValue><![CDATA[true]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1370967122076</Id>
+							<Name><![CDATA[]]></Name>
+							<Label><![CDATA[outfile_replication_overwrite]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1370967132530</Id>
+					<Name><![CDATA[outfile_agent]]></Name>
+					<X>-220</X><Y>270</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[boolean]]></Type>        
+						<DefaultValue><![CDATA[true]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1370967132528</Id>
+							<Name><![CDATA[]]></Name>
+							<Label><![CDATA[outfile_replication]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1372780306832</Id>
+					<Name><![CDATA[beta_sex_female]]></Name>
+					<X>1110</X><Y>40</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1372780306830</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1372780347422</Id>
+					<Name><![CDATA[beta_race_black]]></Name>
+					<X>1110</X><Y>60</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1372780347420</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1372783816806</Id>
+					<Name><![CDATA[beta_race_other]]></Name>
+					<X>1110</X><Y>80</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+<!--
+<<<<<<< HEAD
+					<Body><![CDATA[// Run the end_model code for the population. Do this before writing
+// the summary info. That way the summary info will include any final
+// values that were computed in the population's end_model code.
+population.end_model();
+
+// Output summary info from the overall model run.
+if (outfile_replication) {
+  output_replication_data();
+}
+if (outfile_agent) {
+  output_agent_data();
+}
+
+// Close any requested output files.
+if (outfile_replication) {
+  output_replication_close();
+}
+if (outfile_agent) {
+  output_agent_close();
+}
+if (outfile_year) {
+  output_year_close();
+}
+if (outfile_state) {
+  output_state_close();
+}]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnType><![CDATA[void]]></ReturnType>
+					<Id>1328041345692</Id>
+					<Name><![CDATA[start_model]]></Name>
+					<X>690</X><Y>160</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+=======
+-->
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1372783816804</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1372783850549</Id>
+					<Name><![CDATA[beta_compliance_intercept]]></Name>
+					<X>1110</X><Y>20</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+<!--
+>>>>>>> 2f11591a40ef7f13aedd0d3320e28c88e75df19e
+-->
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1372783850547</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1372784158352</Id>
+					<Name><![CDATA[beta_year50_2003]]></Name>
+					<X>1110</X><Y>170</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1372784158350</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1372784171986</Id>
+					<Name><![CDATA[beta_year50_2004]]></Name>
+					<X>1110</X><Y>190</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1372784171969</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1372784174545</Id>
+					<Name><![CDATA[beta_year50_2005]]></Name>
+					<X>1110</X><Y>210</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1372784174543</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1372784182439</Id>
+					<Name><![CDATA[beta_year50_2006]]></Name>
+					<X>1110</X><Y>230</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1372784182437</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1372784184576</Id>
+					<Name><![CDATA[beta_year50_2007]]></Name>
+					<X>1110</X><Y>250</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1372784184574</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1372784257631</Id>
+					<Name><![CDATA[beta_instype_dual]]></Name>
+					<X>1110</X><Y>270</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1372784257629</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1372784278925</Id>
+					<Name><![CDATA[beta_instype_medicaid]]></Name>
+					<X>1110</X><Y>290</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1372784278923</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1373388851550</Id>
+					<Name><![CDATA[beta_distance_5_10]]></Name>
+					<X>1330</X><Y>70</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1373388851548</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1373388873874</Id>
+					<Name><![CDATA[beta_distance_10_15]]></Name>
+					<X>1330</X><Y>90</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1373388873872</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1373388887024</Id>
+					<Name><![CDATA[beta_distance_15_20]]></Name>
+					<X>1330</X><Y>110</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1373388887022</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1373388907367</Id>
+					<Name><![CDATA[beta_distance_20_25]]></Name>
+					<X>1330</X><Y>130</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1373388907365</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1373388923263</Id>
+					<Name><![CDATA[beta_distance_gt_25]]></Name>
+					<X>1330</X><Y>150</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1373388923261</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1373917526529</Id>
+					<Name><![CDATA[beta_maritial_married]]></Name>
+					<X>1110</X><Y>100</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1373917526527</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1373917609457</Id>
+					<Name><![CDATA[beta_maritial_unknown]]></Name>
+					<X>1110</X><Y>120</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1373917609442</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1373917655557</Id>
+					<Name><![CDATA[beta_SEHP_yes]]></Name>
+					<X>1110</X><Y>140</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[double]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1373917655555</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1373988815907</Id>
+					<Name><![CDATA[cohort]]></Name>
+					<X>1330</X><Y>190</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[int]]></Type>        
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1373988815905</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1336336262301</Id>
 					<Name><![CDATA[routine_test_list]]></Name>
@@ -4709,7 +5255,7 @@ if (outfile_replication) {
   output_replication_data();
 }
 if (outfile_agent) {
-  output_agent_data();
+  //output_agent_data();
 }
 
 // Close any requested output files.
@@ -5155,7 +5701,7 @@ catch (Exception e) {
     + "\t" + population.tot_state_polyp
     + "\t" + population.tot_state_cancer
     + "\t" + population.tot_state_dead_crc
-    + "\t" + population.people.average("lifespan")
+    + "\t" + population.people.average("lifespan")	
     + "\t" + population.people.average("discounted_lifespan")
     + "\t" + population.people.average("death_age")
     + "\t" + population.people.average("discounted_death_age")
@@ -5186,6 +5732,7 @@ catch (Exception e) {
     + "\t" + population.polyp_prevalence_rate
     + "\t" + population.polyp_prevalence_rate_variance
     + "\t" + population.people.average ("diagnostic_test_count")
+    + "\t" + (population.people.size () - population.dead_before_50)
     + "\t" + population.people.sum("lifespan")
     + "\t" + population.people.sum("discounted_lifespan")
     + "\t" + population.people.sum("death_age")
@@ -5202,7 +5749,17 @@ catch (Exception e) {
     + "\t" + population.people.sum("cost_treatment")
     + "\t" + population.people.sum("discounted_cost_treatment")
     + "\t" + population.people.sum("value_life")
-    + "\t" + (population.people.size () - population.dead_before_50)
+    // Costs per person who got treated
+    + "\t" + population.people.sum("cost_routine") / population.people.sum("routine_test_yes")
+    + "\t" + population.people.sum("discounted_cost_routine") / population.people.sum("routine_test_yes")
+    + "\t" + population.people.sum("cost_diagnostic") / population.people.sum("diagnostic_test_yes")
+    + "\t" + population.people.sum("discounted_cost_diagnostic")/ population.people.sum("diagnostic_test_yes")
+    + "\t" + population.people.sum("cost_surveillance") / population.people.sum("surveillance_test_yes")
+    + "\t" + population.people.sum("discounted_cost_surveillance") / population.people.sum("surveillance_test_yes")
+    + "\t" + population.people.sum("cost_treatment") / population.people.sum("treatment_yes")
+    + "\t" + population.people.sum("discounted_cost_treatment") / population.people.sum("treatment_yes")
+    
+   
         
   );
 
@@ -5288,6 +5845,7 @@ catch (Exception e) {
         + "\t" + "crc_incidence_rate_variance"
 */
         + "\t" + "diagnostic_test_count_avg"
+        + "\t" + "population_size_at_50"
         + "\t" + "lifeexp_t"
         + "\t" + "discounted_lifeexp_t"
         + "\t" + "lifeobs_t"
@@ -5304,7 +5862,14 @@ catch (Exception e) {
         + "\t" + "cost_treatment_t"
         + "\t" + "discounted_cost_treatment_t"
         + "\t" + "value_t"
-        + "\t" + "population_size_at_50"
+        + "\t" + "cost_routine_a"
+        + "\t" + "discounted_cost_routine_a"
+        + "\t" + "cost_diagnostic_a"
+        + "\t" + "discounted_cost_diagnostic_a"
+        + "\t" + "cost_surveillance_a"
+        + "\t" + "discounted_cost_surveillance_a"
+        + "\t" + "cost_treatment_a"
+        + "\t" + "discounted_cost_treatment_a"
     
       );
 
@@ -5655,6 +6220,8 @@ catch (Exception e) {
     			+ "\t" + population.people.get(j).cost_diagnostic
     			+ "\t" + population.people.get(j).cost_surveillance
     			+ "\t" + population.people.get(j).cost_treatment
+    			+ "\t" + population.people.get(j).death_age
+    			+ "\t" + population.people.get(j).lifespan
     );
   } 
 
@@ -5685,6 +6252,8 @@ catch (Exception e) {
         + "\t" + "diagnostic cost"
         + "\t" + "surveillance cost"
         + "\t" + "treatment cost"
+        + "\t" + "death age"
+        + "\t" + "lifespan"
       );
 
     outfile_agent_writer.write("\r");
@@ -5700,6 +6269,21 @@ catch (Exception e) {
 ]]></Body>
 				</Function>
 			</Functions>
+			<Connectivity>
+				<ExcelFile>
+					<Id>1372779460482</Id>
+					<Name><![CDATA[excelFile]]></Name>
+					<X>1110</X><Y>0</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<FileName><![CDATA[data/BetaEstimates.xlsx]]></FileName>
+					<SaveInSnapshot>false</SaveInSnapshot>
+					<LoadOnStartup>true</LoadOnStartup>
+					<SaveOnDispose>true</SaveOnDispose>
+				</ExcelFile>
+			</Connectivity>
 			<EmbeddedObjects>
 				<EmbeddedObject>
 					<Id>1328041345564</Id>
@@ -6272,13 +6856,112 @@ catch (Exception e) {
 				<Variable Class="PlainVariable">
 					<Id>1368222583153</Id>
 					<Name><![CDATA[diagnostic_test_count]]></Name>
-					<X>-520</X><Y>-320</Y>
+					<Description><![CDATA[Each time a diagnostic test is performed, this value is increased by 1]]></Description> 
+					<X>-710</X><Y>-360</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1373292533160</Id>
+					<Name><![CDATA[routine_test_count]]></Name>
+					<Description><![CDATA[Each time a routine test is performed, this value is increased by 1]]></Description> 
+					<X>-710</X><Y>-380</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue><![CDATA[0]]></InitialValue>                 	
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1373294529086</Id>
+					<Name><![CDATA[diagnostic_test_yes]]></Name>
+					<Description><![CDATA[1 if an agent get tested one ore more times, 0 otherwise]]></Description> 
+					<X>-710</X><Y>-240</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue><![CDATA[0]]></InitialValue>                 	
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1373294891044</Id>
+					<Name><![CDATA[surveillance_test_count]]></Name>
+					<Description><![CDATA[Each time a surveillance test is performed, this value is increased by 1]]></Description> 
+					<X>-710</X><Y>-340</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue><![CDATA[0]]></InitialValue>                 	
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1373294907877</Id>
+					<Name><![CDATA[treatment_count]]></Name>
+					<Description><![CDATA[Each time a patient is treated, this value is increased by 1]]></Description> 
+					<X>-710</X><Y>-320</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue><![CDATA[0]]></InitialValue>                 	
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1373294932556</Id>
+					<Name><![CDATA[routine_test_yes]]></Name>
+					<Description><![CDATA[1 if an agent get tested one ore more times, 0 otherwise]]></Description> 
+					<X>-710</X><Y>-260</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue><![CDATA[0]]></InitialValue>                 	
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1373294948733</Id>
+					<Name><![CDATA[surveillance_test_yes]]></Name>
+					<Description><![CDATA[1 if an agent get tested one ore more times, 0 otherwise]]></Description> 
+					<X>-710</X><Y>-220</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue><![CDATA[0]]></InitialValue>                 	
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1373294968420</Id>
+					<Name><![CDATA[treatment_yes]]></Name>
+					<Description><![CDATA[1 if an agent got treated one ore more times, 0 otherwise]]></Description> 
+					<X>-710</X><Y>-200</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue><![CDATA[0]]></InitialValue>                 	
 					</Properties>
 				</Variable>
 				<Variable Class="Parameter">
@@ -6714,6 +7397,27 @@ catch (Exception e) {
 							<Id>1370526830303</Id>
 							<Name><![CDATA[]]></Name>
 							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1370526830305</Id>
+					<Name><![CDATA[age]]></Name>
+					<X>-200</X><Y>400</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[int]]></Type>        
+						<DefaultValue><![CDATA[0]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1370526830303</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -8299,19 +9003,26 @@ else {
 // Add the costs to the appropriate cost totals.
 if (type.equals("routine")) {
 
-  diagnostic_test_count++;
+  routine_test_count++;
+  routine_test_yes = 1;
   cost_routine += dollars;
   discounted_cost_routine += discounted_dollars;
 }
 else if (type.equals("diagnostic")) {
+  diagnostic_test_count++;
+  diagnostic_test_yes = 1;
   cost_diagnostic += dollars;
   discounted_cost_diagnostic += discounted_dollars;
 }
 else if (type.equals("surveillance")) {
+  surveillance_test_count++;
+  surveillance_test_yes = 1;
   cost_surveillance += dollars;
   discounted_cost_surveillance += discounted_dollars;
 }
 else if (type.equals("treatment")) {
+  treatment_count++;
+  treatment_yes = 1;
   cost_treatment += dollars;
   discounted_cost_treatment += discounted_dollars;
 }
@@ -8727,6 +9438,31 @@ for (int i=0; i<lesion_sources.size(); i++) {
   return false;
 }
 
+//Calculate distance to nearest facility from geography module
+Main main = get_Population().get_Main();
+double distance = main.geography.getDistanceToNearestEndoscopyFacilityByZipCode (zipcode);
+
+//Determine distance is between given ranges
+//boolean distance_00_05 = distance < 5 ;
+boolean distance_05_10 = distance >= 5 && distance <10;
+boolean distance_10_15 = distance >= 10 && distance <15;
+boolean distance_15_20 = distance >= 15 && distance <20;
+boolean distance_20_25 = distance >= 20 && distance <25;
+boolean distance_gt_25 = distance >= 25;
+
+//Call county intercept values from geography module
+CountyIntercepts countyIntercepts = main.geography.getCountyInterceptsByStcotrbg (stcotrbg);
+
+/*System.out.println (
+"zip code -> distance: " + distance + "\n" +
+"zip code -> : " + zipcode + "\n" +
+"cohort :" + get_Population().get_Main().cohort + " \n" +
+"stcotrbg -> county intercepts -> medicaid: " + countyIntercepts.getMedicaidOnly () + "\n" +
+"stcotrbg -> county intercepts -> medicare: " + countyIntercepts.getMedicareOnly () + "\n" +
+"stcotrbg -> county intercepts -> Dual: " + countyIntercepts.getDual () + "\n" + 
+"stcotrbg -> county intercepts -> BCBS: " + countyIntercepts.getBCBS () 
+); */
+
 if (screen_state.isStateActive(Person.Diagnostic) && !routine_is_diagnostic) {
   return uniform() < get_Population().get_Main().diagnostic_compliance_rate;
 }
@@ -8765,7 +9501,7 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
       boolean age_gt_80 = (get_Population().get_Main().age > 80);
       
       // Calculate the sum of the X*Beta terms.
-      double xbeta =
+     /* double xbeta =
         log(get_Population().get_Main().or_compliance_intercept)
         + (age_65_80 ? 1 : 0) * log(get_Population().get_Main().or_compliance_age_65_80)
         + (age_gt_80 ? 1 : 0) * log(get_Population().get_Main().or_compliance_age_gt_80)
@@ -8787,16 +9523,33 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
         + (region_midwest ? 1 : 0) * log(get_Population().get_Main().or_compliance_region_midwest)
         + (region_south ? 1 : 0) * log(get_Population().get_Main().or_compliance_region_south)
         + (region_west ? 1 : 0) * log(get_Population().get_Main().or_compliance_region_west)
-        ;
+        ; */
       
-      // Calculate the probability using the model.
-      compliance_prob = exp(xbeta)/(1+exp(xbeta));
+     double xbeta =
+        get_Population().get_Main().beta_compliance_intercept
+        + (1-(sex_male ? 1 : 0)) * get_Population().get_Main().beta_sex_female
+        + (race_black ? 1 : 0) * get_Population().get_Main().beta_race_black
+       // + (race_hispanic ? 1 : 0) * get_Population().get_Main().beta_race_other
+        + (race_other ? 1 : 0) * get_Population().get_Main().beta_race_other
+        + (distance_05_10 ? 1 : 0) * get_Population().get_Main().beta_distance_5_10
+        + (distance_10_15 ? 1 : 0) * get_Population().get_Main().beta_distance_10_15
+        + (distance_15_20 ? 1 : 0) * get_Population().get_Main().beta_distance_15_20
+        + (distance_20_25 ? 1 : 0) * get_Population().get_Main().beta_distance_20_25
+        + (distance_gt_25 ? 1 : 0) * get_Population().get_Main().beta_distance_gt_25
+        //+ get_Population().get_Main().beta_year50_2003
+        + countyIntercepts.getMedicareOnly ()
+        ; 
+      
+      // Calculate the probability using the model. If using old stat model, compliance_prob =  exp(xbeta)/ (1+exp(xbeta))
+      //compliance_prob = exp(xbeta)/(1+exp(xbeta));
+      //If using new stat model, compliance_prob= xbeta/(1+xbeta)
+      compliance_prob = xbeta/(1+xbeta);
     }
     else {
       // Assign the compliance probability based on the user-specified rate.
       compliance_prob = get_Population().get_Main().initial_compliance_rate;
-      
-
+	//should use_conditional_compliance end here?
+	}
 	/*
 	System.out.println (" active state: " + screen_state.getActiveSimpleState () +
 		" treatment: " + Person.Treatment + 
@@ -8804,10 +9557,11 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 		" routine: " + Person.Routine +
 		" diagnostic: " + Person.Diagnostic + // <<
 		" lowrisk: " + Person.LowRisk);
-    */
-    	
+
+	*/
 	  // number of visits already completed.
 
+	//System.out.println ("==> drd " + get_Population().get_Main().death_rate_delay);
       int routineVisitsCount = routine_compliance_history.size ();
 	  int dynamicComplianceRateYearOffset =
 		  get_Population().get_Main().dynamic_compliance_rate_year_offset;	
@@ -8859,8 +9613,8 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 	  }
 	
 	
-	
-    }
+   //original use_conditional_compliance end 	
+   // }
 
     // The compliance probability calculated through the statistical model
     // or specified by the user is intended to be a probability based on
@@ -12352,6 +13106,86 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[outfile_agent]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_sex_female]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_race_black]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_race_other]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_compliance_intercept]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_year50_2003]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_year50_2004]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_year50_2005]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_year50_2006]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_year50_2007]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_instype_dual]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_instype_medicaid]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_distance_5_10]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_distance_10_15]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_distance_15_20]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_distance_20_25]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_distance_gt_25]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_maritial_married]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_maritial_unknown]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[beta_SEHP_yes]]></ParameterName>
+					<ParameterValue><![CDATA[]]></ParameterValue>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[cohort]]></ParameterName>
 					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
 			</Parameters>			
@@ -16642,6 +17476,66 @@ if (root.simulation_count % 2 == 0) {
 			<FreeformParamValue>	
 				<Id>1370967132530</Id>
 			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1372780306832</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1372780347422</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1372783816806</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1372783850549</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1372784158352</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1372784171986</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1372784174545</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1372784182439</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1372784184576</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1372784257631</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1372784278925</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1373388851550</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1373388873874</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1373388887024</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1373388907367</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1373388923263</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1373917526529</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1373917609457</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1373917655557</Id>
+			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1373988815907</Id>
+			</FreeformParamValue>
 			<RangeVariationParamValue>	
 				<Id>1328041345577</Id>
 				<Type>FIXED</Type>
@@ -17102,6 +17996,86 @@ if (root.simulation_count % 2 == 0) {
 				<Id>1370967132530</Id>
 				<Type>FIXED</Type>
 			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1372780306832</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1372780347422</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1372783816806</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1372783850549</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1372784158352</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1372784171986</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1372784174545</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1372784182439</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1372784184576</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1372784257631</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1372784278925</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1373388851550</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1373388873874</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1373388887024</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1373388907367</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1373388923263</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1373917526529</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1373917609457</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1373917655557</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1373988815907</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
 			<ModelTimeProperties 
 				UseCalendar="false">
 				<StopOption><![CDATA[Stop at specified time]]></StopOption>
@@ -17150,8 +18124,8 @@ if (root.simulation_count % 2 == 0) {
 		<CustomExperiment>
 			<Id>0</Id>
 			<Name><![CDATA[NoAnimation]]></Name>
-			<MaximumMemory>64</MaximumMemory>
-			<CommandLineArguments><![CDATA[seed 12334]]></CommandLineArguments>
+			<MaximumMemory>4096</MaximumMemory>
+			<CommandLineArguments><![CDATA[seed 12334 population_size 10]]></CommandLineArguments>
 			<VmArgs><![CDATA[]]></VmArgs>
 			<Code><![CDATA[Engine engine = createEngine();
 Main root = new Main(engine, null, null);
@@ -17517,7 +18491,7 @@ engine.runFast();]]></Code>
 		<CustomExperiment>
 			<Id>1349374749666</Id>
 			<Name><![CDATA[HassmillerCRC]]></Name>
-			<MaximumMemory>2048000</MaximumMemory>
+			<MaximumMemory>4096</MaximumMemory>
 			<CommandLineArguments><![CDATA[seed 12334 ]]></CommandLineArguments>
 			<VmArgs><![CDATA[-Xms1024m]]></VmArgs>
 			<Import><![CDATA[import java.io.File;
@@ -17541,17 +18515,18 @@ import org.apache.commons.lang3.StringUtils;
  * Configure the population scenario to execute.
  */
 //execute_populations_parallel (1); //00);
-calibrate (1);]]></Code>
+calibrate (1);
+]]></Code>
 			<AdditionalClassCode><![CDATA[private List<Outcomes> _outcomes = null;
 private Executor _executor = new Executor ();
 private static final String CONTROL = "control";
 static int outcomesIndex = 0;
 
 // Useful for smaller runs.
-/*
+
 private String inputDirectory = "pops";
 private String outputDirectory = "out";
-*/
+
 
 // For production runs.
 private String inputDirectory  = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\pop0\\pops";
@@ -17780,7 +18755,7 @@ private void execute_populations_parallel0 (int replications) {
 		System.out.println ("file: " + file);
 		String controlScenario = file.getName () + "." + CONTROL;
 		futures.put (controlScenario,
-			 		 execute_parallel (file,
+			 		 execute_parallel (file,  
 									   controlScenario,
 									   new String [] {
 							  				experimentParameters,
@@ -17848,13 +18823,10 @@ public void waitFor (HashMap<String,List<Future>> futures, HashMap<String,Outcom
  */
 private String getInputFileConfiguration (File input) {
 	String value = "";
-	/*
-	int age = Main.modelIO.getAge (input);
-	if (age > -1) {
-		value = "death_rate_delay=" + age + "\n";
+	int cohort = Main.modelIO.getAge (input);
+	if (cohort > -1) {
+		value = "cohort=" + cohort + "\n";
 	}
-	*/
-	
 	int lines = Main.modelIO.countFileLines (input);
 
 	value += "population_size=" + (lines - 1) + "\n";
