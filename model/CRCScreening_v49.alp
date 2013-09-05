@@ -1771,7 +1771,12 @@ for (double i=floor(start); i<=get_Person().get_Population().get_Main().max_age;
 		<ActiveObjectClass>
 			<Id>1328041345290</Id>
 			<Name><![CDATA[Main]]></Name>
-			<AdditionalClassCode><![CDATA[static final int NUM_CANCER_STAGES = 4;
+			<AdditionalClassCode><![CDATA[static {
+BasicConfigurator.configure ();
+Logger.getRootLogger().setLevel (Level.INFO);
+}
+
+static final int NUM_CANCER_STAGES = 4;
 
 //--------------------------------------------------------------------
 // We define odds ratios here instead of as Main parameters because
@@ -1924,7 +1929,12 @@ TableFunction us_age_distribution = new TableFunction(
 import java.io.FileWriter;
 import al6utils.Format;
 import org.renci.epi.util.ModelIO;
-import java.io.File;]]></Import>
+import java.io.File;
+
+
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Level;]]></Import>
 			<StartupCode><![CDATA[set_beta_compliance_intercept(excelFile.getCellNumericValue( "Sheet1!C2") ); 
 set_beta_sex_female(excelFile.getCellNumericValue( "Sheet1!C3") ); 
 set_beta_race_black(excelFile.getCellNumericValue( "Sheet1!C4") );
@@ -4627,72 +4637,6 @@ This is used to calculate continuing, rather than initial compliance.
 					</Properties>                 
 				</Variable>
 				<Variable Class="Parameter">
-					<Id>1370967096229</Id>
-					<Name><![CDATA[outfile_agent_name]]></Name>
-					<X>-220</X><Y>290</Y>
-					<Label><X>20</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" Dynamic="false">
-						<Type><![CDATA[String]]></Type>        
-						<DefaultValue><![CDATA["summary_agent.tsv"]]></DefaultValue>
-						<ParameterEditor>
-							<Id>1370967096227</Id>
-							<Name><![CDATA[]]></Name>
-							<Label><![CDATA[outfile_replication_name]]></Label>
-							<EditorContolType>TEXT_BOX</EditorContolType>
-							<MinSliderValue><![CDATA[0]]></MinSliderValue>
-							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
-							<Separator>false</Separator>
-						</ParameterEditor>
-					</Properties>                 
-				</Variable>
-				<Variable Class="Parameter">
-					<Id>1370967122078</Id>
-					<Name><![CDATA[outfile_agent_overwrite]]></Name>
-					<X>-220</X><Y>310</Y>
-					<Label><X>20</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" Dynamic="false">
-						<Type><![CDATA[boolean]]></Type>        
-						<DefaultValue><![CDATA[true]]></DefaultValue>
-						<ParameterEditor>
-							<Id>1370967122076</Id>
-							<Name><![CDATA[]]></Name>
-							<Label><![CDATA[outfile_replication_overwrite]]></Label>
-							<EditorContolType>TEXT_BOX</EditorContolType>
-							<MinSliderValue><![CDATA[0]]></MinSliderValue>
-							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
-							<Separator>false</Separator>
-						</ParameterEditor>
-					</Properties>                 
-				</Variable>
-				<Variable Class="Parameter">
-					<Id>1370967132530</Id>
-					<Name><![CDATA[outfile_agent]]></Name>
-					<X>-220</X><Y>270</Y>
-					<Label><X>20</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" Dynamic="false">
-						<Type><![CDATA[boolean]]></Type>        
-						<DefaultValue><![CDATA[true]]></DefaultValue>
-						<ParameterEditor>
-							<Id>1370967132528</Id>
-							<Name><![CDATA[]]></Name>
-							<Label><![CDATA[outfile_replication]]></Label>
-							<EditorContolType>TEXT_BOX</EditorContolType>
-							<MinSliderValue><![CDATA[0]]></MinSliderValue>
-							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
-							<Separator>false</Separator>
-						</ParameterEditor>
-					</Properties>                 
-				</Variable>
-				<Variable Class="Parameter">
 					<Id>1372780306832</Id>
 					<Name><![CDATA[beta_sex_female]]></Name>
 					<X>1110</X><Y>40</Y>
@@ -4706,7 +4650,7 @@ This is used to calculate continuing, rather than initial compliance.
 						<ParameterEditor>
 							<Id>1372780306830</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4727,7 +4671,7 @@ This is used to calculate continuing, rather than initial compliance.
 						<ParameterEditor>
 							<Id>1372780347420</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4742,50 +4686,13 @@ This is used to calculate continuing, rather than initial compliance.
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-<!--
-<<<<<<< HEAD
-					<Body><![CDATA[// Run the end_model code for the population. Do this before writing
-// the summary info. That way the summary info will include any final
-// values that were computed in the population's end_model code.
-population.end_model();
-
-// Output summary info from the overall model run.
-if (outfile_replication) {
-  output_replication_data();
-}
-if (outfile_agent) {
-  output_agent_data();
-}
-
-// Close any requested output files.
-if (outfile_replication) {
-  output_replication_close();
-}
-if (outfile_agent) {
-  output_agent_close();
-}
-if (outfile_year) {
-  output_year_close();
-}
-if (outfile_state) {
-  output_state_close();
-}]]></Body>
-				</Function>
-				<Function AccessType="default" StaticFunction="false">
-					<ReturnType><![CDATA[void]]></ReturnType>
-					<Id>1328041345692</Id>
-					<Name><![CDATA[start_model]]></Name>
-					<X>690</X><Y>160</Y>
-					<Label><X>20</X><Y>0</Y></Label>
-=======
--->
 					<Properties SaveInSnapshot="true" Dynamic="false">
 						<Type><![CDATA[double]]></Type>        
 						<DefaultValue><![CDATA[]]></DefaultValue>
 						<ParameterEditor>
 							<Id>1372783816804</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4797,9 +4704,6 @@ if (outfile_state) {
 					<Name><![CDATA[beta_compliance_intercept]]></Name>
 					<X>1110</X><Y>20</Y>
 					<Label><X>10</X><Y>0</Y></Label>
-<!--
->>>>>>> 2f11591a40ef7f13aedd0d3320e28c88e75df19e
--->
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
@@ -4809,7 +4713,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1372783850547</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4830,7 +4734,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1372784158350</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4851,7 +4755,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1372784171969</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4872,7 +4776,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1372784174543</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4893,7 +4797,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1372784182437</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4914,7 +4818,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1372784184574</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4935,7 +4839,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1372784257629</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4956,7 +4860,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1372784278923</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4977,7 +4881,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1373388851548</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -4998,7 +4902,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1373388873872</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -5019,7 +4923,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1373388887022</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -5040,7 +4944,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1373388907365</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -5061,7 +4965,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1373388923261</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -5082,7 +4986,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1373917526527</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -5103,7 +5007,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1373917609442</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -5124,7 +5028,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1373917655555</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -5145,7 +5049,7 @@ if (outfile_state) {
 						<ParameterEditor>
 							<Id>1373988815905</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -5608,9 +5512,6 @@ if (outfile_state) {
 // embedded active objects, so we don't need to do that here.
 
 population.init_model();
-
-
-population.init_geography ();
 
 //=========================================================
 // Initialization is complete.
@@ -6329,7 +6230,9 @@ catch (Exception e) {
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
-			<Import><![CDATA[import org.renci.epi.util.CountyIntercepts;]]></Import>
+			<Import><![CDATA[import org.renci.epi.util.CountyIntercepts;
+import org.renci.epi.util.stats.ComplianceModel;
+import org.renci.epi.util.stats.InsuranceCategory;]]></Import>
 			<Generic>false</Generic>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
@@ -7077,7 +6980,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345828</Id>
 					<Name><![CDATA[race_white]]></Name>
-					<X>-200</X><Y>120</Y>
+					<X>-200</X><Y>160</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7099,7 +7002,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345829</Id>
 					<Name><![CDATA[race_black]]></Name>
-					<X>-200</X><Y>140</Y>
+					<X>-200</X><Y>180</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7121,7 +7024,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345830</Id>
 					<Name><![CDATA[race_hispanic]]></Name>
-					<X>-200</X><Y>160</Y>
+					<X>-200</X><Y>200</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7143,7 +7046,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345831</Id>
 					<Name><![CDATA[race_other]]></Name>
-					<X>-200</X><Y>180</Y>
+					<X>-200</X><Y>220</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7165,7 +7068,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345832</Id>
 					<Name><![CDATA[alone_yes]]></Name>
-					<X>-200</X><Y>200</Y>
+					<X>-200</X><Y>240</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7187,7 +7090,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345833</Id>
 					<Name><![CDATA[source_yes]]></Name>
-					<X>-200</X><Y>220</Y>
+					<X>-200</X><Y>260</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7209,7 +7112,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345834</Id>
 					<Name><![CDATA[famhist_med_high]]></Name>
-					<X>-200</X><Y>240</Y>
+					<X>-200</X><Y>280</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7231,7 +7134,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345835</Id>
 					<Name><![CDATA[smoke_former]]></Name>
-					<X>-200</X><Y>260</Y>
+					<X>-200</X><Y>300</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7253,7 +7156,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345836</Id>
 					<Name><![CDATA[smoke_never]]></Name>
-					<X>-200</X><Y>280</Y>
+					<X>-200</X><Y>320</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7275,7 +7178,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345837</Id>
 					<Name><![CDATA[vitamin_yes]]></Name>
-					<X>-200</X><Y>300</Y>
+					<X>-200</X><Y>340</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7297,7 +7200,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345838</Id>
 					<Name><![CDATA[flushot_yes]]></Name>
-					<X>-200</X><Y>320</Y>
+					<X>-200</X><Y>360</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7319,7 +7222,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345839</Id>
 					<Name><![CDATA[region_midwest]]></Name>
-					<X>-200</X><Y>340</Y>
+					<X>-200</X><Y>380</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7341,7 +7244,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345840</Id>
 					<Name><![CDATA[region_south]]></Name>
-					<X>-200</X><Y>360</Y>
+					<X>-200</X><Y>400</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7363,7 +7266,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1328041345841</Id>
 					<Name><![CDATA[region_west]]></Name>
-					<X>-200</X><Y>380</Y>
+					<X>-200</X><Y>420</Y>
 					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7385,7 +7288,7 @@ catch (Exception e) {
 				<Variable Class="Parameter">
 					<Id>1370526830305</Id>
 					<Name><![CDATA[age]]></Name>
-					<X>-200</X><Y>400</Y>
+					<X>-200</X><Y>440</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7404,20 +7307,43 @@ catch (Exception e) {
 					</Properties>                 
 				</Variable>
 				<Variable Class="Parameter">
-					<Id>1370526830305</Id>
-					<Name><![CDATA[age]]></Name>
-					<X>-200</X><Y>400</Y>
-					<Label><X>10</X><Y>0</Y></Label>
+					<Id>1378396768745</Id>
+					<Name><![CDATA[insure_medicare]]></Name>
+					<X>-200</X><Y>120</Y>
+					<Label><X>20</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Dynamic="false">
-						<Type><![CDATA[int]]></Type>        
-						<DefaultValue><![CDATA[0]]></DefaultValue>
+						<Type><![CDATA[boolean]]></Type>        
+						<DefaultValue><![CDATA[false]]></DefaultValue>
 						<ParameterEditor>
-							<Id>1370526830303</Id>
+							<Id>1378396768743</Id>
 							<Name><![CDATA[]]></Name>
-							<EditorContolType>TEXT_BOX</EditorContolType>
+							<Label><![CDATA[insure_private]]></Label>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<Separator>false</Separator>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1378396773197</Id>
+					<Name><![CDATA[insure_medicaid]]></Name>
+					<X>-200</X><Y>140</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Dynamic="false">
+						<Type><![CDATA[boolean]]></Type>        
+						<DefaultValue><![CDATA[false]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1378396773195</Id>
+							<Name><![CDATA[]]></Name>
+							<Label><![CDATA[insure_private]]></Label>
+							<EditorContolType alpv7value="TEXT_BOX">TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
 							<Separator>false</Separator>
@@ -9438,31 +9364,6 @@ for (int i=0; i<lesion_sources.size(); i++) {
   return false;
 }
 
-//Calculate distance to nearest facility from geography module
-Main main = get_Population().get_Main();
-double distance = main.geography.getDistanceToNearestEndoscopyFacilityByZipCode (zipcode);
-
-//Determine distance is between given ranges
-//boolean distance_00_05 = distance < 5 ;
-boolean distance_05_10 = distance >= 5 && distance <10;
-boolean distance_10_15 = distance >= 10 && distance <15;
-boolean distance_15_20 = distance >= 15 && distance <20;
-boolean distance_20_25 = distance >= 20 && distance <25;
-boolean distance_gt_25 = distance >= 25;
-
-//Call county intercept values from geography module
-CountyIntercepts countyIntercepts = main.geography.getCountyInterceptsByStcotrbg (stcotrbg);
-
-/*System.out.println (
-"zip code -> distance: " + distance + "\n" +
-"zip code -> : " + zipcode + "\n" +
-"cohort :" + get_Population().get_Main().cohort + " \n" +
-"stcotrbg -> county intercepts -> medicaid: " + countyIntercepts.getMedicaidOnly () + "\n" +
-"stcotrbg -> county intercepts -> medicare: " + countyIntercepts.getMedicareOnly () + "\n" +
-"stcotrbg -> county intercepts -> Dual: " + countyIntercepts.getDual () + "\n" + 
-"stcotrbg -> county intercepts -> BCBS: " + countyIntercepts.getBCBS () 
-); */
-
 if (screen_state.isStateActive(Person.Diagnostic) && !routine_is_diagnostic) {
   return uniform() < get_Population().get_Main().diagnostic_compliance_rate;
 }
@@ -9500,49 +9401,23 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
       boolean age_65_80 = (get_Population().get_Main().age > 65 && get_Population().get_Main().age <= 80);
       boolean age_gt_80 = (get_Population().get_Main().age > 80);
       
-      // Calculate the sum of the X*Beta terms.
-     /* double xbeta =
-        log(get_Population().get_Main().or_compliance_intercept)
-        + (age_65_80 ? 1 : 0) * log(get_Population().get_Main().or_compliance_age_65_80)
-        + (age_gt_80 ? 1 : 0) * log(get_Population().get_Main().or_compliance_age_gt_80)
-        + (sex_male ? 1 : 0) * log(get_Population().get_Main().or_compliance_sex_male)
-        + (race_black ? 1 : 0) * log(get_Population().get_Main().or_compliance_race_black)
-        + (race_hispanic ? 1 : 0) * log(get_Population().get_Main().or_compliance_race_hispanic)
-        + (race_other ? 1 : 0) * log(get_Population().get_Main().or_compliance_race_other)
-        + (income_gt_20k ? 1 : 0) * log(get_Population().get_Main().or_compliance_income_gt_20k)
-        + (educ_college ? 1 : 0) * log(get_Population().get_Main().or_compliance_educ_college)
-        + (insure_none ? 1 : 0) * log(get_Population().get_Main().or_compliance_insure_none)
-        + (insure_private ? 1 : 0) * log(get_Population().get_Main().or_compliance_insure_private)
-        + (alone_yes ? 1 : 0) * log(get_Population().get_Main().or_compliance_alone_yes)
-        + (source_yes ? 1 : 0) * log(get_Population().get_Main().or_compliance_source_yes)
-        + (famhist_med_high ? 1 : 0) * log(get_Population().get_Main().or_compliance_famhist_med_high)
-        + (smoke_former ? 1 : 0) * log(get_Population().get_Main().or_compliance_smoke_former)
-        + (smoke_never ? 1 : 0) * log(get_Population().get_Main().or_compliance_smoke_never)
-        + (vitamin_yes ? 1 : 0) * log(get_Population().get_Main().or_compliance_vitamin_yes)
-        + (flushot_yes ? 1 : 0) * log(get_Population().get_Main().or_compliance_flushot_yes)
-        + (region_midwest ? 1 : 0) * log(get_Population().get_Main().or_compliance_region_midwest)
-        + (region_south ? 1 : 0) * log(get_Population().get_Main().or_compliance_region_south)
-        + (region_west ? 1 : 0) * log(get_Population().get_Main().or_compliance_region_west)
-        ; */
-      
-     double xbeta =
-        get_Population().get_Main().beta_compliance_intercept
-        + (1-(sex_male ? 1 : 0)) * get_Population().get_Main().beta_sex_female
-        + (race_black ? 1 : 0) * get_Population().get_Main().beta_race_black
-       // + (race_hispanic ? 1 : 0) * get_Population().get_Main().beta_race_other
-        + (race_other ? 1 : 0) * get_Population().get_Main().beta_race_other
-        + (distance_05_10 ? 1 : 0) * get_Population().get_Main().beta_distance_5_10
-        + (distance_10_15 ? 1 : 0) * get_Population().get_Main().beta_distance_10_15
-        + (distance_15_20 ? 1 : 0) * get_Population().get_Main().beta_distance_15_20
-        + (distance_20_25 ? 1 : 0) * get_Population().get_Main().beta_distance_20_25
-        + (distance_gt_25 ? 1 : 0) * get_Population().get_Main().beta_distance_gt_25
-        //+ get_Population().get_Main().beta_year50_2003
-        + countyIntercepts.getMedicareOnly ()
-        ; 
-      
+ 	  Main main = get_Population().get_Main();
+	  ComplianceModel complianceModel = new ComplianceModel ();
+	  double xbeta =
+	      complianceModel.getProbabilityOfCompliance (this.sex_male,
+													  this.race_black,
+													  this.race_other,
+													  this.zipcode,
+													  this.stcotrbg,
+													  this.insure_private,
+													  this.insure_medicaid,
+													  this.insure_medicare,
+													  this.insure_none,										
+													  main.geography);
+	
       // Calculate the probability using the model. If using old stat model, compliance_prob =  exp(xbeta)/ (1+exp(xbeta))
-      //compliance_prob = exp(xbeta)/(1+exp(xbeta));
-      //If using new stat model, compliance_prob= xbeta/(1+xbeta)
+      // compliance_prob = exp(xbeta)/(1+exp(xbeta));
+      // If using new stat model, compliance_prob= xbeta/(1+xbeta)
       compliance_prob = xbeta/(1+xbeta);
     }
     else {
@@ -11426,8 +11301,12 @@ for (int i=0; i<people.size(); i++) {
     p.race_hispanic = in.getBoolean("HISP");
     p.race_other = in.getBoolean("OTHER");
     p.race_white = !(p.race_black || p.race_hispanic || p.race_other);
+
     p.insure_none = in.getBoolean("NOINS");
     p.insure_private = in.getBoolean("PRIVA");
+    p.insure_medicaid = in.getBoolean("MEDICAID");
+    p.insure_medicare = in.getBoolean("MEDICARE");
+
     p.alone_yes = in.getBoolean("ALONE");
     p.source_yes = in.getBoolean("USUAL");
     p.famhist_med_high = in.getBoolean("FRISK");
@@ -11586,33 +11465,6 @@ if (get_Main().output_population_snapshots&&
 
 ]]></Body>
 				</Function>
-				<Function AccessType="default" StaticFunction="false">
-					<ReturnType><![CDATA[void]]></ReturnType>
-					<Id>1369163609746</Id>
-					<Name><![CDATA[init_geography]]></Name>
-					<X>-150</X><Y>270</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[/*
-try {
-  String fileName = "nearest_dist_simulation.2.csv";
-  int unlimited = -1;
-  org.renci.epi.util.DelimitedFileImporter in =
-  		new org.renci.epi.util.DelimitedFileImporter (fileName, ",", unlimited);
-
-  while (in.hasMoreRows ()) {
-    in.nextRow ();
-    String zipcode = in.getString ("zip");
-    Double distance = new Double (in.getDouble ("nearest_distance"));
-    get_Main().geography.put (zipcode, distance);
-  }
-} catch (Exception e) {
-	e.printStackTrace ();
-}
-*/]]></Body>
-				</Function>
 			</Functions>
 			<EmbeddedObjects>
 				<EmbeddedObject>
@@ -11706,7 +11558,11 @@ try {
 							<Value><![CDATA[]]></Value>	
 						</Parameter>
 						<Parameter>
-							<Name><![CDATA[age]]></Name>
+							<Name><![CDATA[insure_medicare]]></Name>
+							<Value><![CDATA[]]></Value>	
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[insure_medicaid]]></Name>
 							<Value><![CDATA[]]></Value>	
 						</Parameter>
 					</Parameters>
@@ -13094,18 +12950,6 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[intervention_compliance_rate]]></ParameterName>
-					<ParameterValue><![CDATA[]]></ParameterValue>
-				</Parameter>
-				<Parameter>
-					<ParameterName><![CDATA[outfile_agent_name]]></ParameterName>
-					<ParameterValue><![CDATA[]]></ParameterValue>
-				</Parameter>
-				<Parameter>
-					<ParameterName><![CDATA[outfile_agent_overwrite]]></ParameterName>
-					<ParameterValue><![CDATA[]]></ParameterValue>
-				</Parameter>
-				<Parameter>
-					<ParameterName><![CDATA[outfile_agent]]></ParameterName>
 					<ParameterValue><![CDATA[]]></ParameterValue>
 				</Parameter>
 				<Parameter>
@@ -16993,6 +16837,186 @@ copyToClipboard( s );
 				<Step><![CDATA[]]></Step>
 				<Suggested><![CDATA[]]></Suggested>
 			</Parameter>
+			<Parameter>	
+				<Id>1372780306832</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1372780347422</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1372783816806</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1372783850549</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1372784158352</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1372784171986</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1372784174545</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1372784182439</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1372784184576</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1372784257631</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1372784278925</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1373388851550</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1373388873874</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1373388887024</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1373388907367</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1373388923263</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1373917526529</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1373917609457</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1373917655557</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
+			<Parameter>	
+				<Id>1373988815907</Id>
+				<Type>FIXED</Type>
+				<Value><![CDATA[]]></Value>
+				<Min><![CDATA[]]></Min>
+				<Max><![CDATA[]]></Max>
+				<Step><![CDATA[]]></Step>
+				<Suggested><![CDATA[]]></Suggested>
+			</Parameter>
 			<ObjectiveFunctionCode><![CDATA[//this.calibration.getValue ()
 root.population.people.average ("lifespan")]]></ObjectiveFunctionCode>
 			<Objective>MAXIMIZE</Objective>
@@ -18514,8 +18538,8 @@ import org.apache.commons.lang3.StringUtils;
 			<Code><![CDATA[/**
  * Configure the population scenario to execute.
  */
-//execute_populations_parallel (1); //00);
-calibrate (1);
+execute_populations_parallel (3); //00);
+//calibrate (1);
 ]]></Code>
 			<AdditionalClassCode><![CDATA[private List<Outcomes> _outcomes = null;
 private Executor _executor = new Executor ();
@@ -18524,13 +18548,13 @@ static int outcomesIndex = 0;
 
 // Useful for smaller runs.
 
-private String inputDirectory = "pops";
-private String outputDirectory = "out";
+//private String inputDirectory = "pops";
+//private String outputDirectory = "out";
 
 
 // For production runs.
-private String inputDirectory  = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\pop0\\pops";
-private String outputDirectory = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\pop0\\dynamiccompliance";
+private String inputDirectory  = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\compliance_model\\pops";
+private String outputDirectory = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\compliance_model\\out";
 
 /**
  * Change this to select a different experment.
