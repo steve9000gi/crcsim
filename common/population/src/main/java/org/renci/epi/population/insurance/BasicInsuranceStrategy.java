@@ -30,4 +30,18 @@ public class BasicInsuranceStrategy implements InsuranceStrategy {
     public boolean hasPrivateInsurance (Person person, InsuranceStatus status) {
 	return insuranceStatusTable.hasPrivateInsurance (person, status);
     }
+
+    /**
+     * Is this person insured via Medicaid only?
+     */
+    public boolean hasMedicaidOnly (Person person, InsuranceStatus status) {
+	return insuranceStatusTable.hasMedicaidOnly (person, status);
+    }
+    
+    /**
+     * Is this person insured via Medicare only?
+     */
+    public boolean hasMedicareOnly (Person person, InsuranceStatus status) {
+	return insuranceStatusTable.hasMedicareOnly (person, status);
+    }
 }

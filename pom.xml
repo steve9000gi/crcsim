@@ -91,7 +91,9 @@
 
   <modules>
     <module>common</module>
+    <!--
     <module>pig</module>
+    -->
     <module>web</module>
   </modules>
 

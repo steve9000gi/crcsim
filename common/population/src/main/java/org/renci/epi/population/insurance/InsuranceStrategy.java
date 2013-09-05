@@ -15,4 +15,14 @@ public interface InsuranceStrategy {
      * Is this person privately insured?
      */
     public boolean hasPrivateInsurance (Person person, InsuranceStatus status);
+
+    /**
+     * Is this person insured via medicaid only?
+     */
+    public boolean hasMedicaidOnly (Person person, InsuranceStatus status);
+    
+    /**
+     * Is this person insured via Medicare only?
+     */
+    public boolean hasMedicareOnly (Person person, InsuranceStatus status);
 }

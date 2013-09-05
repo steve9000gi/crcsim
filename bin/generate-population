@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+#set -x
 set -e
 
 ###################################################################
@@ -44,7 +44,7 @@ set -e
 
 configure_system () {    
     APP_HOME=/cygdrive/c/scox/dev/  # blueridge largemem
-    APP_HOME=/cygdrive/c/dev       # x301
+    APP_HOME=/cygdrive/c/dev        # x301
     APP_HOME=~/dev/                 # scox.europa.renci.org
 
     DATA_HOME=$APP_HOME/var/crcsim
@@ -57,7 +57,7 @@ configure_system () {
 2005_2009_ver1_37_synth_people.txt 
 2005_2009_ver1_37_synth_households.txt 
 2005_2009_ver1_37_pums_p.txt
-synth_hh_2005_2009_v1_NC_tsv_zipcode.txt"
+synth_hh_2005_2009_v1_NC_zipcode.txt"
     unset subset
     unset tables
     unset cygwin    
@@ -117,16 +117,19 @@ create_and_load () {
 }    
 
 import_tables () {
-    for file in $input_files; do
+    for file in $input_files; do        
 	table=$(echo $file | sed -e "s,pums_,pums,g" | sed -e "s,.*_,," -e "s,.txt,,")
 	table="$table:${synth_data_home}/$file"
 	tables="$tables $table"
     done
-
+    echo importing $tables
+    
+    echo "  drop: $input $table"
     drop_tables people households pumsp zipcode
     for table in $tables; do
 	input=$(echo $table | sed -e "s,:, ," | awk '{ print $2 }')
 	table=$(echo $table | sed -e "s,:, ," | awk '{ print $1 }')
+        echo "  import: $input $table"
 	create_and_load $input $table
     done
 }
@@ -257,6 +260,7 @@ main () {
 			export_data
 		    else
 			for age in $(seq $MIN_AGE $MAX_AGE); do
+                            echo exporting cohort $age...
 			    export_data_by_age $age > export.$age
 			done
 		    fi

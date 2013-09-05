@@ -186,7 +186,30 @@ public class InsuranceStatusTable {
 	return result;
     }
 
+
     /**
+
+age_cat <=
+  1 when age=>1|2
+  2 when age=>3|4|5
+  3 when age=>6
+
+medicaid: 
+  age_cat=>1 && ins_cat=>4
+  age_cat=>2 && ins_cat=>4
+
+medicare:
+  age_cat=>1 && ins_cat=>5
+  age_cat=>2 && ins_cat=>5
+  age_cat=>3 && ins_cat=>3
+
+private:
+  age_cat=>1 && ins_cat=>2|3|8
+  age_cat=>2 && ins_cat=>2|3|10
+  age_cat=>3 && ins_cat=>2
+
+none:
+  age_cat=>* && ins_cate=>1
 
 a. If AGE_CAT is 1 or 2, then health insurance type is defined as follows:
   1) No insurance 
@@ -241,66 +264,90 @@ c. If AGE_CAT is 6, then health insurance type is defined as follows:
   5)   Medicare and having any other insurance type(s), but not Medicaid 
 
 */
+    enum AGE_CAT {
+        AGE_ONE, AGE_TWO, AGE_THREE, NONE
+    };
+
+    private final AGE_CAT getAgeCategory (Person person) {
+        AGE_CAT result = AGE_CAT.NONE;
+        short ageCat = person.getAgeCat ();
+        switch (ageCat) {
+        case 1:
+        case 2:
+            result = AGE_CAT.AGE_ONE;
+            break;
+        case 3:
+        case 4:
+        case 5:
+            result = AGE_CAT.AGE_TWO;
+            break;
+        case 6:
+            result = AGE_CAT.AGE_THREE;
+            break;
+        default:
+            result = AGE_CAT.NONE;
+        }
+        return result;
+    }
+    public boolean hasMedicaidOnly (Person person, InsuranceStatus status) {
+        boolean result = false;
+	AGE_CAT ageCat = getAgeCategory (person);
+        switch (ageCat) {
+        case AGE_ONE:
+            result = InsuranceStatus.CAT_FOUR.equals (status);
+            break;
+        case AGE_TWO:
+            result = InsuranceStatus.CAT_FOUR.equals (status);
+            break;
+        default:
+            break;
+        }
+        return result;
+    }
+    public boolean hasMedicareOnly (Person person, InsuranceStatus status) {
+        boolean result = false;
+	AGE_CAT ageCat = getAgeCategory (person);
+        switch (ageCat) {
+        case AGE_ONE:
+            result = InsuranceStatus.CAT_FIVE.equals (status);
+            break;
+        case AGE_TWO:
+            result = InsuranceStatus.CAT_FIVE.equals (status);
+            break;
+        case AGE_THREE:
+            result = InsuranceStatus.CAT_FIVE.equals (status);
+            break;
+        default:
+            break;
+        }
+        return result;
+    }
+    public boolean hasPrivateInsurance (Person person, InsuranceStatus status) {
+        boolean result = false;
+	AGE_CAT ageCat = getAgeCategory (person);
+        switch (ageCat) {
+        case AGE_ONE:
+            result = 
+                InsuranceStatus.CAT_TWO.equals (status) ||
+                InsuranceStatus.CAT_THREE.equals (status) ||
+                InsuranceStatus.CAT_EIGHT.equals (status);
+            break;
+        case AGE_TWO:
+            result = 
+                InsuranceStatus.CAT_TWO.equals (status) ||
+                InsuranceStatus.CAT_THREE.equals (status) ||
+                InsuranceStatus.CAT_TEN.equals (status);
+            break;
+        case AGE_THREE:
+            result = InsuranceStatus.CAT_TWO.equals (status);
+            break;
+        default:
+            break;
+        }
+        return result;
+    }
     public boolean hasNoInsurance (Person person, InsuranceStatus status) {
 	return status == InsuranceStatus.CAT_ONE;
-    }
-
-    /**
-     *
-     * 	    
-     *  - Under 2.a) categories 2 and 3 correspond to private insurance
-     *  - Under 2.b) categories correspond to private insurance
-     *  - Under 2.c) ... I can't tell. Category 2 corresponds to private insurance?
-     * 	    
-     */
-    public boolean hasPrivateInsurance0 (Person person, InsuranceStatus status) {
-	short ageCat = person.getAgeCat ();
-	return
-	    (
-	     (ageCat == 1 || ageCat == 2) &&
-	     (InsuranceStatus.CAT_TWO.equals (status) ||
-	      InsuranceStatus.CAT_THREE.equals (status))
-	     ) 
-
-	    ||
-
-	    (
-	     (ageCat == 3 || ageCat == 4 || ageCat == 5) &&
-	     (
-	      InsuranceStatus.CAT_TWO.equals (status) ||
-	      InsuranceStatus.CAT_THREE.equals (status)
-	      )
-	     );
-    }
-
-    public boolean hasPrivateInsurance (Person person, InsuranceStatus status) {
-	short ageCat = person.getAgeCat ();
-	return
-	    (
-	     (ageCat == 1 || ageCat == 2) &&
-	     (InsuranceStatus.CAT_TWO.equals (status) ||
-	      InsuranceStatus.CAT_THREE.equals (status) || 
-	      InsuranceStatus.CAT_EIGHT.equals (status)
-	      ) 
-	     )
-
-	    ||
-	    
-	    (
-	     (ageCat == 3 || ageCat == 4 || ageCat == 5) &&
-	     (
-	      InsuranceStatus.CAT_TWO.equals (status) ||
-	      InsuranceStatus.CAT_THREE.equals (status) ||
-	      InsuranceStatus.CAT_TEN.equals (status)
-	      )
-	     )
-	     
-	    ||
-
-	     (
-	      (ageCat == 6) && InsuranceStatus.CAT_TWO.equals (status)
-	      )
-	    ;
     }
 }
 

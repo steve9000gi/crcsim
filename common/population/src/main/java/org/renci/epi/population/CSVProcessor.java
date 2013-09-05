@@ -200,6 +200,8 @@ class SynthPopAnnotationProcessor implements Processor {
 	 */
 	record.put ("NOINS", "0");
 	record.put ("PRIVA", "0");
+        record.put ("MEDICARE", "0");
+        record.put ("MEDICAID", "0");
 	try {
 	    Person person = Person.getPerson (Integer.parseInt (record.get ("people.age")),
 					      Integer.parseInt (record.get ("INCOME")),
@@ -209,8 +211,16 @@ class SynthPopAnnotationProcessor implements Processor {
 					      Integer.parseInt (record.get ("people.sex")));
 	    InsuranceStatus status = _insuranceStrategy.getInsuranceStatus (person);
 	    
-	    record.put ("NOINS", _insuranceStrategy.hasNoInsurance (person, status) ? "1" : "0");
-	    record.put ("PRIVA", _insuranceStrategy.hasPrivateInsurance (person, status) ? "1" : "0");
+	    if (_insuranceStrategy.hasPrivateInsurance (person, status)) {
+                record.put ("PRIVA", "1");
+            } else if (_insuranceStrategy.hasMedicareOnly (person, status)) {
+                record.put ("MEDICARE", "1");
+            } else if (_insuranceStrategy.hasMedicaidOnly (person, status)) {
+                record.put ("MEDICAID", "1");
+            } else if (_insuranceStrategy.hasNoInsurance (person, status)) {
+                record.put ("NOINS", "1");
+            }
+
 	} catch (NumberFormatException e) {
 	    e.printStackTrace ();
 	    throw new RuntimeException ("Error e");

@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+import org.renci.epi.util.DataLocator;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -43,7 +44,7 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
 	"sex", "race", "SEXC", "INCOME", "FRISK", "VITALE", "AGE_G2",
 	"AGE_G3", "AGE_G4", "FLU", "BLACK", "HISP", "OTHER", "FORMER",
 	"NEVER", "ALONE", "MW", "SO", "WE", "USUAL", "NOINS",
-	"PRIVA", "EDU", "id", "p_id", "LAT", "LON", "county", "stcotrbg", "zipcode"
+	"PRIVA", "MEDICARE", "MEDICAID", "EDU", "id", "p_id", "LAT", "LON", "county", "stcotrbg", "zipcode"
     };
 
     static {
@@ -67,7 +68,6 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void testModelMultipleInputCompiler () throws Exception {
 	Assert.assertTrue (this.populationService != null);
-
 	this.populationService.compileMultipleModelInputs (inputSeparator,
 							  outputSeparator,
 							  outputKeys);
@@ -76,7 +76,6 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
 
     /*
     */
-
     @Test
     public void testGetPopulation () throws Exception {
 	this.populationService.getPopulation (new String [] { "0" });
