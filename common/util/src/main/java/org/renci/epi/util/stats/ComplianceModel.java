@@ -122,7 +122,12 @@ public class ComplianceModel {
     }
 
     /**
-     *
+     * Determine the insurance category to use based on agent attributes.
+     * @param insure_private    True if the agent has private insurance.
+     * @param insure_medicaid   True if the agent has medicaid.
+     * @param insure_medicare   True if the agent has medicare.
+     * @param insure_none       True if the agent has no insurance.     
+     * @return Returns the agents insurance category.
      */
     private InsuranceCategory getInsuranceCategory (boolean insure_private,
 						    boolean insure_medicaid,
@@ -142,26 +147,13 @@ public class ComplianceModel {
 	return result;
     }
 
-    private double getInsuranceBeta (boolean insure_private,
-				     boolean insure_medicaid,
-				     boolean insure_medicare,
-				     boolean insure_none,
-				     CountyIntercepts countyIntercepts)
-    {
-	double result = 0.0;
-	if (insure_private) {
-	    result = countyIntercepts.getBCBS ();
-	} else if (insure_medicare && insure_medicaid) {
-	    result = countyIntercepts.getDual ();
-	} else if (insure_medicaid) {
-	    result = countyIntercepts.getMedicaidOnly ();
-	} else if (insure_medicare) {
-	    result = countyIntercepts.getMedicareOnly ();
-	}
-	return result;
-    }
-
-
+    /**
+     * Get the appropriate betas to use given the agent's insurance category.
+     * This is calculated using the county intercepts table.
+     * @param insuranceCategory The agents insurance category.
+     * @param countyIntercepts A lookup table able to produce betas for various caregories based on location.
+     * @return Returns a beta for an agents insurance category driven by their geographic location.
+     */
     private double getInsuranceBeta (InsuranceCategory insuranceCategory, CountyIntercepts countyIntercepts) {
 	double result = 0.0;
 

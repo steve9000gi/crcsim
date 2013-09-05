@@ -1,7 +1,7 @@
 package org.renci.epi.util.stats;
 
 /**
- * Possible insurance categories.
+ * Possible agent insurance categories.
  */
 public enum InsuranceCategory {
     MEDICARE, MEDICAID, DUAL, PRIVATE, UNINSURED
