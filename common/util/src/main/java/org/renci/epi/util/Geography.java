@@ -29,11 +29,6 @@ public class Geography {
     private static final String DATA = "data";
     public static final double UNKNOWN_DOUBLE = -Double.MAX_VALUE;
 
-    static {
-	BasicConfigurator.configure ();
-	Logger.getRootLogger().setLevel (Level.DEBUG);
-    }
-
     private Reader getResourceReader (String resourceName) {	
 	Reader result = getDataReader (resourceName);
 	if (result == null) {
