@@ -18,51 +18,41 @@ import org.renci.epi.util.Geography;
  */
 public class ComplianceModel {
 
-    private static final double defaultComplianceProbability = 0.20;
-
     private static Log logger = LogFactory.getLog (ComplianceModel.class); 
-    static {
-	//BasicConfigurator.configure ();
-	//Logger.getRootLogger().setLevel (Level.DEBUG);
-    }
+    private static final double defaultComplianceProbability = 0.20;
     
-    private InsuranceCategory getInsuranceCategory (boolean insure_private,
+    /**
+     *
+     * Calculate the probability that a specific agent will be compliant with screening.
+     * 
+     * @param person_sex_male   True if the agent is male.
+     * @param person_race_black True if the agents race is black.
+     * @param person_race_other True if the agents race is other.
+     * @param person_zipcode    The agents zipcode.
+     * @param person_stcotrbg   The state-county code for the agent.
+     * @param insure_private    True if the agent has private insurance.
+     * @param insure_medicaid   True if the agent has medicaid.
+     * @param insure_medicare   True if the agent has medicare.
+     * @param insure_none       True if the agent has no insurance.
+     * @param geography         Geography lookup utility.
+     *
+     * @return Returns a double - the probability the agent will be compliant with screening.   
+     *
+     */
+    public final double getProbabilityOfCompliance (boolean person_sex_male,
+						    boolean person_race_black,
+						    boolean person_race_other,
+						    String person_zipcode,
+						    String person_stcotrbg,
+						    boolean insure_private,
 						    boolean insure_medicaid,
 						    boolean insure_medicare,
-						    boolean insure_none)
+						    boolean insure_none,
+						    Geography geography)
     {
-	InsuranceCategory result = InsuranceCategory.UNINSURED;
-	if (insure_private) {
-	    result = InsuranceCategory.PRIVATE;
-	} else if (insure_medicaid) {
-	    result = InsuranceCategory.MEDICAID;
-	} else if (insure_medicare) {
-	    result = InsuranceCategory.MEDICARE;
-	}
-	return result;
-    }
-
-    public double getProbabilityOfCompliance (boolean person_sex_male,
-					      boolean person_race_black,
-					      boolean person_race_other,
-					      String person_zipcode,
-					      String person_stcotrbg,
-					      boolean insure_private,
-					      boolean insure_medicaid,
-					      boolean insure_medicare,
-					      boolean insure_none,
-					      Geography geography)
-    {
-	InsuranceCategory insuranceCategory = getInsuranceCategory (insure_private,
-								    insure_medicaid,
-								    insure_medicare,
-								    insure_none);
 	double result = defaultComplianceProbability;
 	
-	if (insuranceCategory != InsuranceCategory.UNINSURED) {
-	    
-	    // Determine county intercepts.
-	    CountyIntercepts countyIntercepts = geography.getCountyInterceptsByStcotrbg (person_stcotrbg);
+	if (! insure_none) { // Return the default compliance probability for the uninsured.
 	    
 	    // Determine person's distance to a colonoscopy facility.
 	    double distance = geography.getDistanceToNearestEndoscopyFacilityByZipCode (person_zipcode);
@@ -74,9 +64,20 @@ public class ComplianceModel {
 	    boolean distance_20_25 = distance >= 20 && distance < 25;
 	    boolean distance_gt_25 = distance >= 25;
 	    
+	    // Determine the agent's insurance category.
+	    InsuranceCategory insuranceCategory = getInsuranceCategory (insure_private,
+									insure_medicaid,
+									insure_medicare,
+									insure_none);
 	    Betas betas = Betas.getBetas (insuranceCategory);
+
+	    // Determine county intercepts.
+	    CountyIntercepts countyIntercepts = geography.getCountyInterceptsByStcotrbg (person_stcotrbg);
+
+	    // Get insurance betas based on county intercepts.
 	    double insuranceBeta = getInsuranceBeta (insuranceCategory, countyIntercepts);
-	    
+
+	    // Execute the statistical model.
 	    result = 
 		betas.compliance_intercept
 		+ (1 - (person_sex_male   ? 1 : 0)) * betas.sex_female
@@ -89,6 +90,7 @@ public class ComplianceModel {
 		+ (distance_gt_25 ? 1 : 0) * betas.distance_gt_25
 		+ insuranceBeta;
 
+	    // Logging.
 	    if (logger.isDebugEnabled ()) {
 		StringBuffer buffer = new StringBuffer ().
 		    append ("sex_male=").    append (person_sex_male).
@@ -118,6 +120,47 @@ public class ComplianceModel {
 
 	return result;
     }
+
+    /**
+     *
+     */
+    private InsuranceCategory getInsuranceCategory (boolean insure_private,
+						    boolean insure_medicaid,
+						    boolean insure_medicare,
+						    boolean insure_none)
+    {
+	InsuranceCategory result = InsuranceCategory.UNINSURED;
+	if (insure_private) {
+	    result = InsuranceCategory.PRIVATE;
+	} else if (insure_medicare && insure_medicaid) {
+	    result = InsuranceCategory.DUAL;
+	} else if (insure_medicaid) {
+	    result = InsuranceCategory.MEDICAID;
+	} else if (insure_medicare) {
+	    result = InsuranceCategory.MEDICARE;
+	}
+	return result;
+    }
+
+    private double getInsuranceBeta (boolean insure_private,
+				     boolean insure_medicaid,
+				     boolean insure_medicare,
+				     boolean insure_none,
+				     CountyIntercepts countyIntercepts)
+    {
+	double result = 0.0;
+	if (insure_private) {
+	    result = countyIntercepts.getBCBS ();
+	} else if (insure_medicare && insure_medicaid) {
+	    result = countyIntercepts.getDual ();
+	} else if (insure_medicaid) {
+	    result = countyIntercepts.getMedicaidOnly ();
+	} else if (insure_medicare) {
+	    result = countyIntercepts.getMedicareOnly ();
+	}
+	return result;
+    }
+
 
     private double getInsuranceBeta (InsuranceCategory insuranceCategory, CountyIntercepts countyIntercepts) {
 	double result = 0.0;
