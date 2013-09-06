@@ -6231,8 +6231,8 @@ catch (Exception e) {
 			<PresentationTopGroupPersistent>true</PresentationTopGroupPersistent>
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
 			<Import><![CDATA[import org.renci.epi.util.CountyIntercepts;
-import org.renci.epi.util.stats.ComplianceModel;
-import org.renci.epi.util.stats.InsuranceCategory;]]></Import>
+import org.renci.epi.util.stats.compliance.ComplianceModel;
+import org.renci.epi.util.stats.compliance.InsuranceCategory;]]></Import>
 			<Generic>false</Generic>
 			<GenericParameters><![CDATA[T]]></GenericParameters>
 			<GenericParametersLabel><![CDATA[Generic parameters:]]></GenericParametersLabel>
