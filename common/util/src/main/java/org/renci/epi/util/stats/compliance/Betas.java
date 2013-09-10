@@ -1,6 +1,11 @@
 package org.renci.epi.util.stats.compliance;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+import java.io.IOException;
+import java.net.URL;
 import java.util.EnumMap;
+import java.util.Scanner;
 
 /**
  * Abstracts the set of possible betas that will vary from agent to agent in the compliance model.
@@ -12,6 +17,8 @@ class Betas {
     double sex_female;
     double race_black;
     double race_other;
+
+    double year_turned_50;
 
     double distance_05_10;
     double distance_10_15;
@@ -26,6 +33,7 @@ class Betas {
 		   double female,
 		   double black,
 		   double other,
+		   double year_turned_50,
 		   double distance_05_10,
 		   double distance_10_15,
 		   double distance_15_20,
@@ -36,12 +44,17 @@ class Betas {
 	this.sex_female = female;
 	this.race_black = black;
 	this.race_other = other;
+	this.year_turned_50 = year_turned_50;
 	
 	this.distance_05_10 = distance_05_10;
 	this.distance_10_15 = distance_10_15;
 	this.distance_15_20 = distance_15_20;
 	this.distance_20_25 = distance_20_25;
 	this.distance_gt_25 = distance_gt_25;
+	
+	System.out.println ("===> " + intercept + "," + female + "," + black + "," + other + "," + year_turned_50 + "," + 
+			    distance_05_10 + "," + distance_10_15 + "," + distance_15_20 + "," + distance_20_25 +
+			    distance_gt_25 + "\n");
     }
 
     /**
@@ -50,6 +63,10 @@ class Betas {
      * @return Returns the betas for this insurance category.
      */
     final static Betas getBetas (InsuranceCategory insuranceCategory) {
+	Betas.initialize ();
+	if (! insuranceBetas.containsKey (insuranceCategory)) {
+	    throw new RuntimeException ("Unknown insuranceCategory: " + insuranceCategory);
+	}
 	return insuranceBetas.get (insuranceCategory);
     }
 
@@ -57,74 +74,45 @@ class Betas {
     private static EnumMap<InsuranceCategory, Betas> insuranceBetas = 
 	new EnumMap<InsuranceCategory, Betas> (InsuranceCategory.class);
 
-    static {
+    static void initialize () {
+
+	if (insuranceBetas.size () > 0) {
+	    return;
+	}
 
 	/**
 	 *
-	 * TODO: consider reading these from an input file.
-	 *
-	 * These are derived from the stats model spreadsheet at:
-	 * https://app.box.com/files/0/f/876129186/1/f_9239777459
+	 */
+	try {
+	    URL url = Resources.getResource ("data/compliance_model_insurance_betas.txt");
+	    String text = Resources.toString (url, Charsets.UTF_8);
 
-                  total        medicare medicaid dual    bcbs 
-       intercept: -0.9698	-1.0385	-1.1883	-0.9355	-0.6034
-       female   : 0.7635	0.9736	0.6807	0.6899	0.6581
-       black    : -0.1479	-0.183	-0.1307	-0.1144	0
-       other    : -0.09868	-0.1923	-0.05079	-0.03621	0
-
-
-                    Total       Medicaire      Medicaid      Dual      BCBS
-       >5-10 Miles  -0.02845	-0.08839	-0.07334     0.04391	-0.04829
-       >10-15 Miles -0.01567	-0.00458	-0.0749	     0.02924	-0.06208
-       >15-20 Miles -0.07815	-0.01507	-0.2275	     0.01985	-0.1097
-       >20-25 Miles 0.1292	0.2816	        0.1259	     0.02571	 0.01381
-       25+ Miles    -0.2473	-0.3594	        -0.3291	     -0.2046	-0.1219
-
-       *
-       *
-       */
-	insuranceBetas.put (InsuranceCategory.MEDICARE,
-			    new Betas (-1.0385,   // intercept
-				       0.9736,    // female
-				       -0.183,    // black
-				       -0.1923,   // other
-				       -0.08839,  // 5-10
-				       -0.00458,  // 10-15
-				       -0.01507,  // 15-20
-				       0.2816,    // 20-25
-				       -0.3594)); // >25
-	
-	insuranceBetas.put (InsuranceCategory.MEDICAID,
-			    new Betas (-1.1883,   // intercept
-				       0.6807,    // female
-				       -0.1307,   // black
-				       -0.05079,  // other
-				       -0.07334,  // 5-10
-				       -0.0749,   // 10-15
-				       -0.2275,   // 15-20
-				       0.1259,    // 20-25
-				       -0.3291)); // >25
-	
-	insuranceBetas.put (InsuranceCategory.DUAL,
-			    new Betas (-0.9355,   // intercept
-				       -0.1307,   // female
-				       -0.1144,   // black
-				       -0.03621,  // other
-				       0.04391,   // 5-10
-				       0.02924,   // 10-15
-				       0.01985,   // 15-20
-				       0.02571,   // 20-25
-				       -0.2046)); // >25
-	
-	insuranceBetas.put (InsuranceCategory.PRIVATE,
-			    new Betas (-0.6034,   // intercept
-				       -0.05079,  // female
-				       0.0,       // black
-				       0.0,       // other
-				       -0.04829,  // 5-10
-				       -0.06208,  // 10-15
-				       -0.1097,   // 15-20
-				       0.01381,   // 20-25
-				       -0.1219)); // >25
+	    Scanner scanner = new Scanner (text);
+	    while (scanner.hasNextLine ()) {
+		String line = scanner.nextLine ();
+		System.out.println ("<<= " + line);
+		if ( !line.startsWith ("#") && (line.length () > 0) ) {
+		    String [] part = line.split (",");
+		    int c = 0;
+		    System.out.println ("line: " + line);
+		    System.out.println ("------- Populating betas for insurance category: " + part [c]);
+		    insuranceBetas.put (InsuranceCategory.valueOf (part [c++]),
+					new Betas (Double.valueOf (part [c++]),
+						   Double.valueOf (part [c++]),
+						   Double.valueOf (part [c++]),
+						   Double.valueOf (part [c++]),
+						   Double.valueOf (part [c++]),
+						   Double.valueOf (part [c++]),
+						   Double.valueOf (part [c++]),
+						   Double.valueOf (part [c++]),
+						   Double.valueOf (part [c++]),
+						   Double.valueOf (part [c])));
+		}
+	    }
+	    scanner.close();
+	    
+	} catch (IOException e) {
+	    throw new RuntimeException (e);
+	}
     }
 }

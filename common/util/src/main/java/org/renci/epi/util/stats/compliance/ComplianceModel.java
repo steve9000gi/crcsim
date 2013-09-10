@@ -52,7 +52,13 @@ public class ComplianceModel {
     {
 	double result = defaultComplianceProbability;
 	
-	if (! insure_none) { // Return the default compliance probability for the uninsured.
+	// Determine the agent's insurance category.
+	InsuranceCategory insuranceCategory = getInsuranceCategory (insure_private,
+								    insure_medicaid,
+								    insure_medicare,
+								    insure_none);
+
+	if (insuranceCategory != InsuranceCategory.UNINSURED) { // Return the default compliance probability for the uninsured.
 	    
 	    // Determine person's distance to a colonoscopy facility.
 	    double distance = geography.getDistanceToNearestEndoscopyFacilityByZipCode (person_zipcode);
@@ -64,14 +70,10 @@ public class ComplianceModel {
 	    boolean distance_20_25 = distance >= 20 && distance < 25;
 	    boolean distance_gt_25 = distance >= 25;
 	    
-	    // Determine the agent's insurance category.
-	    InsuranceCategory insuranceCategory = getInsuranceCategory (insure_private,
-									insure_medicaid,
-									insure_medicare,
-									insure_none);
+	    // Get the appropriate betas based on the agent's insurance category.
 	    Betas betas = Betas.getBetas (insuranceCategory);
 
-	    // Determine county intercepts.
+	    // Look up county intercepts.
 	    CountyIntercepts countyIntercepts = geography.getCountyInterceptsByStcotrbg (person_stcotrbg);
 
 	    // Get insurance betas based on county intercepts.
@@ -88,6 +90,7 @@ public class ComplianceModel {
 		+ (distance_15_20 ? 1 : 0) * betas.distance_15_20
 		+ (distance_20_25 ? 1 : 0) * betas.distance_20_25
 		+ (distance_gt_25 ? 1 : 0) * betas.distance_gt_25
+		+ betas.year_turned_50
 		+ insuranceBeta;
 
 	    // Logging.
@@ -103,7 +106,8 @@ public class ComplianceModel {
 		    append (" beta_sex_female=").           append (betas.sex_female).
 		    append (" beta_race_black=").           append (betas.race_black).
 		    append (" beta_race_other=").           append (betas.race_other).
-		    
+		    append (" year_turned_50=").            append (betas.year_turned_50).
+
 		    append (" beta_distance_05_10=").  append (betas.distance_05_10).
 		    append (" beta_distance_10_15=").  append (betas.distance_10_15).
 		    append (" beta_distance_15_20=").  append (betas.distance_15_20).
