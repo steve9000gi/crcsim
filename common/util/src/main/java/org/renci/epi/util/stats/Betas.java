@@ -1,4 +1,4 @@
-package org.renci.epi.util.stats.compliance;
+package org.renci.epi.util.stats;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
@@ -20,6 +20,9 @@ class Betas {
 
     double year_turned_50;
 
+    double married;
+    double SEHP; // state employee health plan.
+
     double distance_05_10;
     double distance_10_15;
     double distance_15_20;
@@ -29,11 +32,15 @@ class Betas {
     /**
      * Private constructor - only this class will create betas.
      */
-    private Betas (double intercept,
+    Betas (double intercept,
 		   double female,
 		   double black,
 		   double other,
 		   double year_turned_50,
+
+		   double married,
+		   double SEHP,
+
 		   double distance_05_10,
 		   double distance_10_15,
 		   double distance_15_20,
@@ -45,46 +52,66 @@ class Betas {
 	this.race_black = black;
 	this.race_other = other;
 	this.year_turned_50 = year_turned_50;
-	
+
+	this.married = married;
+	this.SEHP = SEHP;
+
 	this.distance_05_10 = distance_05_10;
 	this.distance_10_15 = distance_10_15;
 	this.distance_15_20 = distance_15_20;
 	this.distance_20_25 = distance_20_25;
 	this.distance_gt_25 = distance_gt_25;
 	
-	System.out.println ("===> " + intercept + "," + female + "," + black + "," + other + "," + year_turned_50 + "," + 
-			    distance_05_10 + "," + distance_10_15 + "," + distance_15_20 + "," + distance_20_25 +
-			    distance_gt_25 + "\n");
+	System.out.println ("===> intercept:" + intercept + ",female:" + female + ",black:" + black + ",other:" + other + ",year50:" + year_turned_50 + 
+			    ",married:" + married + ",SEHP:" + SEHP + 
+			    ",distance_5_10:" + distance_05_10 + ",distance_10_15:" + distance_10_15 + 
+			    ",distance_15_20:" + distance_15_20 + ",distance_20_25:" + distance_20_25 +
+			    ",distance_gt_25:" + distance_gt_25 + "\n");
     }
 
     /**
-     * Lookup appropriate betas for a given insurance category.
+     * Lookup appropriate compliance betas for a given insurance category.
      * @param insuranceCategory An insurance category.
      * @return Returns the betas for this insurance category.
      */
-    final static Betas getBetas (InsuranceCategory insuranceCategory) {
+    final static Betas getComplianceBetas (InsuranceCategory insuranceCategory) {
 	Betas.initialize ();
-	if (! insuranceBetas.containsKey (insuranceCategory)) {
+	assert complianceBetas.containsKey (insuranceCategory) : "Unknown insuranceCategory: " + insuranceCategory;
+	/*
+	if (! complianceBetas.containsKey (insuranceCategory)) {
 	    throw new RuntimeException ("Unknown insuranceCategory: " + insuranceCategory);
 	}
-	return insuranceBetas.get (insuranceCategory);
+	*/
+	return complianceBetas.get (insuranceCategory);
+    }
+    final static Betas getModalityBetas (InsuranceCategory insuranceCategory) {
+	Betas.initialize ();
+	if (! modalityBetas.containsKey (insuranceCategory)) {
+	    throw new RuntimeException ("Unknown insuranceCategory: " + insuranceCategory);
+	}
+	return modalityBetas.get (insuranceCategory);
     }
 
-    // Map of insurance categories to betas.
-    private static EnumMap<InsuranceCategory, Betas> insuranceBetas = 
+    // Map of insurance categories to betas for compliance model.
+    private static EnumMap<InsuranceCategory, Betas> complianceBetas = 
+	new EnumMap<InsuranceCategory, Betas> (InsuranceCategory.class);
+
+    // Map of insurance categories to betas for modality model.
+    private static EnumMap<InsuranceCategory, Betas> modalityBetas = 
 	new EnumMap<InsuranceCategory, Betas> (InsuranceCategory.class);
 
     static void initialize () {
-
-	if (insuranceBetas.size () > 0) {
+	if (modalityBetas.size () > 0) {
 	    return;
 	}
+	initialize (complianceBetas, "data/compliance_model_betas.txt");
+	initialize (modalityBetas, "data/modality_model_betas.txt");
+    }
 
-	/**
-	 *
-	 */
+    static void initialize (EnumMap<InsuranceCategory, Betas> betaMap, String resourcePath) {
 	try {
-	    URL url = Resources.getResource ("data/compliance_model_insurance_betas.txt");
+	    
+	    URL url = Resources.getResource (resourcePath);
 	    String text = Resources.toString (url, Charsets.UTF_8);
 
 	    Scanner scanner = new Scanner (text);
@@ -95,9 +122,11 @@ class Betas {
 		    String [] part = line.split (",");
 		    int c = 0;
 		    System.out.println ("line: " + line);
-		    System.out.println ("------- Populating betas for insurance category: " + part [c]);
-		    insuranceBetas.put (InsuranceCategory.valueOf (part [c++]),
+		    System.out.println ("------- Populating betas for insurance category: [" + part [c] + "]");
+		    betaMap.put (InsuranceCategory.valueOf (part [c++]),
 					new Betas (Double.valueOf (part [c++]),
+						   Double.valueOf (part [c++]),
+						   Double.valueOf (part [c++]),
 						   Double.valueOf (part [c++]),
 						   Double.valueOf (part [c++]),
 						   Double.valueOf (part [c++]),

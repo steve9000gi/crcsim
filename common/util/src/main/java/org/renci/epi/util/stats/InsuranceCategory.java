@@ -1,4 +1,4 @@
-package org.renci.epi.util.stats.compliance;
+package org.renci.epi.util.stats;
 
 /**
  * Possible agent insurance categories.

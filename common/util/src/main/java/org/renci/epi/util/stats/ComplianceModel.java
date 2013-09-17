@@ -1,10 +1,10 @@
-package org.renci.epi.util.stats.compliance;
+package org.renci.epi.util.stats;
 
 import java.util.EnumMap;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.commons.logging.Log; 
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.renci.epi.util.CountyIntercepts;
 import org.renci.epi.util.Geography;
@@ -19,8 +19,28 @@ import org.renci.epi.util.Geography;
 public class ComplianceModel {
 
     private static Log logger = LogFactory.getLog (ComplianceModel.class); 
+
+    // Default value to use for compliance probability.
     private static final double defaultComplianceProbability = 0.20;
-    
+
+    // A map of insurance category to beta values.
+    private BetaMap betas;
+
+    /**
+     * Create a new compliance model object, initializing appropriately for this model.
+     */
+    public ComplianceModel () {
+	this.setBetas (new BetaMap (BetaMap.COMPLIANCE_BETAS));
+    }
+
+    /**
+     * Set the beta values to use for this model.
+     * @param betas The beta values to use when executing this model.
+     */
+    protected void setBetas (BetaMap betas) {
+	this.betas = betas;
+    }
+
     /**
      *
      * Calculate the probability that a specific agent will be compliant with screening.
@@ -44,6 +64,8 @@ public class ComplianceModel {
 						    boolean person_race_other,
 						    String person_zipcode,
 						    String person_stcotrbg,
+						    boolean person_married,
+						    boolean person_SEHP,
 						    boolean insure_private,
 						    boolean insure_medicaid,
 						    boolean insure_medicare,
@@ -71,7 +93,7 @@ public class ComplianceModel {
 	    boolean distance_gt_25 = distance >= 25;
 	    
 	    // Get the appropriate betas based on the agent's insurance category.
-	    Betas betas = Betas.getBetas (insuranceCategory);
+	    Betas betas = this.betas.getBetas (insuranceCategory);
 
 	    // Look up county intercepts.
 	    CountyIntercepts countyIntercepts = geography.getCountyInterceptsByStcotrbg (person_stcotrbg);
@@ -91,6 +113,8 @@ public class ComplianceModel {
 		+ (distance_20_25 ? 1 : 0) * betas.distance_20_25
 		+ (distance_gt_25 ? 1 : 0) * betas.distance_gt_25
 		+ betas.year_turned_50
+		+      (person_married ? 1 : 0) * betas.married
+		+      (person_SEHP ? 1 : 0)    * betas.SEHP
 		+ insuranceBeta;
 
 	    // Logging.
