@@ -46,8 +46,8 @@ public class ModelIO {
     }
 
     static {
-	BasicConfigurator.configure ();
-	Logger.getRootLogger().setLevel (Level.DEBUG);
+	//BasicConfigurator.configure ();
+	//Logger.getRootLogger().setLevel (Level.DEBUG);
     }
 
     private void ensureOutputDir () {
