@@ -18,7 +18,7 @@ public class ModalityModel extends ComplianceModel {
 
     /**
      *
-     * Calculate the probability that a specific agent will be compliant with screening.
+     * Calculate the probability that a specific agent will select colonoscopy as a screening modality.
      * 
      * @param person_sex_male   True if the agent is male.
      * @param person_race_black True if the agents race is black.
