@@ -8,7 +8,6 @@ public class CountyIntercepts {
 
     private String name;
     private String FIPS;
-    private double totalPubliclyInsured;
     private double medicareOnly;
     private double medicaidOnly;
     private double dual;
@@ -16,7 +15,6 @@ public class CountyIntercepts {
 
     public CountyIntercepts (String name,
 			     String FIPS,
-			     double totalPubliclyInsured, 
 			     double medicareOnly,
 			     double medicaidOnly,
 			     double dual,
@@ -24,7 +22,6 @@ public class CountyIntercepts {
     {
 	this.name = name;
 	this.FIPS = FIPS;
-	this.totalPubliclyInsured = totalPubliclyInsured;
 	this.medicareOnly = medicareOnly;
 	this.medicaidOnly = medicaidOnly;
 	this.dual = dual;
@@ -35,9 +32,6 @@ public class CountyIntercepts {
     }
     public String getFIPS () {
 	return FIPS;
-    }
-    public double getTotalPubliclyInsured () {
-	return totalPubliclyInsured;
     }
     public double getMedicareOnly () {
 	return medicareOnly;

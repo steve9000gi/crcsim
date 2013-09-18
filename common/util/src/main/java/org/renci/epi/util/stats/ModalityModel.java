@@ -1,6 +1,7 @@
 package org.renci.epi.util.stats;
 
 import org.renci.epi.util.Geography;
+import org.renci.epi.util.GeographyFactory;
 
 /**
  * Encapsulates characteristics of the modality model unique to this model.
@@ -13,7 +14,15 @@ public class ModalityModel extends ComplianceModel {
      * Create a new modality model object, initializing betas appropriately.
      */
     public ModalityModel () {
-	setBetas (new BetaMap (BetaMap.MODALITY_BETAS));
+	this.setBetas (BetaMapFactory.getModality ());
+    } 
+
+    /**
+     * Get geography appropriate for the modality statistical model.
+     * @return Returns a county intercept lookup table appropriate for the modality model.
+     */
+    protected Geography getGeography () {
+	return GeographyFactory.getModality ();
     } 
 
     /**
@@ -28,8 +37,8 @@ public class ModalityModel extends ComplianceModel {
      * @param insure_private    True if the agent has private insurance.
      * @param insure_medicaid   True if the agent has medicaid.
      * @param insure_medicare   True if the agent has medicare.
+     * @param insure_dual       True if the agent has dual insurance.
      * @param insure_none       True if the agent has no insurance.
-     * @param geography         Geography lookup utility.
      *
      * @return Returns a double - the probability the agent will be compliant with screening.   
      *
@@ -44,8 +53,8 @@ public class ModalityModel extends ComplianceModel {
 						     boolean insure_private,
 						     boolean insure_medicaid,
 						     boolean insure_medicare,
-						     boolean insure_none,
-						     Geography geography)
+						     boolean insure_dual,
+						     boolean insure_none)
     {
 	return this.getProbabilityOfCompliance (person_sex_male,
 						person_race_black,
@@ -57,8 +66,8 @@ public class ModalityModel extends ComplianceModel {
 						insure_private,
 						insure_medicaid,
 						insure_medicare,
-						insure_none,
-						geography);
+						insure_dual,
+						insure_none);
     }
 
 }
