@@ -2,6 +2,7 @@ package org.renci.epi.util;
 
 import java.io.Reader;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,19 +33,21 @@ public class Geography {
     private Reader getResourceReader (String resourceName) {	
 	Reader result = getDataReader (resourceName);
 	if (result == null) {
-	    //logger.info ("Connecting to resource: " + resourceName);
 	    InputStream input = getClass().getResourceAsStream ("/" + DATA + "/" + resourceName);
 	    if (input != null) {
 		result = new InputStreamReader (new BufferedInputStream (input));
-		//logger.info ("Got stream for resource: " + resourceName);
+		logger.info ("Got stream for resource: " + resourceName);
 	    }
+	}
+	if (result == null) {
+	    throw new RuntimeException ("Unable to find resource: " + resourceName);
 	}
 	return result;
     }
     private Reader getDataReader (String resourceName) {
 	Reader result = null;
 	try {
-	    result = new BufferedReader (new FileReader (DATA + "/" + resourceName));
+	    result = new BufferedReader (new FileReader (DATA + File.separator + resourceName));
 	} catch (IOException e) {
 	    //throw new RuntimeException (e);
 	}
@@ -57,12 +60,16 @@ public class Geography {
 	// constructor closes reader.
 	return new DelimitedFileImporter (resourceName, reader, ",", unlimited);
     }
+
+    static final String COMPLIANCE = "compliance_county_intercepts.csv";
+    static final String MODALITY = "modality_county_intercepts.csv";
+
     /**
      *
      * Construct a new geography object and initialize maps.
      *
      */
-    public Geography () {
+    Geography (String resourcePath) {
 	try {
 	    DelimitedFileImporter in = getImporter ("nearest_dist_simulation.csv");
 	    while (in.hasMoreRows ()) {
@@ -71,13 +78,12 @@ public class Geography {
 		Double distance = new Double (in.getDouble ("nearest_distance"));
 		zipcode.put (zipcodeText, distance);
 	    }
-	    in = getImporter ("county_intercept_values.csv");
+	    in = getImporter (resourcePath);
 	    while (in.hasMoreRows ()) {
 		in.nextRow ();
 		CountyIntercepts countyIntercepts =
 		    new CountyIntercepts (in.getString ("county"),
 					  in.getString ("FIPS"),
-					  getDouble (in, "totalPubliclyInsured"),
 					  getDouble (in, "medicareOnly"),
 					  getDouble (in, "medicaidOnly"),
 					  getDouble (in, "dual"),

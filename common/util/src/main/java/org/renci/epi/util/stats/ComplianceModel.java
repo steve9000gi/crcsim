@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.renci.epi.util.CountyIntercepts;
 import org.renci.epi.util.Geography;
+import org.renci.epi.util.GeographyFactory;
 
 /**
  *
@@ -30,7 +31,7 @@ public class ComplianceModel {
      * Create a new compliance model object, initializing appropriately for this model.
      */
     public ComplianceModel () {
-	this.setBetas (new BetaMap (BetaMap.COMPLIANCE_BETAS));
+	this.setBetas (BetaMapFactory.getCompliance ());
     }
 
     /**
@@ -40,6 +41,14 @@ public class ComplianceModel {
     protected void setBetas (BetaMap betas) {
 	this.betas = betas;
     }
+
+    /**
+     * Get geography appropriate for the compliance statistical model.
+     * @return Returns a county intercept lookup table appropriate for the compliance model.
+     */
+    protected Geography getGeography () {
+	return GeographyFactory.getCompliance ();
+    } 
 
     /**
      *
@@ -53,8 +62,8 @@ public class ComplianceModel {
      * @param insure_private    True if the agent has private insurance.
      * @param insure_medicaid   True if the agent has medicaid.
      * @param insure_medicare   True if the agent has medicare.
+     * @param insure_dual       True if the agent has dual insurance.
      * @param insure_none       True if the agent has no insurance.
-     * @param geography         Geography lookup utility.
      *
      * @return Returns a double - the probability the agent will be compliant with screening.   
      *
@@ -69,8 +78,8 @@ public class ComplianceModel {
 						    boolean insure_private,
 						    boolean insure_medicaid,
 						    boolean insure_medicare,
-						    boolean insure_none,
-						    Geography geography)
+						    boolean insure_dual,
+						    boolean insure_none)
     {
 	double result = defaultComplianceProbability;
 	
@@ -78,12 +87,13 @@ public class ComplianceModel {
 	InsuranceCategory insuranceCategory = getInsuranceCategory (insure_private,
 								    insure_medicaid,
 								    insure_medicare,
+								    insure_dual,
 								    insure_none);
 
 	if (insuranceCategory != InsuranceCategory.UNINSURED) { // Return the default compliance probability for the uninsured.
 	    
 	    // Determine person's distance to a colonoscopy facility.
-	    double distance = geography.getDistanceToNearestEndoscopyFacilityByZipCode (person_zipcode);
+	    double distance = getGeography().getDistanceToNearestEndoscopyFacilityByZipCode (person_zipcode);
 	    
 	    // Determine distance range.
 	    boolean distance_05_10 = distance >=  5 && distance < 10;
@@ -96,7 +106,7 @@ public class ComplianceModel {
 	    Betas betas = this.betas.getBetas (insuranceCategory);
 
 	    // Look up county intercepts.
-	    CountyIntercepts countyIntercepts = geography.getCountyInterceptsByStcotrbg (person_stcotrbg);
+	    CountyIntercepts countyIntercepts = getGeography().getCountyInterceptsByStcotrbg (person_stcotrbg);
 
 	    // Get insurance betas based on county intercepts.
 	    double insuranceBeta = getInsuranceBeta (insuranceCategory, countyIntercepts);
@@ -160,12 +170,13 @@ public class ComplianceModel {
     private InsuranceCategory getInsuranceCategory (boolean insure_private,
 						    boolean insure_medicaid,
 						    boolean insure_medicare,
+						    boolean insure_dual,
 						    boolean insure_none)
     {
 	InsuranceCategory result = InsuranceCategory.UNINSURED;
 	if (insure_private) {
 	    result = InsuranceCategory.PRIVATE;
-	} else if (insure_medicare && insure_medicaid) {
+	} else if (insure_dual) {
 	    result = InsuranceCategory.DUAL;
 	} else if (insure_medicaid) {
 	    result = InsuranceCategory.MEDICAID;

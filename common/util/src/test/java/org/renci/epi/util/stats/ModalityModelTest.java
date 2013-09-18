@@ -26,7 +26,6 @@ public class ModalityModelTest {
     @Test
     public void testComplianceModel () {
 	ModalityModel model = new ModalityModel ();
-	Geography geography = new Geography ();
 	double probability =
 	    model.getProbabilityOfColonoscopy (false,          // male
 					       true,           // race black
@@ -34,12 +33,12 @@ public class ModalityModelTest {
 					       "27603",        // zipcode
 					       "371830529002", // stcotrbg
 					       true,           // married
-					       true,           // SEHP
+					       false,          // SEHP
 					       false,          // insure_private
 					       false,          // insure_medicaid
 					       true,           // insure_medicare
-					       false,          // insure_none
-					       geography);
+					       false,           // insure_dual
+					       false);         // insure_none
     }
 }
 
