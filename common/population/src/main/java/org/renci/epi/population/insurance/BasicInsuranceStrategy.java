@@ -44,4 +44,11 @@ public class BasicInsuranceStrategy implements InsuranceStrategy {
     public boolean hasMedicareOnly (Person person, InsuranceStatus status) {
 	return insuranceStatusTable.hasMedicareOnly (person, status);
     }
+
+    /**
+     * Is this person insured via dual means?
+     */
+    public boolean hasDual (Person person, InsuranceStatus status) {
+	return insuranceStatusTable.hasDual (person, status);        
+    }
 }

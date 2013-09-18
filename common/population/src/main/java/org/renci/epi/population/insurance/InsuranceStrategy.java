@@ -25,4 +25,9 @@ public interface InsuranceStrategy {
      * Is this person insured via Medicare only?
      */
     public boolean hasMedicareOnly (Person person, InsuranceStatus status);
+
+    /**
+     * Is this person insured via dual means?
+     */
+    public boolean hasDual (Person person, InsuranceStatus status);
 }

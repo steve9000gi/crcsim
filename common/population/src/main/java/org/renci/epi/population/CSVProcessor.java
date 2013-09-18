@@ -217,6 +217,7 @@ class SynthPopAnnotationProcessor implements Processor {
 	record.put ("PRIVA", "0");
         record.put ("MEDICARE", "0");
         record.put ("MEDICAID", "0");
+        record.put ("DUAL", "0");
 	try {
 	    Person person = Person.getPerson (Integer.parseInt (record.get ("people.age")),
 					      Integer.parseInt (record.get ("INCOME")),
@@ -232,6 +233,8 @@ class SynthPopAnnotationProcessor implements Processor {
                 record.put ("MEDICARE", "1");
             } else if (_insuranceStrategy.hasMedicaidOnly (person, status)) {
                 record.put ("MEDICAID", "1");
+            } else if (_insuranceStrategy.hasDual (person, status)) {
+                record.put ("DUAL", "1");
             } else if (_insuranceStrategy.hasNoInsurance (person, status)) {
                 record.put ("NOINS", "1");
             }
