@@ -45,11 +45,14 @@ class X {
 //@ContextConfiguration(locations={"/spring/population-context.xml"})
 public class ModelIOTest { //extends AbstractJUnit4SpringContextTests {
 	
-    private static Log logger = LogFactory.getLog (ModelIO.class); 
 
-    public ModelIOTest () {
+    private static Log logger = LogFactory.getLog (ModelIOTest.class); 
+    static {
 	BasicConfigurator.configure ();
 	Logger.getRootLogger().setLevel (Level.DEBUG);
+    }
+
+    public ModelIOTest () {
     }
 
     @Test

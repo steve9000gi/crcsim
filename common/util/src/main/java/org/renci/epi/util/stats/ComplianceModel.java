@@ -169,7 +169,21 @@ public class ComplianceModel {
 		logger.debug (buffer.toString ());
 	    }
 	}
+	return result;
+    }
 
+    /**
+     * Some tests may have a probability that is a function of the colonoscopy probability of compliance.
+     * We can adjust these here.
+     * @param probability The ordinary probability of compliance.
+     * @param test The name of the test to adjust for.
+     */
+    public double getTestAdjustedComplianceProbability (double probability, String test) {
+	double result = probability;
+	if (test.equals ("FOBT")) {
+	    // 1-(1-p)^(1/6)
+	    result = 1 - Math.pow (1 - probability, 1.0 / 6.0); 
+	}
 	return result;
     }
 

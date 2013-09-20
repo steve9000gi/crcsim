@@ -44,6 +44,9 @@ public class ComplianceModelTest {
 	    logger.debug (xbeta + " == " + person.compliance_xbeta + "?");
 
 	    assert Math.abs (xbeta - person.compliance_xbeta) < 0.00000001;
+
+	    logger.debug ("FOBT adjusted probability: " + model.getTestAdjustedComplianceProbability (xbeta, "FOBT"));
+
 	}
     }
     
