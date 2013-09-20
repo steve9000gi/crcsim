@@ -90,7 +90,7 @@ public class ModelIOTest { //extends AbstractJUnit4SpringContextTests {
 
 	assert distance == 4.4922130495 : "Distance by zip code failed.";
 
-	assert countyIntercepts.getMedicaidOnly () == 0.0016 : "Medicaid by county FIPS failed";
+	assert countyIntercepts.getMedicaidOnly () == 0.348013 : "Medicaid by county FIPS failed";
     }
 
     @Test

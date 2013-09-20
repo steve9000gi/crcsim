@@ -127,28 +127,42 @@ public class ComplianceModel {
 		+      (person_SEHP ? 1 : 0)    * betas.SEHP
 		+ insuranceBeta;
 
+	    result = Math.exp (result) / ( 1 + Math.exp (result));
+
 	    // Logging.
 	    if (logger.isDebugEnabled ()) {
 		StringBuffer buffer = new StringBuffer ().
-		    append ("sex_male=").    append (person_sex_male).
-		    append (" race_black="). append (person_race_black).
-		    append (" race_other="). append (person_race_other).
-		    append (" zipcode=").    append (person_zipcode).
-		    append (" stcotrbg=").   append (person_stcotrbg).
+		    append ("sex_male=").    append (person_sex_male).append ("\n").
+		    append (" race_black="). append (person_race_black).append ("\n").
+		    append (" race_other="). append (person_race_other).append ("\n").
+		    append (" zipcode=").    append (person_zipcode).append ("\n").
+		    append (" stcotrbg=").   append (person_stcotrbg).append ("\n").
 		    
-		    append (" beta_compliance_intercept="). append (betas.compliance_intercept).
-		    append (" beta_sex_female=").           append (betas.sex_female).
-		    append (" beta_race_black=").           append (betas.race_black).
-		    append (" beta_race_other=").           append (betas.race_other).
-		    append (" year_turned_50=").            append (betas.year_turned_50).
+		    append (" insurance_category="). append (insuranceCategory).append ("\n").
 
-		    append (" beta_distance_05_10=").  append (betas.distance_05_10).
-		    append (" beta_distance_10_15=").  append (betas.distance_10_15).
-		    append (" beta_distance_15_20=").  append (betas.distance_15_20).
-		    append (" beta_distance_20_25=").  append (betas.distance_20_25).
-		    append (" beta_distance_gt_25=").  append (betas.distance_gt_25).
+		    append (" beta_compliance_intercept="). append (betas.compliance_intercept).append ("\n").
+		    append (" beta_sex_female=").           append (betas.sex_female).append ("\n").
+		    append (" beta_race_black=").           append (betas.race_black).append ("\n").
+		    append (" beta_race_other=").           append (betas.race_other).append ("\n").
+		    append (" beta_year_turned_50=").       append (betas.year_turned_50).append ("\n").
+		    append (" beta_married=").              append (betas.married).append ("\n").
+		    append (" beta_SEHP=").                 append (betas.SEHP).append ("\n").
+
+		    append (" beta_distance_05_10=").  append (betas.distance_05_10).append ("\n").
+		    append (" beta_distance_10_15=").  append (betas.distance_10_15).append ("\n").
+		    append (" beta_distance_15_20=").  append (betas.distance_15_20).append ("\n").
+		    append (" beta_distance_20_25=").  append (betas.distance_20_25).append ("\n").
+		    append (" beta_distance_gt_25=").  append (betas.distance_gt_25).append ("\n").
 		    
-		    append (" insurance_beta="). append (insuranceBeta).
+		    append (" distance_05_10=").  append (distance_05_10).append ("\n").
+		    append (" distance_10_15=").  append (distance_10_15).append ("\n").
+		    append (" distance_15_20=").  append (distance_15_20).append ("\n").
+		    append (" distance_20_25=").  append (distance_20_25).append ("\n").
+		    append (" distance_gt_25=").  append (distance_gt_25).append ("\n").
+		    
+		    append (" married="). append (person_married).append ("\n").
+		    append (" SEHP="). append (person_SEHP).append ("\n").
+		    append (" insurance_beta="). append (insuranceBeta).append ("\n").
 		    
 		    append (" result="). append (result);
 		

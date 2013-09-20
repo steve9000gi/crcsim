@@ -9093,7 +9093,7 @@ Main main = get_Population().get_Main ();
 if (main.model_test_probability) {
 
   ModalityModel model = new ModalityModel ();
-  double xbeta_colonoscopy =
+  prob_colon =
      model.getProbabilityOfColonoscopy (this.sex_male,
 										this.race_black,
 										this.race_other,
@@ -9106,8 +9106,6 @@ if (main.model_test_probability) {
 										this.insure_medicare,
 										this.insure_dual,
 										this.insure_none);
-
-  prob_colon = xbeta_colonoscopy/(1 + xbeta_colonoscopy);
   prob_fobt = 1 - prob_colon;
   prob_sigmoid = 0;
   
@@ -9477,7 +9475,7 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
       
  	  Main main = get_Population().get_Main();
 	  ComplianceModel complianceModel = new ComplianceModel ();
-	  double xbeta =
+	  compliance_prob =
 	      complianceModel.getProbabilityOfCompliance (this.sex_male,
 													  this.race_black,
 													  this.race_other,
@@ -9490,11 +9488,6 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 													  this.insure_medicare,
 													  this.insure_dual,
 													  this.insure_none);
-	
-      // Calculate the probability using the model. If using old stat model, compliance_prob =  exp(xbeta)/ (1+exp(xbeta))
-      // compliance_prob = exp(xbeta)/(1+exp(xbeta));
-      // If using new stat model, compliance_prob= xbeta/(1+xbeta)
-      compliance_prob = xbeta/(1+xbeta);
     }
     else {
       // Assign the compliance probability based on the user-specified rate.

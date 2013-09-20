@@ -1,5 +1,6 @@
 package org.renci.epi.util.stats;
 
+import java.util.List;
 import org.apache.commons.logging.Log; 
 import org.apache.commons.logging.LogFactory; 
 import org.apache.log4j.BasicConfigurator;
@@ -18,27 +19,32 @@ public class ModalityModelTest {
 	
     private static Log logger = LogFactory.getLog (ModalityModelTest.class); 
 
-    public ModalityModelTest () {
-	BasicConfigurator.configure ();
-	Logger.getRootLogger().setLevel (Level.DEBUG);
-    }
-
     @Test
-    public void testComplianceModel () {
+    public void testModalityModel () {
 	ModalityModel model = new ModalityModel ();
-	double probability =
-	    model.getProbabilityOfColonoscopy (false,          // male
-					       true,           // race black
-					       false,          // race other
-					       "27603",        // zipcode
-					       "371830529002", // stcotrbg
-					       true,           // married
-					       false,          // SEHP
-					       false,          // insure_private
-					       false,          // insure_medicaid
-					       true,           // insure_medicare
-					       false,           // insure_dual
-					       false);         // insure_none
+
+	List<Person> people = Person.scan ("data/stats_model_test.txt");
+	for (Person person : people) {
+	    logger.debug ("-----> Testing person: " + person);
+	    double xbeta =
+		model.getProbabilityOfColonoscopy (person.sex_male,           // male
+						   person.is_black,           // race black
+						   person.is_other,           // race other
+						   person.zipcode,            // zipcode
+						   person.stcotrbg,           // stcotrbg
+						   person.is_married,         // married
+						   person.SEHP,               // SEHP
+						   person.insurance_private,  // insure_private
+						   person.insurance_medicaid, // insure_medicaid
+						   person.insurance_medicare, // insure_medicare
+						   person.insurance_dual,     // insure_dual
+						   person.insurance_none);    // insure_none
+
+	    logger.debug ("        " + xbeta + " == " + person.modality_xbeta + "?");
+
+	    assert Math.abs (xbeta - person.modality_xbeta) < 0.00000001;
+	    
+	}
     }
 }
 

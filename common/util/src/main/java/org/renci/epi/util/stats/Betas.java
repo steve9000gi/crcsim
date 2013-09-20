@@ -33,19 +33,19 @@ class Betas {
      * Private constructor - only this class will create betas.
      */
     Betas (double intercept,
-		   double female,
-		   double black,
-		   double other,
-		   double year_turned_50,
+	   double female,
+	   double black,
+	   double other,
+	   double year_turned_50,
+	   
+	   double distance_05_10,
+	   double distance_10_15,
+	   double distance_15_20,
+	   double distance_20_25,
+	   double distance_gt_25,
 
-		   double married,
-		   double SEHP,
-
-		   double distance_05_10,
-		   double distance_10_15,
-		   double distance_15_20,
-		   double distance_20_25,
-		   double distance_gt_25)
+	   double married,
+	   double SEHP)
     {
 	this.compliance_intercept = intercept;
 	this.sex_female = female;
@@ -53,15 +53,15 @@ class Betas {
 	this.race_other = other;
 	this.year_turned_50 = year_turned_50;
 
-	this.married = married;
-	this.SEHP = SEHP;
-
 	this.distance_05_10 = distance_05_10;
 	this.distance_10_15 = distance_10_15;
 	this.distance_15_20 = distance_15_20;
 	this.distance_20_25 = distance_20_25;
 	this.distance_gt_25 = distance_gt_25;
 	
+	this.married = married;
+	this.SEHP = SEHP;
+
 	System.out.println ("===> intercept:" + intercept + ",female:" + female + ",black:" + black + ",other:" + other + ",year50:" + year_turned_50 + 
 			    ",married:" + married + ",SEHP:" + SEHP + 
 			    ",distance_5_10:" + distance_05_10 + ",distance_10_15:" + distance_10_15 + 
@@ -73,15 +73,9 @@ class Betas {
      * Lookup appropriate compliance betas for a given insurance category.
      * @param insuranceCategory An insurance category.
      * @return Returns the betas for this insurance category.
-     */
     final static Betas getComplianceBetas (InsuranceCategory insuranceCategory) {
 	Betas.initialize ();
 	assert complianceBetas.containsKey (insuranceCategory) : "Unknown insuranceCategory: " + insuranceCategory;
-	/*
-	if (! complianceBetas.containsKey (insuranceCategory)) {
-	    throw new RuntimeException ("Unknown insuranceCategory: " + insuranceCategory);
-	}
-	*/
 	return complianceBetas.get (insuranceCategory);
     }
     final static Betas getModalityBetas (InsuranceCategory insuranceCategory) {
@@ -144,4 +138,5 @@ class Betas {
 	    throw new RuntimeException (e);
 	}
     }
+     */
 }

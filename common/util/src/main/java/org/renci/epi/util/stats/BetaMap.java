@@ -24,7 +24,7 @@ public class BetaMap {
     static final String MODALITY_BETAS = "data/modality_model_betas.txt";
 
     // Map of insurance categories to betas.
-    private static EnumMap<InsuranceCategory, Betas> betaMap = 
+    private EnumMap<InsuranceCategory, Betas> betaMap = 
 	new EnumMap<InsuranceCategory, Betas> (InsuranceCategory.class);
 
     /**
@@ -57,7 +57,7 @@ public class BetaMap {
 	    while (scanner.hasNextLine ()) {
 		String line = scanner.nextLine ();
 		logger.debug ("<<= " + line);
-		if ( !line.startsWith ("#") && (line.length () > 0) ) {
+		if ( !line.startsWith ("#") && (line.trim().length () > 0) ) {
 		    String [] part = line.split (",");
 		    int c = 0;
 		    logger.debug ("line: " + line);
