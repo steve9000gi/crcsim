@@ -161,7 +161,7 @@ export_data () {
 
 export_data_by_age () {
     local AGE=$1
-    echo "people.p_id|people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|zipcode.zipcode|households.stcotrbg|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
+    echo "people.p_id|people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|zipcode.zipcode|households.stcotrbg|pumsp.mar|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
     execute_sql "
   select people.p_id,
          people.sex,
@@ -173,6 +173,7 @@ export_data_by_age () {
          households.longitude,
          zipcode.zipcode,
          households.stcotrbg,
+         pumsp.mar,
          pumsp.hisp,
          pumsp.schl,
          pumsp.semp,

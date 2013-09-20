@@ -62,11 +62,11 @@ class SynthPopAnnotationProcessor implements Processor {
 	assert (outputKeys != null) : "Output keys must be non-null";
 	this._outputKeys = outputKeys;
     }
-
+    
     public String [] getOutputKeys () {
 	return this._outputKeys;
     }
-
+    
     /**
      * Set the input header row.
      */
@@ -108,11 +108,16 @@ class SynthPopAnnotationProcessor implements Processor {
 
 	return output;
     }   
-
+    
+    /**
+     *  http://www.census.gov/acs/www/Downloads/data_documentation/pums/DataDict/PUMS_Data_Dictionary_2009-2011.pdf
+     */
     class PUMS {
 	static final short RAC1P_WHITE = 1;
 	static final short RAC1P_BLACK = 2;
 	static final short HISP_NOTHISPANIC = 1;
+
+        static final short MAR_MARRIED = 1;
     }
 
     private void translateOutputLine (HashMap<String,String> record) {
@@ -136,6 +141,16 @@ class SynthPopAnnotationProcessor implements Processor {
 
 	/** age */
 	record.put ("AGE_G2", record.get ("people.age"));
+
+        /** marital status */
+	String maritalStatusString = record.get ("pumsp.mar");
+	try {
+	    int maritalStatusCode = Integer.parseInt (maritalStatusString);
+	    record.put ("MARRIED", maritalStatusCode == PUMS.MAR_MARRIED ? "1" : "0");
+	} catch (NumberFormatException e) {
+	    throw new RuntimeException ("unable to parse marital status code: " + maritalStatusString, e);
+	}
+	
 
 	/** income */
 	try {
@@ -202,6 +217,7 @@ class SynthPopAnnotationProcessor implements Processor {
 	record.put ("PRIVA", "0");
         record.put ("MEDICARE", "0");
         record.put ("MEDICAID", "0");
+        record.put ("DUAL", "0");
 	try {
 	    Person person = Person.getPerson (Integer.parseInt (record.get ("people.age")),
 					      Integer.parseInt (record.get ("INCOME")),
@@ -217,6 +233,8 @@ class SynthPopAnnotationProcessor implements Processor {
                 record.put ("MEDICARE", "1");
             } else if (_insuranceStrategy.hasMedicaidOnly (person, status)) {
                 record.put ("MEDICAID", "1");
+            } else if (_insuranceStrategy.hasDual (person, status)) {
+                record.put ("DUAL", "1");
             } else if (_insuranceStrategy.hasNoInsurance (person, status)) {
                 record.put ("NOINS", "1");
             }

@@ -189,6 +189,34 @@ public class InsuranceStatusTable {
 
     /**
 
+Final: From Kristen, 9/18/2013:
+
+Medicaid:
+Age_cat=>1 && ins_cat=>4|6
+Age_cat=>2 && ins_cat=>4|8
+ 
+Medicare:
+Age_cat=>2 && ins_cat=>5|7
+Age_cat=>3 && ins_cat=>3|5
+ 
+Private:
+Age_cat=>1 && ins_cat=>2|3|7|8
+Age_cat=>2 && ins_cat=>2|3|9|10
+Age_cat=>3 && ins_cat=>2
+ 
+Dual:
+Age_cat=>1 && ins_cat=>5
+Age_cat=>2 && ins_cat=>6
+Age_cat=>3 && ins_cat=>4
+ 
+None:
+Age_cat=>1 && ins_cat=>1
+Age_cat=>2 && ins_cat=>1
+Age_cat=>3 && ins_cat=>1
+ 
+---------------------------
+
+
 age_cat <=
   1 when age=>1|2
   2 when age=>3|4|5
@@ -294,10 +322,14 @@ c. If AGE_CAT is 6, then health insurance type is defined as follows:
 	AGE_CAT ageCat = getAgeCategory (person);
         switch (ageCat) {
         case AGE_ONE:
-            result = InsuranceStatus.CAT_FOUR.equals (status);
+            result =
+                InsuranceStatus.CAT_FOUR.equals (status) ||
+                InsuranceStatus.CAT_SIX.equals (status);;
             break;
         case AGE_TWO:
-            result = InsuranceStatus.CAT_FOUR.equals (status);
+            result =
+                InsuranceStatus.CAT_FOUR.equals (status) ||
+                InsuranceStatus.CAT_EIGHT.equals (status);;
             break;
         default:
             break;
@@ -308,14 +340,15 @@ c. If AGE_CAT is 6, then health insurance type is defined as follows:
         boolean result = false;
 	AGE_CAT ageCat = getAgeCategory (person);
         switch (ageCat) {
-        case AGE_ONE:
-            result = InsuranceStatus.CAT_FIVE.equals (status);
-            break;
         case AGE_TWO:
-            result = InsuranceStatus.CAT_FIVE.equals (status);
+            result =
+                InsuranceStatus.CAT_FIVE.equals (status) ||
+                InsuranceStatus.CAT_SEVEN.equals (status);;
             break;
         case AGE_THREE:
-            result = InsuranceStatus.CAT_FIVE.equals (status);
+            result =
+                InsuranceStatus.CAT_THREE.equals (status) ||
+                InsuranceStatus.CAT_FIVE.equals (status);
             break;
         default:
             break;
@@ -330,16 +363,36 @@ c. If AGE_CAT is 6, then health insurance type is defined as follows:
             result = 
                 InsuranceStatus.CAT_TWO.equals (status) ||
                 InsuranceStatus.CAT_THREE.equals (status) ||
+                InsuranceStatus.CAT_SEVEN.equals (status) ||
                 InsuranceStatus.CAT_EIGHT.equals (status);
             break;
         case AGE_TWO:
             result = 
                 InsuranceStatus.CAT_TWO.equals (status) ||
                 InsuranceStatus.CAT_THREE.equals (status) ||
+                InsuranceStatus.CAT_NINE.equals (status) ||
                 InsuranceStatus.CAT_TEN.equals (status);
             break;
         case AGE_THREE:
             result = InsuranceStatus.CAT_TWO.equals (status);
+            break;
+        default:
+            break;
+        }
+        return result;
+    }
+    public boolean hasDual (Person person, InsuranceStatus status) {
+        boolean result = false;
+	AGE_CAT ageCat = getAgeCategory (person);
+        switch (ageCat) {
+        case AGE_ONE:
+            result = InsuranceStatus.CAT_FIVE.equals (status);
+            break;
+        case AGE_TWO:
+            result = InsuranceStatus.CAT_SIX.equals (status);
+            break;
+        case AGE_THREE:
+            result = InsuranceStatus.CAT_FOUR.equals (status);
             break;
         default:
             break;
