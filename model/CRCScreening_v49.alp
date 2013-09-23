@@ -9432,18 +9432,18 @@ for (int i=0; i<lesion_sources.size(); i++) {
 						<Name><![CDATA[test]]></Name>
 						<Type><![CDATA[Test]]></Type>
 					</Parameter>
-					<Body><![CDATA[if (test.name.equals("None")) {
+					<Body><![CDATA[Main main = get_Population().get_Main ();
+
+if (test.name.equals("None")) {
   return false;
 }
 
-if (screen_state.isStateActive(Person.Diagnostic) && !routine_is_diagnostic) {
-  return uniform() < get_Population().get_Main().diagnostic_compliance_rate;
-}
-else if (screen_state.isStateActive(Person.Surveillance)) {
-  return uniform() < get_Population().get_Main().surveillance_compliance_rate;
-}
-else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActive(Person.Diagnostic) && routine_is_diagnostic)) {
-  
+if (screen_state.isStateActive (Person.Diagnostic) && !routine_is_diagnostic) {
+  return uniform() < main.diagnostic_compliance_rate;
+} else if (screen_state.isStateActive (Person.Surveillance)) {
+  return uniform() < main.surveillance_compliance_rate;
+} else if (screen_state.isStateActive (Person.Routine) || 
+          (screen_state.isStateActive (Person.Diagnostic) && routine_is_diagnostic)) {  
   // Determine the compliance probability. If this person is never
   // compliant, then set the probability to 0. If this is the first
   // time the person has been eligible for a routine test or if we
@@ -9452,29 +9452,20 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
   // conditional compliance.
 
   double compliance_prob = 0;
-
   if (never_compliant) {
     compliance_prob = 0;
-  }
-  else if (   (get_Population().get_Main().use_conditional_compliance && routine_compliance_history.size() == 0)
-           || (!get_Population().get_Main().use_conditional_compliance)
-          ) {
-
+  } else if ( (  main.use_conditional_compliance && routine_compliance_history.size() == 0)
+           || (! main.use_conditional_compliance)) {
     // If we are using conditional compliance and this is the first time
     // the person has been eligible for a routine test, or if we are using
     // unconditional compliance, then compute the compliance probability
     // based on the person's characteristics or take the probability specified
     // by the user.
+    if (main.model_initial_compliance) {
 
-    if (get_Population().get_Main().model_initial_compliance) {
       // Compute the compliance probability based on the person's characteristics.
-
-      // Set up age indicator variables for use in the compliance model.
-      boolean age_65_80 = (get_Population().get_Main().age > 65 && get_Population().get_Main().age <= 80);
-      boolean age_gt_80 = (get_Population().get_Main().age > 80);
-      
- 	  Main main = get_Population().get_Main();
 	  ComplianceModel complianceModel = new ComplianceModel ();
+
 	  compliance_prob =
 	      complianceModel.getProbabilityOfCompliance (this.sex_male,
 													  this.race_black,
@@ -9488,11 +9479,15 @@ else if (screen_state.isStateActive(Person.Routine) || (screen_state.isStateActi
 													  this.insure_medicare,
 													  this.insure_dual,
 													  this.insure_none);
-    }
-    else {
+      // Adjust probability based on the type of test.
+	  compliance_prob =
+	      complianceModel.getTestAdjustedComplianceProbability (
+	          compliance_prob,
+	  	      test.name);
+	  	      
+    } else {
       // Assign the compliance probability based on the user-specified rate.
       compliance_prob = get_Population().get_Main().initial_compliance_rate;
-	//should use_conditional_compliance end here?
 	}
 	/*
 	System.out.println (" active state: " + screen_state.getActiveSimpleState () +
