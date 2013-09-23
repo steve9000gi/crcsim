@@ -183,6 +183,7 @@ public class ComplianceModel {
 	if (test.equals ("FOBT")) {
 	    // 1-(1-p)^(1/6)
 	    result = 1 - Math.pow (1 - probability, 1.0 / 6.0); 
+	    logger.debug ("-------------------> " + result);
 	}
 	return result;
     }
