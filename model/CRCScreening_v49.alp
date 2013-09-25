@@ -6059,7 +6059,7 @@ if (parameterSet != null) {
 			if (nameVal != null && nameVal.length == 2) {
 				String fieldName = nameVal [0];
 				String fieldValue = nameVal [1];
-				//traceln ("  [" + type + "] setting: " + fieldName + " => [" + fieldValue + "]");
+				System.out.println ("  [" + type + "] setting: " + fieldName + " => [" + fieldValue + "]");
 				outputLines.add ("  [" + type + "] setting: " + fieldName + " => [" + fieldValue + "]");
 				modelIO.setFieldValue (this, fieldName, fieldValue);
 			} else {
@@ -18648,6 +18648,7 @@ static int outcomesIndex = 0;
 // For production runs.
 private String inputDirectory  = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\compliance_model\\pops";
 private String outputDirectory = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\compliance_model\\out";
+private boolean debugMode = true; // Set population size to some low number for testing.
 
 /**
  * Change this to select a different experment.
@@ -18772,7 +18773,7 @@ private void execute_populations_parallel (int replications) {
 		
 	List<String> iterationParameterSets = IterationUtil.generateIterations (formExperimentPath ("iterations.conf"));
 	for (String iterationParameters : iterationParameterSets) {
-
+ 
         File [] cohorts = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+", new File (inputDirectory));
 		model_population (cohorts,
 					      experimentParameters,
@@ -18835,79 +18836,6 @@ private void calibrate (int replications) {
     }
 	System.exit (0);
 }
-
-/**
- * Execute the model for a set of populations in parallel.
- *   - Experiment parameters will be read from a file called experiment.txt
- *   - Population files will be read from the current directory, assuming a naming convention of *.tsv.[0-9]+
- *   - Intervention files will be read assuming a convention of intervention.[0-9]+
- * All replications of a given population run are queued for parallel execution.
- * Futures for each set of replications are recorded with a scenario name.
- * The control job is waited for and its outcomes recorded first.
- * Then each of the intervention replication sets is waited for and its outcomes recorded.
- *@param replications The number of replications to execute.
-
-private void execute_populations_parallel0 (int replications) {
-
-	// Read parameters common to the entire experiment.
-	String experimentDefinition = formExperimentPath ("experiment.txt");
-	String experimentParameters = Main.modelIO.getFileAsString (new File (experimentDefinition));
-	
-	// Track parallel jobs using futures to allow us to wait for completion.
-	HashMap<String,List<Future>> futures = new HashMap<String,List<Future>> ();
-	//HashMap<String,List<Future>> interventionFutures = new HashMap<String,List<Future>> ();		
-
-	// Track outcomes for the base case and each intervention.
-	_outcomes = new ArrayList<Outcomes> ();
-	HashMap<String,Outcomes> results = new HashMap<String,Outcomes> ();
-		
-		
-	List<String> iterationParameterSets = IterationUtil.generateIterations (formExperimentPath ("iterations.conf"));
-	for (String iterationParameterSet : iterationParameterSets) {
-	System.out.println ("iteration params: ==> \n(" + iterationParameterSet + ")");
-	
-	// Iterate over all potential input files. These are <anything>.tsv.<integer> in this directory.	
-	File [] files = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+", new File (inputDirectory) );	
-	for (File file : files) {
-		System.out.println ("file: " + file);
-		String controlScenario = file.getName () + "." + CONTROL;
-		futures.put (controlScenario,
-			 		 execute_parallel (file,  
-									   controlScenario,
-									   new String [] {
-							  				experimentParameters,
-							  				iterationParameterSet
-							  		   },
-							  		   replications,
-							  		   results));
-	}
-	waitFor (futures, results);
-	futures.clear ();
-    File experimentDir = new File (formExperimentDirPath ());
-	for (File file : files) {
-		File [] interventions = Main.modelIO.getFilesByPattern ("intervention.[0-9]+", experimentDir);
-		for (File intervention : interventions) {
-			String scenario = file.getName () + "." + intervention.getName ();
-	 		traceln ("queueing " + scenario + " reps");
- 			futures.put (scenario,
-						 execute_parallel (file,
-									 	   scenario,
-									 	   new String [] {
-									 			experimentParameters,
-									 		    Main.modelIO.getFileAsString (intervention),
-									 		    iterationParameterSet
-							 		 	   },
-							 		 	   replications,
-							 		 	   results));
-	   	}
-	}
-	waitFor (futures, results);
-	}
-
-	System.exit (0);
-}
- */
- 
  
 /**
  * Join this thread with a map of collections of other threads.
@@ -18939,17 +18867,19 @@ public void waitFor (HashMap<String,List<Future>> futures, HashMap<String,Outcom
  *@param input The input file.
  */
 private String getInputFileConfiguration (File input) {
-	String value = "";
+	StringBuilder buffer = new StringBuilder ();
 	int cohort = Main.modelIO.getAge (input);
 	if (cohort > -1) {
-		value = "cohort=" + cohort + "\n";
+		buffer.append ("cohort=").append (cohort).append ("\n");
+		buffer.append ("death_rate_delay=").append (cohort).append ("\n");
 	}
 	int lines = Main.modelIO.countFileLines (input);
-
-	value += "population_size=" + (lines - 1) + "\n";
-	value += "infile_population_name=" + input.getPath () + "\n";
-	
-	return value;
+	if (debugMode) {
+		lines = 100;
+	}
+	buffer.append ("population_size=").append ((lines - 1)).append ("\n");
+	buffer.append ("infile_population_name=").append (input.getPath ()).append ("\n");
+	return buffer.toString (); //value;
 }
 /**
  * Add replication outcomes for a single replication of a given scenario.
@@ -19132,12 +19062,12 @@ class ModelRunner implements Runnable {
 			List<String> outputLines = new ArrayList<String> ();
 			outputLines.add ("--replication: " + replication);
 
+			root.configure_parameters (input.getName () + "-" + scenario, parameters, outputLines);
 			root.configure_parameters (input.getName () + "-" + scenario,
 									   new String [] {
 									   		getInputFileConfiguration (input),
 									   },
 									   outputLines);
-			root.configure_parameters (input.getName () + "-" + scenario, parameters, outputLines);
 
 			Main.modelIO.writeConfiguration (root,
 										root.output_dir,
