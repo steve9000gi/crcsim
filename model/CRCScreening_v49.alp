@@ -4,7 +4,7 @@
 	         AnyLogic Project File 
 *************************************************	         
 -->
-<AnyLogicWorkspace WorkspaceVersion="1.9" AnyLogicVersion="6.9.0.201212241532" AlpVersion="6.6.0">
+<AnyLogicWorkspace WorkspaceVersion="1.9" AnyLogicVersion="6.9.0.201310021509" AlpVersion="6.6.0">
 <Model>
 	<Id>1328041345188</Id>
 	<Name><![CDATA[CRCScreening_v49]]></Name>
@@ -9092,7 +9092,7 @@ Main main = get_Population().get_Main ();
 
 if (main.model_test_probability) {
 
-  ModalityModel model = new ModalityModel ();
+  ModalityModel model = new ModalityModel ("nearest_dist_simulation.csv");
   prob_colon =
      model.getProbabilityOfColonoscopy (this.sex_male,
 										this.race_black,
@@ -9464,7 +9464,7 @@ if (screen_state.isStateActive (Person.Diagnostic) && !routine_is_diagnostic) {
     if (main.model_initial_compliance) {
 
       // Compute the compliance probability based on the person's characteristics.
-	  ComplianceModel complianceModel = new ComplianceModel ();
+	  ComplianceModel complianceModel = new ComplianceModel ("nearest_dist_simulation.csv");
 
 	  compliance_prob =
 	      complianceModel.getProbabilityOfCompliance (this.sex_male,
@@ -18646,8 +18646,10 @@ static int outcomesIndex = 0;
 
 
 // For production runs.
-private String inputDirectory  = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\compliance_model\\pops";
-private String outputDirectory = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\compliance_model\\out";
+//private String inputDirectory  = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\compliance_model\\pops";
+//private String outputDirectory = "\\\\ad.renci.org\\projects\\systemsscience\\archive\\compliance_model\\out";
+private String inputDirectory  = "C:\\dev\\var\\crcsim\\model\\pops";
+private String outputDirectory = "C:\\dev\\var\\crcsim\\model\\out";
 private boolean debugMode = true; // Set population size to some low number for testing.
 
 /**
