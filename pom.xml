@@ -13,7 +13,9 @@
   <url>http://www.renci.org/~scox/crc</url>
 
   <properties>
-    <data.root>/home/scox/dev/var/crcsim</data.root>
+    <data.root>c:/dev/var/crcsim</data.root>
+    <!--    <data.root>/home/scox/dev/var/crcsim</data.root>
+-->
     <!-- application 
     <data.root>c:/dev/var/crcsim</data.root>
 -->
@@ -159,6 +161,8 @@
 		if (hostname == 'LARGEMEM-0-1') {
 		    project.properties ['data.root'] = '/dev/var/crcsim'
                 } else if (hostname == 'STEVE-X301') {
+		    project.properties ['data.root'] = '/dev/var/crcsim'
+                } else if (hostname == 'STEVE-W510') {
 		    project.properties ['data.root'] = '/dev/var/crcsim'
                 }
 	      </source>
