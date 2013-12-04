@@ -22,7 +22,7 @@ public class ComplianceModelTest {
     @Test
     public void testComplianceModel () {
 
-	ComplianceModel model = new ComplianceModel ();
+	ComplianceModel model = new ComplianceModel ("nearest_dist_simulation.csv");
 	List<Person> people = Person.scan ("data/stats_model_test.txt");
 
 	for (Person person : people) {
