@@ -70,12 +70,45 @@ public class Geography {
      *
      */
     Geography (String resourcePath) {
+        try {
+            DelimitedFileImporter in = getImporter ("nearest_dist_simulation.csv");
+            while (in.hasMoreRows ()) {
+                in.nextRow ();
+                String zipcodeText = in.getString ("zip");
+                Double distance = new Double (in.getDouble ("nearest_distance"));
+                zipcode.put (zipcodeText, distance);
+            }
+            in = getImporter (resourcePath);
+            while (in.hasMoreRows ()) {
+                in.nextRow ();
+                CountyIntercepts countyIntercepts =
+                    new CountyIntercepts (in.getString ("county"),
+                                          in.getString ("FIPS"),
+                                          getDouble (in, "medicareOnly"),
+                                          getDouble (in, "medicaidOnly"),
+                                          getDouble (in, "dual"),
+                                          getDouble (in, "BCBS"));
+                county.put (countyIntercepts.getFIPS (), countyIntercepts);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException (e);
+        }
+    }
+
+    /**
+     *
+     * Construct a new geography object and initialize maps, also passing in as
+     * a parameter the name of the distance file.
+     *
+     */
+    Geography (String resourcePath, String distanceFilename) {
 	try {
-	    DelimitedFileImporter in = getImporter ("nearest_dist_simulation.csv");
+	    DelimitedFileImporter in = getImporter (distanceFilename);
 	    while (in.hasMoreRows ()) {
 		in.nextRow ();
 		String zipcodeText = in.getString ("zip");
-		Double distance = new Double (in.getDouble ("nearest_distance"));
+		Double distance
+                    = new Double (in.getDouble ("nearest_distance"));
 		zipcode.put (zipcodeText, distance);
 	    }
 	    in = getImporter (resourcePath);
