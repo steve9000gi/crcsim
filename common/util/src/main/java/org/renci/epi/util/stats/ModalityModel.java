@@ -10,10 +10,14 @@ import org.renci.epi.util.GeographyFactory;
  */
 public class ModalityModel extends ComplianceModel {
     
+    /* Default ctor */
+    public ModalityModel () {}
+
     /**
      * Create a new modality model object, initializing betas appropriately.
      */
-    public ModalityModel () {
+    public ModalityModel (String distanceFilename) {
+        GeographyFactory.setDistanceFilename(distanceFilename); 
 	this.setBetas (BetaMapFactory.getModality ());
     } 
 
