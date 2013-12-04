@@ -1,12 +1,16 @@
 package org.renci.epi.population.insurance;
 
+import java.util.*;
+
 /**
  * Representation of a population member for purposes
  * of insurance status assignment.
  */
 public class Person {
+    // Return the same pseudorandom sequence in each build:
+    static Random r = new Random (625345);
+    double random = r.nextDouble();
 
-    double random = Math.random ();
     short ageCat = -1;
     short householdIncomeCat = -1;
     short householdSizeCat = -1;
@@ -14,7 +18,8 @@ public class Person {
     short sexCat = -1;
 
     public double getRandom () {
-	return random;
+	return random;          // Same sequence each build
+        //return Math.random(); // Returns a different sequence for each build
     }
     public short getAgeCat () {
 	return ageCat;
