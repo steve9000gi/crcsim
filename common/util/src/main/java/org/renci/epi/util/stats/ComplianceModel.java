@@ -27,10 +27,16 @@ public class ComplianceModel {
     // A map of insurance category to beta values.
     private BetaMap betas;
 
+    /* Default ctor */
+    public ComplianceModel() {}
+
     /**
-     * Create a new compliance model object, initializing appropriately for this model.
+     * Create a new compliance model object, initializing appropriately for
+     * this model.
+     * @param distanceFilename The name of the distance file.
      */
-    public ComplianceModel () {
+    public ComplianceModel (String distanceFilename) {
+        GeographyFactory.setDistanceFilename(distanceFilename);
 	this.setBetas (BetaMapFactory.getCompliance ());
     }
 
