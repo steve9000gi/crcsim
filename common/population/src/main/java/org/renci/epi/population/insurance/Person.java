@@ -9,7 +9,7 @@ import java.util.*;
 public class Person {
     // Return the same pseudorandom sequence in each build:
     static Random r = new Random (625345);
-    double random = r.nextDouble();
+    static double random = r.nextDouble();
 
     short ageCat = -1;
     short householdIncomeCat = -1;
@@ -18,7 +18,7 @@ public class Person {
     short sexCat = -1;
 
     public double getRandom () {
-	return random;          // Same sequence each build
+	return r.nextDouble();  // Same sequence each build
         //return Math.random(); // Returns a different sequence for each build
     }
     public short getAgeCat () {
