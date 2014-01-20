@@ -2,32 +2,20 @@ package org.renci.epi.population.insurance;
 
 public interface InsuranceStrategy {
    /**
-     * Select the insurance strategy.
+     * Determine a person's insurance status.
      */
     public InsuranceStatus getInsuranceStatus (Person person);
 
-    /**
-     * Is this person uninsured?
-     */
-    public boolean hasNoInsurance (Person person, InsuranceStatus status);
-    
-    /**
-     * Is this person privately insured?
-     */
-    public boolean hasPrivateInsurance (Person person, InsuranceStatus status);
+    public boolean hasNoInsurance (InsuranceStatus status);
+    public boolean hasPrivateInsurance (InsuranceStatus status);
+    public boolean hasMedicaidOnly (InsuranceStatus status);
+    public boolean hasMedicareOnly (InsuranceStatus status);
+    public boolean hasDual (InsuranceStatus status);
 
-    /**
-     * Is this person insured via medicaid only?
-     */
-    public boolean hasMedicaidOnly (Person person, InsuranceStatus status);
-    
-    /**
-     * Is this person insured via Medicare only?
-     */
-    public boolean hasMedicareOnly (Person person, InsuranceStatus status);
+/* debug
+    public InsuranceStatus getInsStatus();
+    public double getInsRandom();
+    public String getPersonKey();
+*/
 
-    /**
-     * Is this person insured via dual means?
-     */
-    public boolean hasDual (Person person, InsuranceStatus status);
 }

@@ -76,8 +76,8 @@ public class InsuranceStatusTableTest extends TestCase {
 	    person.random = randoms [c] - 0.0001;
 	    InsuranceStatus status = insuranceStrategy.getInsuranceStatus (person);
 	    logger.info ("  category: " + status);
-	    logger.info ("  noins: " + insuranceStrategy.hasNoInsurance (person, status));
-	    logger.info ("  private: " + insuranceStrategy.hasPrivateInsurance (person, status));
+	    logger.info ("  noins: " + insuranceStrategy.hasNoInsurance (status));
+	    logger.info ("  private: " + insuranceStrategy.hasPrivateInsurance (status));
 	}
 
     }

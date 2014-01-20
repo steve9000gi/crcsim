@@ -11,44 +11,43 @@ public class BasicInsuranceStrategy implements InsuranceStrategy {
     private InsuranceStatusTable insuranceStatusTable = new InsuranceStatusTable ();
 
     /**
-     * Select the insurance strategy.
+     * Determine a person's insurance status.
      */
     public InsuranceStatus getInsuranceStatus (Person person) {
 	return insuranceStatusTable.getInsuranceStatus (person);
     }
 
-    /**
-     * Is this person uninsured?
-     */
-    public boolean hasNoInsurance (Person person, InsuranceStatus status) {
-	return insuranceStatusTable.hasNoInsurance (person, status);
+    public boolean hasNoInsurance (InsuranceStatus status) {
+	return insuranceStatusTable.hasNoInsurance (status);
     }
     
-    /**
-     * Is this person privately insured?
-     */
-    public boolean hasPrivateInsurance (Person person, InsuranceStatus status) {
-	return insuranceStatusTable.hasPrivateInsurance (person, status);
+    public boolean hasPrivateInsurance (InsuranceStatus status) {
+	return insuranceStatusTable.hasPrivateInsurance (status);
     }
 
-    /**
-     * Is this person insured via Medicaid only?
-     */
-    public boolean hasMedicaidOnly (Person person, InsuranceStatus status) {
-	return insuranceStatusTable.hasMedicaidOnly (person, status);
+    public boolean hasMedicaidOnly (InsuranceStatus status) {
+	return insuranceStatusTable.hasMedicaidOnly (status);
     }
     
-    /**
-     * Is this person insured via Medicare only?
-     */
-    public boolean hasMedicareOnly (Person person, InsuranceStatus status) {
-	return insuranceStatusTable.hasMedicareOnly (person, status);
+    public boolean hasMedicareOnly (InsuranceStatus status) {
+	return insuranceStatusTable.hasMedicareOnly (status);
     }
 
-    /**
-     * Is this person insured via dual means?
-     */
-    public boolean hasDual (Person person, InsuranceStatus status) {
-	return insuranceStatusTable.hasDual (person, status);        
+    public boolean hasDual (InsuranceStatus status) {
+	return insuranceStatusTable.hasDual (status);        
     }
+
+/* debug
+    public InsuranceStatus getInsStatus() {
+        return insuranceStatusTable.insStatus;
+    }
+
+    public double getInsRandom() {
+        return insuranceStatusTable.insRandom;
+    }
+
+    public String getPersonKey() {
+        return insuranceStatusTable.personKey;
+    }
+*/
 }

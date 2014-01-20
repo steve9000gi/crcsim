@@ -4,6 +4,7 @@ import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilterWriter;
@@ -34,15 +35,21 @@ import org.apache.log4j.Logger;
  */
 public class InsuranceStatusTable {
 
+/* debug
+    public InsuranceStatus insStatus;
+    public double insRandom;
+    public String personKey;
+*/
+
     private String [] _header = null;
     private HashMap<String, double []> _table = new HashMap<String, double[]> ();
     private static Log logger = LogFactory.getLog (InsuranceStatusTable.class); 
-    
+    private static BufferedWriter bw = null;    
     /**
      * Construct the table, loading the basic mapping of categories to probabiliites.
      */
     public InsuranceStatusTable () {
-	InputStream stream = InsuranceStatusTable.class.getResourceAsStream ("PopulationInsuranceStatusTable.csv");
+	InputStream stream = InsuranceStatusTable.class.getResourceAsStream ("PREDS.csv");
 	BufferedReader reader = new BufferedReader (new InputStreamReader (stream));
 	try {
 	    char inputSeparator = ',';
@@ -78,7 +85,7 @@ public class InsuranceStatusTable {
 		//logger.info ("--key: " + key);
 
 		try {
-		    List<String> probabilityMask = new ArrayList<String> (10);
+		    List<String> probabilityMask = new ArrayList<String> (12); // SAC 2013/01/06 10 -> 12
 		    for (int c = 0; c < line.length; c++) {
 			String columnName = _header [c];
 			String text = line [c];
@@ -152,6 +159,11 @@ public class InsuranceStatusTable {
 	String key = this.getPersonKey (person);
 	double random = person.getRandom ();
 
+/* debug
+        insRandom = random;
+        personKey = key;
+*/
+
 	if (key != null) {
 	    logger.info ("-lookup(key): " + key);
 	    double [] cumulativeProbabilities = _table.get (key);
@@ -183,12 +195,16 @@ public class InsuranceStatusTable {
 	} else {
 	    logger.error ("unable to get key for person: " + person);
 	}
+
+        // debug insStatus = result;
+
 	return result;
     }
 
 
     /**
 
+TEMP SAC 2013/01/20: To do: rewrite or remove these comments: they no longer apply.
 Final: From Kristen, 9/18/2013:
 
 Medicaid:
@@ -236,16 +252,14 @@ private:
   age_cat=>2 && ins_cat=>2|3|10
   age_cat=>3 && ins_cat=>2
 
-none:
+none  :
   age_cat=>* && ins_cate=>1
 
 a. If AGE_CAT is 1 or 2, then health insurance type is defined as follows:
   1) No insurance 
-
   2) Insurance through a current or former employer or union only 
   3) Insurance purchased directly from an insurance company only 
-
-  4) Medicaid (or Medical Assistance or any kind of government-assistance plan Jillian Brown – July 23, 2012
+  4) Medicaid (or Medical Assistance or any kind of government-assistance plan
      for those with low incomes or disabilities) only 
   5) Medicare only / Medicaid and Medicare only/and having any other insurance  
      type(s) / Medicare and having any other insurance type(s), but not Medicaid 
@@ -254,16 +268,13 @@ a. If AGE_CAT is 1 or 2, then health insurance type is defined as follows:
      military health care, VA, Indian Health Services), but not Medicaid, 
      Medicare, insurance through a current or former employer or union, nor 
      insurance purchased directly from an insurance company 
-
   8) Other (any combination of insurance combinations not listed previously, but 
      not Medicaid nor Medicare) 
 
 b. If AGE_CAT is 3 or 4 or 5, then health insurance type is defined as follows:
   1)   No insurance  
-
   2)   Insurance through a current or former employer or union only 
   3)   Insurance purchased directly from an insurance company only 
-
   4)   Medicaid (or Medical Assistance or any kind of government-assistance plan 
        for those with low incomes or disabilities) only 
   5)   Medicare only 
@@ -278,7 +289,6 @@ b. If AGE_CAT is 3 or 4 or 5, then health insurance type is defined as follows:
        not Medicaid nor Medicare) 
 c. If AGE_CAT is 6, then health insurance type is defined as follows:
   1)   No insurance  
-
   2)   Insurance through a current or former employer or union only / Insurance 
        purchased directly from an insurance company only / Other public insurance 
        (any combination or sole used of TRICARE or other military health care, VA, 
@@ -286,121 +296,56 @@ c. If AGE_CAT is 6, then health insurance type is defined as follows:
        current or former employer or union, nor insurance purchased directly from an 
        insurance company / Other (any combination of insurance combinations not 
        listed previously, but not Medicaid nor Medicare) 
-
   3)   Medicare only 
   4)   Medicaid and Medicare only/and having any other insurance type(s) 
   5)   Medicare and having any other insurance type(s), but not Medicaid 
 
 */
-    enum AGE_CAT {
-        AGE_ONE, AGE_TWO, AGE_THREE, NONE
-    };
 
-    private final AGE_CAT getAgeCategory (Person person) {
-        AGE_CAT result = AGE_CAT.NONE;
-        short ageCat = person.getAgeCat ();
-        switch (ageCat) {
-        case 1:
-        case 2:
-            result = AGE_CAT.AGE_ONE;
-            break;
-        case 3:
-        case 4:
-        case 5:
-            result = AGE_CAT.AGE_TWO;
-            break;
-        case 6:
-            result = AGE_CAT.AGE_THREE;
-            break;
-        default:
-            result = AGE_CAT.NONE;
-        }
-        return result;
-    }
-    public boolean hasMedicaidOnly (Person person, InsuranceStatus status) {
+   public boolean hasMedicaidOnly (InsuranceStatus status) {
         boolean result = false;
-	AGE_CAT ageCat = getAgeCategory (person);
-        switch (ageCat) {
-        case AGE_ONE:
-            result =
-                InsuranceStatus.CAT_FOUR.equals (status) ||
-                InsuranceStatus.CAT_SIX.equals (status);;
-            break;
-        case AGE_TWO:
-            result =
-                InsuranceStatus.CAT_FOUR.equals (status) ||
-                InsuranceStatus.CAT_EIGHT.equals (status);;
-            break;
-        default:
-            break;
-        }
+       
+        result = 
+            InsuranceStatus.CAT_FOUR.equals(status) ||
+            InsuranceStatus.CAT_EIGHT.equals(status);
+        
         return result;
     }
-    public boolean hasMedicareOnly (Person person, InsuranceStatus status) {
+
+    public boolean hasMedicareOnly (InsuranceStatus status) {
         boolean result = false;
-	AGE_CAT ageCat = getAgeCategory (person);
-        switch (ageCat) {
-        case AGE_TWO:
-            result =
-                InsuranceStatus.CAT_FIVE.equals (status) ||
-                InsuranceStatus.CAT_SEVEN.equals (status);;
-            break;
-        case AGE_THREE:
-            result =
-                InsuranceStatus.CAT_THREE.equals (status) ||
-                InsuranceStatus.CAT_FIVE.equals (status);
-            break;
-        default:
-            break;
-        }
+        
+        result = 
+                InsuranceStatus.CAT_FIVE.equals(status) ||
+                InsuranceStatus.CAT_SEVEN.equals(status);
+        
         return result;
     }
-    public boolean hasPrivateInsurance (Person person, InsuranceStatus status) {
+
+    public boolean hasPrivateInsurance (InsuranceStatus status) {
         boolean result = false;
-	AGE_CAT ageCat = getAgeCategory (person);
-        switch (ageCat) {
-        case AGE_ONE:
-            result = 
-                InsuranceStatus.CAT_TWO.equals (status) ||
-                InsuranceStatus.CAT_THREE.equals (status) ||
-                InsuranceStatus.CAT_SEVEN.equals (status) ||
-                InsuranceStatus.CAT_EIGHT.equals (status);
-            break;
-        case AGE_TWO:
-            result = 
-                InsuranceStatus.CAT_TWO.equals (status) ||
-                InsuranceStatus.CAT_THREE.equals (status) ||
-                InsuranceStatus.CAT_NINE.equals (status) ||
-                InsuranceStatus.CAT_TEN.equals (status);
-            break;
-        case AGE_THREE:
-            result = InsuranceStatus.CAT_TWO.equals (status);
-            break;
-        default:
-            break;
-        }
+        
+        result =
+            InsuranceStatus.CAT_TWO.equals (status) ||
+            InsuranceStatus.CAT_THREE.equals (status) ||
+            InsuranceStatus.CAT_NINE.equals (status) ||
+            InsuranceStatus.CAT_TEN.equals (status) ||
+            InsuranceStatus.CAT_TWELVE.equals (status);
+       
         return result;
     }
-    public boolean hasDual (Person person, InsuranceStatus status) {
+
+    public boolean hasDual (InsuranceStatus status) {
         boolean result = false;
-	AGE_CAT ageCat = getAgeCategory (person);
-        switch (ageCat) {
-        case AGE_ONE:
-            result = InsuranceStatus.CAT_FIVE.equals (status);
-            break;
-        case AGE_TWO:
-            result = InsuranceStatus.CAT_SIX.equals (status);
-            break;
-        case AGE_THREE:
-            result = InsuranceStatus.CAT_FOUR.equals (status);
-            break;
-        default:
-            break;
-        }
+        
+        result = 
+            InsuranceStatus.CAT_SIX.equals(status) ||
+            InsuranceStatus.CAT_ELEVEN.equals(status);
+        
         return result;
     }
-    public boolean hasNoInsurance (Person person, InsuranceStatus status) {
-	return status == InsuranceStatus.CAT_ONE;
+
+    public boolean hasNoInsurance (InsuranceStatus status) {
+        return status == InsuranceStatus.CAT_ONE;
     }
 }
-

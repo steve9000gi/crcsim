@@ -75,7 +75,7 @@ class SynthPopAnnotationProcessor implements Processor {
 	if (logger.isDebugEnabled ()) {
 	    this.logger.debug ("setting header: " + StringUtils.join (header, ","));
 	}
-	this._header = header;
+        this._header = header;
     }
 
     /**
@@ -94,17 +94,17 @@ class SynthPopAnnotationProcessor implements Processor {
 	
 	translateOutputLine (record);
 	
-	String [] output = new String [_outputKeys.length];
-	for (int c = 0; c < this._outputKeys.length; c++) {
-	    String key = _outputKeys [c];
-	    String value = record.get (key);
-	    output [c] = value;
-	    if (logger.isDebugEnabled ()) {
-		logger.debug ("key=>[" + key + "] <= [" + value + "]");
-	    }
-	}
-	if (logger.isDebugEnabled ())
-	    logger.debug (record);
+        String [] output = new String [_outputKeys.length];
+
+        for (int c = 0; c < this._outputKeys.length; c++) {
+            String key = _outputKeys [c];
+            String value = record.get (key);
+            output [c] = value;
+            if (logger.isDebugEnabled ()) {
+                logger.debug ("key=>[" + key + "] <= [" + value + "]");
+            }
+        }
+
 
 	return output;
     }   
@@ -121,7 +121,6 @@ class SynthPopAnnotationProcessor implements Processor {
     }
 
     private void translateOutputLine (HashMap<String,String> record) {
-
 	/** A unique id */
 	record.put ("id", String.valueOf (_id++));
 
@@ -174,6 +173,7 @@ class SynthPopAnnotationProcessor implements Processor {
 	    throw new RuntimeException ("unable to parse household size: " + householdSizeString, e);
 	}
 	
+
 	/** State and county FIPS codes **/
 	record.put ("stcotrbg", record.get ("households.stcotrbg"));
 
@@ -220,25 +220,37 @@ class SynthPopAnnotationProcessor implements Processor {
         record.put ("DUAL", "0");
 	try {
 	    Person person = Person.getPerson (Integer.parseInt (record.get ("people.age")),
-					      Integer.parseInt (record.get ("INCOME")),
+					      Integer.parseInt (record.get ("households.hh_income")),
 					      Integer.parseInt (record.get ("households.hh_size")),
-					      pumsRaceCode != PUMS.RAC1P_WHITE ? 1 : 0,
+					      pumsRaceCode == PUMS.RAC1P_WHITE ? 1 : 0,
 					      Integer.parseInt (record.get ("BLACK")),
 					      Integer.parseInt (record.get ("people.sex")));
 	    InsuranceStatus status = _insuranceStrategy.getInsuranceStatus (person);
-	    
-	    if (_insuranceStrategy.hasPrivateInsurance (person, status)) {
+
+/* debug
+        record.put ("pumsp_rac1p", record.get ("pumsp.rac1p")); // one more added 2013/01/17
+	record.put ("people_race", record.get ("people.race"));
+	record.put ("households_hh_income", record.get ("households.hh_income"));
+	record.put ("people_age", record.get ("people.age"));
+	record.put ("households_hh_size", record.get ("households.hh_size"));
+        record.put ("insStatus", _insuranceStrategy.getInsStatus().toString());
+        record.put ("insRandom", Double.toString(_insuranceStrategy.getInsRandom()));
+        record.put ("personKey", _insuranceStrategy.getPersonKey());
+        record.put ("outBlack", record.get ("BLACK"));
+        record.put ("outINCOME", record.get ("INCOME"));
+*/
+
+            if (_insuranceStrategy.hasPrivateInsurance (status)) {
                 record.put ("PRIVA", "1");
-            } else if (_insuranceStrategy.hasMedicareOnly (person, status)) {
+            } else if (_insuranceStrategy.hasMedicareOnly (status)) {
                 record.put ("MEDICARE", "1");
-            } else if (_insuranceStrategy.hasMedicaidOnly (person, status)) {
+            } else if (_insuranceStrategy.hasMedicaidOnly (status)) {
                 record.put ("MEDICAID", "1");
-            } else if (_insuranceStrategy.hasDual (person, status)) {
+            } else if (_insuranceStrategy.hasDual (status)) {
                 record.put ("DUAL", "1");
-            } else if (_insuranceStrategy.hasNoInsurance (person, status)) {
+            } else if (_insuranceStrategy.hasNoInsurance (status)) {
                 record.put ("NOINS", "1");
             }
-
 	} catch (NumberFormatException e) {
 	    e.printStackTrace ();
 	    throw new RuntimeException ("Error e");
