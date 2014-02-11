@@ -105,7 +105,6 @@ class SynthPopAnnotationProcessor implements Processor {
             }
         }
 
-
 	return output;
     }   
     
@@ -149,7 +148,6 @@ class SynthPopAnnotationProcessor implements Processor {
 	} catch (NumberFormatException e) {
 	    throw new RuntimeException ("unable to parse marital status code: " + maritalStatusString, e);
 	}
-	
 
 	/** income */
 	try {
@@ -163,6 +161,7 @@ class SynthPopAnnotationProcessor implements Processor {
 	}
 
 	//record.put ("INCOME", record.get ("hh_income"));
+        record.put ("NEW_INCOME", record.get ("households.hh_income"));
 
 	/** alone status */
 	String householdSizeString = record.get ("households.hh_size");
@@ -172,7 +171,6 @@ class SynthPopAnnotationProcessor implements Processor {
 	} catch (NumberFormatException e) {
 	    throw new RuntimeException ("unable to parse household size: " + householdSizeString, e);
 	}
-	
 
 	/** State and county FIPS codes **/
 	record.put ("stcotrbg", record.get ("households.stcotrbg"));
@@ -188,16 +186,9 @@ class SynthPopAnnotationProcessor implements Processor {
 	/** Race
 	    Pums Data Dict: 1 .White alone, 2 .Black or African American alone
 	*/
-	int pumsRaceCode = -1;
-	try {
-	    pumsRaceCode = Integer.parseInt (record.get ("pumsp.rac1p"));
-	    record.put ("BLACK", pumsRaceCode == PUMS.RAC1P_BLACK ? "1" : "0");
-	} catch (NumberFormatException e) {
-	    record.put ("BLACK", "0");
-	    if (logger.isDebugEnabled ()) {
-		logger.debug ("pumsp.rac1p: " + record.get ("pumsp.rac1p"));
-	    }
-	}
+        int pumsRaceCode = Integer.parseInt (record.get ("pumsp.rac1p"));
+        record.put ("BLACK", pumsRaceCode == 2 ? "1" : "0");
+        record.put ("OTHER", pumsRaceCode != 1 && pumsRaceCode != 2 ? "1" : "0");
 
 	/**
 	   PUMS Data Dict: 01 .Not Spanish/Hispanic/Latino, 02 .Mexican, 03 .Puerto Rican
@@ -205,9 +196,6 @@ class SynthPopAnnotationProcessor implements Processor {
 	int pumsHispanicCode = Integer.parseInt (record.get ("pumsp.hisp"));
 	record.put ("HISP", pumsHispanicCode == PUMS.HISP_NOTHISPANIC ? "0" : "1");
 
-	int black = Integer.parseInt (record.get ("BLACK"));
-	int hispanic = Integer.parseInt (record.get ("HISP"));
-	record.put ("OTHER", ( black == 0 && hispanic == 0 && pumsRaceCode != PUMS.RAC1P_WHITE) ? "1" : "0");
 
 	/** Incorporate insurance data 
 	 *    Note: There is randomness in the selection algorithm, so 
@@ -226,6 +214,9 @@ class SynthPopAnnotationProcessor implements Processor {
 					      Integer.parseInt (record.get ("BLACK")),
 					      Integer.parseInt (record.get ("people.sex")));
 	    InsuranceStatus status = _insuranceStrategy.getInsuranceStatus (person);
+
+           // person.getHouseholdIncomeCat () must be called *after* Person.getPerson (...):
+           record.put ("NEW_INCOME_CAT", Integer.toString (person.getHouseholdIncomeCat ()));
 
 /* debug
         record.put ("pumsp_rac1p", record.get ("pumsp.rac1p")); // one more added 2013/01/17
@@ -273,20 +264,19 @@ class SynthPopAnnotationProcessor implements Processor {
 	record.put ("LAT", record.get ("households.latitude"));
 	record.put ("LON", record.get ("households.longitude"));
 
-	record.put ("FRISK",   getStateWithProbability (0.2));
-	record.put ("VITALE",  getStateWithProbability (0.35));
-	record.put ("FLU",     getStateWithProbability (0.5));
-	record.put ("FORMER",  getStateWithProbability (0.26));
-	record.put ("NEVER",   getStateWithProbability (0.56));
+ 	record.put ("FRISK",   getStateWithProbability (0.2));
+ 	record.put ("VITALE",  getStateWithProbability (0.35));
+ 	record.put ("FLU",     getStateWithProbability (0.5));
+ 	record.put ("FORMER",  getStateWithProbability (0.26));
+ 	record.put ("NEVER",   getStateWithProbability (0.56));
 	record.put ("CURRENT", getStateWithProbability (0.18));
-	record.put ("USUAL",   getStateWithProbability (0.80));
+ 	record.put ("USUAL",   getStateWithProbability (0.80));
     }
 
     private String getStateWithProbability (double probability) {
 	return String.valueOf (_randomGenerator.nextDouble () < probability);
     }
 }
-
 
 /**
  *
