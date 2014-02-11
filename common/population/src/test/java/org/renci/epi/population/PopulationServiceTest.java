@@ -41,13 +41,13 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
     private static char inputSeparator   = '|';
     private static char outputSeparator  = '\t';
     private static String [] outputKeys  = {
-	"sex", "race", "SEXC", "INCOME", "FRISK", "VITALE", "AGE_G2",
-	"AGE_G3", "AGE_G4", "FLU", "BLACK", "HISP", "OTHER", "FORMER",
+	"sex", "SEXC", "INCOME", "FRISK", "VITALE", "AGE_G2",
+	"FLU", "BLACK", "HISP", "OTHER", "FORMER",
 	"NEVER", "ALONE", "MW", "SO", "WE", "USUAL",
-// debug "insStatus", "insRandom",
         "NOINS", "PRIVA", "MEDICARE", "MEDICAID", "DUAL", "EDU", "id", "p_id", 
-        "LAT", "LON", "county", "stcotrbg", "zipcode", "MARRIED"
-// debug , "pumsp_rac1p", "people_race", "households_hh_income", "people_age", "households_hh_size", "personKey", "outBlack", "outINCOME"
+        "LAT", "LON", "stcotrbg", "zipcode", "MARRIED", "NEW_INCOME", "NEW_INCOME_CAT"
+// debug , "insStatus", "insRandom","pumsp_rac1p", "people_race", "households_hh_income",
+// debug (cont.) "people_age", "households_hh_size", "personKey", "outBlack", "outINCOME"
     };
 
     static {
