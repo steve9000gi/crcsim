@@ -81,7 +81,8 @@ public class ModelIOTest { //extends AbstractJUnit4SpringContextTests {
 
     @Test
     public void testGeography () throws Exception {
-	Geography geography = new Geography (Geography.COMPLIANCE);
+	Geography geography = new Geography ("compliance_county_intercepts.csv",
+                                             "nearest_dist_simulation.csv");
 
 	double distance = geography.getDistanceToNearestEndoscopyFacilityByZipCode ("27517");
 	CountyIntercepts countyIntercepts = geography.getCountyInterceptsByStcotrbg ("3700199999900000");

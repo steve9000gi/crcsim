@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.InputStreamReader;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -44,12 +43,13 @@ public class Geography {
 	}
 	return result;
     }
+
     private Reader getDataReader (String resourceName) {
 	Reader result = null;
 	try {
 	    result = new BufferedReader (new FileReader (DATA + File.separator + resourceName));
 	} catch (IOException e) {
-	    //throw new RuntimeException (e);
+	    // throw new RuntimeException (e);
 	}
 	return result;
     }
@@ -101,7 +101,7 @@ public class Geography {
      * a parameter the name of the distance file.
      *
      */
-    Geography (String resourcePath, String distanceFilename) {
+    Geography (String complianceFilename, String distanceFilename) {
 	try {
 	    DelimitedFileImporter in = getImporter (distanceFilename);
 	    while (in.hasMoreRows ()) {
@@ -111,7 +111,7 @@ public class Geography {
                     = new Double (in.getDouble ("nearest_distance"));
 		zipcode.put (zipcodeText, distance);
 	    }
-	    in = getImporter (resourcePath);
+	    in = getImporter (complianceFilename);
 	    while (in.hasMoreRows ()) {
 		in.nextRow ();
 		CountyIntercepts countyIntercepts =
@@ -160,7 +160,7 @@ public class Geography {
      */
     public CountyIntercepts getCountyInterceptsByStcotrbg (String stcotrbg) {
 	String FIPS = String.valueOf (Integer.parseInt (stcotrbg.substring (2, 5)));
-	
+
 	CountyIntercepts value = county.get (FIPS);
 	if (value == null) {
 	    throw new RuntimeException ("No county intercpets found for stcotrbg: " + stcotrbg);

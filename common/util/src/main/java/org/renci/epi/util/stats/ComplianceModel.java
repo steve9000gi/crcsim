@@ -35,6 +35,11 @@ public class ComplianceModel {
      * this model.
      * @param distanceFilename The name of the distance file.
      */
+    public ComplianceModel (String complianceFilename, String distanceFilename) {
+        GeographyFactory.setComplianceAndDistanceFilenames(complianceFilename, distanceFilename);
+	this.setBetas (BetaMapFactory.getCompliance ());
+    }
+
     public ComplianceModel (String distanceFilename) {
         GeographyFactory.setDistanceFilename(distanceFilename);
 	this.setBetas (BetaMapFactory.getCompliance ());

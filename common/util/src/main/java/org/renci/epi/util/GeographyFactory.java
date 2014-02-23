@@ -9,6 +9,22 @@ package org.renci.epi.util;
 public class GeographyFactory {
     
     /**
+     * Assign compliance and distance filenames.
+     * NOTE: This method *must* be called prior to calling getCompliance() and
+     * getModality() in order to instantiate compliance and modality.
+     */
+    public static void setComplianceAndDistanceFilenames(
+        String complianceFilename, String distanceFilename) {
+        if (compliance == null) {
+            compliance 
+                = new Geography (complianceFilename, distanceFilename);
+        }
+        if (modality == null) {
+            modality = new Geography (Geography.MODALITY, distanceFilename);
+        }
+    }
+
+    /**
      * Assign distance filename.
      * NOTE: This method *must* be called prior to calling getCompliance() and
      * getModality() in order to instantiate compliance and modality.
