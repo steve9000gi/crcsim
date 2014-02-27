@@ -10489,7 +10489,7 @@ double prob_sigmoid = 0;
 Main main = get_Population().get_Main ();
 
 if (main.model_test_probability) {	
-  ModalityModel model = new ModalityModel (main.infile_location_name);
+  ModalityModel model = new ModalityModel ("compliance_county_intercepts.csv", main.infile_location_name);
   prob_colon =
      model.getProbabilityOfColonoscopy (this.sex_male,
 										this.race_black,
@@ -10888,8 +10888,6 @@ if (screen_state.isStateActive (Person.Diagnostic) && !routine_is_diagnostic) {
       // Compute the compliance probability based on the person's characteristics.
 
 	  ComplianceModel complianceModel = new ComplianceModel ("compliance_county_intercepts.csv", main.infile_location_name);
-
-
 	  compliance_prob =
 	      complianceModel.getProbabilityOfCompliance (this.sex_male,
 													  this.race_black,
@@ -15621,8 +15619,8 @@ int[] num_none = new int[20];
 int[] num_utd_any_none = new int[20];
 
 
-for (int i = 0; i < people.size(); i++){
-	for(int j = 0; j<num_alive.length; j++){
+for (int i = 0; i < people.size(); i++){ // i is the current person
+	for(int j = 0; j<num_alive.length; j++){ // index into 20-year window of observation
 		if (people.get(i).death_age > (people.get(i).age + main.dynamic_compliance_rate_year_offset_new + j)){
 			
 			int ageIDX = people.get(i).age + main.dynamic_compliance_rate_year_offset_new + j;
@@ -15635,7 +15633,7 @@ for (int i = 0; i < people.size(); i++){
 			//num_utd_any[j] = num_utd_fobt[j]+num_utd_colon[j];
 			num_utd_any[j] = num_utd_any[j] + BooleanUtils.toInteger(((people.get(i).colon_utd[ageIDX])||(people.get(i).fobt_utd[ageIDX])||(people.get(i).sigmoid_utd[ageIDX])));
 			
-			
+			// 43 = 50 - 7; 68 = 75 - 7
 			if ((people.get(i).age >=(43-j) ) && (people.get(i).age <=(68 - j))){
 				if ((people.get(i).insure_medicaid || people.get(i).insure_dual)){
 				//People eligble for mailded reminder	
@@ -23296,9 +23294,9 @@ private String outputDirectory = "C:\\dev\\var\\crcsim\\model\\out";
 //private String experimentId = "003";
 //private String experimentId = "005";
 //private String experimentId = "006";//just tests the distance file
-//private String experimentId = "007"; // all interventions with end year of testing program changed
+private String experimentId = "007"; // all interventions with end year of testing program changed
 //private String experimentId = "fs";
-private String experimentId = "base";
+//private String experimentId = "base";
 
 /**
  * Forms the path to experiment specific data.

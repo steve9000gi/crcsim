@@ -35,7 +35,7 @@ public class Geography {
 	    InputStream input = getClass().getResourceAsStream ("/" + DATA + "/" + resourceName);
 	    if (input != null) {
 		result = new InputStreamReader (new BufferedInputStream (input));
-		logger.info ("Got stream for resource: " + resourceName);
+		logger.info ("getResourceReader (" + resourceName + ")");
 	    }
 	}
 	if (result == null) {
@@ -156,14 +156,14 @@ public class Geography {
     /**
      * Get county intercepts by stcotrbg.
      *@param stcotrbg
-     *@return Returns a county intercpets object.
+     *@return Returns a county intercepts object.
      */
     public CountyIntercepts getCountyInterceptsByStcotrbg (String stcotrbg) {
 	String FIPS = String.valueOf (Integer.parseInt (stcotrbg.substring (2, 5)));
 
 	CountyIntercepts value = county.get (FIPS);
 	if (value == null) {
-	    throw new RuntimeException ("No county intercpets found for stcotrbg: " + stcotrbg);
+	    throw new RuntimeException ("No county intercepts found for stcotrbg: " + stcotrbg);
 	}
 	return value;
     }

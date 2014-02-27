@@ -16,6 +16,11 @@ public class ModalityModel extends ComplianceModel {
     /**
      * Create a new modality model object, initializing betas appropriately.
      */
+    public ModalityModel (String complianceFilename, String distanceFilename) {
+        GeographyFactory.setComplianceAndDistanceFilenames(complianceFilename, distanceFilename);
+	this.setBetas (BetaMapFactory.getModality ());
+    } 
+
     public ModalityModel (String distanceFilename) {
         GeographyFactory.setDistanceFilename(distanceFilename); 
 	this.setBetas (BetaMapFactory.getModality ());

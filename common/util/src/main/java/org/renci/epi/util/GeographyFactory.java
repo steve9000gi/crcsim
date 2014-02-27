@@ -7,7 +7,7 @@ package org.renci.epi.util;
  *
  */
 public class GeographyFactory {
-    
+
     /**
      * Assign compliance and distance filenames.
      * NOTE: This method *must* be called prior to calling getCompliance() and
@@ -40,10 +40,10 @@ public class GeographyFactory {
     }
 
     // Compliance model geography
-    private static Geography compliance;
+    private static Geography compliance = null;
 
     // Modality model geography
-    private static Geography modality;
+    private static Geography modality = null;
 
     /**
      * Get the geography for the compliance model.
