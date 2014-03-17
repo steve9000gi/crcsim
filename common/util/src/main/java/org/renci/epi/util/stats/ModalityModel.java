@@ -63,7 +63,9 @@ public class ModalityModel extends ComplianceModel {
 						     boolean insure_medicaid,
 						     boolean insure_medicare,
 						     boolean insure_dual,
-						     boolean insure_none)
+						     boolean insure_none,
+                                                     boolean insure_private_orig,
+                                                     boolean insure_none_orig)
     {
 	return this.getProbabilityOfCompliance (person_sex_male,
 						person_race_black,
@@ -76,7 +78,9 @@ public class ModalityModel extends ComplianceModel {
 						insure_medicaid,
 						insure_medicare,
 						insure_dual,
-						insure_none);
+						insure_none,
+                                                insure_private_orig,
+                                                insure_none_orig);
     }
 
 }

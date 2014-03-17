@@ -20,6 +20,8 @@ class Person {
     public boolean insurance_medicare;
     public boolean insurance_medicaid;
     public boolean insurance_dual;
+    public boolean insurance_private_orig;
+    public boolean insurance_none_orig;
     public String stcotrbg;
     public String zipcode;
     public boolean is_married;
@@ -35,16 +37,18 @@ class Person {
 
 	String [] part = line.split (" ");
 	int c = 0;
-	sex_male           = TRUE_DIGIT.equals (part [c++]);
-	is_black           = TRUE_DIGIT.equals (part [c++]);
-	is_hispanic        = TRUE_DIGIT.equals (part [c++]);
-	is_other           = TRUE_DIGIT.equals (part [c++]);
-	insurance_none     = TRUE_DIGIT.equals (part [c++]);
-	insurance_private  = TRUE_DIGIT.equals (part [c++]);
-	insurance_medicare = TRUE_DIGIT.equals (part [c++]);
-	insurance_medicaid = TRUE_DIGIT.equals (part [c++]);
-	insurance_dual     = TRUE_DIGIT.equals (part [c++]);
-	c++; // county
+	sex_male                = TRUE_DIGIT.equals (part [c++]);
+	is_black                = TRUE_DIGIT.equals (part [c++]);
+	is_hispanic             = TRUE_DIGIT.equals (part [c++]);
+	is_other                = TRUE_DIGIT.equals (part [c++]);
+	insurance_none          = TRUE_DIGIT.equals (part [c++]);
+	insurance_private       = TRUE_DIGIT.equals (part [c++]);
+	insurance_medicare      = TRUE_DIGIT.equals (part [c++]);
+	insurance_medicaid      = TRUE_DIGIT.equals (part [c++]);
+	insurance_dual          = TRUE_DIGIT.equals (part [c++]);
+	insurance_private_orig  = TRUE_DIGIT.equals (part [c++]);
+	insurance_none_orig     = TRUE_DIGIT.equals (part [c++]);
+	//c++; // county
 	stcotrbg           = part [c++];
 	zipcode            = part [c++];
 	is_married         = TRUE_DIGIT.equals (part [c++]);
@@ -68,6 +72,8 @@ class Person {
 	    append ("medicare: ").append (insurance_medicare).append (", ").
 	    append ("medicaid: ").append (insurance_medicaid).append (", ").
 	    append ("dual: ").append (insurance_dual).append (", ").
+	    append ("private_orig: ").append (insurance_dual).append (", ").
+	    append ("none_orig: ").append (insurance_dual).append (", ").
 	    append ("stcotrbg: ").append (stcotrbg).append (", ").
 	    append ("zipcode: ").append (zipcode).append (", ").
 	    append ("married: ").append (is_married).append (", ").

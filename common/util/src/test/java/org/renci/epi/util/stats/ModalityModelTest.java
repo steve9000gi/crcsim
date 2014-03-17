@@ -38,7 +38,9 @@ public class ModalityModelTest {
 						   person.insurance_medicaid, // insure_medicaid
 						   person.insurance_medicare, // insure_medicare
 						   person.insurance_dual,     // insure_dual
-						   person.insurance_none);    // insure_none
+						   person.insurance_none,     // insure_none
+                                                   person.insurance_private_orig,
+                                                   person.insurance_none_orig);
 
 	    logger.debug ("        " + xbeta + " == " + person.modality_xbeta + "?");
 

@@ -65,16 +65,18 @@ public class ComplianceModel {
      *
      * Calculate the probability that a specific agent will be compliant with screening.
      * 
-     * @param person_sex_male   True if the agent is male.
-     * @param person_race_black True if the agents race is black.
-     * @param person_race_other True if the agents race is other.
-     * @param person_zipcode    The agents zipcode.
-     * @param person_stcotrbg   The state-county code for the agent.
-     * @param insure_private    True if the agent has private insurance.
-     * @param insure_medicaid   True if the agent has medicaid.
-     * @param insure_medicare   True if the agent has medicare.
-     * @param insure_dual       True if the agent has dual insurance.
-     * @param insure_none       True if the agent has no insurance.
+     * @param person_sex_male     True if the agent is male.
+     * @param person_race_black   True if the agents race is black.
+     * @param person_race_other   True if the agents race is other.
+     * @param person_zipcode      The agents zipcode.
+     * @param person_stcotrbg     The state-county code for the agent.
+     * @param insure_private      True if the agent has private insurance.
+     * @param insure_medicaid     True if the agent has medicaid.
+     * @param insure_medicare     True if the agent has medicare.
+     * @param insure_dual         True if the agent has dual insurance.
+     * @param insure_none         True if the agent has no insurance.
+     * @param insure_private_orig True if the agent originally had private insurance.
+     * @param insure_none_orig    True if the agent originally had no insurance.
      *
      * @return Returns a double - the probability the agent will be compliant with screening.   
      *
@@ -90,7 +92,9 @@ public class ComplianceModel {
 						    boolean insure_medicaid,
 						    boolean insure_medicare,
 						    boolean insure_dual,
-						    boolean insure_none)
+						    boolean insure_none,
+                                                    boolean insure_private_orig,
+                                                    boolean insure_none_orig)
     {
 	double result = defaultComplianceProbability;
 	
@@ -99,7 +103,9 @@ public class ComplianceModel {
 								    insure_medicaid,
 								    insure_medicare,
 								    insure_dual,
-								    insure_none);
+								    insure_none,
+                                                                    insure_private_orig,
+                                                                    insure_none_orig);
 
 	if (insuranceCategory != InsuranceCategory.UNINSURED) { // Return the default compliance probability for the uninsured.
 	    
@@ -197,6 +203,45 @@ public class ComplianceModel {
 	    logger.debug ("-------------------> " + result);
 	}
 	return result;
+    }
+
+    /**
+     * Determine the insurance category to use based on agent attributes.
+     * NOTE: If the agent used to have private insurance or no insurance and now has
+     * Medicare, we expect his or her future behavior to be similar to that of someone
+     * who has private insurance, at least with respect to compliance (SAC 2014/03/14).
+     * future 
+     * @param insure_private      True if the agent has private insurance.
+     * @param insure_medicaid     True if the agent has medicaid.
+     * @param insure_medicare     True if the agent has medicare.
+     * @param insure_none         True if the agent has no insurance.
+     * @param insure_private_orig True if the agent originally had private insurance.
+     * @param insure_none_-orig   True if the agent originally had no insurance.
+     * @return Returns the agent's insurance category.
+     */
+    private InsuranceCategory getInsuranceCategory (boolean insure_private,
+                                                    boolean insure_medicaid,
+                                                    boolean insure_medicare,
+                                                    boolean insure_dual,
+                                                    boolean insure_none,
+                                                    boolean insure_private_orig,
+                                                    boolean insure_none_orig)
+    {
+        InsuranceCategory result = InsuranceCategory.UNINSURED;
+        if (insure_private) {
+            result = InsuranceCategory.PRIVATE;
+        } else if (insure_dual) {
+            result = InsuranceCategory.DUAL;
+        } else if (insure_medicaid) {
+            result = InsuranceCategory.MEDICAID;
+        } else if (insure_medicare) {
+            if (insure_private_orig || insure_none_orig) { // See NOTE above
+                result = InsuranceCategory.PRIVATE;
+            } else {
+                result = InsuranceCategory.MEDICARE;
+            }
+        }
+        return result;
     }
 
     /**
