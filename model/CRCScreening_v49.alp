@@ -10502,7 +10502,9 @@ if (main.model_test_probability) {
 										this.insure_medicaid,
 										this.insure_medicare,
 										this.insure_dual,
-										this.insure_none);
+										this.insure_none,
+										this.insure_private_orig,
+                                        this.insure_none_orig);
   /*
   To resolve a structural issue with the modality model code, the uninsured probability of choosing colonoscopy screening is set in the model here.
   */
@@ -10900,7 +10902,9 @@ if (screen_state.isStateActive (Person.Diagnostic) && !routine_is_diagnostic) {
 													  this.insure_medicaid,
 													  this.insure_medicare,
 													  this.insure_dual,
-													  this.insure_none);
+													  this.insure_none,
+													  this.insure_private_orig,
+                                                      this.insure_none_orig);
       // Adjust probability based on the type of test. To annualize the probality produced by the statistical model
 	  if (!insure_none){
 		  compliance_prob =
