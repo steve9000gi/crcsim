@@ -133,7 +133,7 @@ class SynthPopAnnotationProcessor implements Processor {
     static final short MAR_MARRIED = 1;
   }
 
-  private enum InsuranceStatusEnum { NOINS, PRIVA, MEDICARE, MEDICAID, DUAL, UNKNOWN } // SAC
+  private enum InsuranceStatusEnum { NOINS, PRIVA, MEDICARE, MEDICAID, DUAL, UNKNOWN }
 				
 
   private void translateOutputLine (HashMap<String,String> record) {
@@ -224,7 +224,7 @@ class SynthPopAnnotationProcessor implements Processor {
     record.put ("MEDICAID", "0");
     record.put ("DUAL", "0");
 
-    InsuranceStatusEnum eInsStatus = InsuranceStatusEnum.UNKNOWN; // SAC
+    InsuranceStatusEnum eInsStatus = InsuranceStatusEnum.UNKNOWN;
 
 	try {
 	  Person person = Person.getPerson (Integer.parseInt (record.get ("people.age")),
@@ -253,26 +253,26 @@ class SynthPopAnnotationProcessor implements Processor {
 
       if (_insuranceStrategy.hasPrivateInsurance (status)) {
         record.put ("PRIVA", "1");
-        eInsStatus = InsuranceStatusEnum.PRIVA; // SAC
+        eInsStatus = InsuranceStatusEnum.PRIVA; 
       } else if (_insuranceStrategy.hasMedicareOnly (status)) {
         record.put ("MEDICARE", "1");
-        eInsStatus = InsuranceStatusEnum.MEDICARE; // SAC
+        eInsStatus = InsuranceStatusEnum.MEDICARE;
       } else if (_insuranceStrategy.hasMedicaidOnly (status)) {
         record.put ("MEDICAID", "1");
-        eInsStatus = InsuranceStatusEnum.MEDICAID; // SAC
+        eInsStatus = InsuranceStatusEnum.MEDICAID;
       } else if (_insuranceStrategy.hasDual (status)) {
         record.put ("DUAL", "1");
-        eInsStatus = InsuranceStatusEnum.DUAL; // SAC
+        eInsStatus = InsuranceStatusEnum.DUAL;
       } else if (_insuranceStrategy.hasNoInsurance (status)) {
         record.put ("NOINS", "1");
-        eInsStatus = InsuranceStatusEnum.NOINS; // SAC
+        eInsStatus = InsuranceStatusEnum.NOINS;
       }
 	} catch (NumberFormatException e) {
 	  e.printStackTrace ();
 	  throw new RuntimeException ("Error e");
 	}
 
-	addNewInsuranceStatusValues(eInsStatus, record); // SAC
+	addNewInsuranceStatusValues(eInsStatus, record);
 
 	/**
 	   RTI model docs: EDU	boolean	education level; true implies some college or higher
@@ -308,7 +308,7 @@ class SynthPopAnnotationProcessor implements Processor {
   //
   // Add 10 boolean values (represented by "1" or "0"), five for insurance status at age < 65 and
   // the other five for insurance status at age >= 65. This code has been modified from code that
-  // was previously in the AnyLogic model. SAC 2014/04/06
+  // was previously in the AnyLogic model.
   //
   // Algorithm:
   //  if age < 65:
@@ -344,7 +344,7 @@ class SynthPopAnnotationProcessor implements Processor {
   //
   //////////////////////////////////////////////////////////////////////////////////////////////////
   private void addNewInsuranceStatusValues(InsuranceStatusEnum eInsStatus,
-                       HashMap<String,String> record) { // SAC
+                       HashMap<String,String> record) {
 
     int age = Integer.parseInt(record.get("people.age"));
     int incomeCategory = Integer.parseInt(record.get("NEW_INCOME_CAT"));
@@ -352,16 +352,19 @@ class SynthPopAnnotationProcessor implements Processor {
     final int MID_INCOME = 2;
     final int HIGH_INCOME = 3;
 
-    record.put("insNoneLt65", "0");
-    record.put("insPrivaLt65", "0");
-    record.put("insMedicareLt65", "0");
-    record.put("insMedicaidLt65", "0");
-    record.put("insDualLt65", "0");
-    record.put("insNoneGte65", "0");
-    record.put("insPrivaGte65", "0");
-    record.put("insMedicareGte65", "0");
-    record.put("insMedicaidGte65", "0");
-    record.put("insDualGte65", "0");
+    final String T = "1";
+    final String F = "0";
+
+    record.put("insNoneLt65", F);
+    record.put("insPrivaLt65", F);
+    record.put("insMedicareLt65", F);
+    record.put("insMedicaidLt65", F);
+    record.put("insDualLt65", F);
+    record.put("insNoneGte65", F);
+    record.put("insPrivaGte65", F);
+    record.put("insMedicareGte65", F);
+    record.put("insMedicaidGte65", F);
+    record.put("insDualGte65", F);
 
     // Transition parameter for insurance at age 50 for those < 65:
     final double lt65LoIncomeNone2Dual = 1.0; // constant0
@@ -384,76 +387,76 @@ class SynthPopAnnotationProcessor implements Processor {
 
     // For Dual patients in 2007 data set (should sum to 1.0):
     // Not used:    double gte65_dual2none = 0.5;
-    final double GTE65_DUAL_WAS_DUAL = 0.333; // constant6
+    final double GTE65_DUAL_WAS_DUAL = 1.0 / 3.0; // constant6 (HACK SAC set to 1/3 to get 1/4)
     final double GTE65_DUAL_WAS_MAID = 0.25; // constant7
 
     if (age < 65) {
       if (eInsStatus == InsuranceStatusEnum.NOINS) {
-        record.put("insNoneLt65", "1");
+        record.put("insNoneLt65", T);
         if (incomeCategory == LOW_INCOME) {
           if (getRandom() < lt65LoIncomeNone2Dual) {
-            record.put("insDualGte65", "1");
+            record.put("insDualGte65", T);
           } else {
-             record.put("insMedicareGte65", "1");
+             record.put("insMedicareGte65", T);
           }
         }
       } else if (eInsStatus == InsuranceStatusEnum.PRIVA) {
-        record.put("insPrivaLt65", "1");
-        record.put("insMedicareGte65", "1");
+        record.put("insPrivaLt65", T);
+        record.put("insMedicareGte65", T);
       } else if (eInsStatus == InsuranceStatusEnum.MEDICARE) {
-        record.put("insMedicareLt65", "1");
-        record.put("insMedicareGte65", "1");
+        record.put("insMedicareLt65", T);
+        record.put("insMedicareGte65", T);
       } else if (eInsStatus == InsuranceStatusEnum.DUAL) {
-        record.put("insDualLt65", "1");
-        record.put("insDualGte65", "1");
+        record.put("insDualLt65", T);
+        record.put("insDualGte65", T);
       } else if (eInsStatus == InsuranceStatusEnum.MEDICAID) {
-        record.put("insMedicaidLt65", "1");
-        record.put("insDualGte65", "1");
+        record.put("insMedicaidLt65", T);
+        record.put("insDualGte65", T);
       }
-    } else { // age >= 65: we know what they are now,  and need to work out insurance < 65
+    } else { // age >= 65: we know what they are now and need to work out insurance < 65
       if (eInsStatus == InsuranceStatusEnum.NOINS) {
-        record.put("insNoneLt65", "1");
-        record.put("insNoneGte65", "1");
+        record.put("insNoneLt65", T);
+        record.put("insNoneGte65", T);
       } else if (eInsStatus == InsuranceStatusEnum.PRIVA) {
-        record.put("insPrivaLt65", "1");
-        record.put("insPrivaGte65", "1");
+        record.put("insPrivaLt65", T);
+        record.put("insPrivaGte65", T);
       } else if (eInsStatus == InsuranceStatusEnum.MEDICARE) {
-        record.put("insMedicareGte65", "1");
+        record.put("insMedicareGte65", T);
         if (incomeCategory == LOW_INCOME) {
           if (getRandom() < GTE65_LOW_INCOME_MCARE_WAS_MCARE) {
-            record.put("insMedicareLt65", "1");
+            record.put("insMedicareLt65", T);
           } else if (getRandom() < GTE65_LOW_INCOME_MCARE_WAS_NONE) {
-            record.put("insNoneLt65", "1");
+            record.put("insNoneLt65", T);
           } else {
-            record.put("insPrivaLt65", "1");
+            record.put("insPrivaLt65", T);
           }
         } else if (incomeCategory == MID_INCOME) {
           if (getRandom() < GTE65_MID_INCOME_MCARE_WAS_MCARE) {
-            record.put("insMedicareLt65", "1");
+            record.put("insMedicareLt65", T);
           } else if (getRandom() < GTE65_MID_INCOME_MCARE_WAS_NONE) {
-            record.put("insNoneLt65", "1");
+            record.put("insNoneLt65", T);
           } else {
-            record.put("insPrivaLt65", "1");
+            record.put("insPrivaLt65", T);
           }
         } else { // HIGH_INCOME
           if (getRandom() < GTE65_HIGH_INCOME_MCARE_WAS_MCARE) {
-            record.put("insMedicareLt65", "1");
+            record.put("insMedicareLt65", T);
           } else {
-            record.put("insPrivaLt65", "1");
+            record.put("insPrivaLt65", T);
           }
         } // HIGH_INCOME
       } else if (eInsStatus == InsuranceStatusEnum.DUAL) {
-        record.put("insDualGte65", "1");
+        record.put("insDualGte65", T);
         if (getRandom() < GTE65_DUAL_WAS_MAID) {
-          record.put("insMedicaidLt65", "1");
+          record.put("insMedicaidLt65", T);
         } else if (getRandom() < GTE65_DUAL_WAS_DUAL) {
-          record.put("insDualLt65", "1");
+          record.put("insDualLt65", T);
         } else {
-          record.put("insNoneLt65", "1");
+          record.put("insNoneLt65", T);
         }
       } else if (eInsStatus == InsuranceStatusEnum.MEDICAID) {
-        record.put("insMedicaidLt65", "1");
-        record.put("insMedicaidGte65", "1");
+        record.put("insMedicaidLt65", T);
+        record.put("insMedicaidGte65", T);
       }
     } // end age >= 65
   } // end addNewInsuranceStatusValues(...)
