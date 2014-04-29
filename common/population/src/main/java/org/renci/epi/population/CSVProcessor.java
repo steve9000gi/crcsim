@@ -316,6 +316,7 @@ class SynthPopAnnotationProcessor implements Processor {
   //      if low income then
   //        if random < constant0 then insDualGte65 (act like dual >= 65)
   //        else insMedicareGte65 (act like Medicare >= 65)
+  //      else insMedicareGte65 (act like Medicare >= 65)
   //    else if private, then insPrivaLt65 and insMedicareGte65 (act like Medicare >= 65)
   //    else if Medicare, then insMedicareLt65 and insMedicareGte65 (Medicare stays Medicare)
   //    else if dual, then insDualLt65 and insDualGte65 (dual stays dual)
@@ -399,6 +400,8 @@ class SynthPopAnnotationProcessor implements Processor {
           } else {
              record.put("insMedicareGte65", T);
           }
+        } else { // not LOW_INCOME
+          record.put("insMedicareGte65", T);
         }
       } else if (eInsStatus == InsuranceStatusEnum.PRIVA) {
         record.put("insPrivaLt65", T);
