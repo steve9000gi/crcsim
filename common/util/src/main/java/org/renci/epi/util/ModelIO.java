@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import org.apache.commons.logging.Log; 
 import org.apache.commons.logging.LogFactory;
 
+
 /**
  *
  * Standard utilities for IO from the model.
@@ -88,11 +89,23 @@ public class ModelIO {
     private BufferedWriter getModelOutputWriterInternal (String fileName, boolean append, boolean compress) 
 	throws IOException
     {
+
+/* DEBUG
+    Writer w = new BufferedWriter(new OutputStreamWriter(
+        new FileOutputStream("C:/dev/crcsim/getModelOutputWriterInternal.txt", true),  "UTF-8"));
+        w.write(Thread.currentThread().getName() + ": " + fileName + "\n");
+        w.flush();
+        w.close();
+*/
+
 	Writer writer = null;
 
 	try {
 	    File outputFile = new File (fileName);
 	    if (outputFile.exists ()) {
+                //System.out.println("! Deleting/replacing " + fileName + "; "
+                //    + Thread.currentThread().getName());
+                //Thread.dumpStack();
 		outputFile.delete ();
 	    }	    
 	    if (compress) {
@@ -113,11 +126,20 @@ public class ModelIO {
 	ensureOutputDir ();
 	BufferedWriter writer = null;
 	try {
-	    fileName = StringUtils.join (new String [] { _outputRoot, fileName }, File.separator);
+	    fileName = StringUtils.join (new String [] { _outputRoot, fileName }, "");
 	    logger.debug ("writing " + fileName);
+
+/* DEBUG
+    Writer w = new BufferedWriter(new OutputStreamWriter(
+        new FileOutputStream("C:/dev/crcsim/getModelOutputWriter.txt", true),  "UTF-8"));
+        w.write(Thread.currentThread().getName() + ": " + fileName + "\n");
+        w.flush();
+        w.close();
+*/
+
 	    writer = getModelOutputWriterInternal (fileName, !overwrite, compress);
+            /*
 	    if (overwrite) {
-		/*
 		String text = StringUtils.join (new String [] {
 			"description",
 			"person",
@@ -127,8 +149,8 @@ public class ModelIO {
 		    }, '\t');
 		writer.write (text);
 		writer.write ("\r\n");
-		*/
 	    }
+            */
 	} catch (IOException e) {
 	    throw new RuntimeException (e);
 	}
@@ -151,16 +173,36 @@ public class ModelIO {
     public synchronized void writePeople (Iterator people, String outputDir, String fileName) {
 	setOutputDir (outputDir);
 	BufferedWriter writer = null;
+
 	try {
+
+/* DEBUG
+            Writer w = new BufferedWriter(new OutputStreamWriter(
+            new FileOutputStream("C:/dev/crcsim/writePeople.txt", true),  "UTF-8"));
+            w.write(Thread.currentThread().getName() + ": " + outputDir + fileName + "\n");
+            w.flush();
+            w.close();
+*/
+
 	    writer = getModelOutputWriter (fileName, true, false);
 	    writePeople (people, writer);
-	} finally {
+	/* DEBUG 
+        } catch (IOException e) {
+            throw new RuntimeException (e);
+        */
+        } finally {
 	    IOUtils.closeQuietly (writer);
 	}
     }
 
     public void writePeople (Iterator people, BufferedWriter writer) {
+        //System.out.println("ModelIO.writePeople(" + people + ", " + writer+ ");");
 	String [] fieldNames = new String [] {
+            "person_idx",
+            "rep_idx",
+            "intervention",
+            "age",
+            "current_year",
 	    "cancer_free_years",
 	    "cost_diagnostic",
 	    "death_age",
