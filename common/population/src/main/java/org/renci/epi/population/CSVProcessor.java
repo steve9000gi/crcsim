@@ -178,7 +178,7 @@ class SynthPopAnnotationProcessor implements Processor {
 	}
 
 	//record.put ("INCOME", record.get ("hh_income"));
-    record.put ("NEW_INCOME", record.get ("households.hh_income"));
+        record.put ("NEW_INCOME", record.get ("households.hh_income"));
 
 	/** alone status */
 	String householdSizeString = record.get ("households.hh_size");
@@ -203,9 +203,9 @@ class SynthPopAnnotationProcessor implements Processor {
 	/** Race
 	  Pums Data Dict: 1 .White alone, 2 .Black or African American alone
 	*/
-    int pumsRaceCode = Integer.parseInt (record.get ("pumsp.rac1p"));
-    record.put ("BLACK", pumsRaceCode == 2 ? "1" : "0");
-    record.put ("OTHER", pumsRaceCode != 1 && pumsRaceCode != 2 ? "1" : "0");
+        int pumsRaceCode = Integer.parseInt (record.get ("pumsp.rac1p"));
+        record.put ("BLACK", pumsRaceCode == 2 ? "1" : "0");
+        record.put ("OTHER", pumsRaceCode != 1 && pumsRaceCode != 2 ? "1" : "0");
 
 	/**
 	   PUMS Data Dict: 01 .Not Spanish/Hispanic/Latino, 02 .Mexican, 03 .Puerto Rican
@@ -220,11 +220,11 @@ class SynthPopAnnotationProcessor implements Processor {
 	 */
 	record.put ("NOINS", "0");
 	record.put ("PRIVA", "0");
-    record.put ("MEDICARE", "0");
-    record.put ("MEDICAID", "0");
-    record.put ("DUAL", "0");
-
-    InsuranceStatusEnum eInsStatus = InsuranceStatusEnum.UNKNOWN;
+        record.put ("MEDICARE", "0");
+        record.put ("MEDICAID", "0");
+        record.put ("DUAL", "0");
+  
+        InsuranceStatusEnum eInsStatus = InsuranceStatusEnum.UNKNOWN;
 
 	try {
 	  Person person = Person.getPerson (Integer.parseInt (record.get ("people.age")),
