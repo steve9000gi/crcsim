@@ -43,12 +43,12 @@ set -e
 ###################################################################
 
 configure_system () {    
-    APP_HOME=/cygdrive/c/scox/dev/  # blueridge largemem
-    APP_HOME=/cygdrive/c/dev        # x301
-    APP_HOME=~/dev/                 # scox.europa.renci.org
+    #APP_HOME=/cygdrive/c/scox/dev/  # blueridge largemem
+    APP_HOME=/cygdrive/c/dev        # x301 and STEVE-W510
+    #APP_HOME=~/dev/                 # scox.europa.renci.org
 
     DATA_HOME=$APP_HOME/var/crcsim
-    synth_data_home=$APP_HOME/var/crcsim/rti/syntheticpopulation/
+    synth_data_home=$APP_HOME/var/crcsim/rti/syntheticpopulation
 
     #DATABASE=$(cygpath -w $APP_HOME/var/crcsim/generated/population.db)
     DATABASE=$APP_HOME/var/crcsim/generated/population.db
@@ -57,7 +57,7 @@ configure_system () {
 2005_2009_ver1_37_synth_people.txt 
 2005_2009_ver1_37_synth_households.txt 
 2005_2009_ver1_37_pums_p.txt
-synth_hh_2005_2009_v1_NC_zipcode.txt"
+synth_hh_2005_2009_v1b_NC_zipcode.txt"
     unset subset
     unset tables
     unset cygwin    
@@ -262,7 +262,7 @@ main () {
 		    else
 			for age in $(seq $MIN_AGE $MAX_AGE); do
                             echo exporting cohort $age...
-			    export_data_by_age $age > export.$age
+			    export_data_by_age $age > c:/dev/var/crcsim/generated/exports/export.$age
 			done
 		    fi
 		    ;;

@@ -1,0 +1,6 @@
+#Senario 0000: 10% baseline secular trend
+secular_trend_active=true
+secular_trend_years=1900,2002,2004,2006,2008,2010,2012,2200
+secular_trend_values=.10,.10,.155,.181,.22,.235,.24,.24
+
+

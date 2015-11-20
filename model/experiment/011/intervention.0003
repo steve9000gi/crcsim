@@ -1,0 +1,5 @@
+#Senario 0001: MAILED REMINDER with 10% SECULAR TREND
+secular_trend_active=true
+intervene_medicaid_mailer=true
+intervene_mass_media=false
+intervene_free_screenings=false

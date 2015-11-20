@@ -1,0 +1,5 @@
+#Senario 0004: MASS MEDIA with 10% SECULAR TREND
+secular_trend_active=true
+intervene_medicaid_mailer=false
+intervene_mass_media=true
+intervene_free_screenings=false

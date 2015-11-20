@@ -1,0 +1,6 @@
+#Senario 0002: FREE SCREEN with 10% SECULAR TREND
+secular_trend_active=true
+intervene_medicaid_mailer=false
+intervene_mass_media=false
+intervene_free_screenings=true
+prob_colon_uninsured=0.6
