@@ -44,7 +44,7 @@ set -e
 
 configure_system () {    
     #APP_HOME=/cygdrive/c/scox/dev/  # blueridge largemem
-    APP_HOME=/cygdrive/c/dev        # x301 and STEVE-W510
+    APP_HOME=/cygdrive/c/dev         # x301 largemem-0-1 and STEVE-W510
     #APP_HOME=~/dev/                 # scox.europa.renci.org
 
     DATA_HOME=$APP_HOME/var/crcsim
@@ -262,7 +262,7 @@ main () {
 		    else
 			for age in $(seq $MIN_AGE $MAX_AGE); do
                             echo exporting cohort $age...
-			    export_data_by_age $age > c:/dev/var/crcsim/generated/exports/export.$age
+			    export_data_by_age $age > $APP_HOME/var/crcsim/generated/exports/export.$age
 			done
 		    fi
 		    ;;
