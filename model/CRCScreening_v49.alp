@@ -4,7 +4,7 @@
 	         AnyLogic Project File 
 *************************************************	         
 -->
-<AnyLogicWorkspace WorkspaceVersion="1.9" AnyLogicVersion="6.9.0.201310021509" AlpVersion="6.6.0">
+<AnyLogicWorkspace WorkspaceVersion="1.9" AnyLogicVersion="6.9.0.201212241532" AlpVersion="6.6.0">
 <Model>
 	<Id>1328041345188</Id>
 	<Name><![CDATA[CRCScreening_v49]]></Name>
@@ -12571,8 +12571,7 @@ if (isStart){countScreens = 0;}
 int countScreen= 0;
 if ((isActive) && (isUninsured) && (countScreen < numFreeScreens)){
 	if (testNameString.equals("Colonoscopy")){
-  		//System.out.println("DO I Get To here");
-  		countScreen++;
+   		countScreen++;
   		compliance_prob = 1;
   		//System.out.println("Number of Free Colonoscopies: " + numFreeScreen);
   		//System.out.println("New Compliance Prob: "+ compliance_prob);
@@ -16152,12 +16151,12 @@ for (int i=0; i<people.size(); i++) {
   		new org.renci.epi.util.DelimitedFileImporter (fileName,
   													  "\t",
   													  populationSize);
-	int populationSizeActual = 0;
+  int populationSizeActual = 0;
   Iterator peopleIter = people.iterator();
   while (in.hasMoreRows()) {
     in.nextRow();
     Person p = (Person)peopleIter.next();
-    p.person_idx = populationSizeActual + 1; // This value is increment in each itteration of the While-loop
+    p.person_idx = populationSizeActual + 1; // This value is incremented in each iteration of the while-loop
     p.sex_male = in.getBoolean("SEXC");
     p.educ_college = in.getBoolean("EDU");
     p.income_gt_20k = in.getBoolean("INCOME");
@@ -16205,10 +16204,11 @@ for (int i=0; i<people.size(); i++) {
 	}
   }
 
- // System.out.println ("      PopulationSize: " + populationSize);
- // System.out.println ("PopulationSizeActual: " + populationSizeActual);
+ //System.out.println ("      PopulationSize: " + populationSize);
+ //System.out.println ("PopulationSizeActual: " + populationSizeActual);
 
 } catch (Exception e) {
+    System.out.println("!!!!!!!!!!!Population.input_population(): exception: " + e.getMessage() + "; fileName: " + get_Main().infile_population_name);
 	e.printStackTrace ();
     error(e.getMessage());
     throw new RuntimeException (e);
@@ -16930,7 +16930,7 @@ Main main = get_Main();
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[Main main = get_Main(); 
-if (people.get(1).get_year_from_age() == 2023){
+if (people.get(0).get_year_from_age() == 2023){ // Was get(1) SAC
 	for (Person p: people){
 	  String FIPS = p.stcotrbg.substring(2,5);
 	  Integer count_utd = county_count_utd.get(FIPS);
@@ -24606,7 +24606,7 @@ static int outcomesIndex = 0;
 //private String inputDirectory = "C:\\Users\\mayorga_anylogic\\Documents\\GitHub\\crcsim\\pops";
 //private String outputDirectory = "C:\\Users\\mayorga_anylogic\\Documents\\GitHub\\crcsim\\model\\out";
 
-private boolean debugMode = true; // Denotes if only use part of population files.
+private boolean debugMode = false; // Denotes if only use part of population files.
 
 // For small scale runs on RENCI Machine
 //private String inputDirectory = "C:\\Users\\dacornej\\Documents\\pops";
@@ -24636,10 +24636,10 @@ private boolean debugMode = true; // Denotes if only use part of population file
 //private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\smallpops";
 //private String outputDirectory = "\\\\ad.renci.org\\projects\\SystemsScience_Windows\\smallout";
 
-// On stevec@STEVE-W510:
-private String inputDirectory  = "C:\\dev\\var\\crcsim\\model\\cleanpops-2014-02-05-1203-no89or90";
-//private String inputDirectory  = "C:\\dev\\var\\crcsim\\model\\pops60";
-private String outputDirectory = "C:\\dev\\var\\crcsim\\model\\out";
+/// On largemem-0-1 <= 2015/12/23:
+private String inputDirectory  = "C:\\dev\\var\\crcsim\\model\\cleanpops";
+//private String outputDirectory = "C:\\dev\\var\\crcsim\\model\\out";
+private String outputDirectory = "\\\\ad.renci.org\\Shared\\projects\\SystemsScience\\out-2015-12-30";
 
 /**
  * Change this to select a different experment.
@@ -24649,7 +24649,7 @@ private String outputDirectory = "C:\\dev\\var\\crcsim\\model\\out";
 //private String experimentId = "002";
 //private String experimentId = "003";
 //private String experimentId = "005";
-//private String experimentId = "006";//just tests the distance file
+//private String experimentId = "006"; //just tests the distance file
 //private String experimentId = "007"; // all interventions with end year of testing program changed
 //private String experimentId = "008"; // two secular trend intervention,mailed reminder,mass media, all on, NO endoscopy expainsion
 //private String experimentId = "009"; // 10% secular trend is baseline, also 5% trend and no trend interventions,,mailed reminder(w. 10% trend),mass media(w. 10% trend), all on(w. 10% trend), NO endoscopy expainsion
@@ -24915,13 +24915,13 @@ private String getInputFileConfiguration (File input) {
 		buffer.append ("death_rate_delay=").append (cohort).append ("\n");
 	}
 	int numLines = Main.modelIO.countFileLines (input);
-	final int MAX_LINES = 101; // Add one extra for headers
+	final int MAX_LINES = 100;
 	if (debugMode) {
 		if (numLines > MAX_LINES) {
 		    numLines = MAX_LINES;
 		}		
 	}
-	buffer.append ("population_size=").append (numLines).append ("\n");
+	buffer.append ("population_size=").append (numLines - 1).append ("\n"); // Subtract 1 for headers TEMP DEBUG SAC
 	buffer.append ("infile_population_name=").append (input.getPath ()).append ("\n");
 	return buffer.toString (); //value;
 }
