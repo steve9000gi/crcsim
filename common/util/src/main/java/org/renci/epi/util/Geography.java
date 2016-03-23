@@ -26,6 +26,8 @@ public class Geography {
     private Hashtable<String, CountyIntercepts> county =
 	new Hashtable<String, CountyIntercepts> ();
 
+    private static int badZipCount = 0; // SAC
+
     private static final String DATA = "data";
     public static final double UNKNOWN_DOUBLE = -Double.MAX_VALUE;
 
@@ -148,7 +150,7 @@ public class Geography {
     public double getDistanceToNearestEndoscopyFacilityByZipCode (String zipCode) {
 	Double value = zipcode.get (zipCode);
 	if (value == null) {
-	    throw new RuntimeException ("No endoscopy facility distance known for zipcode: " + zipCode);
+	    throw new RuntimeException ("No endoscopy facility distance found for zipcode: " + zipCode + "; badZipCount: " + (++badZipCount));
 	}
 	return value.doubleValue ();
     }

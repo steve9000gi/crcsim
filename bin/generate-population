@@ -48,16 +48,16 @@ configure_system () {
     #APP_HOME=~/dev/                 # scox.europa.renci.org
 
     DATA_HOME=$APP_HOME/var/crcsim
-    synth_data_home=$APP_HOME/var/crcsim/rti/syntheticpopulation
+    synth_data_home=$APP_HOME/var/crcsim/rti/syntheticpopulation2010 # SAC
 
     #DATABASE=$(cygpath -w $APP_HOME/var/crcsim/generated/population.db)
     DATABASE=$APP_HOME/var/crcsim/generated/population.db
 
     input_files="
-2005_2009_ver1_37_synth_people.txt 
-2005_2009_ver1_37_synth_households.txt 
-2005_2009_ver1_37_pums_p.txt
-synth_hh_2005_2009_v1b_NC_zipcode.txt"
+2010_ver1_37_synth_people.txt 
+2010_ver1_37_pums_p.txt
+2010_ver1_37_clean_synth_zips_households.txt"
+#2010_ver1_37_synth_zips_households.txt"
     unset subset
     unset tables
     unset cygwin    
@@ -91,6 +91,8 @@ create_table () {
     local input=$1
     local table=$2
     fields="$(get_fields $input)"
+    # echo "!!! create_table; input = " $input "; table = " $table # SAC
+    # echo "fields: " $fields # SAC
     sql="create table $table ($fields);"
     execute_sql "$sql"
 }
@@ -163,7 +165,7 @@ export_data_by_age () {
     local AGE=$1
     echo "people.p_id|people.sex|people.race|households.hh_income|people.age|households.hh_size|households.latitude|households.longitude|zipcode.zipcode|households.stcotrbg|pumsp.mar|pumsp.hisp|pumsp.schl|pumsp.semp|pumsp.rac1p"
     execute_sql "
-  select people.p_id,
+  select people.sp_id,
          people.sex,
          people.race,
          households.hh_income,
@@ -171,7 +173,7 @@ export_data_by_age () {
          households.hh_size,
          households.latitude,
          households.longitude,
-         zipcode.zipcode,
+         households.zip,
          households.stcotrbg,
          pumsp.mar,
          pumsp.hisp,
@@ -180,14 +182,11 @@ export_data_by_age () {
          pumsp.rac1p
   from people,
        households,
-       pumsp,
-       zipcode
+       pumsp
   where people.age      == '${AGE}'
-    and zipcode.hh_id   == households.hh_id
-    and people.hh_id    == zipcode.hh_id
-    and people.hh_id    == households.hh_id
+    and people.sp_hh_id == households.sp_id
     and people.serialno == pumsp.serialno
-    and people.pernum   == pumsp.sporder;
+    and people.sporder  == pumsp.sporder;
 " 
 }
 
