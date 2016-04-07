@@ -204,8 +204,9 @@ class SynthPopAnnotationProcessor implements Processor {
 	  Pums Data Dict: 1 .White alone, 2 .Black or African American alone
 	*/
         int pumsRaceCode = Integer.parseInt (record.get ("pumsp.rac1p"));
-        record.put ("BLACK", pumsRaceCode == 2 ? "1" : "0");
-        record.put ("OTHER", pumsRaceCode != 1 && pumsRaceCode != 2 ? "1" : "0");
+        record.put ("BLACK", pumsRaceCode == PUMS.RAC1P_BLACK ? "1" : "0");
+        record.put ("OTHER",
+            pumsRaceCode != PUMS.RAC1P_WHITE && pumsRaceCode != PUMS.RAC1P_BLACK ? "1" : "0");
 
 	/**
 	   PUMS Data Dict: 01 .Not Spanish/Hispanic/Latino, 02 .Mexican, 03 .Puerto Rican
@@ -235,8 +236,11 @@ class SynthPopAnnotationProcessor implements Processor {
 					    Integer.parseInt (record.get ("people.sex")));
 	  InsuranceStatus status = _insuranceStrategy.getInsuranceStatus (person);
 
-       // person.getHouseholdIncomeCat () must be called *after* Person.getPerson (...):
+       // person.getHouseholdIncomeCat () and getHouseholdSizeCat () must be called *after*
+       // person.getPerson (...):
        record.put ("NEW_INCOME_CAT", Integer.toString (person.getHouseholdIncomeCat ()));
+       record.put ("householdSizeCat", Integer.toString (person.getHouseholdSizeCat ())); // New 2016/04/05 SAC
+       record.put ("householdSize", record.get ("households.hh_size")); // New 2016/04/05 SAC
 
 /* debug
     record.put ("pumsp_rac1p", record.get ("pumsp.rac1p")); // one more added 2013/01/17
