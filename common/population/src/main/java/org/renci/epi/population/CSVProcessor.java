@@ -178,7 +178,26 @@ class SynthPopAnnotationProcessor implements Processor {
 	}
 
 	//record.put ("INCOME", record.get ("hh_income"));
-        record.put ("NEW_INCOME", record.get ("households.hh_income"));
+        String incomeAsStr = record.get ("households.hh_income");
+        int income = Integer.parseInt (incomeAsStr);
+        record.put ("NEW_INCOME", incomeAsStr);
+
+        // Need five categories for householdIncomeCat_NEW (2016/04/29 SAC):
+        String incomeCatNew;
+        if (income < 15000) {
+          incomeCatNew = "1";
+        } else if (income < 25000) {
+          incomeCatNew = "2";
+        } else if (income < 35000) {
+          incomeCatNew = "3";
+        } else if (income < 50000) {
+          incomeCatNew = "4";
+        } else {
+          incomeCatNew = "5";
+        }
+    
+        record.put("householdIncomeCat_NEW", incomeCatNew);
+
 
 	/** alone status */
 	String householdSizeString = record.get ("households.hh_size");
