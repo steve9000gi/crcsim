@@ -49,7 +49,9 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
         "insNoneLt65", "insPrivaLt65", "insMedicareLt65", "insMedicaidLt65", "insDualLt65",
         "insNoneGte65", "insPrivaGte65", "insMedicareGte65", "insMedicaidGte65", "insDualGte65",
         "householdSize", "householdSizeCat", // These two added 2016/04/05 SAC
-        "householdIncomeCat_NEW" // added 2016/04/29 SAC
+        "householdIncomeCat_NEW", // added 2016/04/29 SAC
+        "INS_NEW_2014" // added 2016/05/01 SAC
+        ,"INS_NEW_2014_PROB", "Det" // TEMP debug
 // debug , "insStatus", "insRandom","pumsp_rac1p", "people_race", "households_hh_income",
 // debug (cont.) "people_age", "households_hh_size", "personKey", "outBlack", "outINCOME"
     };
