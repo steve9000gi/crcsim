@@ -494,19 +494,19 @@ class SynthPopAnnotationProcessor implements Processor {
 
   ///addINS_NEW_2014////////////////////////////////////////////////////////////////////////////////
   //
-  // Maria Mayorga's instructions: [C]reate a new insurance variable for the population input file
-  // that is read in by Anylogic.  The variable name is “INS_NEW_2014”. According to the attributes
-  // listed in the “Pred_New_Ins_2014.csv”(sex, ageCat,HISP, householdIncomeCat_New, MARRIED –from
-  // person.getPerson) use the “Increase” number to assign a binary variable “INS_NEW_2014” as
-  // follows: Draw a random number from 0 to 1, say the result is “r”.  If r<Increase then 1 else 0.
-  // If there are individuals for which the attributes are not listed, set “Increase” to 0.
+  // Maria Mayorga's instructions (edited for context): Create a new insurance variable for the
+  // population input file that is read in by AnyLogic. “INS_NEW_2014”. According to the attributes
+  // listed in “Pred_New_Ins_2014.csv”(sex, ageCat,HISP, householdIncomeCat_New, MARRIED –- from
+  // person.getPerson) use the “increase” number to assign a binary variable “INS_NEW_2014” as
+  // follows: Draw a random number from 0 to 1, say the result is “r”.  If r < increase then 1 else
+  // 0. If there are individuals for which the attributes are not listed, set “increase” to 0.
   // 
   // For example for a person with sex=1, ageCat=3, raceCat=1, HISP=0, MARRIED=1, set the increase
-  // to 0.37, draw a random number “r” if r<.37 set INS_NEW_2014=1, else 0.
+  // to 0.37, draw a random number “r” if r < 0.37 set INS_NEW_2014 = 1, else 0.
   //
-  // Some notes.  For some of the attributes multiples results use the same incrase level.  For
-  // example, for ageCat= 2 or 3 we use the same row, for raceCat=1,2,3 IF HISP=1 then we use the
-  // same row.
+  // Some notes.  For some of the attributes multiple results use the same increase level.  For
+  // example, for ageCat = 2 or 3 we use the same row, for raceCat = 1,2,3 if HISP = 1 then we use
+  // the same row.
   //
   // NOTE (SAC 2016/05/01): This function must be called AFTER the various values used within
   // ("sex", etc.) have been put in the record parameter.
@@ -524,8 +524,8 @@ class SynthPopAnnotationProcessor implements Processor {
     
     if (sex == 1) { 
       if (ageCat == 2 || ageCat == 3) {
-        if (raceCat == 1) {
-          if (HISP == 0) {
+        if (HISP == 0) {
+          if (raceCat == 1) {
             if (householdIncomeCat_NEW == 1) {
               increase = (MARRIED == 1) ? 0.37 : 0.05;
             } else if (householdIncomeCat_NEW == 2) {
@@ -537,9 +537,7 @@ class SynthPopAnnotationProcessor implements Processor {
             } else if (householdIncomeCat_NEW == 5) {
               increase = (MARRIED == 1) ? 0.01 : 0.14;
             }
-          } // HISP 0
-        } else if (raceCat == 2) {
-          if (HISP == 0) {
+          } else if (raceCat == 2) {
             if (householdIncomeCat_NEW == 1) {
               increase = (MARRIED == 1) ? 0.41 : 0.11;
             } else if (householdIncomeCat_NEW == 2) {
@@ -551,226 +549,198 @@ class SynthPopAnnotationProcessor implements Processor {
             } else if (householdIncomeCat_NEW == 5) {
               increase = (MARRIED == 1) ? 0.0 : 0.24;
             }
-          } // HISP 0
-        } else if (raceCat == 3) {
-          if (HISP == 0) {
+          } else if (raceCat == 3) {
             // increase = 0.0; // increase is already 0
-          }
-        } // raceCat 3
-
-        if (HISP == 1) {
-	  if (householdIncomeCat_NEW == 1) {
-	    increase = (MARRIED == 1) ? 0.1 : 0.0;
-	  } else if (householdIncomeCat_NEW == 2) {
-	    increase = (MARRIED == 1) ? 0.02 : 0.04;
-	  } else if (householdIncomeCat_NEW == 3) {
-	    increase = (MARRIED == 1) ? 0.2 : 0.07;
-	  } else if (householdIncomeCat_NEW == 4 || householdIncomeCat_NEW == 5) {
-	    // increase = 0.0;
+          } // raceCat 3
+        } else if (HISP == 1) {
+	    if (householdIncomeCat_NEW == 1) {
+	      increase = (MARRIED == 1) ? 0.1 : 0.0;
+	    } else if (householdIncomeCat_NEW == 2) {
+	      increase = (MARRIED == 1) ? 0.02 : 0.04;
+	    } else if (householdIncomeCat_NEW == 3) {
+	      increase = (MARRIED == 1) ? 0.2 : 0.07;
+	    } else if (householdIncomeCat_NEW == 4 || householdIncomeCat_NEW == 5) {
+	      // increase = 0.0;
+	    }
 	  }
-        }
-      } else if (ageCat == 4) {
-        if (raceCat == 1) {
+	} else if (ageCat == 4) {
           if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.52 : 0.21;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.4 : 0.44;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.63 : 0.5;
-            } else if (householdIncomeCat_NEW == 4) {
-              increase = (MARRIED == 1) ? 0.27 : 0.13;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.27 : 0.36;
-            }
-          } // HISP 0
-        } else if (raceCat == 2) {
-          if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.56 : 0.27;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.45 : 0.48;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.67 : 0.54;
-            } else if (householdIncomeCat_NEW == 4) {
-              increase = (MARRIED == 1) ? 0.36 : 0.23;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.37 : 0.44;
-            }
-          } // HISP 0
-        } else if (raceCat == 3) {
-          if (HISP == 0) {
-            // increase = 0.0; // increase is already 0
-          } 
-        } // raceCat 3
-         
-	if (HISP == 1) {
-	  if (householdIncomeCat_NEW == 1) {
-	    increase = (MARRIED == 1) ? 0.2 : 0.01;
-	  } else if (householdIncomeCat_NEW == 2) {
-	    increase = (MARRIED == 1) ? 0.11 : 0.14;
-	  } else if (householdIncomeCat_NEW == 3) {
-	    increase = (MARRIED == 1) ? 0.36 : 0.2;
-	  } else if (householdIncomeCat_NEW == 4) { 
-	    // increase = 0.0;
-	  } else if (householdIncomeCat_NEW == 5) {
-	    increase = (MARRIED == 1) ? 0.0 : 0.07;
+            if (raceCat == 1) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.52 : 0.21;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.4 : 0.44;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.63 : 0.5;
+	      } else if (householdIncomeCat_NEW == 4) {
+		increase = (MARRIED == 1) ? 0.27 : 0.13;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.27 : 0.36;
+	      }
+	    } else if (raceCat == 2) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.56 : 0.27;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.45 : 0.48;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.67 : 0.54;
+	      } else if (householdIncomeCat_NEW == 4) {
+		increase = (MARRIED == 1) ? 0.36 : 0.23;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.37 : 0.44;
+	      }
+            } else if (raceCat == 3) {
+	      // increase = 0.0; // increase is already 0
+	    } 
+	  } else if (HISP == 1) {
+	    if (householdIncomeCat_NEW == 1) {
+	      increase = (MARRIED == 1) ? 0.2 : 0.01;
+	    } else if (householdIncomeCat_NEW == 2) {
+	      increase = (MARRIED == 1) ? 0.11 : 0.14;
+	    } else if (householdIncomeCat_NEW == 3) {
+	      increase = (MARRIED == 1) ? 0.36 : 0.2;
+	    } else if (householdIncomeCat_NEW == 4) { 
+	      // increase = 0.0;
+	    } else if (householdIncomeCat_NEW == 5) {
+	      increase = (MARRIED == 1) ? 0.0 : 0.07;
+	    }
 	  }
-	}
-      } else if (ageCat == 5) {
-        if (raceCat == 1) {
+	} else if (ageCat == 5) {
           if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.46 : 0.04;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.26 : 0.32;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.53 : 0.36;
-            } else if (householdIncomeCat_NEW == 4) {
-              increase = (MARRIED == 1) ? 0.0 : 0.0;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.0 : 0.01;
-            }
-          } // HISP 0
-        } else if (raceCat == 2) {
-          if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.51 : 0.13;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.33 : 0.38;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.58 : 0.43;
-            } else if (householdIncomeCat_NEW == 4) {
-              increase = (MARRIED == 1) ? 0.09 : 0.0;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.09 : 0.21;
-            }
-          } // HISP 0
-        } else if (raceCat == 3) {
-          if (HISP == 0) {
-            // increase = 0.0; // increase is already 0
-          } 
-        } 
-
-        if (HISP == 1) {
-	  if (householdIncomeCat_NEW == 1) {
-	    increase = (MARRIED == 1) ? 0.16 : 0.0;
-	  } else if (householdIncomeCat_NEW == 2) {
-	    increase = (MARRIED == 1) ? 0.0 : 0.05;
-	  } else if (householdIncomeCat_NEW == 3) {
-	    increase = (MARRIED == 1) ? 0.26 : 0.08;
-	  } else if (householdIncomeCat_NEW == 4) {
-	    // increase = 0.0;
-	  } else if (householdIncomeCat_NEW == 5) {
-	    // increase = (MARRIED == 1) ? 0.0 : 0.0;
-	  }
-	} // HISP 1
-      } // ageCat 5
-    } else if (sex == 2) {
-      if (ageCat == 2 || ageCat == 3) {
-        if (raceCat == 1) {
-          if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.21 : 0.03;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.05 : 0.27;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.32 : 0.32;
-            } else if (householdIncomeCat_NEW == 4) {
-              // increase = (MARRIED == 1) ? 0.0 : 0.0;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.0 : 0.08;
-            }
-          } // HISP 0
-        } else if (raceCat == 2) {
-          if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.25 : 0.04;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.06 : 0.3;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.35 : 0.35;
-            } else if (householdIncomeCat_NEW == 4) {
-              // increase = (MARRIED == 1) ? 0.0 : 0.0;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.0 : 0.1;
-            }
-          } // HISP 0
-        } else if (raceCat == 3) {
-          if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.27 : 0.1;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.11 : 0.34;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.39 : 0.39;
-            } else if (householdIncomeCat_NEW == 4) {
-              // increase = (MARRIED == 1) ? 0.0 : 0.0;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.0 : 0.18;
-            }
-          }
-        } // raceCat 3
-
-        if (HISP == 1) {
-	  if (householdIncomeCat_NEW == 1) {
-	    increase = (MARRIED == 1) ? 0.05 : 0.0;
-	  } else if (householdIncomeCat_NEW == 2) {
-	    increase = (MARRIED == 1) ? 0.0 : 0.08;
-	  } else if (householdIncomeCat_NEW == 3) {
-	    increase = (MARRIED == 1) ? 0.12 : 0.13;
-	  } else if (householdIncomeCat_NEW == 4) {
-	    // increase = (MARRIED == 1) ? 0.0 : 0.0;
-	  } else if (householdIncomeCat_NEW == 5) {
-	    increase = (MARRIED == 1) ? 0.0 : 0.02;
-	  }
-        }
-      } else if (ageCat == 4) {
-        if (raceCat == 1) {
-          if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.36 : 0.2;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.21 : 0.44;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.48 : 0.49;
-            } else if (householdIncomeCat_NEW == 4) {
-              increase = (MARRIED == 1) ? 0.0 : 0.09;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.0 : 0.32;
-            }
-          } // HISP 0
-        } else if (raceCat == 2) {
-          if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.4 : 0.23;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.24 : 0.47;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.51 : 0.51;
-            } else if (householdIncomeCat_NEW == 4) {
-              increase = (MARRIED == 1) ? 0.0 : 0.1;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.0 : 0.34;
-            }
-          } // HISP 0
-        } else if (raceCat == 3) {
-          if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.43 : 0.28;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.29 : 0.5;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.55 : 0.55;
-            } else if (householdIncomeCat_NEW == 4) {
-              increase = (MARRIED == 1) ? 0.09 : 0.18;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.09 : 0.43;
-            }
-          } // HISP 0
-        } // raceCat 3
-
-        if (HISP == 1) {
+            if (raceCat == 1) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.46 : 0.04;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.26 : 0.32;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.53 : 0.36;
+	      } else if (householdIncomeCat_NEW == 4) {
+		increase = (MARRIED == 1) ? 0.0 : 0.0;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.0 : 0.01;
+	      }
+	    } else if (raceCat == 2) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.51 : 0.13;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.33 : 0.38;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.58 : 0.43;
+	      } else if (householdIncomeCat_NEW == 4) {
+		increase = (MARRIED == 1) ? 0.09 : 0.0;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.09 : 0.21;
+	      }
+	    } else if (raceCat == 3) {
+	      // increase = 0.0; // increase is already 0
+	    } 
+	  } else if (HISP == 1) {
+	    if (householdIncomeCat_NEW == 1) {
+	      increase = (MARRIED == 1) ? 0.16 : 0.0;
+	    } else if (householdIncomeCat_NEW == 2) {
+	      increase = (MARRIED == 1) ? 0.0 : 0.05;
+	    } else if (householdIncomeCat_NEW == 3) {
+	      increase = (MARRIED == 1) ? 0.26 : 0.08;
+	    } else if (householdIncomeCat_NEW == 4) {
+	      // increase = 0.0;
+	    } else if (householdIncomeCat_NEW == 5) {
+	      // increase = (MARRIED == 1) ? 0.0 : 0.0;
+	    }
+	  } // HISP 1
+	} // ageCat 5
+      } else if (sex == 2) {
+	if (ageCat == 2 || ageCat == 3) {
+	  if (HISP == 0) {
+	    if (raceCat == 1) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.21 : 0.03;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.05 : 0.27;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.32 : 0.32;
+	      } else if (householdIncomeCat_NEW == 4) {
+		// increase = (MARRIED == 1) ? 0.0 : 0.0;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.0 : 0.08;
+	      }
+	    } else if (raceCat == 2) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.25 : 0.04;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.06 : 0.3;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.35 : 0.35;
+	      } else if (householdIncomeCat_NEW == 4) {
+		// increase = (MARRIED == 1) ? 0.0 : 0.0;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.0 : 0.1;
+	      }
+	    } else if (raceCat == 3) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.27 : 0.1;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.11 : 0.34;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.39 : 0.39;
+	      } else if (householdIncomeCat_NEW == 4) {
+		// increase = (MARRIED == 1) ? 0.0 : 0.0;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.0 : 0.18;
+	      }
+	    }
+          } else if (HISP == 1) {
+	    if (householdIncomeCat_NEW == 1) {
+	      increase = (MARRIED == 1) ? 0.05 : 0.0;
+	    } else if (householdIncomeCat_NEW == 2) {
+	      increase = (MARRIED == 1) ? 0.0 : 0.08;
+	    } else if (householdIncomeCat_NEW == 3) {
+	      increase = (MARRIED == 1) ? 0.12 : 0.13;
+	    } else if (householdIncomeCat_NEW == 4) {
+	      // increase = (MARRIED == 1) ? 0.0 : 0.0;
+	    } else if (householdIncomeCat_NEW == 5) {
+	      increase = (MARRIED == 1) ? 0.0 : 0.02;
+	    }
+	  } // HISP 1
+	} else if (ageCat == 4) {
+	  if (HISP == 0) {
+	    if (raceCat == 1) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.36 : 0.2;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.21 : 0.44;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.48 : 0.49;
+	      } else if (householdIncomeCat_NEW == 4) {
+		increase = (MARRIED == 1) ? 0.0 : 0.09;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.0 : 0.32;
+	      }
+	    } else if (raceCat == 2) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.4 : 0.23;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.24 : 0.47;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.51 : 0.51;
+	      } else if (householdIncomeCat_NEW == 4) {
+		increase = (MARRIED == 1) ? 0.0 : 0.1;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.0 : 0.34;
+	      }
+	    } else if (raceCat == 3) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.43 : 0.28;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.29 : 0.5;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.55 : 0.55;
+	      } else if (householdIncomeCat_NEW == 4) {
+		increase = (MARRIED == 1) ? 0.09 : 0.18;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.09 : 0.43;
+	      }
+	    } 
+	  } else if (HISP == 1) {
 	    if (householdIncomeCat_NEW == 1) {
 	      increase = (MARRIED == 1) ? 0.11 : 0.06;
 	    } else if (householdIncomeCat_NEW == 2) {
@@ -778,234 +748,228 @@ class SynthPopAnnotationProcessor implements Processor {
 	    } else if (householdIncomeCat_NEW == 3) {
 	      increase = (MARRIED == 1) ? 0.24 : 0.26;
 	    } else if (householdIncomeCat_NEW == 4) { 
-              increase = (MARRIED == 1) ? 0.0 : 0.01;
+	      increase = (MARRIED == 1) ? 0.0 : 0.01;
 	    } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.0 : 0.21;
-            }
+	      increase = (MARRIED == 1) ? 0.0 : 0.21;
+	    }
+	  } // HISP 1
+	} else if (ageCat == 5) {
+	  if (HISP == 0) {
+	    if (raceCat == 1) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.28 : 0.0;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.03 : 0.3;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.34 : 0.33;
+	      } else if (householdIncomeCat_NEW == 4) {
+		increase = (MARRIED == 1) ? 0.0 : 0.0;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.0 : 0.04;
+	      }
+	    } else if (raceCat == 2) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.31 : 0.01;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.05 : 0.32;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.36 : 0.35;
+	      } else if (householdIncomeCat_NEW == 4) {
+		increase = (MARRIED == 1) ? 0.0 : 0.0;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.0 : 0.05;
+	      }
+	    } else if (raceCat == 3) {
+	      if (householdIncomeCat_NEW == 1) {
+		increase = (MARRIED == 1) ? 0.35 : 0.09;
+	      } else if (householdIncomeCat_NEW == 2) {
+		increase = (MARRIED == 1) ? 0.12 : 0.37;
+	      } else if (householdIncomeCat_NEW == 3) {
+		increase = (MARRIED == 1) ? 0.41 : 0.41;
+	      } else if (householdIncomeCat_NEW == 4) {
+		increase = (MARRIED == 1) ? 0.0 : 0.0;
+	      } else if (householdIncomeCat_NEW == 5) {
+		increase = (MARRIED == 1) ? 0.0 : 0.15;
+	      }
+	    } 
+	  } else if (HISP == 1) {
+	    if (householdIncomeCat_NEW == 1) {
+	      increase = (MARRIED == 1) ? 0.09 : 0.0;
+	    } else if (householdIncomeCat_NEW == 2) {
+	      increase = (MARRIED == 1) ? 0.0 : 0.13;
+	    } else if (householdIncomeCat_NEW == 3) {
+	      increase = (MARRIED == 1) ? 0.17 : 0.18;
+	    } else if (householdIncomeCat_NEW == 4) {
+	      // increase = 0.0;
+	    } else if (householdIncomeCat_NEW == 5) {
+	      // increase = (MARRIED == 1) ? 0.0 : 0.0;
+	    }
+	  } // HISP 1
+	} // ageCat 5
+      } // sex 2
+
+      record.put("INS_NEW_2014", getRandom() < increase ? "1" : "0");
+      record.put("INS_NEW_2014_PROB", Double.toString(increase));
+      String s = sex + ", " + ageCat + ", " + raceCat + ", " + HISP + ", " + householdIncomeCat_NEW
+	       + ", " + MARRIED;
+      record.put("Det", s);
+    }
+  }
+
+
+  /**
+   *
+   * Read JSON data. 
+   *
+   */
+  class JSONReader {
+
+    /**
+     * Read JSON from string.
+     */
+    public HashMap readJSONFromString (String text) {
+	  return this.readJSON (new StringReader (text));
+    }
+    
+    /**
+     * Read JSON from reader.
+     */
+    public HashMap readJSON (Reader reader) {
+	  HashMap<String,String> result = new HashMap<String,String> ();
+	  try {
+	    JSONObject object = new JSONObject (new JSONTokener (reader));
+	    String [] names = JSONObject.getNames (object);
+	    for (int c = 0; c < names.length; c++) {
+		  String name = names [c];
+		  result.put (name, object.getString (name));
+	    }
+	  } catch (JSONException e) {
+	    e.printStackTrace ();
 	  }
-      } else if (ageCat == 5) {
-        if (raceCat == 1) {
-          if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.28 : 0.0;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.03 : 0.3;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.34 : 0.33;
-            } else if (householdIncomeCat_NEW == 4) {
-              increase = (MARRIED == 1) ? 0.0 : 0.0;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.0 : 0.04;
-            }
-          } // HISP 0
-        } else if (raceCat == 2) {
-          if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.31 : 0.01;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.05 : 0.32;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.36 : 0.35;
-            } else if (householdIncomeCat_NEW == 4) {
-              increase = (MARRIED == 1) ? 0.0 : 0.0;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.0 : 0.05;
-            }
-          } // HISP 0
-        } else if (raceCat == 3) {
-          if (HISP == 0) {
-            if (householdIncomeCat_NEW == 1) {
-              increase = (MARRIED == 1) ? 0.35 : 0.09;
-            } else if (householdIncomeCat_NEW == 2) {
-              increase = (MARRIED == 1) ? 0.12 : 0.37;
-            } else if (householdIncomeCat_NEW == 3) {
-              increase = (MARRIED == 1) ? 0.41 : 0.41;
-            } else if (householdIncomeCat_NEW == 4) {
-              increase = (MARRIED == 1) ? 0.0 : 0.0;
-            } else if (householdIncomeCat_NEW == 5) {
-              increase = (MARRIED == 1) ? 0.0 : 0.15;
-            }
-          } // HISP 0
-        } // raceCat 3
-       
-	if (HISP == 1) {
-	  if (householdIncomeCat_NEW == 1) {
-	    increase = (MARRIED == 1) ? 0.09 : 0.0;
-	  } else if (householdIncomeCat_NEW == 2) {
-	    increase = (MARRIED == 1) ? 0.0 : 0.13;
-	  } else if (householdIncomeCat_NEW == 3) {
-	    increase = (MARRIED == 1) ? 0.17 : 0.18;
-	  } else if (householdIncomeCat_NEW == 4) {
-	    // increase = 0.0;
-	  } else if (householdIncomeCat_NEW == 5) {
-	    // increase = (MARRIED == 1) ? 0.0 : 0.0;
+	  return result;
+    }
+
+  }
+
+  class QuotelessWriter extends FilterWriter {
+    public QuotelessWriter (Writer writer) {
+	  super (writer);
+    }
+    public void write (int c) throws IOException {
+	  if (c != '"') {
+	    super.write (c);
 	  }
-	} // HISP 1
-      } // ageCat 5
-    } // sex 2
-
-    record.put("INS_NEW_2014", getRandom() < increase ? "1" : "0");
-    record.put("INS_NEW_2014_PROB", Double.toString(increase));
-    String s = sex + ", " + ageCat + ", " + raceCat + ", " + HISP + ", " + householdIncomeCat_NEW
-             + ", " + MARRIED;
-    record.put("Det", s);
+    }
   }
-}
-
-
-/**
- *
- * Read JSON data. 
- *
- */
-class JSONReader {
 
   /**
-   * Read JSON from string.
+   * Write to CSV format.
+   * Use a buffered writer flushing on a set period and on close.
    */
-  public HashMap readJSONFromString (String text) {
-	return this.readJSON (new StringReader (text));
-  }
-  
-  /**
-   * Read JSON from reader.
-   */
-  public HashMap readJSON (Reader reader) {
-	HashMap<String,String> result = new HashMap<String,String> ();
-	try {
-	  JSONObject object = new JSONObject (new JSONTokener (reader));
-	  String [] names = JSONObject.getNames (object);
-	  for (int c = 0; c < names.length; c++) {
-		String name = names [c];
-		result.put (name, object.getString (name));
+  class PopulationWriter {
+
+    private CSVWriter _writer;
+    private char _separator;
+    private long _writeCount = 0;
+    private final int flushPeriodicity = 50;
+
+    /**
+     * Create a population writer
+     */
+    public PopulationWriter (Writer writer, char separator) {
+	  this._writer = new CSVWriter (new BufferedWriter (new QuotelessWriter (writer)),
+				      separator,
+				      CSVWriter.NO_QUOTE_CHARACTER);
+    }
+
+    /**
+     * Write data 
+     */
+    public void write (String [] data) throws IOException {
+	  if (this._writeCount++ % flushPeriodicity == 0) {
+	    this._writer.flush ();
 	  }
-	} catch (JSONException e) {
-	  e.printStackTrace ();
-	}
-	return result;
-  }
-
-}
-
-class QuotelessWriter extends FilterWriter {
-  public QuotelessWriter (Writer writer) {
-	super (writer);
-  }
-  public void write (int c) throws IOException {
-	if (c != '"') {
-	  super.write (c);
-	}
-  }
-}
-
-/**
- * Write to CSV format.
- * Use a buffered writer flushing on a set period and on close.
- */
-class PopulationWriter {
-
-  private CSVWriter _writer;
-  private char _separator;
-  private long _writeCount = 0;
-  private final int flushPeriodicity = 50;
-
-  /**
-   * Create a population writer
-   */
-  public PopulationWriter (Writer writer, char separator) {
-	this._writer = new CSVWriter (new BufferedWriter (new QuotelessWriter (writer)),
-				    separator,
-				    CSVWriter.NO_QUOTE_CHARACTER);
-  }
-
-  /**
-   * Write data 
-   */
-  public void write (String [] data) throws IOException {
-	if (this._writeCount++ % flushPeriodicity == 0) {
+	  this._writer.writeNext (data);
+    }
+    
+    /**
+     * Close the CSV writer.
+     */
+    public void close () throws IOException {
 	  this._writer.flush ();
-	}
-	this._writer.writeNext (data);
-  }
-  
-  /**
-   * Close the CSV writer.
-   */
-  public void close () throws IOException {
-	this._writer.flush ();
-	this._writer.close ();
-  }
-}
-
-/**
- *
- * Encapsulate semantics of synthetic population and format translation.
- *
- */
-public class CSVProcessor {
-
-  private Processor _processor;
-  private CSVReader _input;
-  private PopulationWriter _writer;
-  private static Log logger = LogFactory.getLog (CSVProcessor.class);
-
-  /**
-   * Create a new population processor
-   */
-  public CSVProcessor (Reader input,
-			 char inputSeparator,
-			 Processor processor,
-			 Writer output,
-			 char outputSeparator) throws IOException 
-  {
-	assert input != null : "Input reader must be non-null.";
-	//assert inputSeparator != null : "Input separator must be non-null.";
-	assert processor != null : "Data processor must be non-null.";
-	assert output != null : "Output writer must be non-null.";
-	//assert outputSeparator != null : "Output separator must be non-null.";
-
-	this._input = new CSVReader (input, inputSeparator);
-	this._processor = processor;
-	this._writer = new PopulationWriter (output, outputSeparator);
-	this._writer.write (processor.getOutputKeys ());
+	  this._writer.close ();
+    }
   }
 
   /**
    *
-   * Parse an input CSV file.
-   * Process each line using the processor object.
+   * Encapsulate semantics of synthetic population and format translation.
    *
    */
-  public void parse () throws IOException {
-	String [] header = null;
-	int c = 0;
+  public class CSVProcessor {
 
-	HashMap<String, String> record = new HashMap<String,String> (20, 0.75f);
-	for (String [] line = this._input.readNext (); line != null; line = this._input.readNext ()) {
-	  c++;
+    private Processor _processor;
+    private CSVReader _input;
+    private PopulationWriter _writer;
+    private static Log logger = LogFactory.getLog (CSVProcessor.class);
 
-	  if (header != null && line.length != header.length)
-		continue;
+    /**
+     * Create a new population processor
+     */
+    public CSVProcessor (Reader input,
+			   char inputSeparator,
+			   Processor processor,
+			   Writer output,
+			   char outputSeparator) throws IOException 
+    {
+	  assert input != null : "Input reader must be non-null.";
+	  //assert inputSeparator != null : "Input separator must be non-null.";
+	  assert processor != null : "Data processor must be non-null.";
+	  assert output != null : "Output writer must be non-null.";
+	  //assert outputSeparator != null : "Output separator must be non-null.";
 
-	  if (header == null) {
-		this.logger.info ("setting header " + StringUtils.join (line, ","));
-		header = line;
-		this._processor.setHeader (line);
-	  } else {
-		record.clear ();
-		String [] outputLine = this._processor.process (line, record);
-		if (outputLine != null) {
-		  this._writer.write (outputLine);
-		}
+	  this._input = new CSVReader (input, inputSeparator);
+	  this._processor = processor;
+	  this._writer = new PopulationWriter (output, outputSeparator);
+	  this._writer.write (processor.getOutputKeys ());
+    }
+
+    /**
+     *
+     * Parse an input CSV file.
+     * Process each line using the processor object.
+     *
+     */
+    public void parse () throws IOException {
+	  String [] header = null;
+	  int c = 0;
+
+	  HashMap<String, String> record = new HashMap<String,String> (20, 0.75f);
+	  for (String [] line = this._input.readNext (); line != null; line = this._input.readNext ()) {
+	    c++;
+
+	    if (header != null && line.length != header.length)
+		  continue;
+
+	    if (header == null) {
+		  this.logger.info ("setting header " + StringUtils.join (line, ","));
+		  header = line;
+		  this._processor.setHeader (line);
+	    } else {
+		  record.clear ();
+		  String [] outputLine = this._processor.process (line, record);
+		  if (outputLine != null) {
+		    this._writer.write (outputLine);
+		  }
+	    }
 	  }
-	}
-  }
+    }
 
-  /**
-   * Close
-   */
-  public void close () throws IOException {
-	this._writer.close ();
+    /**
+     * Close
+     */
+    public void close () throws IOException {
+	  this._writer.close ();
+    }
   }
-}
 
