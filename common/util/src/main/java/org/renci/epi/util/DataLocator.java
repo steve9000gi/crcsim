@@ -31,7 +31,7 @@ public class DataLocator {
     }
     public File [] getSyntheticPopulationExports () {
 	final String pattern = "export.*";
-	File directory = new File (join (new String [] { _dataRoot, "generated", "exports" })); //fileName }));
+	File directory = new File (join (new String [] { _dataRoot, "generated", "exports-Oregon" })); //fileName }));
 	FilenameFilter filenameFilter = new FilenameFilter () {
 		public boolean accept (File dir, String name) {
 		    return name.toLowerCase().matches (pattern);

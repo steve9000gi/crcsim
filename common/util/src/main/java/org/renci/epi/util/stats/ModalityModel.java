@@ -52,8 +52,11 @@ public class ModalityModel extends ComplianceModel {
      * @return Returns a double - the probability the agent will be compliant with screening.   
      *
      */
+	 //* Arguments here need to be modified depending on what arguments are being passed to this function. 
     public final double getProbabilityOfColonoscopy (boolean person_sex_male,
+						     boolean person_urban_geography,
 						     boolean person_race_black,
+						     boolean person_race_hispanic,
 						     boolean person_race_other,
 						     String person_zipcode,
 						     String person_stcotrbg,
@@ -68,12 +71,14 @@ public class ModalityModel extends ComplianceModel {
                                                      boolean insure_none_orig)
     {
 	return this.getProbabilityOfCompliance (person_sex_male,
+						person_urban_geography,
 						person_race_black,
+						person_race_hispanic,
 						person_race_other,
-						person_zipcode,
-						person_stcotrbg,
 						person_married,
 						person_SEHP,
+						person_zipcode,
+						person_stcotrbg,
 						insure_private,
 						insure_medicaid,
 						insure_medicare,

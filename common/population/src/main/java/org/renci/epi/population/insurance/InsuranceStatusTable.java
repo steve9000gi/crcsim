@@ -49,7 +49,7 @@ public class InsuranceStatusTable {
      * Construct the table, loading the basic mapping of categories to probabiliites.
      */
     public InsuranceStatusTable () {
-	InputStream stream = InsuranceStatusTable.class.getResourceAsStream ("PREDS.csv");
+	InputStream stream = InsuranceStatusTable.class.getResourceAsStream ("PREDS_OR.csv"); // SAC 2016/05/27
 	BufferedReader reader = new BufferedReader (new InputStreamReader (stream));
 	try {
 	    char inputSeparator = ',';

@@ -73,7 +73,7 @@ public class Geography {
      */
     Geography (String resourcePath) {
         try {
-            DelimitedFileImporter in = getImporter ("nearest_dist_simulation.csv");
+            DelimitedFileImporter in = getImporter ("nearest_dist_simulation_OR.csv");
             while (in.hasMoreRows ()) {
                 in.nextRow ();
                 String zipcodeText = in.getString ("zip");
@@ -111,6 +111,7 @@ public class Geography {
 		String zipcodeText = in.getString ("zip");
 		Double distance
                     = new Double (in.getDouble ("nearest_distance"));
+
 		zipcode.put (zipcodeText, distance);
 	    }
 	    in = getImporter (complianceFilename);

@@ -1,0 +1,473 @@
+ZipCode,Name,ServiceArea,County,Desig,Frontier,Desig_NEW
+97029,Grass Valley,Moro/Grass Valley,SHERMAN,Rural,F,Frontier
+97033,Kent,Moro/Grass Valley,SHERMAN,Rural,F,Frontier
+97039,Moro,Moro/Grass Valley,SHERMAN,Rural,F,Frontier
+97050,Rufus,The Dalles,SHERMAN,Rural,F,Frontier
+97065,Wasco,The Dalles,SHERMAN,Rural,F,Frontier
+97620,Adel,Lakeview,LAKE,Rural,F,Frontier
+97630,Lakeview,Lakeview,LAKE,Rural,F,Frontier
+97635,New Pine Creek,Lakeview,LAKE,Rural,F,Frontier
+97636,Paisley,Lakeview,LAKE,Rural,F,Frontier
+97637,Plush,Lakeview,LAKE,Rural,F,Frontier
+97638,Silver Lake,North Lake,LAKE,Rural,F,Frontier
+97640,Summer Lake,Lakeview,LAKE,Rural,F,Frontier
+97641,Christmas Valley,North Lake,LAKE,Rural,F,Frontier
+97710,Fields,Burns,HARNEY,Rural,F,Frontier
+97720,Burns,Burns,HARNEY,Rural,F,Frontier
+97721,Princeton,Burns,HARNEY,Rural,F,Frontier
+97722,Diamond,Burns,HARNEY,Rural,F,Frontier
+97732,Crane,Burns,HARNEY,Rural,F,Frontier
+97735,Fort Rock,North Lake,LAKE,Rural,F,Frontier
+97736,Frenchglen,Burns,HARNEY,Rural,F,Frontier
+97738,Hines,Burns,HARNEY,Rural,F,Frontier
+97750,Mitchell,Fossil,WHEELER,Rural,F,Frontier
+97758,Riley,Burns,HARNEY,Rural,F,Frontier
+97812,Arlington,Arlington,GILLIAM,Rural,F,Frontier
+97814,Baker City,Baker City,BAKER,Rural,F,Frontier
+97817,Bates,John Day,GRANT,Rural,F,Frontier
+97818,Boardman,Boardman,MORROW,Rural,F,Frontier
+97819,Bridgeport,Baker City,BAKER,Rural,F,Frontier
+97820,Canyon City,John Day,GRANT,Rural,F,Frontier
+97823,Condon,Condon,GILLIAM,Rural,F,Frontier
+97825,Dayville,John Day,GRANT,Rural,F,Frontier
+97828,Enterprise,Wallowa/Enterprise,WALLOWA,Rural,F,Frontier
+97830,Fossil,Fossil,WHEELER,Rural,F,Frontier
+97833,Haines,Baker City,BAKER,Rural,F,Frontier
+97834,Halfway,Halfway,BAKER,Rural,F,Frontier
+97836,Heppner,Heppner,MORROW,Rural,F,Frontier
+97837,Hereford,Baker City,BAKER,Rural,F,Frontier
+97839,Lexington,Heppner,MORROW,Rural,F,Frontier
+97840,Oxbow,Halfway,BAKER,Rural,F,Frontier
+97842,Imnaha,Wallowa/Enterprise,WALLOWA,Rural,F,Frontier
+97843,Ione,Heppner,MORROW,Rural,F,Frontier
+97844,Irrigon,Irrigon,MORROW,Rural,F,Frontier
+97845,John Day,John Day,GRANT,Rural,F,Frontier
+97846,Joseph,Wallowa/Enterprise,WALLOWA,Rural,F,Frontier
+97848,Kimberly,John Day,GRANT,Rural,F,Frontier
+97856,Long Creek,John Day,GRANT,Rural,F,Frontier
+97857,Lostine,Wallowa/Enterprise,WALLOWA,Rural,F,Frontier
+97861,Mikkalo,Condon,GILLIAM,Rural,F,Frontier
+97864,Monument,John Day,GRANT,Rural,F,Frontier
+97865,Mount Vernon,John Day,GRANT,Rural,F,Frontier
+97869,Prairie City,John Day,GRANT,Rural,F,Frontier
+97870,Richland,Halfway,BAKER,Rural,F,Frontier
+97873,Seneca,John Day,GRANT,Rural,F,Frontier
+97874,Spray,Fossil,WHEELER,Rural,F,Frontier
+97877,Sumpter,Baker City,BAKER,Rural,F,Frontier
+97884,Unity,Baker City,BAKER,Rural,F,Frontier
+97885,Wallowa,Wallowa/Enterprise,WALLOWA,Rural,F,Frontier
+97901,Adrian,Nyssa,MALHEUR,Rural,F,Frontier
+97902,Arock,Jordan Valley,MALHEUR,Rural,F,Frontier
+97903,Brogan,Vale,MALHEUR,Rural,F,Frontier
+97904,Drewsey,Burns,HARNEY,Rural,F,Frontier
+97905,Durkee,Baker City,BAKER,Rural,F,Frontier
+97906,Harper,Vale,MALHEUR,Rural,F,Frontier
+97907,Huntington,Ontario,BAKER,Rural,F,Frontier
+97908,Ironside,Vale,MALHEUR,Rural,F,Frontier
+97909,Jamieson,Vale,MALHEUR,Rural,F,Frontier
+97910,Jordan Valley,Jordan Valley,MALHEUR,Rural,F,Frontier
+97911,Juntura,Vale,MALHEUR,Rural,F,Frontier
+97913,Nyssa,Nyssa,MALHEUR,Rural,F,Frontier
+97914,Ontario,Ontario,MALHEUR,Rural,F,Frontier
+97917,Riverside,Burns,MALHEUR,Rural,F,Frontier
+97918,Vale,Vale,MALHEUR,Rural,F,Frontier
+97920,Westfall,Vale,MALHEUR,Rural,F,Frontier
+97002,Aurora,Woodburn,MARION,Rural,,Rural
+97003,Beaverton,Beaverton,WASHINGTON,Urban,,Urban
+97004,Beavercreek,Oregon City,CLACKAMAS,Rural,,Rural
+97005,Beaverton,Beaverton,WASHINGTON,Urban,,Urban
+97006,Aloha,Beaverton,WASHINGTON,Urban,,Urban
+97007,Aloha,Beaverton,WASHINGTON,Urban,,Urban
+97008,Beaverton,Beaverton,WASHINGTON,Urban,,Urban
+97009,Boring,Sandy,CLACKAMAS,Urban,,Urban
+97011,Brightwood,Wemme,CLACKAMAS,Rural,,Rural
+97013,Canby,Canby,CLACKAMAS,Rural,,Rural
+97015,Clackamas,Oregon City,CLACKAMAS,Urban,,Urban
+97017,Colton,Canby,CLACKAMAS,Rural,,Rural
+97020,Donald,Woodburn,MARION,Rural,,Rural
+97022,Eagle Creek,Sandy,CLACKAMAS,Rural,,Rural
+97023,Estacada,Estacada,CLACKAMAS,Rural,,Rural
+97026,Gervais,Woodburn,MARION,Rural,,Rural
+97027,Gladstone,Milwaukie,CLACKAMAS,Urban,,Urban
+97028,Government Camp,Wemme,CLACKAMAS,Rural,,Rural
+97032,Hubbard,Woodburn,MARION,Rural,,Rural
+97034,Lake Oswego,Lake Oswego,CLACKAMAS,Urban,,Urban
+97035,Lake Oswego,Lake Oswego,CLACKAMAS,Urban,,Urban
+97036,Marylhurst,Lake Oswego,CLACKAMAS,Urban,,Urban
+97038,Molalla,Canby,CLACKAMAS,Rural,,Rural
+97042,Mulino,Canby,CLACKAMAS,Rural,,Rural
+97045,Oregon City,Oregon City,CLACKAMAS,Urban,,Urban
+97049,Rhododendron,Wemme,CLACKAMAS,Rural,,Rural
+97055,Sandy,Sandy,CLACKAMAS,Rural,,Rural
+97062,Tualatin,Tigard,WASHINGTON,Urban,,Urban
+97067,Welches,Wemme,CLACKAMAS,Rural,,Rural
+97068,West Linn,Lake Oswego,CLACKAMAS,Urban,,Urban
+97070,Wilsonville,Lake Oswego,CLACKAMAS,Urban,,Urban
+97071,Woodburn,Woodburn,MARION,Rural,,Rural
+97075,Beaverton,Beaverton,WASHINGTON,Urban,,Urban
+97076,Beaverton PO Box,Beaverton,WASHINGTON,Urban,,Urban
+97078,Beaverton,Beaverton,WASHINGTON,Urban,,Urban
+97086,Happy Valley,Oregon City,CLACKAMAS,Urban,,Urban
+97089,Damascus,Sandy,CLACKAMAS,Urban,,Urban
+97106,Banks,Hillsboro/Forest Grove,WASHINGTON,Rural,,Rural
+97109,Buxton,Hillsboro/Forest Grove,WASHINGTON,Rural,,Rural
+97113,Cornelius,Hillsboro/Forest Grove,WASHINGTON,Urban,,Urban
+97116,Forest Grove,Hillsboro/Forest Grove,WASHINGTON,Rural,,Rural
+97117,Gales Creek,Hillsboro/Forest Grove,WASHINGTON,Rural,,Rural
+97119,Gaston,Hillsboro/Forest Grove,WASHINGTON,Rural,,Rural
+97123,Hillsboro,Hillsboro/Forest Grove,WASHINGTON,Urban,,Urban
+97124,Hillsboro,Hillsboro/Forest Grove,WASHINGTON,Urban,,Urban
+97125,Manning,Hillsboro/Forest Grove,WASHINGTON,Rural,,Rural
+97133,North Plains,Hillsboro/Forest Grove,WASHINGTON,Rural,,Rural
+97137,Saint Paul,Woodburn,MARION,Rural,,Rural
+97140,Sherwood,Tigard,WASHINGTON,Urban,,Urban
+97144,Timber,Hillsboro/Forest Grove,WASHINGTON,Rural,,Rural
+97222,Milwaukie,Milwaukie,CLACKAMAS,Urban,,Urban
+97223,Tigard,Tigard,WASHINGTON,Urban,,Urban
+97224,Tigard,Tigard,WASHINGTON,Urban,,Urban
+97225,Cedar Hills,Portland West,WASHINGTON,Urban,,Urban
+97229,Portland,Portland West,WASHINGTON,Urban,,Urban
+97267,Milwaukie,Milwaukie,CLACKAMAS,Urban,,Urban
+97301,Salem,Salem South,MARION,Urban,,Urban
+97302,Salem,Salem South,MARION,Urban,,Urban
+97303,Keizer,Salem North,MARION,Urban,,Urban
+97305,Salem,Salem North,MARION,Urban,,Urban
+97306,Salem,Salem South,MARION,Urban,,Urban
+97307,Keizer PO,Salem North,MARION,Urban,,Urban
+97308,Salem,Salem South,MARION,Urban,,Urban
+97309,Salem,Salem South,MARION,Urban,,Urban
+97310,Salem,Salem South,MARION,Urban,,Urban
+97317,Salem,Salem South,MARION,Urban,,Urban
+97321,Albany,Albany,LINN,Urban,,Urban
+97322,Albany,Albany,LINN,Urban,,Urban
+97324,Alsea,Alsea,BENTON,Rural,,Rural
+97325,Aumsville,Salem South,MARION,Rural,,Rural
+97327,Brownsville,Brownsville,LINN,Rural,,Rural
+97329,Cascadia,Sweet Home,LINN,Rural,,Rural
+97330,Corvallis,Corvallis/Philomath,BENTON,Urban,,Urban
+97331,Corvallis,Corvallis/Philomath,BENTON,Urban,,Urban
+97333,Corvallis,Corvallis/Philomath,BENTON,Urban,,Urban
+97335,Crabtree,Scio,LINN,Rural,,Rural
+97336,Crawfordsville,Sweet Home,LINN,Rural,,Rural
+97339,Corvallis,Corvallis/Philomath,BENTON,Urban,,Urban
+97342,Detroit,Detroit,MARION,Rural,,Rural
+97345,Foster,Sweet Home,LINN,Rural,,Rural
+97346,Gates,Mill City/Gates,MARION,Rural,,Rural
+97348,Halsey,Brownsville,LINN,Rural,,Rural
+97350,Idanha,Detroit,MARION,Rural,,Rural
+97352,Jefferson,Albany,MARION,Urban,,Urban
+97355,Lebanon,Lebanon,LINN,Rural,,Rural
+97358,Lyons,Stayton,LINN,Rural,,Rural
+97359,Marion,Albany,MARION,Urban,,Urban
+97360,Mill City,Mill City/Gates,LINN,Rural,,Rural
+97362,Mount Angel,Silverton/Mt. Angel,MARION,Rural,,Rural
+97370,Philomath,Corvallis/Philomath,BENTON,Urban,,Urban
+97373,Saint Benedict,Silverton/Mt. Angel,MARION,Rural,,Rural
+97374,Scio,Scio,LINN,Rural,,Rural
+97375,Scotts Mills,Silverton/Mt. Angel,MARION,Rural,,Rural
+97377,Shedd,Albany,LINN,Rural,,Rural
+97381,Silverton,Silverton/Mt. Angel,MARION,Rural,,Rural
+97383,Stayton,Stayton,MARION,Rural,,Rural
+97384,Mehama,Mill City/Gates,MARION,Rural,,Rural
+97385,Sublimity,Stayton,MARION,Rural,,Rural
+97386,Sweet Home,Sweet Home,LINN,Rural,,Rural
+97389,Tangent,Albany,LINN,Urban,,Urban
+97392,Turner,Salem South,MARION,Urban,,Urban
+97401,Eugene,Eugene/University,LANE,Urban,,Urban
+97402,Eugene,Eugene West,LANE,Urban,,Urban
+97403,Eugene,Eugene/University,LANE,Urban,,Urban
+97404,Eugene,Eugene West,LANE,Urban,,Urban
+97405,Eugene,Eugene South,LANE,Urban,,Urban
+97408,Eugene,Eugene/University,LANE,Urban,,Urban
+97409,Alvadore,Eugene West,LANE,Urban,,Urban
+97412,Blachly,Swisshome/Triangle Lake,LANE,Rural,,Rural
+97413,Blue River,McKenzie/Blue River,LANE,Rural,,Rural
+97419,Cheshire,Junction City,LANE,Rural,,Rural
+97424,Cottage Grove,Cottage Grove,LANE,Rural,,Rural
+97426,Creswell,Eugene South,LANE,Urban,,Urban
+97430,Deadwood,Swisshome/Triangle Lake,LANE,Rural,,Rural
+97431,Dexter,Lowell/Dexter,LANE,Rural,,Rural
+97434,Dorena,Cottage Grove,LANE,Rural,,Rural
+97437,Elmira,Veneta,LANE,Rural,,Rural
+97438,Fall Creek,Lowell/Dexter,LANE,Rural,,Rural
+97439,Florence,Florence,LANE,Rural,,Rural
+97440,Eugene,Eugene West,LANE,Urban,,Urban
+97446,Harrisburg,Harrisburg,LINN,Rural,,Rural
+97448,Junction City,Junction City,LANE,Rural,,Rural
+97451,Lorane,Cottage Grove,LANE,Rural,,Rural
+97452,Lowell,Lowell/Dexter,LANE,Rural,,Rural
+97453,Mapleton,Florence,LANE,Rural,,Rural
+97454,Marcola,Springfield,LANE,Rural,,Rural
+97455,Pleasant Hill,Eugene South,LANE,Urban,,Urban
+97456,Monroe,Monroe,BENTON,Rural,,Rural
+97461,Noti,Veneta,LANE,Rural,,Rural
+97463,Oakridge,Oakridge,LANE,Rural,,Rural
+97475,Springfield,Springfield,LANE,Urban,,Urban
+97477,Springfield,Springfield,LANE,Urban,,Urban
+97478,Springfield,Springfield,LANE,Urban,,Urban
+97480,Swisshome,Swisshome/Triangle Lake,LANE,Rural,,Rural
+97487,Veneta,Veneta,LANE,Rural,,Rural
+97488,Vida,McKenzie/Blue River,LANE,Rural,,Rural
+97489,Walterville,Springfield,LANE,Rural,,Rural
+97490,Walton,Veneta,LANE,Rural,,Rural
+97492,Westfir,Oakridge,LANE,Rural,,Rural
+97493,Westlake,Florence,LANE,Rural,,Rural
+97501,Medford,Medford,JACKSON,Urban,,Urban
+97502,Central Point,Medford,JACKSON,Urban,,Urban
+97503,White City,Medford,JACKSON,Urban,,Urban
+97504,Medford,Medford,JACKSON,Urban,,Urban
+97520,Ashland,Ashland,JACKSON,Rural,,Rural
+97522,Butte Falls,Eagle Point,JACKSON,Rural,,Rural
+97524,Eagle Point,Eagle Point,JACKSON,Rural,,Rural
+97525,Gold Hill,Rogue River,JACKSON,Rural,,Rural
+97530,Jacksonville,Applegate/Williams,JACKSON,Rural,,Rural
+97535,Phoenix,Phoenix/Talent,JACKSON,Urban,,Urban
+97536,Prospect,Shady Cove,JACKSON,Rural,,Rural
+97537,Rogue River,Rogue River,JACKSON,Rural,,Rural
+97539,Shady Cove,Shady Cove,JACKSON,Rural,,Rural
+97540,Talent,Phoenix/Talent,JACKSON,Urban,,Urban
+97541,Trail,Shady Cove,JACKSON,Rural,,Rural
+97701,Bend,Bend,DESCHUTES,Urban,,Urban
+97702,Bend,Bend,DESCHUTES,Urban,,Urban
+97707,Bend,Bend,DESCHUTES,Rural,,Rural
+97708,Bend,Bend,DESCHUTES,Urban,,Urban
+97709,Bend,Bend,DESCHUTES,Urban,,Urban
+97712,Brothers,Bend,DESCHUTES,Rural,,Rural
+97739,La Pine,La Pine,DESCHUTES,Rural,,Rural
+97756,Redmond,Redmond,DESCHUTES,Rural,,Rural
+97759,Sisters,Sisters,DESCHUTES,Rural,,Rural
+97760,Terrebonne,Redmond,DESCHUTES,Rural,,Rural
+97001,Antelope,Maupin,WASCO,Rural,,Rural
+97014,Cascade Locks,Cascade Locks,HOOD RIVER,Rural,,Rural
+97016,Clatskanie,Clatskanie,COLUMBIA,Rural,,Rural
+97018,Columbia City,St. Helens,COLUMBIA,Rural,,Rural
+97021,Dufur,The Dalles,WASCO,Rural,,Rural
+97031,Hood River,Hood River,HOOD RIVER,Rural,,Rural
+97037,Maupin,Maupin,WASCO,Rural,,Rural
+97040,Mosier,The Dalles,WASCO,Rural,,Rural
+97041,Mount Hood Parkdale,Hood River,HOOD RIVER,Rural,,Rural
+97044,Odell,Hood River,WASCO,Rural,,Rural
+97048,Rainier,Clatskanie,COLUMBIA,Rural,,Rural
+97051,Saint Helens,St. Helens,COLUMBIA,Rural,,Rural
+97053,Warren,St. Helens,COLUMBIA,Rural,,Rural
+97054,Deer Island,St. Helens,COLUMBIA,Rural,,Rural
+97056,Scappoose,St. Helens,COLUMBIA,Rural,,Rural
+97057,Shaniko,Maupin,WASCO,Rural,,Rural
+97058,The Dalles,The Dalles,WASCO,Rural,,Rural
+97063,Tygh Valley,Maupin,WASCO,Rural,,Rural
+97064,Vernonia,Vernonia,COLUMBIA,Rural,,Rural
+97101,Amity,McMinnville,YAMHILL,Rural,,Rural
+97102,Arch Cape,Seaside,CLATSOP,Rural,,Rural
+97103,Astoria,Astoria,CLATSOP,Rural,,Rural
+97107,Bay City,Tillamook,TILLAMOOK,Rural,,Rural
+97108,Beaver,Cloverdale,TILLAMOOK,Rural,,Rural
+97110,Cannon Beach,Seaside,CLATSOP,Rural,,Rural
+97111,Carlton,McMinnville,YAMHILL,Rural,,Rural
+97112,Cloverdale,Cloverdale,TILLAMOOK,Rural,,Rural
+97114,Dayton,McMinnville,YAMHILL,Rural,,Rural
+97115,Dundee,Newberg,YAMHILL,Rural,,Rural
+97118,Garibaldi,Tillamook,TILLAMOOK,Rural,,Rural
+97121,Hammond,Astoria,CLATSOP,Rural,,Rural
+97122,Hebo,Cloverdale,TILLAMOOK,Rural,,Rural
+97127,Lafayette,McMinnville,YAMHILL,Rural,,Rural
+97128,McMinnville,McMinnville,YAMHILL,Rural,,Rural
+97130,Manzanita,Nehalem,TILLAMOOK,Rural,,Rural
+97131,Nehalem,Nehalem,TILLAMOOK,Rural,,Rural
+97132,Newberg,Newberg,YAMHILL,Rural,,Rural
+97134,Oceanside,Tillamook,TILLAMOOK,Rural,,Rural
+97135,Pacific City,Cloverdale,TILLAMOOK,Rural,,Rural
+97136,Rockaway Beach,Tillamook,TILLAMOOK,Rural,,Rural
+97138,Seaside,Seaside,CLATSOP,Rural,,Rural
+97141,Tillamook,Tillamook,TILLAMOOK,Rural,,Rural
+97143,Netarts,Tillamook,TILLAMOOK,Rural,,Rural
+97145,Tolovana Park,Seaside,CLATSOP,Rural,,Rural
+97146,Warrenton,Astoria,CLATSOP,Rural,,Rural
+97147,Wheeler,Nehalem,TILLAMOOK,Rural,,Rural
+97148,Yamhill,McMinnville,YAMHILL,Rural,,Rural
+97149,Neskowin,Cloverdale,TILLAMOOK,Rural,,Rural
+97304,Salem,Salem North,POLK,Urban,,Urban
+97326,Blodgett,Blodgett-Eddyville,LINCOLN,Rural,,Rural
+97338,Dallas,Dallas,POLK,Rural,,Rural
+97341,Depoe Bay,Lincoln City,LINCOLN,Rural,,Rural
+97343,Eddyville,Blodgett-Eddyville,LINCOLN,Rural,,Rural
+97344,Falls City,Dallas,POLK,Rural,,Rural
+97347,Grand Ronde,Willamina,POLK,Rural,,Rural
+97351,Independence,Dallas,POLK,Urban,,Urban
+97357,Logsden,Siletz,LINCOLN,Rural,,Rural
+97361,Monmouth,Dallas,POLK,Rural,,Rural
+97364,Neotsu,Lincoln City,LINCOLN,Rural,,Rural
+97365,Newport,Newport,LINCOLN,Rural,,Rural
+97366,South Beach,Newport,LINCOLN,Rural,,Rural
+97367,Lincoln City,Lincoln City,LINCOLN,Rural,,Rural
+97368,Otis,Lincoln City,LINCOLN,Rural,,Rural
+97369,Otter Rock,Newport,LINCOLN,Rural,,Rural
+97371,Rickreall,Dallas,POLK,Urban,,Urban
+97372,Rose Lodge,Lincoln City,LINCOLN,Rural,,Rural
+97376,Seal Rock,Waldport,LINCOLN,Rural,,Rural
+97378,Sheridan,Willamina,YAMHILL,Rural,,Rural
+97380,Siletz,Siletz,LINCOLN,Rural,,Rural
+97388,Gleneden Beach,Lincoln City,LINCOLN,Rural,,Rural
+97390,Tidewater,Waldport,LINCOLN,Rural,,Rural
+97391,Toledo,Toledo,LINCOLN,Rural,,Rural
+97394,Waldport,Waldport,LINCOLN,Rural,,Rural
+97396,Willamina,Willamina,YAMHILL,Rural,,Rural
+97406,Agness,Gold Beach,CURRY,Rural,,Rural
+97407,Allegany,Coos Bay,COOS,Rural,,Rural
+97410,Azalea,Glendale,DOUGLAS,Rural,,Rural
+97411,Bandon,Bandon,COOS,Rural,,Rural
+97414,Broadbent,Coquille/Myrtle Point,COOS,Rural,,Rural
+97415,Brookings,Brookings,CURRY,Rural,,Rural
+97416,Camas Valley,Winston,DOUGLAS,Rural,,Rural
+97417,Canyonville,Canyonville,DOUGLAS,Rural,,Rural
+97420,Coos Bay,Coos Bay,COOS,Rural,,Rural
+97423,Coquille,Coquille/Myrtle Point,COOS,Rural,,Rural
+97425,Crescent Lake,La Pine,KLAMATH,Rural,,Rural
+97428,Curtin,Drain/Yoncalla,DOUGLAS,Rural,,Rural
+97429,Days Creek,Canyonville,DOUGLAS,Rural,,Rural
+97432,Dillard,Winston,DOUGLAS,Rural,,Rural
+97435,Drain,Drain/Yoncalla,DOUGLAS,Rural,,Rural
+97436,Elkton,Drain/Yoncalla,DOUGLAS,Rural,,Rural
+97441,Gardiner,Reedsport,DOUGLAS,Rural,,Rural
+97442,Glendale,Glendale,DOUGLAS,Rural,,Rural
+97443,Glide,Glide,DOUGLAS,Rural,,Rural
+97444,Gold Beach,Gold Beach,CURRY,Rural,,Rural
+97447,Idleyld Park,Glide,DOUGLAS,Rural,,Rural
+97449,Lakeside,Reedsport,COOS,Rural,,Rural
+97450,Langlois,Bandon,CURRY,Rural,,Rural
+97457,Myrtle Creek,Myrtle Creek,DOUGLAS,Rural,,Rural
+97458,Myrtle Point,Coquille/Myrtle Point,COOS,Rural,,Rural
+97459,North Bend,Coos Bay,COOS,Rural,,Rural
+97462,Oakland,Sutherlin,DOUGLAS,Rural,,Rural
+97464,Ophir,Gold Beach,CURRY,Rural,,Rural
+97465,Port Orford,Port Orford,CURRY,Rural,,Rural
+97466,Powers,Powers,COOS,Rural,,Rural
+97467,Reedsport,Reedsport,DOUGLAS,Rural,,Rural
+97469,Riddle,Myrtle Creek,DOUGLAS,Rural,,Rural
+97470,Roseburg,Roseburg,DOUGLAS,Rural,,Rural
+97471,Roseburg,Roseburg,DOUGLAS,Rural,,Rural
+97473,Scottsburg,Reedsport,DOUGLAS,Rural,,Rural
+97476,Sixes,Port Orford,CURRY,Rural,,Rural
+97479,Sutherlin,Sutherlin,DOUGLAS,Rural,,Rural
+97481,Tenmile,Winston,DOUGLAS,Rural,,Rural
+97484,Tiller,Canyonville,DOUGLAS,Rural,,Rural
+97486,Umpqua,Sutherlin,DOUGLAS,Rural,,Rural
+97491,Wedderburn,Gold Beach,CURRY,Rural,,Rural
+97494,Wilbur,Roseburg,DOUGLAS,Rural,,Rural
+97495,Winchester,Roseburg,DOUGLAS,Rural,,Rural
+97496,Winston,Winston,DOUGLAS,Rural,,Rural
+97497,Wolf Creek,Glendale,JOSEPHINE,Rural,,Rural
+97498,Yachats,Yachats,LINCOLN,Rural,,Rural
+97499,Yoncalla,Drain/Yoncalla,DOUGLAS,Rural,,Rural
+97523,Cave Junction,Cave Junction,JOSEPHINE,Rural,,Rural
+97526,Grants Pass,Grants Pass,JOSEPHINE,Rural,,Rural
+97527,Grants Pass,Grants Pass,JOSEPHINE,Rural,,Rural
+97528,Grants Pass,Grants Pass,JOSEPHINE,Rural,,Rural
+97531,Kerby,Cave Junction,JOSEPHINE,Rural,,Rural
+97532,Merlin,Grants Pass,JOSEPHINE,Rural,,Rural
+97533,Murphy,Grants Pass,JOSEPHINE,Rural,,Rural
+97534,O Brien,Cave Junction,JOSEPHINE,Rural,,Rural
+97538,Selma,Cave Junction,JOSEPHINE,Rural,,Rural
+97543,Wilderville,Grants Pass,JOSEPHINE,Rural,,Rural
+97544,Williams,Applegate/Williams,JOSEPHINE,Rural,,Rural
+97601,Klamath Falls,Klamath Falls,KLAMATH,Rural,,Rural
+97602,Klamath Falls,Klamath Falls,KLAMATH,Rural,,Rural
+97603,Klamath Falls,Klamath Falls,KLAMATH,Rural,,Rural
+97604,Crater Lake,Chiloquin,KLAMATH,Rural,,Rural
+97621,Beatty,East Klamath,KLAMATH,Rural,,Rural
+97622,Bly,East Klamath,KLAMATH,Rural,,Rural
+97623,Bonanza,East Klamath,KLAMATH,Rural,,Rural
+97624,Chiloquin,Chiloquin,KLAMATH,Rural,,Rural
+97625,Dairy,Klamath Falls,KLAMATH,Rural,,Rural
+97626,Fort Klamath,Chiloquin,KLAMATH,Rural,,Rural
+97627,Keno,Klamath Falls,KLAMATH,Rural,,Rural
+97632,Malin,Merrill,KLAMATH,Rural,,Rural
+97633,Merrill,Merrill,KLAMATH,Rural,,Rural
+97634,Midland,Klamath Falls,KLAMATH,Rural,,Rural
+97639,Sprague River,East Klamath,KLAMATH,Rural,,Rural
+97711,Ashwood,Madras,JEFFERSON,Rural,,Rural
+97730,Camp Sherman,Sisters,JEFFERSON,Rural,,Rural
+97731,Chemult,Chiloquin,KLAMATH,Rural,,Rural
+97733,Crescent,La Pine,KLAMATH,Rural,,Rural
+97734,Culver,Madras,JEFFERSON,Rural,,Rural
+97737,Gilchrist,La Pine,KLAMATH,Rural,,Rural
+97741,Madras,Madras,JEFFERSON,Rural,,Rural
+97751,Paulina,Prineville,CROOK,Rural,,Rural
+97752,Post,Prineville,CROOK,Rural,,Rural
+97753,Powell Butte,Redmond,CROOK,Rural,,Rural
+97754,Prineville,Prineville,CROOK,Rural,,Rural
+97761,Warm Springs,Warm Springs,JEFFERSON,Rural,,Rural
+97801,Pendleton,Pendleton,UMATILLA,Rural,,Rural
+97810,Adams,Pendleton,UMATILLA,Rural,,Rural
+97813,Athena,Pendleton,UMATILLA,Rural,,Rural
+97824,Cove,Union,UNION,Rural,,Rural
+97826,Echo,Hermiston,UMATILLA,Rural,,Rural
+97827,Elgin,Elgin,UNION,Rural,,Rural
+97835,Helix,Pendleton,UMATILLA,Rural,,Rural
+97838,Hermiston,Hermiston,UMATILLA,Rural,,Rural
+97841,Imbler,La Grande,UNION,Rural,,Rural
+97850,La Grande,La Grande,UNION,Rural,,Rural
+97859,Meacham,Pendleton,UMATILLA,Rural,,Rural
+97862,Milton Freewater,Milton-Freewater,UMATILLA,Rural,,Rural
+97867,North Powder,Union,UNION,Rural,,Rural
+97868,Pilot Rock,Pendleton,UMATILLA,Rural,,Rural
+97875,Stanfield,Hermiston,UMATILLA,Rural,,Rural
+97876,Summerville,La Grande,UNION,Rural,,Rural
+97880,Ukiah,Pendleton,UMATILLA,Rural,,Rural
+97882,Umatilla,Hermiston,UMATILLA,Rural,,Rural
+97883,Union,Union,UNION,Rural,,Rural
+97886,Weston,Milton-Freewater,UMATILLA,Rural,,Rural
+97010,Bridal Veil,Gresham,MULTNOMAH,Rural,,Rural
+97019,Corbett,Gresham,MULTNOMAH,Rural,,Rural
+97024,Fairview,Gresham,MULTNOMAH,Urban,,Urban
+97030,Gresham,Gresham,MULTNOMAH,Urban,,Urban
+97060,Troutdale,Gresham,MULTNOMAH,Urban,,Urban
+97080,Gresham,Gresham,MULTNOMAH,Urban,,Urban
+97201,Portland,Portland Downtown,MULTNOMAH,Urban,,Urban
+97202,Sellwood Moreland,Portland Inner S.,MULTNOMAH,Urban,,Urban
+97203,St. Johns,St. Johns,MULTNOMAH,Urban,,Urban
+97204,Portland,Portland Downtown,MULTNOMAH,Urban,,Urban
+97205,Portland,Portland Downtown,MULTNOMAH,Urban,,Urban
+97206,Portland,Portland Middle S.,MULTNOMAH,Urban,,Urban
+97207,Portland PO,Portland Downtown,MULTNOMAH,Urban,,Urban
+97208,Portland PO,Portland Downtown,MULTNOMAH,Urban,,Urban
+97209,Portland,Portland Downtown,MULTNOMAH,Urban,,Urban
+97210,Portland,Portland Downtown,MULTNOMAH,Urban,,Urban
+97211,Portland,Albina,MULTNOMAH,Urban,,Urban
+97212,Portland,Albina,MULTNOMAH,Urban,,Urban
+97213,Portland,Portland Middle S.,MULTNOMAH,Urban,,Urban
+97214,Portland,Portland Inner S.,MULTNOMAH,Urban,,Urban
+97215,Portland,Portland Middle S.,MULTNOMAH,Urban,,Urban
+97216,Portland,Portland Outer S.,MULTNOMAH,Urban,,Urban
+97217,Portland,St. Johns,MULTNOMAH,Urban,,Urban
+97218,Portland,Albina,MULTNOMAH,Urban,,Urban
+97219,Portland,Portland West,MULTNOMAH,Urban,,Urban
+97220,Portland,Portland Outer N.,MULTNOMAH,Urban,,Urban
+97221,Portland,Portland West,MULTNOMAH,Urban,,Urban
+97227,Portland,Albina,MULTNOMAH,Urban,,Urban
+97228,Portland PO,Portland Downtown,MULTNOMAH,Urban,,Urban
+97230,Parkrose,Portland Outer N.,MULTNOMAH,Urban,,Urban
+97231,St. Johns,Portland West,MULTNOMAH,Urban,,Urban
+97232,Portland,Portland Inner S.,MULTNOMAH,Urban,,Urban
+97233,Portland,Portland Outer S.,MULTNOMAH,Urban,,Urban
+97236,Lents,Portland Outer S.,MULTNOMAH,Urban,,Urban
+97238,Portland PO,Albina,MULTNOMAH,Urban,,Urban
+97239,Portland,Portland Downtown,MULTNOMAH,Urban,,Urban
+97240,Portland PO,Portland Downtown,MULTNOMAH,Urban,,Urban
+97242,Portland PO,Portland Inner S.,MULTNOMAH,Urban,,Urban
+97256,Portland,Portland Downtown,MULTNOMAH,Urban,,Urban
+97258,Portland,Portland Downtown,MULTNOMAH,Urban,,Urban
+97266,Portland,Portland Outer S.,MULTNOMAH,Urban,,Urban
+97268,Portland PO,Milwaukie,MULTNOMAH,Urban,,Urban
+97269,Milwaukie PO,Milwaukie,MULTNOMAH,Urban,,Urban
+97280,Portland PO,Portland West,MULTNOMAH,Urban,,Urban
+97281,Tigard PO,Tigard,MULTNOMAH,Urban,,Urban
+97282,Portland PO,Portland Inner S.,MULTNOMAH,Urban,,Urban
+97283,Portland PO,St. Johns,MULTNOMAH,Urban,,Urban
+97286,Portland PO,Portland Middle S.,MULTNOMAH,Urban,,Urban
+97290,Portland PO,Albina,MULTNOMAH,Urban,,Urban
+97291,Portland PO,Portland Downtown,MULTNOMAH,Urban,,Urban
+97292,Portland PO,Albina,MULTNOMAH,Urban,,Urban
+97293,Portland PO,Portland Inner S.,MULTNOMAH,Urban,,Urban
+97294,Portland PO,Portland Middle S.,MULTNOMAH,Urban,,Urban
+97296,Portland PO,Portland Downtown,MULTNOMAH,Urban,,Urban
+97298,Portland PO,Portland West,MULTNOMAH,Urban,,Urban

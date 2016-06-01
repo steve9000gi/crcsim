@@ -52,6 +52,7 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
         "householdIncomeCat_NEW", // added 2016/04/29 SAC
         "INS_NEW_2014" // added 2016/05/01 SAC
         ,"INS_NEW_2014_PROB", "Det" // TEMP debug
+        ,"Desig" // urban/rural designation added 2016-05-23 SAC
 // debug , "insStatus", "insRandom","pumsp_rac1p", "people_race", "households_hh_income",
 // debug (cont.) "people_age", "households_hh_size", "personKey", "outBlack", "outINCOME"
     };

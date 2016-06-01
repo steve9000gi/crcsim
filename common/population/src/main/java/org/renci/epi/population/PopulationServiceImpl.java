@@ -1,5 +1,7 @@
 package org.renci.epi.population;
 
+
+import au.com.bytecode.opencsv.CSVReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.BufferedInputStream;
@@ -36,6 +38,8 @@ import org.renci.epi.util.DataLocator;
 public class PopulationServiceImpl implements PopulationService {
 
     private PopulationDAO populationDao;
+
+    private HashMap<String, String> urbanRuralMap; // SAC 2016/05/24
 
     private GeographyService geographyService;
 
@@ -95,6 +99,12 @@ public class PopulationServiceImpl implements PopulationService {
 	Writer writer = null;
 	CSVProcessor syntheticPopulation = null;
 	int c = 0;
+        
+        try {
+            createUrbanRuralMap ();
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to create urban/rural map. Status code: ", e);
+        }
 
 	File outputPath = new File (getDataLocator().getModelInputPath ());
 	if (! outputPath.exists ()) {
@@ -147,7 +157,7 @@ public class PopulationServiceImpl implements PopulationService {
 	    input = new BufferedInputStream (new FileInputStream (inputFileName));
 	    reader = new BufferedReader (new InputStreamReader (input));
 	    writer = new BufferedWriter (new FileWriter (outputFileName));
-	    Processor processor = new SynthPopAnnotationProcessor (outputKeys);
+	    Processor processor = new SynthPopAnnotationProcessor (outputKeys, this.urbanRuralMap);
 	    syntheticPopulation = new CSVProcessor (reader,
 						    inputSeparator,
 						    processor,
@@ -187,6 +197,44 @@ public class PopulationServiceImpl implements PopulationService {
 			     new PopulationPolygonOperator (outputFilePath, "occurrences", modelFileDirectory)
 			 });
     }
-    
+
+    private void createUrbanRuralMap() throws IOException {
+        InputStream urbanRuralInput = new BufferedInputStream (new FileInputStream (
+            "c:/dev/crcsim/common/util/src/main/resources/data/Zip_to_Urban_Rural_Frontier.csv"));
+        Reader urbanRuralReader =  new BufferedReader (new InputStreamReader (urbanRuralInput));
+        this.urbanRuralMap = new CSVToUrbanRuralHashMap(urbanRuralReader, ',').getMap();
+        /* DEBUG SAC 
+        for (String key:this.urbanRuralMap.keySet()) {
+            System.out.println(key + ": " + this.urbanRuralMap.get(key));
+        }
+        */
+    }
 }
+
+/**
+ *
+ * Create a HashMap from a CSV file in which the keys are zipcodes, and the values are strings "Rural"
+ * or "Urban"
+ *
+ */
+class CSVToUrbanRuralHashMap {
+
+  private CSVReader _input;
+  private HashMap<String, String> map;
+
+  public CSVToUrbanRuralHashMap (Reader input, char inputSeparator) throws IOException {
+      this._input = new CSVReader (input, inputSeparator);
+      this.map = new HashMap<String, String> ();
+
+      String [] keys = this._input.readNext ();
+      for (String [] line = this._input.readNext (); line != null; line = this._input.readNext ()) {
+	  map.put(line[0], line[4]);
+      }
+  }
+
+  public HashMap<String, String> getMap() {
+      return this.map;
+  }
+}
+
 

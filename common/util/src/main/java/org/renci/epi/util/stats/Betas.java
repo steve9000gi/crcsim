@@ -12,62 +12,41 @@ import java.util.Scanner;
  * Also provides a static lookup function for determining appropriate betas based on insurance category.
  */
 class Betas {
-
+    //*Modified for the OR Model to only have the betas that we need
     double compliance_intercept;
     double sex_female;
+    double geography_urban; 
     double race_black;
+    double race_hispanic; 
     double race_other;
-
-    double year_turned_50;
-
-    double married;
-    double SEHP; // state employee health plan.
-
-    double distance_05_10;
-    double distance_10_15;
-    double distance_15_20;
-    double distance_20_25;
-    double distance_gt_25;
+    double dist_to_endo_fac_0_5; 
 
     /**
      * Private constructor - only this class will create betas.
      */
+    //*The arguments of Betas modified for the OR Model
     Betas (double intercept,
 	   double female,
+	   double urbanGeo, 
 	   double black,
+	   double hispanic, 
 	   double other,
-	   double year_turned_50,
-	   
-	   double distance_05_10,
-	   double distance_10_15,
-	   double distance_15_20,
-	   double distance_20_25,
-	   double distance_gt_25,
-
-	   double married,
-	   double SEHP)
+	   double distToFac)
     {
+	//*The below modified for OR Model 
 	this.compliance_intercept = intercept;
 	this.sex_female = female;
+	this.geography_urban = urbanGeo; 
 	this.race_black = black;
+	this.race_hispanic = hispanic; 
 	this.race_other = other;
-	this.year_turned_50 = year_turned_50;
-
-	this.distance_05_10 = distance_05_10;
-	this.distance_10_15 = distance_10_15;
-	this.distance_15_20 = distance_15_20;
-	this.distance_20_25 = distance_20_25;
-	this.distance_gt_25 = distance_gt_25;
+	this.dist_to_endo_fac_0_5 = distToFac; 
 	
-	this.married = married;
-	this.SEHP = SEHP;
-
-	System.out.println ("===> intercept:" + intercept + ",female:" + female + ",black:" + black + ",other:" + other + ",year50:" + year_turned_50 + 
-			    ",married:" + married + ",SEHP:" + SEHP + 
-			    ",distance_5_10:" + distance_05_10 + ",distance_10_15:" + distance_10_15 + 
-			    ",distance_15_20:" + distance_15_20 + ",distance_20_25:" + distance_20_25 +
-			    ",distance_gt_25:" + distance_gt_25 + "\n");
-    }
+	System.out.println ("===> intercept:" + intercept + ",female:" + female + ",geography_urban:" + urbanGeo +
+				",black:" + black + ",hispanic:" + hispanic +",other:" + other + 
+				",Dist_to_endo_fac_0_5:" + distToFac + "\n");
+				
+    } 
 
     /**
      * Lookup appropriate compliance betas for a given insurance category.
@@ -98,8 +77,8 @@ class Betas {
 	if (modalityBetas.size () > 0) {
 	    return;
 	}
-	initialize (complianceBetas, "data/compliance_model_betas.txt");
-	initialize (modalityBetas, "data/modality_model_betas.txt");
+	initialize (complianceBetas, "data/compliance_model_betas_OR.txt");
+	initialize (modalityBetas, "data/modality_model_betas_OR.txt");
     }
 
     static void initialize (EnumMap<InsuranceCategory, Betas> betaMap, String resourcePath) {

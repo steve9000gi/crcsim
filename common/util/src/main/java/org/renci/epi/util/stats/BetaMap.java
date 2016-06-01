@@ -60,7 +60,7 @@ public class BetaMap {
 		if ( !line.startsWith ("#") && (line.trim().length () > 0) ) {
 		    String [] part = line.split (",");
 		    int c = 0;
-		    logger.debug ("line: " + line);
+		    logger.debug ("line: " + line) ;
 		    logger.debug ("------- Populating betas for insurance category: [" + part [c] + "]");
 		    betaMap.put (InsuranceCategory.valueOf (part [c++]),
 				 new Betas (Double.valueOf (part [c++]),
@@ -69,13 +69,9 @@ public class BetaMap {
 					    Double.valueOf (part [c++]),
 					    Double.valueOf (part [c++]),
 					    Double.valueOf (part [c++]),
-					    Double.valueOf (part [c++]),
-					    Double.valueOf (part [c++]),
-					    Double.valueOf (part [c++]),
-					    Double.valueOf (part [c++]),
-					    Double.valueOf (part [c++]),
-					    Double.valueOf (part [c])));
-		}
+					    Double.valueOf (part [c++])));
+
+		} //*Changes Made for OR Model: Originally there were 12 betas. Now there are only 7. 
 	    }
 	    scanner.close();	    
 	} catch (IOException e) {

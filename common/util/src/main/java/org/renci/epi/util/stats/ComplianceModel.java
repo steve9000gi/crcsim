@@ -22,7 +22,11 @@ public class ComplianceModel {
     private static Log logger = LogFactory.getLog (ComplianceModel.class); 
 
     // Default value to use for compliance probability.
-    private static final double defaultComplianceProbability = 0.20;
+    // SAC 2016/05/31 private static final double defaultComplianceProbability = 0.20;
+    // 1-(1-p)^(n/10) to reflect the 6 year probability of screening (where n=4, p=.25 for Oregon)
+    // - rmt on 05/31/16:
+    private static final double defaultComplianceProbability = 0.1087;
+    
 
     // A map of insurance category to beta values.
     private BetaMap betas;
@@ -81,13 +85,16 @@ public class ComplianceModel {
      * @return Returns a double - the probability the agent will be compliant with screening.   
      *
      */
+	 //* Arguments of getProbability may need to be modified for the OR model. However, not certain what arguments are being passed to this function.
     public final double getProbabilityOfCompliance (boolean person_sex_male,
+		                                    boolean person_urban_geography,
 						    boolean person_race_black,
+						    boolean person_race_hispanic,
 						    boolean person_race_other,
-						    String person_zipcode,
-						    String person_stcotrbg,
 						    boolean person_married,
 						    boolean person_SEHP,
+						    String person_zipcode,
+						    String person_stcotrbg,
 						    boolean insure_private,
 						    boolean insure_medicaid,
 						    boolean insure_medicare,
@@ -113,11 +120,12 @@ public class ComplianceModel {
 	    double distance = getGeography().getDistanceToNearestEndoscopyFacilityByZipCode (person_zipcode);
 	    
 	    // Determine distance range.
-	    boolean distance_05_10 = distance >=  5 && distance < 10;
-	    boolean distance_10_15 = distance >= 10 && distance < 15;
-	    boolean distance_15_20 = distance >= 15 && distance < 20;
-	    boolean distance_20_25 = distance >= 20 && distance < 25;
-	    boolean distance_gt_25 = distance >= 25;
+		boolean distance_00_05 = distance >= 0 && distance < 5; //*Added for OR
+	    //*boolean distance_05_10 = distance >=  5 && distance < 10;
+	    //*boolean distance_10_15 = distance >= 10 && distance < 15;
+	    //*boolean distance_15_20 = distance >= 15 && distance < 20;
+	    //*boolean distance_20_25 = distance >= 20 && distance < 25;
+	    //*boolean distance_gt_25 = distance >= 25;
 	    
 	    // Get the appropriate betas based on the agent's insurance category.
 	    Betas betas = this.betas.getBetas (insuranceCategory);
@@ -129,19 +137,15 @@ public class ComplianceModel {
 	    double insuranceBeta = getInsuranceBeta (insuranceCategory, countyIntercepts);
 
 	    // Execute the statistical model.
+		//*The result function modified for the OR model 
 	    result = 
 		betas.compliance_intercept
 		+ (1 - (person_sex_male   ? 1 : 0)) * betas.sex_female
-		+      (person_race_black ? 1 : 0)  * betas.race_black
-		+      (person_race_other ? 1 : 0)  * betas.race_other
-		+ (distance_05_10 ? 1 : 0) * betas.distance_05_10
-		+ (distance_10_15 ? 1 : 0) * betas.distance_10_15
-		+ (distance_15_20 ? 1 : 0) * betas.distance_15_20
-		+ (distance_20_25 ? 1 : 0) * betas.distance_20_25
-		+ (distance_gt_25 ? 1 : 0) * betas.distance_gt_25
-		+ betas.year_turned_50
-		+      (person_married ? 1 : 0) * betas.married
-		+      (person_SEHP ? 1 : 0)    * betas.SEHP
+		+ (person_urban_geography ? 1 : 0) * betas.geography_urban
+		+ (person_race_black ? 1 : 0)  * betas.race_black
+		+ (person_race_hispanic ? 1 : 0) * betas. race_hispanic
+		+ (person_race_other ? 1 : 0)  * betas.race_other
+		+ (distance_00_05 ? 1 : 0)*betas.dist_to_endo_fac_0_5
 		+ insuranceBeta;
 
 	    result = Math.exp (result) / ( 1 + Math.exp (result));
@@ -150,7 +154,9 @@ public class ComplianceModel {
 	    if (logger.isDebugEnabled ()) {
 		StringBuffer buffer = new StringBuffer ().
 		    append ("sex_male=").    append (person_sex_male).append ("\n").
+    		    append ("urban_Geography="). append(person_urban_geography).append("\n").
 		    append (" race_black="). append (person_race_black).append ("\n").
+		    append (" race_hispanic="). append(person_race_hispanic).append("\n").
 		    append (" race_other="). append (person_race_other).append ("\n").
 		    append (" zipcode=").    append (person_zipcode).append ("\n").
 		    append (" stcotrbg=").   append (person_stcotrbg).append ("\n").
@@ -158,27 +164,30 @@ public class ComplianceModel {
 		    append (" insurance_category="). append (insuranceCategory).append ("\n").
 
 		    append (" beta_compliance_intercept="). append (betas.compliance_intercept).append ("\n").
+		    append ("beta_urban_geography="). append(betas.geography_urban).append("\n").
 		    append (" beta_sex_female=").           append (betas.sex_female).append ("\n").
 		    append (" beta_race_black=").           append (betas.race_black).append ("\n").
+			append (" beta_race_hispanic=").        append (betas.race_hispanic).append ("\n").
 		    append (" beta_race_other=").           append (betas.race_other).append ("\n").
-		    append (" beta_year_turned_50=").       append (betas.year_turned_50).append ("\n").
-		    append (" beta_married=").              append (betas.married).append ("\n").
-		    append (" beta_SEHP=").                 append (betas.SEHP).append ("\n").
-
-		    append (" beta_distance_05_10=").  append (betas.distance_05_10).append ("\n").
-		    append (" beta_distance_10_15=").  append (betas.distance_10_15).append ("\n").
-		    append (" beta_distance_15_20=").  append (betas.distance_15_20).append ("\n").
-		    append (" beta_distance_20_25=").  append (betas.distance_20_25).append ("\n").
-		    append (" beta_distance_gt_25=").  append (betas.distance_gt_25).append ("\n").
+		    //*append (" beta_year_turned_50=").       append (betas.year_turned_50).append ("\n").
+		    //*append (" beta_married=").              append (betas.married).append ("\n").
+		    //*append (" beta_SEHP=").                 append (betas.SEHP).append ("\n").
+			append ("beta_distance_00_05="). append (betas.dist_to_endo_fac_0_5).append("\n").
+		    //*append (" beta_distance_05_10=").  append (betas.distance_05_10).append ("\n").
+		    //*append (" beta_distance_10_15=").  append (betas.distance_10_15).append ("\n").
+		    //*append (" beta_distance_15_20=").  append (betas.distance_15_20).append ("\n").
+		    //*append (" beta_distance_20_25=").  append (betas.distance_20_25).append ("\n").
+		    //*append (" beta_distance_gt_25=").  append (betas.distance_gt_25).append ("\n").
+			
+		    append (" distance_00_05=").  append (distance_00_05).append("\n").
+		    //*append (" distance_05_10=").  append (distance_05_10).append ("\n").
+		    //*append (" distance_10_15=").  append (distance_10_15).append ("\n").
+		    //*append (" distance_15_20=").  append (distance_15_20).append ("\n").
+		    //*append (" distance_20_25=").  append (distance_20_25).append ("\n").
+		    //*append (" distance_gt_25=").  append (distance_gt_25).append ("\n").
 		    
-		    append (" distance_05_10=").  append (distance_05_10).append ("\n").
-		    append (" distance_10_15=").  append (distance_10_15).append ("\n").
-		    append (" distance_15_20=").  append (distance_15_20).append ("\n").
-		    append (" distance_20_25=").  append (distance_20_25).append ("\n").
-		    append (" distance_gt_25=").  append (distance_gt_25).append ("\n").
-		    
-		    append (" married="). append (person_married).append ("\n").
-		    append (" SEHP="). append (person_SEHP).append ("\n").
+		    //*append (" married="). append (person_married).append ("\n").
+		    //*append (" SEHP="). append (person_SEHP).append ("\n").
 		    append (" insurance_beta="). append (insuranceBeta).append ("\n").
 		    
 		    append (" result="). append (result);
@@ -195,12 +204,28 @@ public class ComplianceModel {
      * @param probability The ordinary probability of compliance.
      * @param test The name of the test to adjust for.
      */
+// Replaced with Rachel Townsley's version of this method for Oregon 2016/05/31 SAC
+/*
     public double getTestAdjustedComplianceProbability (double probability, String test) {
 	double result = probability;
 	if (test.equals ("FOBT")) {
 	    // 1-(1-p)^(1/6)
 	    result = 1 - Math.pow (1 - probability, 1.0 / 6.0); 
 	    logger.debug ("-------------------> " + result);
+	}
+	return result;
+    }
+*/
+    public double getTestAdjustedComplianceProbability (double probability, String test) {
+	double result = probability;
+	if (test.equals ("FOBT")) {
+	   // 1-(1-p)^(1/n)
+	   result = 1 - Math.pow (1 - probability, 1.0 / 4.0); 
+	   logger.debug ("-------------------> " + result);
+	} else {                               //added by rmt on 05/31/16
+	// 1-(1-p)^(10/n)
+	result = 1-Math.pow(1- probability,4.0/10.0);
+	logger.debug ("-------------------> " + result);
 	}
 	return result;
     }
