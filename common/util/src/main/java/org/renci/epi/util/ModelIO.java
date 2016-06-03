@@ -64,6 +64,8 @@ public class ModelIO {
 		    return name.toLowerCase().matches (pattern);
 		}
 	    };
+        // String[] list = directory.list(filenameFilter); // DEBUG
+        // System.out.println("files: " + Arrays.toString(list));      // DEBUG
 	return directory.listFiles (filenameFilter);
     }
     public File [] getFilesByPattern (final String pattern) {

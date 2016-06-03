@@ -222,9 +222,9 @@ public class ComplianceModel {
 	   // 1-(1-p)^(1/n)
 	   result = 1 - Math.pow (1 - probability, 1.0 / 4.0); 
 	   logger.debug ("-------------------> " + result);
-	} else {                               //added by rmt on 05/31/16
+	} else {                               // Added by rmt on 05/31/16, modified 2016/06/02 SAC
 	// 1-(1-p)^(10/n)
-	result = 1-Math.pow(1- probability,4.0/10.0);
+	result = 1-Math.pow(1- probability, 10.0 / 4.0);
 	logger.debug ("-------------------> " + result);
 	}
 	return result;
