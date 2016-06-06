@@ -7813,9 +7813,14 @@ catch (Exception e) {
     			+ "\t" + population.people.get(j).count_stage4_agent
     			+ "\t" + population.people.get(j).num_colonoscopies
     			+ "\t" + population.people.get(j).num_fobt
+    			//+ "\t" + population.people.get(j).prob_colon
     			//+ "\t" + Arrays.toString(population.people.get(j).insurance_traj_09to18)
     			+ "\t" + population.people.get(j).income_actual
     			+ "\t" + population.people.get(j).household_size
+    			//+ "\t" + population.people.get(j).urban
+    			+ "\t" + population.people.get(j).is_urban
+    			+ "\t" + population.people.get(j).stcotrbg.substring(3,5)
+    			+ "\t" + population.people.get(j).compliance_prob_inital
     			+ "\t" + population.people.get(j).insurance_in2013
     			+ "\t" + population.people.get(j).insurance_in2014
     			+ "\t" + population.people.get(j).insurance_in2015
@@ -7953,9 +7958,13 @@ catch (Exception e) {
         + "\t" + "stage4_cancers"
         + "\t" + "count_colonoscopies"
         + "\t" + "count_fobt"
+        //+ "\t" + "prob_col"
       //  +"\t" + "insurance_traj"        
         +"\t" + "income_actual"
         +"\t" + "householdSize"
+        +"\t" + "isUrban"
+        +"\t" + "county"
+        +"\t" + "initialComplianceProb"
         + "\t" + "insurance_in2013"
         + "\t" + "insurance_in2014"
         + "\t" + "insurance_in2015"
@@ -10560,6 +10569,50 @@ import java.util.Random;]]></Import>
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1464889210992</Id>
+					<Name><![CDATA[p_compliant_age50]]></Name>
+					<X>280</X><Y>140</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[double]]></Type>
+						<SdArray>false</SdArray>
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1464889210990</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1464898456786</Id>
+					<Name><![CDATA[p_colonoscopy_age50]]></Name>
+					<X>280</X><Y>120</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[double]]></Type>
+						<SdArray>false</SdArray>
+						<DefaultValue><![CDATA[]]></DefaultValue>
+						<ParameterEditor>
+							<Id>1464898456784</Id>
+							<Name><![CDATA[]]></Name>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1328041345733</Id>
 					<Name><![CDATA[routine_compliance_history]]></Name>
@@ -12311,6 +12364,9 @@ if (main.model_test_probability) {
   prob_fobt = 1 - prob_colon;
   prob_sigmoid = 0;
   
+  //if(this.)
+  //this.colonoscopy_age50 = prob_colon;
+  
 /*
   // Set up age indicator variables for use in the models below.
   // Since this function is called when get_Population().get_Main().age is 0, both of
@@ -12451,7 +12507,7 @@ if (main.model_test_probability) {
   
   // Check that the probabilities add to 1 if they are not all 0.
   */
-  
+
   if (prob_colon != 0 || prob_fobt != 0 || prob_sigmoid != 0) {
     if (Math.abs(prob_colon + prob_fobt + prob_sigmoid - 1) > 1e-5) {
       error("Invalid probability distribution for person " + getIndex() + ": P(colon)=" + prob_colon + " P(FOBT)=" + prob_fobt + " P(sigmoid)=" + prob_sigmoid);
@@ -12764,6 +12820,11 @@ if (screen_state.isStateActive (Person.Diagnostic) && !routine_is_diagnostic) {
 	  	//if get here than uninsured
 	  	//compliance_prob = compliance_prob-0.05; - removed 05/31/16 -rmt
 	  	
+	  	compliance_prob = .25;
+	  	/*compliance_prob =
+		      complianceModel.getTestAdjustedComplianceProbability (
+		          compliance_prob,
+		  	      test.name);*/
 	  	/*
 	  	compliance_prob =
 	      complianceModel.getProbabilityOfCompliance (this.sex_male,
@@ -17535,7 +17596,7 @@ for (int i=0; i<people.size(); i++) {
     p.race_white = !(p.race_black || p.race_hispanic || p.race_other);
 	p.married = in.getBoolean ("MARRIED");
 	p.urban = in.getString("Desig");
-	p.is_urban = (p.urban=="Urban");
+	p.is_urban = (p.urban.equals("Urban"));
 	
     p.insure_none = in.getBoolean("NOINS");
     p.insure_private = in.getBoolean("PRIVA");
@@ -18584,6 +18645,14 @@ if (people.get(1).get_year_from_age() == 2023){
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[is_urban]]></Name>
+							<Value><![CDATA[]]></Value>
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[p_compliant_age50]]></Name>
+							<Value><![CDATA[]]></Value>
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[p_colonoscopy_age50]]></Name>
 							<Value><![CDATA[]]></Value>
 						</Parameter>
 					</Parameters>
@@ -26307,7 +26376,7 @@ private String inputDirectory  = "c:\\dev\\var\\crcsim\\model\\pops";
 //private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\outPSA";
 //private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\outDB";
 //private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-rmt_test";
-private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-rmt_full_2016-05-31-1152";
+private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-sn_full_2016-06-03-1221";
 //private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-2016-05-25-1636_full";
 //private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\Nambiar-Analysis"; 
 //For small test production runs
