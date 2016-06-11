@@ -40,6 +40,7 @@ public class PopulationServiceImpl implements PopulationService {
     private PopulationDAO populationDao;
 
     private HashMap<String, String> urbanRuralMap; // SAC 2016/05/24
+    private HashMap<String, String> INS2014Map;    // SAC 2016/06/10
 
     private GeographyService geographyService;
 
@@ -106,6 +107,12 @@ public class PopulationServiceImpl implements PopulationService {
             throw new RuntimeException("Unable to create urban/rural map. Status code: ", e);
         }
 
+        try {
+            createINS2014Map ();
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to create INS2014 map. Status code: ", e);
+        }
+
 	File outputPath = new File (getDataLocator().getModelInputPath ());
 	if (! outputPath.exists ()) {
 	    outputPath.mkdirs ();
@@ -157,7 +164,9 @@ public class PopulationServiceImpl implements PopulationService {
 	    input = new BufferedInputStream (new FileInputStream (inputFileName));
 	    reader = new BufferedReader (new InputStreamReader (input));
 	    writer = new BufferedWriter (new FileWriter (outputFileName));
-	    Processor processor = new SynthPopAnnotationProcessor (outputKeys, this.urbanRuralMap);
+	    Processor processor = new SynthPopAnnotationProcessor (outputKeys,
+                                                                   this.urbanRuralMap,
+                                                                   this.INS2014Map);
 	    syntheticPopulation = new CSVProcessor (reader,
 						    inputSeparator,
 						    processor,
@@ -199,13 +208,25 @@ public class PopulationServiceImpl implements PopulationService {
     }
 
     private void createUrbanRuralMap() throws IOException {
-        InputStream urbanRuralInput = new BufferedInputStream (new FileInputStream (
+        InputStream input = new BufferedInputStream (new FileInputStream (
             "c:/dev/crcsim/common/util/src/main/resources/data/Zip_to_Urban_Rural_Frontier.csv"));
-        Reader urbanRuralReader =  new BufferedReader (new InputStreamReader (urbanRuralInput));
-        this.urbanRuralMap = new CSVToUrbanRuralHashMap(urbanRuralReader, ',').getMap();
+        Reader reader = new BufferedReader (new InputStreamReader (input));
+        this.urbanRuralMap = new CSVToUrbanRuralHashMap(reader, ',').getMap();
         /* DEBUG SAC 
         for (String key:this.urbanRuralMap.keySet()) {
             System.out.println(key + ": " + this.urbanRuralMap.get(key));
+        }
+        */
+    }
+
+    private void createINS2014Map() throws IOException {
+        InputStream input = new BufferedInputStream (new FileInputStream (
+            "c:/dev/crcsim/common/util/src/main/resources/data/INS2014_Probs_All_OR.csv"));
+        Reader reader = new BufferedReader (new InputStreamReader (input));
+        this.INS2014Map = new CSVToINS2014HashMap(reader, ',').getMap();
+        /* DEBUG 
+        for (String key:this.INS2014Map.keySet()) {
+            System.out.println(key + "," + this.INS2014Map.get(key));
         }
         */
     }
@@ -213,8 +234,8 @@ public class PopulationServiceImpl implements PopulationService {
 
 /**
  *
- * Create a HashMap from a CSV file in which the keys are zipcodes, and the values are strings "Rural"
- * or "Urban"
+ * Create a HashMap from a CSV file in which the keys are zipcodes, and the values are
+ * strings "Rural" or "Urban".
  *
  */
 class CSVToUrbanRuralHashMap {
@@ -226,8 +247,9 @@ class CSVToUrbanRuralHashMap {
       this._input = new CSVReader (input, inputSeparator);
       this.map = new HashMap<String, String> ();
 
-      String [] keys = this._input.readNext ();
-      for (String [] line = this._input.readNext (); line != null; line = this._input.readNext ()) {
+      this._input.readNext (); // Skip over header row.
+      for (String [] line = this._input.readNext (); line != null;
+        line = this._input.readNext ()) {
 	  map.put(line[0], line[4]);
       }
   }
@@ -237,4 +259,36 @@ class CSVToUrbanRuralHashMap {
   }
 }
 
+
+/**
+ *
+ * Create a HashMap from a CSV file. Each key is a string concatenated from the first six
+ * columns for the corresponding row: integer values for sex, ageCat, raceCat, HISP, 
+ * houdeholdIncomeCat_NEW, and MARRIED, respectively. The associated value is from the
+ * seventh "increase" column for that row: a probability such that 0 <= increase <= 1.
+ *
+ */
+class CSVToINS2014HashMap {
+
+  private CSVReader _input;
+  private HashMap<String, String> map;
+
+  public CSVToINS2014HashMap (Reader input, char inputSeparator) throws IOException {
+      this._input = new CSVReader (input, inputSeparator);
+      this.map = new HashMap<String, String> ();
+
+      String key = null;
+      this._input.readNext (); // Skip over the header row.
+      for (String [] line = this._input.readNext (); line != null;
+        line = this._input.readNext ()) {
+          key = line[0] + "," + line[1] + "," + line[2] + "," + line[3] + "," + line[4]
+              + "," + line[5];
+	  map.put(key, line[6]);
+      }
+  }
+
+  public HashMap<String, String> getMap() {
+      return this.map;
+  }
+}
 
