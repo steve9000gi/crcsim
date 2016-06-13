@@ -2,7 +2,6 @@ package org.renci.epi.population;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.FilterWriter;
@@ -52,9 +51,8 @@ class SynthPopAnnotationProcessor implements Processor {
   private static int _id = 0;
   Random _randomGenerator = new Random ( 19580427 );
   private HashMap<String, String> _urbanRuralMap; // SAC 2016/05/24
-  private HashMap<String, String> _INS2014Map; // SAC 2016/06/10
+  private HashMap<String, String> _INS2014Map;    // SAC 2016/06/10
   
-  //static Random r = new Random (625345);
   static Random r = new Random (987654);
   static double random = r.nextDouble();
 
@@ -253,7 +251,7 @@ class SynthPopAnnotationProcessor implements Processor {
   
         InsuranceStatusEnum eInsStatus = InsuranceStatusEnum.UNKNOWN;
 
-	try {
+        try {
 	  person = Person.getPerson (Integer.parseInt (record.get ("people.age")),
 	                             Integer.parseInt (record.get ("households.hh_income")),
 				     Integer.parseInt (record.get ("households.hh_size")),
@@ -262,41 +260,41 @@ class SynthPopAnnotationProcessor implements Processor {
 				     Integer.parseInt (record.get ("people.sex")));
 	  InsuranceStatus status = _insuranceStrategy.getInsuranceStatus (person);
 
-       // person.getHouseholdIncomeCat () and getHouseholdSizeCat () must be called *after*
-       // person.getPerson (...):
-       record.put ("NEW_INCOME_CAT", Integer.toString (person.getHouseholdIncomeCat ()));
-       record.put ("householdSizeCat", Integer.toString (person.getHouseholdSizeCat ())); // New 2016/04/05 SAC
-       record.put ("householdSize", record.get ("households.hh_size")); // New 2016/04/05 SAC
+          // person.getHouseholdIncomeCat () and getHouseholdSizeCat () must be called *after*
+          // person.getPerson (...):
+          record.put ("NEW_INCOME_CAT", Integer.toString (person.getHouseholdIncomeCat ()));
+          record.put ("householdSizeCat", Integer.toString (person.getHouseholdSizeCat ())); // New 2016/04/05 SAC
+          record.put ("householdSize", record.get ("households.hh_size")); // New 2016/04/05 SAC
 
-/* debug
-    record.put ("pumsp_rac1p", record.get ("pumsp.rac1p")); // one more added 2013/01/17
-	record.put ("people_race", record.get ("people.race"));
-	record.put ("households_hh_income", record.get ("households.hh_income"));
-	record.put ("people_age", record.get ("people.age"));
-	record.put ("households_hh_size", record.get ("households.hh_size"));
-    record.put ("insStatus", _insuranceStrategy.getInsStatus().toString());
-    record.put ("insRandom", Double.toString(_insuranceStrategy.getInsRandom()));
-    record.put ("personKey", _insuranceStrategy.getPersonKey());
-    record.put ("outBlack", record.get ("BLACK"));
-    record.put ("outINCOME", record.get ("INCOME"));
-*/
+          /* debug
+          record.put ("pumsp_rac1p", record.get ("pumsp.rac1p")); // added 2013/01/17
+          record.put ("people_race", record.get ("people.race"));
+          record.put ("households_hh_income", record.get ("households.hh_income"));
+          record.put ("people_age", record.get ("people.age"));
+          record.put ("households_hh_size", record.get ("households.hh_size"));
+          record.put ("insStatus", _insuranceStrategy.getInsStatus().toString());
+          record.put ("insRandom", Double.toString(_insuranceStrategy.getInsRandom()));
+          record.put ("personKey", _insuranceStrategy.getPersonKey());
+          record.put ("outBlack", record.get ("BLACK"));
+          record.put ("outINCOME", record.get ("INCOME"));
+          */
 
-      if (_insuranceStrategy.hasPrivateInsurance (status)) {
-        record.put ("PRIVA", "1");
-        eInsStatus = InsuranceStatusEnum.PRIVA; 
-      } else if (_insuranceStrategy.hasMedicareOnly (status)) {
-        record.put ("MEDICARE", "1");
-        eInsStatus = InsuranceStatusEnum.MEDICARE;
-      } else if (_insuranceStrategy.hasMedicaidOnly (status)) {
-        record.put ("MEDICAID", "1");
-        eInsStatus = InsuranceStatusEnum.MEDICAID;
-      } else if (_insuranceStrategy.hasDual (status)) {
-        record.put ("DUAL", "1");
-        eInsStatus = InsuranceStatusEnum.DUAL;
-      } else if (_insuranceStrategy.hasNoInsurance (status)) {
-        record.put ("NOINS", "1");
-        eInsStatus = InsuranceStatusEnum.NOINS;
-      }
+          if (_insuranceStrategy.hasPrivateInsurance (status)) {
+            record.put ("PRIVA", "1");
+            eInsStatus = InsuranceStatusEnum.PRIVA; 
+          } else if (_insuranceStrategy.hasMedicareOnly (status)) {
+            record.put ("MEDICARE", "1");
+            eInsStatus = InsuranceStatusEnum.MEDICARE;
+          } else if (_insuranceStrategy.hasMedicaidOnly (status)) {
+            record.put ("MEDICAID", "1");
+            eInsStatus = InsuranceStatusEnum.MEDICAID;
+          } else if (_insuranceStrategy.hasDual (status)) {
+            record.put ("DUAL", "1");
+            eInsStatus = InsuranceStatusEnum.DUAL;
+          } else if (_insuranceStrategy.hasNoInsurance (status)) {
+            record.put ("NOINS", "1");
+            eInsStatus = InsuranceStatusEnum.NOINS;
+          }
 	} catch (NumberFormatException e) {
 	  e.printStackTrace ();
 	  throw new RuntimeException ("Error e");
@@ -304,7 +302,7 @@ class SynthPopAnnotationProcessor implements Processor {
 
 	addNewInsuranceStatusValues(eInsStatus, record);
 
-        addINS_NEW_2014_OR(record, person); // Oregon values
+        addINS_NEW_2014(record, person); // Oregon values
 
         addUrbanRuralDesignation(record); // Oregon only 
 
@@ -338,46 +336,45 @@ class SynthPopAnnotationProcessor implements Processor {
 	return String.valueOf (_randomGenerator.nextDouble () < probability);
   }
 
-  ///addNewInsuranceStatusValues////////////////////////////////////////////////////////////////////
-  //
-  // Add 10 boolean values (represented by "1" or "0"), five for insurance status at age < 65 and
-  // the other five for insurance status at age >= 65. This code has been modified from code that
-  // was previously in the AnyLogic model.
-  //
-  // Algorithm:
-  //  if age < 65:
-  //    if no insurance, then insNoneLt65 
-  //      if low income then
-  //        if random < constant0 then insDualGte65 (act like dual >= 65)
-  //        else insMedicareGte65 (act like Medicare >= 65)
-  //      else insMedicareGte65 (act like Medicare >= 65)
-  //    else if private, then insPrivaLt65 and insMedicareGte65 (act like Medicare >= 65)
-  //    else if Medicare, then insMedicareLt65 and insMedicareGte65 (Medicare stays Medicare)
-  //    else if dual, then insDualLt65 and insDualGte65 (dual stays dual)
-  //    else if Medicaid, then insMedicaidLt65 and insDualGte65 (Medicaid goes dual) 
-  //  else (if age >= 65: we know what they are now,  and need to work out insurance < 65)
-  //    if no insurance, then insNoneLt65 and insNoneGte65
-  //    else if private, then insPrivaLt65 and insPrivaGte65
-  //    else if Medicare, then insMedicareGte65
-  //      if low income then
-  //        if random < constant1 then insMedicareLt65 (disabled)
-  //        else if (same?) random < constant2 then insNoneLt65 (no insurance < 65)
-  //        else insPrivaLt65
-  //      else if mid income then
-  //        if random < constant3 then insMedicareLt65
-  //        else if random < constant4 then insNoneLt65 (no insurance < 65)
-  //        else insPrivaLt65 (private < 65)
-  //      else (high income) 
-  //        if random < constant5 then insMedicareLt65
-  //        else insPrivaLt65
-  //    else if dual
-  //      if random < constant6 then insDualLt65
-  //      else if random < constant7 then insMedicaidLt65
-  //      else insNoneLt65
-  //    else if Medicaid, then insMedicaidGte65 and insMedicaidLt65
-  //  end age >= 65
-  //
-  //////////////////////////////////////////////////////////////////////////////////////////////////
+  /**
+   * Add 10 boolean values (represented by "1" or "0"), five for insurance status at age < 65 and
+   * the other five for insurance status at age >= 65. This code has been modified from code that
+   * was previously in the AnyLogic model.
+   *
+   * Algorithm:
+   *  if age < 65:
+   *    if no insurance, then insNoneLt65 
+   *      if low income then
+   *        if random < constant0 then insDualGte65 (act like dual >= 65)
+   *        else insMedicareGte65 (act like Medicare >= 65)
+   *      else insMedicareGte65 (act like Medicare >= 65)
+   *    else if private, then insPrivaLt65 and insMedicareGte65 (act like Medicare >= 65)
+   *    else if Medicare, then insMedicareLt65 and insMedicareGte65 (Medicare stays Medicare)
+   *    else if dual, then insDualLt65 and insDualGte65 (dual stays dual)
+   *    else if Medicaid, then insMedicaidLt65 and insDualGte65 (Medicaid goes dual) 
+   *  else (if age >= 65: we know what they are now,  and need to work out insurance < 65)
+   *    if no insurance, then insNoneLt65 and insNoneGte65
+   *    else if private, then insPrivaLt65 and insPrivaGte65
+   *    else if Medicare, then insMedicareGte65
+   *      if low income then
+   *        if random < constant1 then insMedicareLt65 (disabled)
+   *        else if (same?) random < constant2 then insNoneLt65 (no insurance < 65)
+   *        else insPrivaLt65
+   *      else if mid income then
+   *        if random < constant3 then insMedicareLt65
+   *        else if random < constant4 then insNoneLt65 (no insurance < 65)
+   *        else insPrivaLt65 (private < 65)
+   *      else (high income) 
+   *        if random < constant5 then insMedicareLt65
+   *        else insPrivaLt65
+   *    else if dual
+   *      if random < constant6 then insDualLt65
+   *      else if random < constant7 then insMedicaidLt65
+   *      else insNoneLt65
+   *    else if Medicaid, then insMedicaidGte65 and insMedicaidLt65
+   *  end age >= 65
+   *
+   */
   private void addNewInsuranceStatusValues(InsuranceStatusEnum eInsStatus,
                        HashMap<String,String> record) {
 
@@ -498,51 +495,35 @@ class SynthPopAnnotationProcessor implements Processor {
     } // end age >= 65
   } // end addNewInsuranceStatusValues(...)
 
-
-  ///addINS_NEW_2014_OR/////////////////////////////////////////////////////////////////////////////
-  //
-  // Maria Mayorga's instructions (edited for context): Create a new insurance variable for the
-  // population input file that is read in by AnyLogic. “INS_NEW_2014”. According to the attributes
-  // listed in “Pred_New_Ins_2014.csv”(sex, ageCat,HISP, householdIncomeCat_New, MARRIED –- from
-  // person.getPerson) use the “increase” number to assign a binary variable “INS_NEW_2014” as
-  // follows: Draw a random number from 0 to 1, say the result is “r”.  If r < increase then 1 else
-  // 0. If there are individuals for which the attributes are not listed, set “increase” to 0.
-  // 
-  // For example for a person with sex=1, ageCat=3, raceCat=1, HISP=0, MARRIED=1, set the increase
-  // to 0.37, draw a random number “r” if r < 0.37 set INS_NEW_2014 = 1, else 0.
-  //
-  // Some notes.  For some of the attributes multiple results use the same increase level.  For
-  // example, for ageCat = 2 or 3 we use the same row, for raceCat = 1,2,3 if HISP = 1 then we use
-  // the same row.
-  //
-  // NOTE (SAC 2016/05/01): This function must be called AFTER the various values used within
-  // ("sex", etc.) have been put in the record parameter.
-  //
-  // NOTE (SAC 2016/05/17): similar to addINS_NEW_2014 except with Oregon probabilities.
-  // 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  private void addINS_NEW_2014_OR(HashMap<String,String> record, Person person) {
-    int sex = Character.getNumericValue(record.get("sex").charAt(0));
-    int ageCat = person.getAgeCat();
-    int raceCat = person.getRaceCat();
-    int HISP =  Character.getNumericValue(record.get("HISP").charAt(0));
-    int householdIncomeCat_NEW = Character.getNumericValue(record.get("householdIncomeCat_NEW").
-                                   charAt(0));
-    int MARRIED =  Character.getNumericValue(record.get("MARRIED").charAt(0));
+  /**
+   * Create a new insurance variable for the population input file that is read in by AnyLogic.
+   * According to the current person's relevant attributes (sex, ageCat, raceCat, HISP,
+   * householdIncomeCat_New, MARRIED), select the corresponding “increase” probability value to
+   * assign a binary variable “INS_NEW_2014” as follows: Draw a random number from 0 to 1, say the
+   * result is “r”. If r < increase then INS_NEW_2014 = 1 else 0. For any individuals for which
+   * the attributes are not listed, “increase” gets its default value 0.
+   * 
+   * For example for a person with sex=1, ageCat=3, raceCat=1, HISP=0, householdIncomeCat_New = 4,
+   * and MARRIED=1, set increase to 0.112635138, and draw a random number “r”. If r < 0.112635138,
+   * set INS_NEW_2014 = 1, else 0.
+   *
+   * NOTE (SAC 2016/05/01): This function must be called AFTER the various values used within
+   * ("sex", etc.) have been put in the "record" parameter.
+   */
+  private void addINS_NEW_2014(HashMap<String,String> record, Person person) {
+    String sex = record.get("sex");
+    String ageCat = Integer.toString(person.getAgeCat());
+    String raceCat = Integer.toString(person.getRaceCat());
+    String HISP =  record.get("HISP");
+    String householdIncomeCat_NEW = record.get("householdIncomeCat_NEW");
+    String MARRIED =  record.get("MARRIED");
     
-    String key = sex + ","
-               + ageCat + ","
-               + raceCat + ","
-               + HISP + ","
-               + householdIncomeCat_NEW + ","
-               + MARRIED;
+    String key = sex + ageCat + raceCat + HISP + householdIncomeCat_NEW + MARRIED;
 
     Double increase = Double.parseDouble(this._INS2014Map.get(key));
 
     record.put("INS_NEW_2014", getRandom() < increase ? "1" : "0");
     record.put("INS_NEW_2014_PROB", Double.toString(increase));
-    // DEBUG String s = sex + ", " + ageCat + ", " + raceCat + ", " + HISP + ", "
-    //    + householdIncomeCat_NEW + ", " + MARRIED;
     record.put("Det", key);
   }
 
@@ -553,13 +534,12 @@ class SynthPopAnnotationProcessor implements Processor {
   };
 }
 
-
-  /**
-   *
-   * Read JSON data. 
-   *
-   */
-  class JSONReader {
+/**
+ *
+ * Read JSON data. 
+ *
+ */
+class JSONReader {
 
     /**
      * Read JSON from string.
@@ -585,10 +565,9 @@ class SynthPopAnnotationProcessor implements Processor {
 	  }
 	  return result;
     }
+}
 
-  }
-
-  class QuotelessWriter extends FilterWriter {
+class QuotelessWriter extends FilterWriter {
     public QuotelessWriter (Writer writer) {
 	  super (writer);
     }
@@ -597,13 +576,13 @@ class SynthPopAnnotationProcessor implements Processor {
 	    super.write (c);
 	  }
     }
-  }
+}
 
-  /**
-   * Write to CSV format.
-   * Use a buffered writer flushing on a set period and on close.
-   */
-  class PopulationWriter {
+/**
+ * Write to CSV format.
+ * Use a buffered writer flushing on a set period and on close.
+ */
+class PopulationWriter {
 
     private CSVWriter _writer;
     private char _separator;
@@ -636,14 +615,14 @@ class SynthPopAnnotationProcessor implements Processor {
 	  this._writer.flush ();
 	  this._writer.close ();
     }
-  }
+}
 
-  /**
-   *
-   * Encapsulate semantics of synthetic population and format translation.
-   *
-   */
-  public class CSVProcessor {
+/**
+ *
+ * Encapsulate semantics of synthetic population and format translation.
+ *
+ */
+public class CSVProcessor {
 
     private Processor _processor;
     private CSVReader _input;
@@ -671,16 +650,6 @@ class SynthPopAnnotationProcessor implements Processor {
 	  this._writer = new PopulationWriter (output, outputSeparator);
 	  this._writer.write (processor.getOutputKeys ());
     }
-
-    /**
-     *
-     * Return the map that maps zip codes to urban/rural designations
-     *
-     *
-    public HashMap<String, String>getUrbanRuralMap() {
-        return this.urbanRuralMap;
-    }
-*/
 
     /**
      *
@@ -719,5 +688,5 @@ class SynthPopAnnotationProcessor implements Processor {
     public void close () throws IOException {
 	  this._writer.close ();
     }
-  }
+}
 

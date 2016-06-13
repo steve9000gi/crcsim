@@ -281,8 +281,7 @@ class CSVToINS2014HashMap {
       this._input.readNext (); // Skip over the header row.
       for (String [] line = this._input.readNext (); line != null;
         line = this._input.readNext ()) {
-          key = line[0] + "," + line[1] + "," + line[2] + "," + line[3] + "," + line[4]
-              + "," + line[5];
+          key = line[0] + line[1] + line[2] + line[3] + line[4] + line[5];
 	  map.put(key, line[6]);
       }
   }
