@@ -54,16 +54,15 @@ class SynthPopAnnotationProcessor implements Processor {
   private HashMap<String, String> _INS2014Map;    // SAC 2016/06/10
   
   static Random r = new Random (987654);
-  static double random = r.nextDouble();
+  static double random = r.nextDouble ();
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  //
-  // Return the same pseudorandom sequence in each build:
-  //
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  public double getRandom() {
-    return r.nextDouble();  // Same sequence each build
-    //return Math.random(); // Returns a different sequence for each build
+  /**
+   * Return the same pseudorandom sequence in each build:
+   *
+   */
+  public double getRandom () {
+    return r.nextDouble ();  // Same sequence each build
+    //return Math.random (); // Returns a different sequence for each build
   }
 
   private InsuranceStrategy _insuranceStrategy = new BasicInsuranceStrategy ();
@@ -201,7 +200,7 @@ class SynthPopAnnotationProcessor implements Processor {
           incomeCatNew = "5";
         }
     
-        record.put("householdIncomeCat_NEW", incomeCatNew);
+        record.put ("householdIncomeCat_NEW", incomeCatNew);
 
 
 	/** alone status */
@@ -272,9 +271,9 @@ class SynthPopAnnotationProcessor implements Processor {
           record.put ("households_hh_income", record.get ("households.hh_income"));
           record.put ("people_age", record.get ("people.age"));
           record.put ("households_hh_size", record.get ("households.hh_size"));
-          record.put ("insStatus", _insuranceStrategy.getInsStatus().toString());
-          record.put ("insRandom", Double.toString(_insuranceStrategy.getInsRandom()));
-          record.put ("personKey", _insuranceStrategy.getPersonKey());
+          record.put ("insStatus", _insuranceStrategy.getInsStatus ().toString ());
+          record.put ("insRandom", Double.toString (_insuranceStrategy.getInsRandom ()));
+          record.put ("personKey", _insuranceStrategy.getPersonKey ());
           record.put ("outBlack", record.get ("BLACK"));
           record.put ("outINCOME", record.get ("INCOME"));
           */
@@ -300,11 +299,11 @@ class SynthPopAnnotationProcessor implements Processor {
 	  throw new RuntimeException ("Error e");
 	}
 
-	addNewInsuranceStatusValues(eInsStatus, record);
+	addNewInsuranceStatusValues (eInsStatus, record);
 
-        addINS_NEW_2014(record, person); // Oregon values
+        addINS_NEW_2014 (record, person); // Oregon values
 
-        addUrbanRuralDesignation(record); // Oregon only 
+        addUrbanRuralDesignation (record); // Oregon only 
 
 	/**
 	   RTI model docs: EDU	boolean	education level; true implies some college or higher
@@ -375,11 +374,11 @@ class SynthPopAnnotationProcessor implements Processor {
    *  end age >= 65
    *
    */
-  private void addNewInsuranceStatusValues(InsuranceStatusEnum eInsStatus,
+  private void addNewInsuranceStatusValues (InsuranceStatusEnum eInsStatus,
                        HashMap<String,String> record) {
 
-    int age = Integer.parseInt(record.get("people.age"));
-    int incomeCategory = Integer.parseInt(record.get("NEW_INCOME_CAT"));
+    int age = Integer.parseInt (record.get ("people.age"));
+    int incomeCategory = Integer.parseInt (record.get ("NEW_INCOME_CAT"));
     final int LOW_INCOME = 1;
     final int MID_INCOME = 2;
     final int HIGH_INCOME = 3;
@@ -387,16 +386,16 @@ class SynthPopAnnotationProcessor implements Processor {
     final String T = "1";
     final String F = "0";
 
-    record.put("insNoneLt65", F);
-    record.put("insPrivaLt65", F);
-    record.put("insMedicareLt65", F);
-    record.put("insMedicaidLt65", F);
-    record.put("insDualLt65", F);
-    record.put("insNoneGte65", F);
-    record.put("insPrivaGte65", F);
-    record.put("insMedicareGte65", F);
-    record.put("insMedicaidGte65", F);
-    record.put("insDualGte65", F);
+    record.put ("insNoneLt65", F);
+    record.put ("insPrivaLt65", F);
+    record.put ("insMedicareLt65", F);
+    record.put ("insMedicaidLt65", F);
+    record.put ("insDualLt65", F);
+    record.put ("insNoneGte65", F);
+    record.put ("insPrivaGte65", F);
+    record.put ("insMedicareGte65", F);
+    record.put ("insMedicaidGte65", F);
+    record.put ("insDualGte65", F);
 
     // Transition parameter for insurance at age 50 for those < 65:
     final double lt65LoIncomeNone2Dual = 1.0; // constant0
@@ -424,76 +423,76 @@ class SynthPopAnnotationProcessor implements Processor {
 
     if (age < 65) {
       if (eInsStatus == InsuranceStatusEnum.NOINS) {
-        record.put("insNoneLt65", T);
+        record.put ("insNoneLt65", T);
         if (incomeCategory == LOW_INCOME) {
-          if (getRandom() < lt65LoIncomeNone2Dual) {
-            record.put("insDualGte65", T);
+          if (getRandom () < lt65LoIncomeNone2Dual) {
+            record.put ("insDualGte65", T);
           } else {
-             record.put("insMedicareGte65", T);
+             record.put ("insMedicareGte65", T);
           }
         } else { // not LOW_INCOME
-          record.put("insMedicareGte65", T);
+          record.put ("insMedicareGte65", T);
         }
       } else if (eInsStatus == InsuranceStatusEnum.PRIVA) {
-        record.put("insPrivaLt65", T);
-        record.put("insMedicareGte65", T);
+        record.put ("insPrivaLt65", T);
+        record.put ("insMedicareGte65", T);
       } else if (eInsStatus == InsuranceStatusEnum.MEDICARE) {
-        record.put("insMedicareLt65", T);
-        record.put("insMedicareGte65", T);
+        record.put ("insMedicareLt65", T);
+        record.put ("insMedicareGte65", T);
       } else if (eInsStatus == InsuranceStatusEnum.DUAL) {
-        record.put("insDualLt65", T);
-        record.put("insDualGte65", T);
+        record.put ("insDualLt65", T);
+        record.put ("insDualGte65", T);
       } else if (eInsStatus == InsuranceStatusEnum.MEDICAID) {
-        record.put("insMedicaidLt65", T);
-        record.put("insDualGte65", T);
+        record.put ("insMedicaidLt65", T);
+        record.put ("insDualGte65", T);
       }
     } else { // age >= 65: we know what they are now and need to work out insurance < 65
       if (eInsStatus == InsuranceStatusEnum.NOINS) {
-        record.put("insNoneLt65", T);
-        record.put("insNoneGte65", T);
+        record.put ("insNoneLt65", T);
+        record.put ("insNoneGte65", T);
       } else if (eInsStatus == InsuranceStatusEnum.PRIVA) {
-        record.put("insPrivaLt65", T);
-        record.put("insPrivaGte65", T);
+        record.put ("insPrivaLt65", T);
+        record.put ("insPrivaGte65", T);
       } else if (eInsStatus == InsuranceStatusEnum.MEDICARE) {
-        record.put("insMedicareGte65", T);
+        record.put ("insMedicareGte65", T);
         if (incomeCategory == LOW_INCOME) {
-          if (getRandom() < GTE65_LOW_INCOME_MCARE_WAS_MCARE) {
-            record.put("insMedicareLt65", T);
-          } else if (getRandom() < GTE65_LOW_INCOME_MCARE_WAS_NONE) {
-            record.put("insNoneLt65", T);
+          if (getRandom () < GTE65_LOW_INCOME_MCARE_WAS_MCARE) {
+            record.put ("insMedicareLt65", T);
+          } else if (getRandom () < GTE65_LOW_INCOME_MCARE_WAS_NONE) {
+            record.put ("insNoneLt65", T);
           } else {
-            record.put("insPrivaLt65", T);
+            record.put ("insPrivaLt65", T);
           }
         } else if (incomeCategory == MID_INCOME) {
-          if (getRandom() < GTE65_MID_INCOME_MCARE_WAS_MCARE) {
-            record.put("insMedicareLt65", T);
-          } else if (getRandom() < GTE65_MID_INCOME_MCARE_WAS_NONE) {
-            record.put("insNoneLt65", T);
+          if (getRandom () < GTE65_MID_INCOME_MCARE_WAS_MCARE) {
+            record.put ("insMedicareLt65", T);
+          } else if (getRandom () < GTE65_MID_INCOME_MCARE_WAS_NONE) {
+            record.put ("insNoneLt65", T);
           } else {
-            record.put("insPrivaLt65", T);
+            record.put ("insPrivaLt65", T);
           }
         } else { // HIGH_INCOME
-          if (getRandom() < GTE65_HIGH_INCOME_MCARE_WAS_MCARE) {
-            record.put("insMedicareLt65", T);
+          if (getRandom () < GTE65_HIGH_INCOME_MCARE_WAS_MCARE) {
+            record.put ("insMedicareLt65", T);
           } else {
-            record.put("insPrivaLt65", T);
+            record.put ("insPrivaLt65", T);
           }
         } // HIGH_INCOME
       } else if (eInsStatus == InsuranceStatusEnum.DUAL) {
-        record.put("insDualGte65", T);
-        if (getRandom() < GTE65_DUAL_WAS_MAID) {
-          record.put("insMedicaidLt65", T);
-        } else if (getRandom() < GTE65_DUAL_WAS_DUAL) {
-          record.put("insDualLt65", T);
+        record.put ("insDualGte65", T);
+        if (getRandom () < GTE65_DUAL_WAS_MAID) {
+          record.put ("insMedicaidLt65", T);
+        } else if (getRandom () < GTE65_DUAL_WAS_DUAL) {
+          record.put ("insDualLt65", T);
         } else {
-          record.put("insNoneLt65", T);
+          record.put ("insNoneLt65", T);
         }
       } else if (eInsStatus == InsuranceStatusEnum.MEDICAID) {
-        record.put("insMedicaidLt65", T);
-        record.put("insMedicaidGte65", T);
+        record.put ("insMedicaidLt65", T);
+        record.put ("insMedicaidGte65", T);
       }
     } // end age >= 65
-  } // end addNewInsuranceStatusValues(...)
+  } // end addNewInsuranceStatusValues (...)
 
   /**
    * Create a new insurance variable for the population input file that is read in by AnyLogic.
@@ -505,32 +504,29 @@ class SynthPopAnnotationProcessor implements Processor {
    * 
    * For example for a person with sex=1, ageCat=3, raceCat=1, HISP=0, householdIncomeCat_New = 4,
    * and MARRIED=1, set increase to 0.112635138, and draw a random number “r”. If r < 0.112635138,
-   * set INS_NEW_2014 = 1, else 0.
+   * set INS_NEW_2014 = "1", else "0".
    *
-   * NOTE (SAC 2016/05/01): This function must be called AFTER the various values used within
-   * ("sex", etc.) have been put in the "record" parameter.
+   * NOTE: This function must be called AFTER the various values used within ("sex", etc.) have been   * put in the "record" parameter.
    */
-  private void addINS_NEW_2014(HashMap<String,String> record, Person person) {
-    String sex = record.get("sex");
-    String ageCat = Integer.toString(person.getAgeCat());
-    String raceCat = Integer.toString(person.getRaceCat());
-    String HISP =  record.get("HISP");
-    String householdIncomeCat_NEW = record.get("householdIncomeCat_NEW");
-    String MARRIED =  record.get("MARRIED");
-    
+  private void addINS_NEW_2014 (HashMap<String,String> record, Person person) {
+    String sex = record.get ("sex");
+    String ageCat = Integer.toString (person.getAgeCat ());
+    String raceCat = Integer.toString (person.getRaceCat ());
+    String HISP =  record.get ("HISP");
+    String householdIncomeCat_NEW = record.get ("householdIncomeCat_NEW");
+    String MARRIED =  record.get ("MARRIED");
     String key = sex + ageCat + raceCat + HISP + householdIncomeCat_NEW + MARRIED;
+    Double increase = Double.parseDouble (this._INS2014Map.get (key));
 
-    Double increase = Double.parseDouble(this._INS2014Map.get(key));
-
-    record.put("INS_NEW_2014", getRandom() < increase ? "1" : "0");
-    record.put("INS_NEW_2014_PROB", Double.toString(increase));
-    record.put("Det", key);
+    record.put ("INS_NEW_2014", getRandom () < increase ? "1" : "0");
+    record.put ("INS_NEW_2014_PROB", Double.toString (increase));
+    record.put ("Det", key);
   }
 
-  private void addUrbanRuralDesignation(HashMap<String, String> record) {
-    String zip = record.get("zipcode");
-    String desig = this._urbanRuralMap.get(zip);
-    record.put("Desig", desig);
+  private void addUrbanRuralDesignation (HashMap<String, String> record) {
+    String zip = record.get ("zipcode");
+    String desig = this._urbanRuralMap.get (zip);
+    record.put ("Desig", desig);
   };
 }
 
