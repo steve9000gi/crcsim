@@ -17,6 +17,7 @@ import org.renci.epi.util.Geography;
 
 public class ModalityModelTest {
 	
+/* TEMP OR
     private static Log logger = LogFactory.getLog (ModalityModelTest.class); 
 
     @Test
@@ -50,5 +51,6 @@ public class ModalityModelTest {
 	    
 	}
     }
+*/
 }
 

@@ -161,13 +161,13 @@ class SynthPopAnnotationProcessor implements Processor {
 	/** age */
 	record.put ("AGE_G2", record.get ("people.age"));
 
-    /** marital status */
+        /** marital status */
 	String maritalStatusString = record.get ("pumsp.mar");
 	try {
 	  int maritalStatusCode = Integer.parseInt (maritalStatusString);
 	  record.put ("MARRIED", maritalStatusCode == PUMS.MAR_MARRIED ? "1" : "0");
 	} catch (NumberFormatException e) {
-	  throw new RuntimeException ("unable to parse marital status code: " + maritalStatusString, e);
+	  throw new RuntimeException ("Can't parse marital status code: " + maritalStatusString, e);
 	}
 
 	/** income */
@@ -300,9 +300,7 @@ class SynthPopAnnotationProcessor implements Processor {
 	}
 
 	addNewInsuranceStatusValues (eInsStatus, record);
-
         addINS_NEW_2014 (record, person); // Oregon values
-
         addUrbanRuralDesignation (record); // Oregon only 
 
 	/**
@@ -506,7 +504,8 @@ class SynthPopAnnotationProcessor implements Processor {
    * and MARRIED=1, set increase to 0.112635138, and draw a random number “r”. If r < 0.112635138,
    * set INS_NEW_2014 = "1", else "0".
    *
-   * NOTE: This function must be called AFTER the various values used within ("sex", etc.) have been   * put in the "record" parameter.
+   * NOTE: This function must be called AFTER the various values used within ("sex", etc.) have been
+   * put in the "record" parameter.
    */
   private void addINS_NEW_2014 (HashMap<String,String> record, Person person) {
     String sex = record.get ("sex");
