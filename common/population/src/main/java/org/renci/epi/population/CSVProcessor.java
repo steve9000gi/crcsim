@@ -73,24 +73,24 @@ class SynthPopAnnotationProcessor implements Processor {
   public SynthPopAnnotationProcessor (String [] outputKeys, 
                                       HashMap<String, String> urbanRuralMap,
                                       HashMap<String, String> INS2014Map) {
-	assert (outputKeys != null) : "Output keys must be non-null";
-	this._outputKeys = outputKeys;
-        this._urbanRuralMap = urbanRuralMap;
-        this._INS2014Map = INS2014Map;
+    assert (outputKeys != null) : "Output keys must be non-null";
+    this._outputKeys = outputKeys;
+    this._urbanRuralMap = urbanRuralMap;
+    this._INS2014Map = INS2014Map;
   }
   
   public String [] getOutputKeys () {
-	return this._outputKeys;
+    return this._outputKeys;
   }
   
   /**
    * Set the input header row.
    */
   public void setHeader (String [] header) {
-	assert (header != null) : "Header row must be non-null";
-	if (logger.isDebugEnabled ()) {
-	  this.logger.debug ("setting header: " + StringUtils.join (header, ","));
-	}
+    assert (header != null) : "Header row must be non-null";
+    if (logger.isDebugEnabled ()) {
+      this.logger.debug ("setting header: " + StringUtils.join (header, ","));
+    }
     this._header = header;
   }
 
@@ -98,17 +98,17 @@ class SynthPopAnnotationProcessor implements Processor {
    * Map a row into its new form.
    */
   public String [] process (String [] data, HashMap<String,String> record) {
-	assert (data != null) : "Data must be non null";
-	assert (data.length == this._header.length) : "Data length is not " + this._header.length;
+    assert (data != null) : "Data must be non null";
+    assert (data.length == this._header.length) : "Data length is not " + this._header.length;
 
-	StringBuilder buffer = new StringBuilder (100);
-	for (int c = 0; c < this._header.length; c++) {
-	  String key = this._header [c];
-	  String datum = data [c];
-	  record.put (key, datum);
-	}
-	
-	translateOutputLine (record);
+    StringBuilder buffer = new StringBuilder (100);
+    for (int c = 0; c < this._header.length; c++) {
+      String key = this._header [c];
+      String datum = data [c];
+      record.put (key, datum);
+    }
+
+    translateOutputLine (record);
 	
     String [] output = new String [_outputKeys.length];
 
@@ -121,216 +121,216 @@ class SynthPopAnnotationProcessor implements Processor {
       }
     }
 
-	return output;
+    return output;
   }   
   
   /**
    *  http://www.census.gov/acs/www/Downloads/data_documentation/pums/DataDict/PUMS_Data_Dictionary_2009-2011.pdf
    */
   class PUMS {
-	static final short RAC1P_WHITE = 1;
-	static final short RAC1P_BLACK = 2;
-	static final short HISP_NOTHISPANIC = 1;
+    static final short RAC1P_WHITE = 1;
+    static final short RAC1P_BLACK = 2;
+    static final short HISP_NOTHISPANIC = 1;
 
     static final short MAR_MARRIED = 1;
   }
 
   private enum InsuranceStatusEnum { NOINS, PRIVA, MEDICARE, MEDICAID, DUAL, UNKNOWN }
-				
+
 
   private void translateOutputLine (HashMap<String,String> record) {
-        Person person = null;
+    Person person = null;
 
-	/** A unique id */
-	record.put ("id", String.valueOf (_id++));
+    /** A unique id */
+    record.put ("id", String.valueOf (_id++));
 
-	/** Synthetic population id */
-	record.put ("p_id", record.get ("people.p_id"));
+    /** Synthetic population id */
+    record.put ("p_id", record.get ("people.p_id"));
 
-	/**
-	 * In the synthetic population data, sex is
-	 *   1 - male
-	 *   2 - female
-	 * And in the RTI input file
-	 *   SEXC is true if male
-	 */
-	String sex = record.get ("people.sex");
-	record.put ("sex", record.get ("people.sex"));
-	record.put ("SEXC", String.valueOf (sex.charAt (0) == '1' ? 1 : 0));
+    /**
+     * In the synthetic population data, sex is
+     *   1 - male
+     *   2 - female
+     * And in the RTI input file
+     *   SEXC is true if male
+     */
+    String sex = record.get ("people.sex");
+    record.put ("sex", record.get ("people.sex"));
+    record.put ("SEXC", String.valueOf (sex.charAt (0) == '1' ? 1 : 0));
 
-	/** age */
-	record.put ("AGE_G2", record.get ("people.age"));
+    /** age */
+    record.put ("AGE_G2", record.get ("people.age"));
 
-        /** marital status */
-	String maritalStatusString = record.get ("pumsp.mar");
-	try {
-	  int maritalStatusCode = Integer.parseInt (maritalStatusString);
-	  record.put ("MARRIED", maritalStatusCode == PUMS.MAR_MARRIED ? "1" : "0");
-	} catch (NumberFormatException e) {
-	  throw new RuntimeException ("Can't parse marital status code: " + maritalStatusString, e);
-	}
+    /** marital status */
+    String maritalStatusString = record.get ("pumsp.mar");
+    try {
+      int maritalStatusCode = Integer.parseInt (maritalStatusString);
+      record.put ("MARRIED", maritalStatusCode == PUMS.MAR_MARRIED ? "1" : "0");
+    } catch (NumberFormatException e) {
+      throw new RuntimeException ("Can't parse marital status code: " + maritalStatusString, e);
+    }
 
-	/** income */
-	try {
-	  int pumsIncomeCode = Integer.parseInt (record.get ("pumsp.semp"));
-	  record.put ("INCOME", pumsIncomeCode >= 20000 ? "1" : "0");
-	} catch (NumberFormatException e) {
-	  record.put ("INCOME", "0");
-	  if (logger.isDebugEnabled ()) {
-		logger.debug (" semp ===> " + record.get ("pumsp.semp"));
-	  }
-	}
+    /** income */
+    try {
+      int pumsIncomeCode = Integer.parseInt (record.get ("pumsp.semp"));
+      record.put ("INCOME", pumsIncomeCode >= 20000 ? "1" : "0");
+    } catch (NumberFormatException e) {
+      record.put ("INCOME", "0");
+      if (logger.isDebugEnabled ()) {
+        logger.debug (" semp ===> " + record.get ("pumsp.semp"));
+      }
+    }
 
-	//record.put ("INCOME", record.get ("hh_income"));
-        String incomeAsStr = record.get ("households.hh_income");
-        int income = Integer.parseInt (incomeAsStr);
-        record.put ("NEW_INCOME", incomeAsStr);
+    //record.put ("INCOME", record.get ("hh_income"));
+    String incomeAsStr = record.get ("households.hh_income");
+    int income = Integer.parseInt (incomeAsStr);
+    record.put ("NEW_INCOME", incomeAsStr);
 
-        // Need five categories for householdIncomeCat_NEW (2016/04/29 SAC):
-        String incomeCatNew;
-        if (income < 15000) {
-          incomeCatNew = "1";
-        } else if (income < 25000) {
-          incomeCatNew = "2";
-        } else if (income < 35000) {
-          incomeCatNew = "3";
-        } else if (income < 50000) {
-          incomeCatNew = "4";
-        } else {
-          incomeCatNew = "5";
-        }
+    // Need five categories for householdIncomeCat_NEW (2016/04/29 SAC):
+    String incomeCatNew;
+    if (income < 15000) {
+      incomeCatNew = "1";
+    } else if (income < 25000) {
+      incomeCatNew = "2";
+    } else if (income < 35000) {
+      incomeCatNew = "3";
+    } else if (income < 50000) {
+      incomeCatNew = "4";
+    } else {
+      incomeCatNew = "5";
+    }
     
-        record.put ("householdIncomeCat_NEW", incomeCatNew);
+    record.put ("householdIncomeCat_NEW", incomeCatNew);
 
 
-	/** alone status */
-	String householdSizeString = record.get ("households.hh_size");
-	try {
-	  int householdSize = Integer.parseInt (householdSizeString);
-	  record.put ("ALONE", householdSize == 1 ? "1" : "0");
-	} catch (NumberFormatException e) {
-	  throw new RuntimeException ("unable to parse household size: " + householdSizeString, e);
-	}
+    /** alone status */
+    String householdSizeString = record.get ("households.hh_size");
+    try {
+      int householdSize = Integer.parseInt (householdSizeString);
+      record.put ("ALONE", householdSize == 1 ? "1" : "0");
+    } catch (NumberFormatException e) {
+      throw new RuntimeException ("unable to parse household size: " + householdSizeString, e);
+    }
 
-	/** State and county FIPS codes **/
-	record.put ("stcotrbg", record.get ("households.stcotrbg"));
+    /** State and county FIPS codes **/
+    record.put ("stcotrbg", record.get ("households.stcotrbg"));
 
-	/** Zip codes **/
-	record.put ("zipcode", record.get ("zipcode.zipcode"));
+    /** Zip codes **/
+    record.put ("zipcode", record.get ("zipcode.zipcode"));
 
-	/** Everyone's in North Carolina, therefore in the South. */
-	record.put ("SO", "1");
-	record.put ("MW", "0");
-	record.put ("WE", "0");
+    /** Everyone's in North Carolina, therefore in the South. */
+    record.put ("SO", "1");
+    record.put ("MW", "0");
+    record.put ("WE", "0");
 
-	/** Race
-	  Pums Data Dict: 1 .White alone, 2 .Black or African American alone
-	*/
-        int pumsRaceCode = Integer.parseInt (record.get ("pumsp.rac1p"));
-        record.put ("BLACK", pumsRaceCode == PUMS.RAC1P_BLACK ? "1" : "0");
-        record.put ("OTHER",
-            pumsRaceCode != PUMS.RAC1P_WHITE && pumsRaceCode != PUMS.RAC1P_BLACK ? "1" : "0");
+    /** Race
+    Pums Data Dict: 1 .White alone, 2 .Black or African American alone
+    */
+    int pumsRaceCode = Integer.parseInt (record.get ("pumsp.rac1p"));
+    record.put ("BLACK", pumsRaceCode == PUMS.RAC1P_BLACK ? "1" : "0");
+    record.put ("OTHER",
+        pumsRaceCode != PUMS.RAC1P_WHITE && pumsRaceCode != PUMS.RAC1P_BLACK ? "1" : "0");
 
-	/**
-	   PUMS Data Dict: 01 .Not Spanish/Hispanic/Latino, 02 .Mexican, 03 .Puerto Rican
-	*/
-	int pumsHispanicCode = Integer.parseInt (record.get ("pumsp.hisp"));
-	record.put ("HISP", pumsHispanicCode == PUMS.HISP_NOTHISPANIC ? "0" : "1");
+    /**
+    PUMS Data Dict: 01 .Not Spanish/Hispanic/Latino, 02 .Mexican, 03 .Puerto Rican
+    */
+    int pumsHispanicCode = Integer.parseInt (record.get ("pumsp.hisp"));
+    record.put ("HISP", pumsHispanicCode == PUMS.HISP_NOTHISPANIC ? "0" : "1");
 
 
-	/** Incorporate insurance data 
-	 *  Note: There is randomness in the selection algorithm, so 
-	 *      expect different output files given the same inputs.
-	 */
-	record.put ("NOINS", "0");
-	record.put ("PRIVA", "0");
-        record.put ("MEDICARE", "0");
-        record.put ("MEDICAID", "0");
-        record.put ("DUAL", "0");
-  
-        InsuranceStatusEnum eInsStatus = InsuranceStatusEnum.UNKNOWN;
+    /** Incorporate insurance data 
+     *  Note: There is randomness in the selection algorithm, so 
+     *      expect different output files given the same inputs.
+     */
+    record.put ("NOINS", "0");
+    record.put ("PRIVA", "0");
+    record.put ("MEDICARE", "0");
+    record.put ("MEDICAID", "0");
+    record.put ("DUAL", "0");
 
-        try {
-	  person = Person.getPerson (Integer.parseInt (record.get ("people.age")),
-	                             Integer.parseInt (record.get ("households.hh_income")),
-				     Integer.parseInt (record.get ("households.hh_size")),
-				     pumsRaceCode == PUMS.RAC1P_WHITE ? 1 : 0,
-				     Integer.parseInt (record.get ("BLACK")),
-				     Integer.parseInt (record.get ("people.sex")));
-	  InsuranceStatus status = _insuranceStrategy.getInsuranceStatus (person);
+    InsuranceStatusEnum eInsStatus = InsuranceStatusEnum.UNKNOWN;
 
-          // person.getHouseholdIncomeCat () and getHouseholdSizeCat () must be called *after*
-          // person.getPerson (...):
-          record.put ("NEW_INCOME_CAT", Integer.toString (person.getHouseholdIncomeCat ()));
-          record.put ("householdSizeCat", Integer.toString (person.getHouseholdSizeCat ())); // New 2016/04/05 SAC
-          record.put ("householdSize", record.get ("households.hh_size")); // New 2016/04/05 SAC
+    try {
+      person = Person.getPerson (Integer.parseInt (record.get ("people.age")),
+                                 Integer.parseInt (record.get ("households.hh_income")),
+                                 Integer.parseInt (record.get ("households.hh_size")),
+                                 pumsRaceCode == PUMS.RAC1P_WHITE ? 1 : 0,
+                                 Integer.parseInt (record.get ("BLACK")),
+                                 Integer.parseInt (record.get ("people.sex")));
+      InsuranceStatus status = _insuranceStrategy.getInsuranceStatus (person);
 
-          /* debug
-          record.put ("pumsp_rac1p", record.get ("pumsp.rac1p")); // added 2013/01/17
-          record.put ("people_race", record.get ("people.race"));
-          record.put ("households_hh_income", record.get ("households.hh_income"));
-          record.put ("people_age", record.get ("people.age"));
-          record.put ("households_hh_size", record.get ("households.hh_size"));
-          record.put ("insStatus", _insuranceStrategy.getInsStatus ().toString ());
-          record.put ("insRandom", Double.toString (_insuranceStrategy.getInsRandom ()));
-          record.put ("personKey", _insuranceStrategy.getPersonKey ());
-          record.put ("outBlack", record.get ("BLACK"));
-          record.put ("outINCOME", record.get ("INCOME"));
-          */
+      // person.getHouseholdIncomeCat () and getHouseholdSizeCat () must be called *after*
+      // person.getPerson (...):
+      record.put ("NEW_INCOME_CAT", Integer.toString (person.getHouseholdIncomeCat ()));
+      record.put ("householdSizeCat", Integer.toString (person.getHouseholdSizeCat ())); // 2016/04/05 SAC
+      record.put ("householdSize", record.get ("households.hh_size")); // New 2016/04/05 SAC
 
-          if (_insuranceStrategy.hasPrivateInsurance (status)) {
-            record.put ("PRIVA", "1");
-            eInsStatus = InsuranceStatusEnum.PRIVA; 
-          } else if (_insuranceStrategy.hasMedicareOnly (status)) {
-            record.put ("MEDICARE", "1");
-            eInsStatus = InsuranceStatusEnum.MEDICARE;
-          } else if (_insuranceStrategy.hasMedicaidOnly (status)) {
-            record.put ("MEDICAID", "1");
-            eInsStatus = InsuranceStatusEnum.MEDICAID;
-          } else if (_insuranceStrategy.hasDual (status)) {
-            record.put ("DUAL", "1");
-            eInsStatus = InsuranceStatusEnum.DUAL;
-          } else if (_insuranceStrategy.hasNoInsurance (status)) {
-            record.put ("NOINS", "1");
-            eInsStatus = InsuranceStatusEnum.NOINS;
-          }
-	} catch (NumberFormatException e) {
-	  e.printStackTrace ();
-	  throw new RuntimeException ("Error e");
-	}
+      /* debug
+      record.put ("pumsp_rac1p", record.get ("pumsp.rac1p")); // added 2013/01/17
+      record.put ("people_race", record.get ("people.race"));
+      record.put ("households_hh_income", record.get ("households.hh_income"));
+      record.put ("people_age", record.get ("people.age"));
+      record.put ("households_hh_size", record.get ("households.hh_size"));
+      record.put ("insStatus", _insuranceStrategy.getInsStatus ().toString ());
+      record.put ("insRandom", Double.toString (_insuranceStrategy.getInsRandom ()));
+      record.put ("personKey", _insuranceStrategy.getPersonKey ());
+      record.put ("outBlack", record.get ("BLACK"));
+      record.put ("outINCOME", record.get ("INCOME"));
+      */
 
-	addNewInsuranceStatusValues (eInsStatus, record);
-        addINS_NEW_2014 (record, person); // Oregon values
-        addUrbanRuralDesignation (record); // Oregon only 
+      if (_insuranceStrategy.hasPrivateInsurance (status)) {
+        record.put ("PRIVA", "1");
+        eInsStatus = InsuranceStatusEnum.PRIVA; 
+      } else if (_insuranceStrategy.hasMedicareOnly (status)) {
+        record.put ("MEDICARE", "1");
+        eInsStatus = InsuranceStatusEnum.MEDICARE;
+      } else if (_insuranceStrategy.hasMedicaidOnly (status)) {
+        record.put ("MEDICAID", "1");
+        eInsStatus = InsuranceStatusEnum.MEDICAID;
+      } else if (_insuranceStrategy.hasDual (status)) {
+        record.put ("DUAL", "1");
+        eInsStatus = InsuranceStatusEnum.DUAL;
+      } else if (_insuranceStrategy.hasNoInsurance (status)) {
+        record.put ("NOINS", "1");
+        eInsStatus = InsuranceStatusEnum.NOINS;
+      }
+    } catch (NumberFormatException e) {
+      e.printStackTrace ();
+      throw new RuntimeException ("Error e");
+    }
 
-	/**
-	   RTI model docs: EDU	boolean	education level; true implies some college or higher
-	   PUMS Data Dict: 10 .Some college, but less than 1 year 11 .One or more years of college...
-	*/
-	try {
-	  int pumsEducationCode = Integer.parseInt (record.get ("pumsp.schl"));
-	  record.put ("EDU", pumsEducationCode >= 10 ? "1" : "0");
-	} catch (NumberFormatException e) {
-	  record.put ("EDU", "0");
-	  if (logger.isDebugEnabled ()) {
-		logger.debug ("pums.schl: ===> " + record.get ("pumsp.schl"));
-	  }
-	}
+    addNewInsuranceStatusValues (eInsStatus, record);
+    addINS_NEW_2014 (record, person); // Oregon values
+    addUrbanRuralDesignation (record); // Oregon only 
 
-	record.put ("LAT", record.get ("households.latitude"));
-	record.put ("LON", record.get ("households.longitude"));
+    /**
+      RTI model docs: EDU	boolean	education level; true implies some college or higher
+      PUMS Data Dict: 10 .Some college, but less than 1 year 11 .One or more years of college...
+     */
+    try {
+      int pumsEducationCode = Integer.parseInt (record.get ("pumsp.schl"));
+      record.put ("EDU", pumsEducationCode >= 10 ? "1" : "0");
+    } catch (NumberFormatException e) {
+      record.put ("EDU", "0");
+      if (logger.isDebugEnabled ()) {
+        logger.debug ("pums.schl: ===> " + record.get ("pumsp.schl"));
+      }
+    }
 
- 	record.put ("FRISK",   getStateWithProbability (0.2));
- 	record.put ("VITALE",  getStateWithProbability (0.35));
- 	record.put ("FLU",   getStateWithProbability (0.5));
- 	record.put ("FORMER",  getStateWithProbability (0.26));
- 	record.put ("NEVER",   getStateWithProbability (0.56));
-	record.put ("CURRENT", getStateWithProbability (0.18));
- 	record.put ("USUAL",   getStateWithProbability (0.80));
+    record.put ("LAT", record.get ("households.latitude"));
+    record.put ("LON", record.get ("households.longitude"));
+
+    record.put ("FRISK",   getStateWithProbability (0.2));
+    record.put ("VITALE",  getStateWithProbability (0.35));
+    record.put ("FLU",   getStateWithProbability (0.5));
+    record.put ("FORMER",  getStateWithProbability (0.26));
+    record.put ("NEVER",   getStateWithProbability (0.56));
+    record.put ("CURRENT", getStateWithProbability (0.18));
+    record.put ("USUAL",   getStateWithProbability (0.80));
   }
 
   private String getStateWithProbability (double probability) {
-	return String.valueOf (_randomGenerator.nextDouble () < probability);
+    return String.valueOf (_randomGenerator.nextDouble () < probability);
   }
 
   /**
@@ -373,7 +373,7 @@ class SynthPopAnnotationProcessor implements Processor {
    *
    */
   private void addNewInsuranceStatusValues (InsuranceStatusEnum eInsStatus,
-                       HashMap<String,String> record) {
+                                            HashMap<String,String> record) {
 
     int age = Integer.parseInt (record.get ("people.age"));
     int incomeCategory = Integer.parseInt (record.get ("NEW_INCOME_CAT"));
@@ -536,41 +536,43 @@ class SynthPopAnnotationProcessor implements Processor {
  */
 class JSONReader {
 
-    /**
-     * Read JSON from string.
-     */
-    public HashMap readJSONFromString (String text) {
-	  return this.readJSON (new StringReader (text));
-    }
+  /**
+   * Read JSON from string.
+   */
+  public HashMap readJSONFromString (String text) {
+    return this.readJSON (new StringReader (text));
+  }
     
-    /**
-     * Read JSON from reader.
-     */
-    public HashMap readJSON (Reader reader) {
-	  HashMap<String,String> result = new HashMap<String,String> ();
-	  try {
-	    JSONObject object = new JSONObject (new JSONTokener (reader));
-	    String [] names = JSONObject.getNames (object);
-	    for (int c = 0; c < names.length; c++) {
-		  String name = names [c];
-		  result.put (name, object.getString (name));
-	    }
-	  } catch (JSONException e) {
-	    e.printStackTrace ();
-	  }
-	  return result;
+  /**
+   * Read JSON from reader.
+   */
+  public HashMap readJSON (Reader reader) {
+    HashMap<String,String> result = new HashMap<String,String> ();
+    try {
+      JSONObject object = new JSONObject (new JSONTokener (reader));
+      String [] names = JSONObject.getNames (object);
+      for (int c = 0; c < names.length; c++) {
+        String name = names [c];
+        result.put (name, object.getString (name));
+      }
+    } catch (JSONException e) {
+      e.printStackTrace ();
     }
+    return result;
+  }
 }
 
 class QuotelessWriter extends FilterWriter {
-    public QuotelessWriter (Writer writer) {
-	  super (writer);
+
+  public QuotelessWriter (Writer writer) {
+    super (writer);
+  }
+
+  public void write (int c) throws IOException {
+    if (c != '"') {
+      super.write (c);
     }
-    public void write (int c) throws IOException {
-	  if (c != '"') {
-	    super.write (c);
-	  }
-    }
+  }
 }
 
 /**
@@ -579,37 +581,37 @@ class QuotelessWriter extends FilterWriter {
  */
 class PopulationWriter {
 
-    private CSVWriter _writer;
-    private char _separator;
-    private long _writeCount = 0;
-    private final int flushPeriodicity = 50;
+  private CSVWriter _writer;
+  private char _separator;
+  private long _writeCount = 0;
+  private final int flushPeriodicity = 50;
 
-    /**
-     * Create a population writer
-     */
-    public PopulationWriter (Writer writer, char separator) {
-	  this._writer = new CSVWriter (new BufferedWriter (new QuotelessWriter (writer)),
-				      separator,
-				      CSVWriter.NO_QUOTE_CHARACTER);
-    }
+  /**
+   * Create a population writer
+   */
+  public PopulationWriter (Writer writer, char separator) {
+    this._writer = new CSVWriter (new BufferedWriter (new QuotelessWriter (writer)),
+                                  separator,
+                                  CSVWriter.NO_QUOTE_CHARACTER);
+  }
 
-    /**
-     * Write data 
-     */
-    public void write (String [] data) throws IOException {
-	  if (this._writeCount++ % flushPeriodicity == 0) {
-	    this._writer.flush ();
-	  }
-	  this._writer.writeNext (data);
+  /**
+   * Write data 
+   */
+  public void write (String [] data) throws IOException {
+    if (this._writeCount++ % flushPeriodicity == 0) {
+      this._writer.flush ();
     }
+    this._writer.writeNext (data);
+  }
     
-    /**
-     * Close the CSV writer.
-     */
-    public void close () throws IOException {
-	  this._writer.flush ();
-	  this._writer.close ();
-    }
+  /**
+   * Close the CSV writer.
+   */
+  public void close () throws IOException {
+    this._writer.flush ();
+    this._writer.close ();
+  }
 }
 
 /**
@@ -619,69 +621,66 @@ class PopulationWriter {
  */
 public class CSVProcessor {
 
-    private Processor _processor;
-    private CSVReader _input;
-    private PopulationWriter _writer;
-    private static Log logger = LogFactory.getLog (CSVProcessor.class);
-    private HashMap<String, String> urbanRuralMap;
+  private Processor _processor;
+  private CSVReader _input;
+  private PopulationWriter _writer;
+  private static Log logger = LogFactory.getLog (CSVProcessor.class);
+  private HashMap<String, String> urbanRuralMap;
 
-    /**
-     * Create a new population processor
-     */
-    public CSVProcessor (Reader input,
-			   char inputSeparator,
-			   Processor processor,
-			   Writer output,
-			   char outputSeparator) throws IOException 
-    {
-	  assert input != null : "Input reader must be non-null.";
-	  //assert inputSeparator != null : "Input separator must be non-null.";
-	  assert processor != null : "Data processor must be non-null.";
-	  assert output != null : "Output writer must be non-null.";
-	  //assert outputSeparator != null : "Output separator must be non-null.";
+  /**
+   * Create a new population processor
+   */
+  public CSVProcessor (Reader input,
+                       char inputSeparator,
+                       Processor processor,
+                       Writer output,
+                       char outputSeparator) throws IOException {
+    assert input != null : "Input reader must be non-null.";
+    assert processor != null : "Data processor must be non-null.";
+    assert output != null : "Output writer must be non-null.";
 
-	  this._input = new CSVReader (input, inputSeparator);
-	  this._processor = processor;
-	  this._writer = new PopulationWriter (output, outputSeparator);
-	  this._writer.write (processor.getOutputKeys ());
+    this._input = new CSVReader (input, inputSeparator);
+    this._processor = processor;
+    this._writer = new PopulationWriter (output, outputSeparator);
+    this._writer.write (processor.getOutputKeys ());
+  }
+
+  /**
+   *
+   * Parse an input CSV file.
+   * Process each line using the processor object.
+   *
+   */
+  public void parse () throws IOException {
+    String [] header = null;
+    int c = 0;
+
+    HashMap<String, String> record = new HashMap<String,String> (20, 0.75f);
+    for (String [] line = this._input.readNext (); line != null; line = this._input.readNext ()) {
+      c++;
+
+      if (header != null && line.length != header.length)
+        continue;
+
+      if (header == null) {
+        this.logger.info ("setting header " + StringUtils.join (line, ","));
+        header = line;
+        this._processor.setHeader (line);
+      } else {
+        record.clear ();
+        String [] outputLine = this._processor.process (line, record);
+        if (outputLine != null) {
+          this._writer.write (outputLine);
+        }
+      }
     }
+  }
 
-    /**
-     *
-     * Parse an input CSV file.
-     * Process each line using the processor object.
-     *
-     */
-    public void parse () throws IOException {
-	  String [] header = null;
-	  int c = 0;
-
-	  HashMap<String, String> record = new HashMap<String,String> (20, 0.75f);
-	  for (String [] line = this._input.readNext (); line != null; line = this._input.readNext ()) {
-	    c++;
-
-	    if (header != null && line.length != header.length)
-		  continue;
-
-	    if (header == null) {
-		  this.logger.info ("setting header " + StringUtils.join (line, ","));
-		  header = line;
-		  this._processor.setHeader (line);
-	    } else {
-		  record.clear ();
-		  String [] outputLine = this._processor.process (line, record);
-		  if (outputLine != null) {
-		    this._writer.write (outputLine);
-		  }
-	    }
-	  }
-    }
-
-    /**
-     * Close
-     */
-    public void close () throws IOException {
-	  this._writer.close ();
-    }
+  /**
+   * Close
+   */
+  public void close () throws IOException {
+    this._writer.close ();
+  }
 }
 
