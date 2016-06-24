@@ -83,21 +83,27 @@ public class ModelIOTest { //extends AbstractJUnit4SpringContextTests {
     public void testGeography () throws Exception {
 	Geography geography = new Geography ("compliance_county_intercepts.csv",
                                              "nearest_dist_simulation_OR.csv");
+        // OR vs. NC zip code ("27517"):
+	double distance = geography.getDistanceToNearestEndoscopyFacilityByZipCode ("97330");
 
-	double distance = geography.getDistanceToNearestEndoscopyFacilityByZipCode ("97330"); // OR vs. NC TEMP ("27517");
-// OR TEMP	CountyIntercepts countyIntercepts = geography.getCountyInterceptsByStcotrbg ("3700199999900000");
-   
-/* OR TEMP
-	System.out.println ("zip code -> distance: " + distance + "\n" +
-			    "stcotrbg -> county intercepts -> medicaid: " + countyIntercepts.getMedicaidOnly ());
+        // OR vs. NC stcotbg "3700199999900000":
+        CountyIntercepts countyIntercepts
+            = geography.getCountyInterceptsByStcotrbg ("410470005022"); 
 
-	assert countyIntercepts.getMedicaidOnly () != Geography.UNKNOWN_DOUBLE : "Unexpected unknown value.";
-*/
+	System.out.println ("zip code -> distance: " + distance + "\n"
+			    + "stcotrbg -> county intercepts -> medicaid: "
+                            + countyIntercepts.getMedicaidOnly ());
 
-	//assert distance == 4.4922130495 : "Distance by zip code failed.";
-	assert distance == 1.0 : "Distance by zip code failed."; // OR TEMP
+	assert countyIntercepts.getMedicaidOnly () != Geography.UNKNOWN_DOUBLE
+                                                   : "Unexpected unknown value.";
 
-	// OR TEMP assert countyIntercepts.getMedicaidOnly () == 0.348013 : "Medicaid by county FIPS failed";
+
+	// OR vs. NC distance by zip code 4.4922130495:
+	assert distance == 1.0 : "Distance by zip code failed.";
+
+        // OR vs. NC 0.348013:
+	assert countyIntercepts.getMedicaidOnly () == 0.116805123
+                                                   : "Medicaid by county FIPS failed";
     }
 
     @Test
