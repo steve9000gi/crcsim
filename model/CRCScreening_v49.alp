@@ -17152,7 +17152,7 @@ if (main.output_population_snapshots && year >= outfile_person_min_age) {
 /* DEBUG
     try {
       Writer w = new BufferedWriter(new OutputStreamWriter(
-          new FileOutputStream("C:/dev/crcsim/output_person_data.txt", true),  "UTF-8"));
+          new FileOutputStream("C:/dev-NC/crcsim/output_person_data.txt", true),  "UTF-8"));
           w.write(Thread.currentThread().getName() + ": " + main.output_dir + fileName + "\n");
           w.flush();
           w.close();
@@ -25636,7 +25636,7 @@ static int outcomesIndex = 0;
 //private String inputDirectory = "C:\\Users\\mayorga_anylogic\\Documents\\GitHub\\crcsim\\pops";
 //private String outputDirectory = "C:\\Users\\mayorga_anylogic\\Documents\\GitHub\\crcsim\\model\\out";
 
-private boolean debugMode = false; // Denotes if only use part of population files.
+private boolean debugMode = true; // Denotes if only use part of population files.
 
 // For small scale runs on RENCI Machine
 //private String inputDirectory = "C:\\Users\\dacornej\\Documents\\pops";
@@ -25658,11 +25658,11 @@ private boolean debugMode = false; // Denotes if only use part of population fil
 //private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\cleanpops-2014-02-05-1203-smallcohort-p1";
 //private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\cleanpops-2014-02-05-1203-smallcohort-p2";
 //private String inputDirectory  = "c:\\dev\\var\\crcsim\\model\\pops";
-private String inputDirectory  = "c:\\dev\\var\\crcsim\\model\\blackmalepops";
+private String inputDirectory  = "c:\\dev-NC\\var\\crcsim\\model\\pops";
 //private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\smallpops";
 //private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\outPSA";
 //private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\outDB";
-private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-2016-03-08-1005";
+private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-NC-quickTest";
 
 //For small test production runs
 //private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\smallpops";
@@ -25676,7 +25676,7 @@ private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsSci
 /**
  * Change this to select a different experment.
  */
-//private String experimentId = "000"; //orginal Experiment using inital_compliance_rate
+private String experimentId = "000"; //orginal Experiment using inital_compliance_rate
 //private String experimentId = "001";
 //private String experimentId = "002";
 //private String experimentId = "003";
@@ -25685,7 +25685,7 @@ private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsSci
 //private String experimentId = "007"; // all interventions with end year of testing program changed
 //private String experimentId = "008"; // two secular trend intervention,mailed reminder,mass media, all on, NO endoscopy expainsion
 //private String experimentId = "009"; // 10% secular trend is baseline, also 5% trend and no trend interventions,,mailed reminder(w. 10% trend),mass media(w. 10% trend), all on(w. 10% trend), NO endoscopy expainsion
-private String experimentId = "001";
+//private String experimentId = "011";
 //private String experimentId = "011_database";
 //private String experimentId = "fs";
 //private String experimentId = "base";

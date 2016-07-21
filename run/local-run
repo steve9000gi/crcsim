@@ -2,7 +2,7 @@
  
 set -x
 
-app=/cygdrive/c/dev/crcsim
+app=/cygdrive/c/dev-NC/crcsim
 anylogicHome=/cygdrive/c/app/AnyLogicUniversity/
 anylogicEngineDir=com.xj.anylogic.engine6_6.8.1.201206071455
 

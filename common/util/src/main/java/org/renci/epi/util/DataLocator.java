@@ -17,7 +17,7 @@ public class DataLocator {
     private String _dataRoot = null;
 
     public DataLocator () {
-	this.setDataRoot ( new String [] { "", "dev", "var", "crcsim" } );
+	this.setDataRoot ( new String [] { "", "dev-NC", "var", "crcsim" } );
     }
 
     // set the root folder to which others are relative

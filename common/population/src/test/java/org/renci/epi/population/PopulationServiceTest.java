@@ -98,7 +98,7 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
 class DataLocator {
     private String _dataRoot =
 	StringUtils.join (new String [] { "",
-					  "dev",
+					  "dev-NC",
 					  "var",
 					  "crcsim" },
 	    File.separatorChar);
