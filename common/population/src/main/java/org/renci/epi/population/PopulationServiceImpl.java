@@ -1,5 +1,6 @@
 package org.renci.epi.population;
 
+import au.com.bytecode.opencsv.CSVReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.BufferedInputStream;
@@ -36,6 +37,8 @@ import org.renci.epi.util.DataLocator;
 public class PopulationServiceImpl implements PopulationService {
 
     private PopulationDAO populationDao;
+
+    private HashMap<String, String> INS2014Map;    // SAC 2016/07/21
 
     private GeographyService geographyService;
 
@@ -94,7 +97,12 @@ public class PopulationServiceImpl implements PopulationService {
 	Reader reader = null;
 	Writer writer = null;
 	CSVProcessor syntheticPopulation = null;
-	int c = 0;
+
+        try {
+            createINS2014Map ();
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to create INS2014 map. Status code: ", e);
+        }
 
 	File outputPath = new File (getDataLocator().getModelInputPath ());
 	if (! outputPath.exists ()) {
@@ -147,7 +155,7 @@ public class PopulationServiceImpl implements PopulationService {
 	    input = new BufferedInputStream (new FileInputStream (inputFileName));
 	    reader = new BufferedReader (new InputStreamReader (input));
 	    writer = new BufferedWriter (new FileWriter (outputFileName));
-	    Processor processor = new SynthPopAnnotationProcessor (outputKeys);
+	    Processor processor = new SynthPopAnnotationProcessor (outputKeys, this.INS2014Map);
 	    syntheticPopulation = new CSVProcessor (reader,
 						    inputSeparator,
 						    processor,
@@ -188,5 +196,47 @@ public class PopulationServiceImpl implements PopulationService {
 			 });
     }
     
+    private void createINS2014Map() throws IOException {
+        InputStream input = new BufferedInputStream (new FileInputStream (
+            "c:/dev-NC/crcsim/common/util/src/main/resources/data/INS2014_NC_072116.csv"));
+        Reader reader = new BufferedReader (new InputStreamReader (input));
+        this.INS2014Map = new CSVToINS2014HashMap(reader, ',').getMap();
+        /* DEBUG
+        for (String key:this.INS2014Map.keySet()) {
+            System.out.println(key + "," + this.INS2014Map.get(key));
+        }
+        */
+    }
+}
+
+/**
+ *
+ * Create a HashMap from a CSV file. Each key is a string concatenated from the first six
+ * columns for the corresponding row: integer values for sex, ageCat, raceCat, HISP,
+ * houdeholdIncomeCat_NEW, and MARRIED, respectively. The associated value is from the
+ * seventh "increase" column for that row: a probability such that 0 <= increase <= 1.
+ *
+ */
+class CSVToINS2014HashMap {
+
+  private CSVReader _input;
+  private HashMap<String, String> map;
+
+  public CSVToINS2014HashMap (Reader input, char inputSeparator) throws IOException {
+      this._input = new CSVReader (input, inputSeparator);
+      this.map = new HashMap<String, String> ();
+
+      String key = null;
+      this._input.readNext (); // Skip over the header row.
+      for (String [] line = this._input.readNext (); line != null;
+        line = this._input.readNext ()) {
+          key = line[0] + line[1] + line[2] + line[3] + line[4] + line[5];
+          map.put(key, line[6]);
+      }
+  }
+
+  public HashMap<String, String> getMap() {
+      return this.map;
+  }
 }
 
