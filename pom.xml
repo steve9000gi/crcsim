@@ -13,7 +13,7 @@
   <url>http://www.renci.org/~scox/crc</url>
 
   <properties>
-    <data.root>c:/dev/var/crcsim</data.root>
+    <data.root>g:/dev-OR/var/crcsim</data.root>
     <!--    <data.root>/home/scox/dev/var/crcsim</data.root>
 -->
     <!-- application 

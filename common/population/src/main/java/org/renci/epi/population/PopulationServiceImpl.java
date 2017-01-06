@@ -118,6 +118,8 @@ public class PopulationServiceImpl implements PopulationService {
 	    outputPath.mkdirs ();
 	}
 	File [] inputFiles = getDataLocator().getSyntheticPopulationExports ();
+        System.out.println("PopulationServiceImpl.compileMultipleModelInputs: " + inputFiles.length
+           + " input files");
 	try {
 	    if (inputFiles != null) {
 		for (File inputFile : inputFiles) {

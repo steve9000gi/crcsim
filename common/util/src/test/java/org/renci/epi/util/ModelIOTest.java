@@ -91,7 +91,7 @@ public class ModelIOTest { //extends AbstractJUnit4SpringContextTests {
             = geography.getCountyInterceptsByStcotrbg ("410470005022"); 
 
 	System.out.println ("zip code -> distance: " + distance + "\n"
-			    + "stcotrbg -> county intercepts -> medicaid: "
+                            + "stcotrbg -> county intercepts -> medicaid: "
                             + countyIntercepts.getMedicaidOnly ());
 
 	assert countyIntercepts.getMedicaidOnly () != Geography.UNKNOWN_DOUBLE

@@ -43,6 +43,7 @@ public class GeographyServiceTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void testGetPolygons () throws Exception {
 
+/*
 	BasicConfigurator.configure ();
 	Logger.getRootLogger().setLevel (Level.DEBUG);
 
@@ -50,11 +51,12 @@ public class GeographyServiceTest extends AbstractJUnit4SpringContextTests {
 
 	String fileName = this.geographyService.getDataLocator().getCountyPolygonFileName ();
 	this.geographyService.getPolygons (fileName);
+*/
     }
 
     @Test
     public void testGetPreparedPolygons () throws Exception {
-
+/*
 	BasicConfigurator.configure ();
 	Logger.getRootLogger().setLevel (Level.DEBUG);
 
@@ -65,6 +67,7 @@ public class GeographyServiceTest extends AbstractJUnit4SpringContextTests {
 	for (PreparedGeometry geometry : prepared) {
 	    logger.info ("Prepared geometry instance: " + geometry.hashCode ());
 	}
+*/
     }
 }
 

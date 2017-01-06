@@ -1,4 +1,3 @@
-
 /**
  *
  * Drawing random iteration parameters. Design considerations:
@@ -17,6 +16,7 @@
  *
  */
 
+load("nashorn:mozilla_compat.js");
 importPackage (org.apache.commons.math3.distribution); 
 
 /**
