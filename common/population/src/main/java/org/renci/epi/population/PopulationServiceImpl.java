@@ -198,7 +198,7 @@ public class PopulationServiceImpl implements PopulationService {
     
     private void createINS2014Map() throws IOException {
         InputStream input = new BufferedInputStream (new FileInputStream (
-            "c:/dev-NC/crcsim/common/util/src/main/resources/data/INS2014_NC_072116.csv"));
+            "g:/dev-NC/crcsim/common/util/src/main/resources/data/INS2014_NC_072116.csv"));
         Reader reader = new BufferedReader (new InputStreamReader (input));
         this.INS2014Map = new CSVToINS2014HashMap(reader, ',').getMap();
         /* DEBUG
