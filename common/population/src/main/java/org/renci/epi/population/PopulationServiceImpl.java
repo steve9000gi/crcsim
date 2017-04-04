@@ -39,6 +39,7 @@ public class PopulationServiceImpl implements PopulationService {
     private PopulationDAO populationDao;
 
     private HashMap<String, String> INS2014Map;    // SAC 2016/07/21
+    private HashMap<String, String> INS2015Map;    // SAC 2017/03/31
 
     private GeographyService geographyService;
 
@@ -97,11 +98,18 @@ public class PopulationServiceImpl implements PopulationService {
 	Reader reader = null;
 	Writer writer = null;
 	CSVProcessor syntheticPopulation = null;
-
+        String inPath = null;
         try {
-            createINS2014Map ();
+            inPath = "g:/dev-NC/crcsim/common/util/src/main/resources/data/INS2014_NC_072116.csv";
+            createINSMap (inPath, "2014");
         } catch (IOException e) {
-            throw new RuntimeException("Unable to create INS2014 map. Status code: ", e);
+            throw new RuntimeException("Unable to create INS 2014 map. Status code: ", e);
+        }
+        try {
+            inPath = "g:/dev-NC/crcsim/common/util/src/main/resources/data/INS2015_NC_033117.csv"; 
+            createINSMap (inPath, "2015");
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to create INS 2015 map. Status code: ", e);
         }
 
 	File outputPath = new File (getDataLocator().getModelInputPath ());
@@ -155,7 +163,9 @@ public class PopulationServiceImpl implements PopulationService {
 	    input = new BufferedInputStream (new FileInputStream (inputFileName));
 	    reader = new BufferedReader (new InputStreamReader (input));
 	    writer = new BufferedWriter (new FileWriter (outputFileName));
-	    Processor processor = new SynthPopAnnotationProcessor (outputKeys, this.INS2014Map);
+	    Processor processor = new SynthPopAnnotationProcessor (outputKeys,
+                                                                   this.INS2014Map,
+                                                                   this.INS2015Map);
 	    syntheticPopulation = new CSVProcessor (reader,
 						    inputSeparator,
 						    processor,
@@ -192,18 +202,26 @@ public class PopulationServiceImpl implements PopulationService {
 	    getPolygons (polygonFileName,
 			 new PolygonOperator [] {
 			     new JSONPolygonWriterOperator (outputFilePath, "polygon"),
-			     new PopulationPolygonOperator (outputFilePath, "occurrences", modelFileDirectory)
+			     new PopulationPolygonOperator (outputFilePath, "occurrences",
+                             modelFileDirectory)
 			 });
     }
     
-    private void createINS2014Map() throws IOException {
-        InputStream input = new BufferedInputStream (new FileInputStream (
-            "g:/dev-NC/crcsim/common/util/src/main/resources/data/INS2014_NC_072116.csv"));
+    private void createINSMap(String inputFilePath, String year)
+      throws IOException {
+        InputStream input = new BufferedInputStream (new FileInputStream (inputFilePath));
         Reader reader = new BufferedReader (new InputStreamReader (input));
-        this.INS2014Map = new CSVToINS2014HashMap(reader, ',').getMap();
+        HashMap<String, String> map = new CSVToINSHashMap(reader, ',').getMap();
+        if (year == "2014") {
+          this.INS2014Map = map;
+        } else if (year == "2015") {
+          this.INS2015Map = map;
+        } else {
+          System.out.println("PopulationServiceImpl.createINSMap(...): Unknown year " + year);
+        }
         /* DEBUG
-        for (String key:this.INS2014Map.keySet()) {
-            System.out.println(key + "," + this.INS2014Map.get(key));
+        for (String key:map.keySet()) {
+            System.out.println(key + "," + map.get(key));
         }
         */
     }
@@ -211,18 +229,18 @@ public class PopulationServiceImpl implements PopulationService {
 
 /**
  *
- * Create a HashMap from a CSV file. Each key is a string concatenated from the first six
- * columns for the corresponding row: integer values for sex, ageCat, raceCat, HISP,
- * houdeholdIncomeCat_NEW, and MARRIED, respectively. The associated value is from the
+ * Create a HashMap of insurance probabilities from a CSV file. Each key is a string concatenated
+ * from the first six columns for the corresponding row: integer values for sex, ageCat, raceCat,
+ * HISP, householdIncomeCat_NEW, and MARRIED, respectively. The associated value is from the
  * seventh "increase" column for that row: a probability such that 0 <= increase <= 1.
  *
  */
-class CSVToINS2014HashMap {
+class CSVToINSHashMap {
 
   private CSVReader _input;
   private HashMap<String, String> map;
 
-  public CSVToINS2014HashMap (Reader input, char inputSeparator) throws IOException {
+  public CSVToINSHashMap (Reader input, char inputSeparator) throws IOException {
       this._input = new CSVReader (input, inputSeparator);
       this.map = new HashMap<String, String> ();
 
@@ -239,4 +257,3 @@ class CSVToINS2014HashMap {
       return this.map;
   }
 }
-
