@@ -51,7 +51,10 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
         "householdSize", "householdSizeCat", // These two added 2016/04/05 SAC
         "householdIncomeCat_NEW", // added 2016/04/29 SAC
         "INS_NEW_2014" // added 2016/05/01 SAC
-        ,"INS_NEW_2014_PROB", "Det" // TEMP debug
+        ,"INS_NEW_2014_PROB",  "INS_NEW_2014_DET", // TEMP debug
+        "INS_NEW_2015" // added 2017/11/16 SAC
+        ,"INS_NEW_2015_PROB", "INS_NEW_2015_DET" // TEMP debug
+
         ,"Desig" // urban/rural designation added 2016-05-23 SAC
 // debug , "insStatus", "insRandom","pumsp_rac1p", "people_race", "households_hh_income",
 // debug (cont.) "people_age", "households_hh_size", "personKey", "outBlack", "outINCOME"
@@ -99,7 +102,7 @@ public class PopulationServiceTest extends AbstractJUnit4SpringContextTests {
 class DataLocator {
     private String _dataRoot =
 	StringUtils.join (new String [] { "",
-					  "dev",
+					  "dev-OR",
 					  "var",
 					  "crcsim" },
 	    File.separatorChar);

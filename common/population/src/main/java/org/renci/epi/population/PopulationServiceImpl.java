@@ -41,6 +41,7 @@ public class PopulationServiceImpl implements PopulationService {
 
     private HashMap<String, String> urbanRuralMap; // SAC 2016/05/24
     private HashMap<String, String> INS2014Map;    // SAC 2016/06/10
+    private HashMap<String, String> INS2015Map;    // SAC 2017/11/16
 
     private GeographyService geographyService;
 
@@ -99,7 +100,6 @@ public class PopulationServiceImpl implements PopulationService {
 	Reader reader = null;
 	Writer writer = null;
 	CSVProcessor syntheticPopulation = null;
-	int c = 0;
         
         try {
             createUrbanRuralMap ();
@@ -107,11 +107,20 @@ public class PopulationServiceImpl implements PopulationService {
             throw new RuntimeException("Unable to create urban/rural map. Status code: ", e);
         }
 
+        String inPath = null;
         try {
-            createINS2014Map ();
+            inPath = "g:/dev-OR/crcsim/common/util/src/main/resources/data/INS2014_Probs_All_OR.csv";
+            createINSMap (inPath, "2014");
         } catch (IOException e) {
-            throw new RuntimeException("Unable to create INS2014 map. Status code: ", e);
+            throw new RuntimeException("Unable to create INS 2014 map. Status code: ", e);
         }
+        try {
+            inPath = "g:/dev-OR/crcsim/common/util/src/main/resources/data/INS2015_NC-OR_041017.csv";
+            createINSMap (inPath, "2015");
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to create INS 2015 map. Status code: ", e);
+        }
+
 
 	File outputPath = new File (getDataLocator().getModelInputPath ());
 	if (! outputPath.exists ()) {
@@ -166,7 +175,8 @@ public class PopulationServiceImpl implements PopulationService {
 	    writer = new BufferedWriter (new FileWriter (outputFileName));
 	    Processor processor = new SynthPopAnnotationProcessor (outputKeys,
                                                                    this.urbanRuralMap,
-                                                                   this.INS2014Map);
+                                                                   this.INS2014Map,
+                                                                   this.INS2015Map);
 	    syntheticPopulation = new CSVProcessor (reader,
 						    inputSeparator,
 						    processor,
@@ -219,14 +229,21 @@ public class PopulationServiceImpl implements PopulationService {
         */
     }
 
-    private void createINS2014Map() throws IOException {
-        InputStream input = new BufferedInputStream (new FileInputStream (
-            "c:/dev/crcsim/common/util/src/main/resources/data/INS2014_Probs_All_OR.csv"));
+    private void createINSMap(String inputFilePath, String year)
+      throws IOException {
+        InputStream input = new BufferedInputStream (new FileInputStream (inputFilePath));
         Reader reader = new BufferedReader (new InputStreamReader (input));
-        this.INS2014Map = new CSVToINS2014HashMap(reader, ',').getMap();
-        /* DEBUG 
-        for (String key:this.INS2014Map.keySet()) {
-            System.out.println(key + "," + this.INS2014Map.get(key));
+        HashMap<String, String> map = new CSVToINSHashMap(reader, ',').getMap();
+        if (year == "2014") {
+          this.INS2014Map = map;
+        } else if (year == "2015") {
+          this.INS2015Map = map;
+        } else {
+          System.out.println("PopulationServiceImpl.createINSMap(...): Unknown year " + year);
+        }
+        /* DEBUG
+        for (String key:map.keySet()) {
+            System.out.println(key + "," + map.get(key));
         }
         */
     }
@@ -259,21 +276,20 @@ class CSVToUrbanRuralHashMap {
   }
 }
 
-
 /**
  *
- * Create a HashMap from a CSV file. Each key is a string concatenated from the first six
- * columns for the corresponding row: integer values for sex, ageCat, raceCat, HISP, 
- * houdeholdIncomeCat_NEW, and MARRIED, respectively. The associated value is from the
+ * Create a HashMap of insurance probabilities from a CSV file. Each key is a string concatenated
+ * from the first six columns for the corresponding row: integer values for sex, ageCat, raceCat,
+ * HISP, householdIncomeCat_NEW, and MARRIED, respectively. The associated value is from the
  * seventh "increase" column for that row: a probability such that 0 <= increase <= 1.
  *
  */
-class CSVToINS2014HashMap {
+class CSVToINSHashMap {
 
   private CSVReader _input;
   private HashMap<String, String> map;
 
-  public CSVToINS2014HashMap (Reader input, char inputSeparator) throws IOException {
+  public CSVToINSHashMap (Reader input, char inputSeparator) throws IOException {
       this._input = new CSVReader (input, inputSeparator);
       this.map = new HashMap<String, String> ();
 
@@ -282,7 +298,7 @@ class CSVToINS2014HashMap {
       for (String [] line = this._input.readNext (); line != null;
         line = this._input.readNext ()) {
           key = line[0] + line[1] + line[2] + line[3] + line[4] + line[5];
-	  map.put(key, line[6]);
+          map.put(key, line[6]);
       }
   }
 

@@ -52,6 +52,7 @@ class SynthPopAnnotationProcessor implements Processor {
   Random _randomGenerator = new Random ( 19580427 );
   private HashMap<String, String> _urbanRuralMap; // SAC 2016/05/24
   private HashMap<String, String> _INS2014Map;    // SAC 2016/06/10
+  private HashMap<String, String> _INS2015Map;    // SAC 2017/11/17
   
   static Random r = new Random (987654);
   static double random = r.nextDouble ();
@@ -72,11 +73,13 @@ class SynthPopAnnotationProcessor implements Processor {
    */
   public SynthPopAnnotationProcessor (String [] outputKeys, 
                                       HashMap<String, String> urbanRuralMap,
-                                      HashMap<String, String> INS2014Map) {
+                                      HashMap<String, String> INS2014Map,
+                                      HashMap<String, String> INS2015Map) {
     assert (outputKeys != null) : "Output keys must be non-null";
     this._outputKeys = outputKeys;
     this._urbanRuralMap = urbanRuralMap;
     this._INS2014Map = INS2014Map;
+    this._INS2015Map = INS2015Map;
   }
   
   public String [] getOutputKeys () {
@@ -300,7 +303,10 @@ class SynthPopAnnotationProcessor implements Processor {
     }
 
     addNewInsuranceStatusValues (eInsStatus, record);
-    addINS_NEW_2014 (record, person); // Oregon values
+    //addINS_NEW_2014 (record, person); // Oregon values
+    addINS_NEW (this._INS2014Map, "2014", record, person);
+    addINS_NEW (this._INS2015Map, "2015", record, person);
+
     addUrbanRuralDesignation (record); // Oregon only 
 
     /**
@@ -496,6 +502,47 @@ class SynthPopAnnotationProcessor implements Processor {
    * Create a new insurance variable for the population input file that is read in by AnyLogic.
    * According to the current person's relevant attributes (sex, ageCat, raceCat, HISP,
    * householdIncomeCat_New, MARRIED), select the corresponding “increase” probability value to
+   * assign a binary variable “INS_NEW_<year>” (where <year> is the method argument "year") as
+   * follows: Draw a random number from 0 to 1, say the result is “r”. If r < increase then
+   * INS_NEW_<year> = 1 else 0. For any individuals for which the attributes are not listed,
+   * “increase” gets its default value 0.
+   *
+   * For example for a person with sex=1, ageCat=3, raceCat=1, HISP=0, householdIncomeCat_New = 4,
+   * and MARRIED=1, set increase to 0.112635138, and draw a random number “r”. If r < 0.112635138,
+   * set INS_NEW_<year> = "1", else "0".
+   *
+   * NOTE: This function must be called AFTER the various values used within ("sex", etc.) have been
+   * put in the "record" parameter.
+   */
+  private void addINS_NEW (HashMap<String,String> insMap,
+                           String year,
+                           HashMap<String,String> record,
+                           Person person) {
+    String sex = record.get ("sex");
+    String ageCat = Integer.toString (person.getAgeCat ());
+    String raceCat = Integer.toString (person.getRaceCat ());
+    String HISP =  record.get ("HISP");
+    String householdIncomeCat_NEW = record.get ("householdIncomeCat_NEW");
+    String MARRIED =  record.get ("MARRIED");
+    String key = sex + ageCat + raceCat + HISP + householdIncomeCat_NEW + MARRIED;
+//    Class valType = insMap.get (key).getClass();
+    Double increase = Double.parseDouble (insMap.get (key));
+    String newInsKey = "INS_NEW_" + year;
+    record.put (newInsKey, getRandom () < increase ? "1" : "0");
+    String newInsProbabilityKey = "INS_NEW_" + year + "_PROB";
+    record.put (newInsProbabilityKey, Double.toString (increase)); // for debug
+    String probabilityDeterminantKey = "INS_NEW_" + year + "_DET";
+    record.put (probabilityDeterminantKey, key); // for debug
+/* DEBUG 
+    System.out.println("addINS_NEW " + year + "; key: " + key + "; probability: "
+                       + Double.toString (increase));
+*/
+  }
+
+  /**
+   * Create a new insurance variable for the population input file that is read in by AnyLogic.
+   * According to the current person's relevant attributes (sex, ageCat, raceCat, HISP,
+   * householdIncomeCat_New, MARRIED), select the corresponding “increase” probability value to
    * assign a binary variable “INS_NEW_2014” as follows: Draw a random number from 0 to 1, say the
    * result is “r”. If r < increase then INS_NEW_2014 = 1 else 0. For any individuals for which
    * the attributes are not listed, “increase” gets its default value 0.
@@ -507,6 +554,7 @@ class SynthPopAnnotationProcessor implements Processor {
    * NOTE: This function must be called AFTER the various values used within ("sex", etc.) have been
    * put in the "record" parameter.
    */
+/*
   private void addINS_NEW_2014 (HashMap<String,String> record, Person person) {
     String sex = record.get ("sex");
     String ageCat = Integer.toString (person.getAgeCat ());
@@ -521,6 +569,7 @@ class SynthPopAnnotationProcessor implements Processor {
     record.put ("INS_NEW_2014_PROB", Double.toString (increase));
     record.put ("Det", key);
   }
+*/
 
   private void addUrbanRuralDesignation (HashMap<String, String> record) {
     String zip = record.get ("zipcode");

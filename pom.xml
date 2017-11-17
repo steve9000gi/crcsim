@@ -13,7 +13,7 @@
   <url>http://www.renci.org/~scox/crc</url>
 
   <properties>
-    <data.root>c:/dev/var/crcsim</data.root>
+    <data.root>c:/dev-OR/var/crcsim</data.root>
     <!--    <data.root>/home/scox/dev/var/crcsim</data.root>
 -->
     <!-- application 
@@ -159,11 +159,11 @@
 		project.properties["hostname"] = InetAddress.getLocalHost().getHostName()
 		hostname = InetAddress.getLocalHost().getHostName()
 		if (hostname == 'LARGEMEM-0-1') {
-		    project.properties ['data.root'] = '/dev/var/crcsim'
+		    project.properties ['data.root'] = '/dev-OR/var/crcsim'
                 } else if (hostname == 'STEVE-X301') {
-		    project.properties ['data.root'] = '/dev/var/crcsim'
+		    project.properties ['data.root'] = '/dev-OR/var/crcsim'
                 } else if (hostname == 'STEVE-W510') {
-		    project.properties ['data.root'] = '/dev/var/crcsim'
+		    project.properties ['data.root'] = '/dev-OR/var/crcsim'
                 }
 	      </source>
 	    </configuration>

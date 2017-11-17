@@ -16,6 +16,7 @@
  *   (d) Allow the user to create a matrix defining parameters and their distributions
  *
  */
+load("nashorn:mozilla_compat.js"); // See https://bugs.openjdk.java.net/browse/JDK-8025132
 
 importPackage (org.apache.commons.math3.distribution); 
 
