@@ -94,7 +94,7 @@ public class ModelIO {
 
 /* DEBUG
     Writer w = new BufferedWriter(new OutputStreamWriter(
-        new FileOutputStream("C:/dev/crcsim/getModelOutputWriterInternal.txt", true),  "UTF-8"));
+        new FileOutputStream("G:/dev-OR/crcsim/getModelOutputWriterInternal.txt", true),  "UTF-8"));
         w.write(Thread.currentThread().getName() + ": " + fileName + "\n");
         w.flush();
         w.close();
@@ -133,7 +133,7 @@ public class ModelIO {
 
 /* DEBUG
     Writer w = new BufferedWriter(new OutputStreamWriter(
-        new FileOutputStream("C:/dev/crcsim/getModelOutputWriter.txt", true),  "UTF-8"));
+        new FileOutputStream("G:/dev-OR/crcsim/getModelOutputWriter.txt", true),  "UTF-8"));
         w.write(Thread.currentThread().getName() + ": " + fileName + "\n");
         w.flush();
         w.close();
@@ -180,7 +180,7 @@ public class ModelIO {
 
 /* DEBUG
             Writer w = new BufferedWriter(new OutputStreamWriter(
-            new FileOutputStream("C:/dev/crcsim/writePeople.txt", true),  "UTF-8"));
+            new FileOutputStream("G:/dev-OR/crcsim/writePeople.txt", true),  "UTF-8"));
             w.write(Thread.currentThread().getName() + ": " + outputDir + fileName + "\n");
             w.flush();
             w.close();

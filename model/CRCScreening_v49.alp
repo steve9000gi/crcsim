@@ -24,8 +24,13 @@
 			<Import><![CDATA[import java.util.Random;]]></Import>
 			<Generic>false</Generic>
 			<GenericParameter>
+<<<<<<< HEAD
 				<Id>1478008087385</Id>
 				<Name><![CDATA[1478008087385]]></Name>
+=======
+				<Id>1483642289634</Id>
+				<Name><![CDATA[1483642289634]]></Name>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<GenericParameterValue Class="CodeValue">
 					<Code><![CDATA[T]]></Code>
 				</GenericParameterValue>
@@ -73,7 +78,11 @@
 			<DatasetsCreationProperties>
 				<AutoCreate>true</AutoCreate>
 					<OccurrenceAtTime>true</OccurrenceAtTime>
+<<<<<<< HEAD
 					<OccurrenceDate>1478073600000</OccurrenceDate>
+=======
+					<OccurrenceDate>1483689600000</OccurrenceDate>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
@@ -84,7 +93,11 @@
 					</RecurrenceCode>
 			</DatasetsCreationProperties>
 			<ScaleRuler>
+<<<<<<< HEAD
 				<Id>1478008087386</Id>
+=======
+				<Id>1483642289650</Id>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<Name><![CDATA[scale]]></Name>
 				<X>0</X><Y>-150</Y>
 				<PublicFlag>false</PublicFlag>
@@ -2108,8 +2121,13 @@ else {
 			<Import><![CDATA[import java.util.Random;]]></Import>
 			<Generic>false</Generic>
 			<GenericParameter>
+<<<<<<< HEAD
 				<Id>1478008087399</Id>
 				<Name><![CDATA[1478008087399]]></Name>
+=======
+				<Id>1483642289651</Id>
+				<Name><![CDATA[1483642289651]]></Name>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<GenericParameterValue Class="CodeValue">
 					<Code><![CDATA[T]]></Code>
 				</GenericParameterValue>
@@ -2157,7 +2175,11 @@ else {
 			<DatasetsCreationProperties>
 				<AutoCreate>true</AutoCreate>
 					<OccurrenceAtTime>true</OccurrenceAtTime>
+<<<<<<< HEAD
 					<OccurrenceDate>1478073600000</OccurrenceDate>
+=======
+					<OccurrenceDate>1483689600000</OccurrenceDate>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
@@ -2168,7 +2190,11 @@ else {
 					</RecurrenceCode>
 			</DatasetsCreationProperties>
 			<ScaleRuler>
+<<<<<<< HEAD
 				<Id>1478008087400</Id>
+=======
+				<Id>1483642289652</Id>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<Name><![CDATA[scale]]></Name>
 				<X>0</X><Y>-150</Y>
 				<PublicFlag>false</PublicFlag>
@@ -2728,8 +2754,13 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 ]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameter>
+<<<<<<< HEAD
 				<Id>1478008087401</Id>
 				<Name><![CDATA[1478008087401]]></Name>
+=======
+				<Id>1483642289653</Id>
+				<Name><![CDATA[1483642289653]]></Name>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<GenericParameterValue Class="CodeValue">
 					<Code><![CDATA[T]]></Code>
 				</GenericParameterValue>
@@ -2777,7 +2808,11 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 			<DatasetsCreationProperties>
 				<AutoCreate>true</AutoCreate>
 					<OccurrenceAtTime>true</OccurrenceAtTime>
+<<<<<<< HEAD
 					<OccurrenceDate>1478073600000</OccurrenceDate>
+=======
+					<OccurrenceDate>1483689600000</OccurrenceDate>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
@@ -2788,7 +2823,11 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 					</RecurrenceCode>
 			</DatasetsCreationProperties>
 			<ScaleRuler>
+<<<<<<< HEAD
 				<Id>1478008087402</Id>
+=======
+				<Id>1483642289654</Id>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<Name><![CDATA[scale]]></Name>
 				<X>0</X><Y>-150</Y>
 				<PublicFlag>false</PublicFlag>
@@ -4679,7 +4718,11 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
+<<<<<<< HEAD
 							<Code><![CDATA[0.85]]></Code>
+=======
+							<Code><![CDATA[0.75]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -4705,7 +4748,11 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
+<<<<<<< HEAD
 							<Code><![CDATA[0.6]]></Code>
+=======
+							<Code><![CDATA[0.8]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -5173,7 +5220,11 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
+<<<<<<< HEAD
 							<Code><![CDATA["0.9,1,0.95,0.95"]]></Code>
+=======
+							<Code><![CDATA["0.97,1,1,0.95"]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -5199,7 +5250,11 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
+<<<<<<< HEAD
 							<Code><![CDATA["0.05,0.75,0.75,0.57"]]></Code>
+=======
+							<Code><![CDATA["0.02,0.75,0.80,0.57"]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -5225,7 +5280,11 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
+<<<<<<< HEAD
 							<Code><![CDATA["0.1,0.85,0.9,0.57"]]></Code>
+=======
+							<Code><![CDATA["0.02,0.85,0.85,0.57"]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -5251,7 +5310,11 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
+<<<<<<< HEAD
 							<Code><![CDATA["0.34,0.95,0.94,0.57"]]></Code>
+=======
+							<Code><![CDATA["0.05,0.95,0.95,0.57"]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -5277,7 +5340,11 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
+<<<<<<< HEAD
 							<Code><![CDATA["0.87,0.95,0.95,0.65"]]></Code>
+=======
+							<Code><![CDATA["0.40,0.95,0.95,0.65"]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -5355,7 +5422,11 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
+<<<<<<< HEAD
 							<Code><![CDATA["0,0,0.01,0"]]></Code>
+=======
+							<Code><![CDATA["0,0,0.001,0"]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -6647,7 +6718,11 @@ This is used to calculate continuing, rather than initial compliance.
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
+<<<<<<< HEAD
 							<Code><![CDATA["nearest_dist_simulation.csv"]]></Code>
+=======
+							<Code><![CDATA["nearest_dist_simulation_OR.csv"]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1388425019673</Id>
@@ -7253,7 +7328,11 @@ This is used to calculate continuing, rather than initial compliance.
 				<Variable Class="Parameter">
 					<Id>1468268822637</Id>
 					<Name><![CDATA[col_choice_freq]]></Name>
+<<<<<<< HEAD
 					<X>210</X><Y>-160</Y>
+=======
+					<X>210</X><Y>10</Y>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7275,6 +7354,7 @@ This is used to calculate continuing, rather than initial compliance.
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+<<<<<<< HEAD
 				<Variable Class="Parameter">
 					<Id>1470687619338</Id>
 					<Name><![CDATA[acaImplementation]]></Name>
@@ -7425,6 +7505,8 @@ This is used to calculate continuing, rather than initial compliance.
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+=======
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<Variable Class="CollectionVariable">
 					<Id>1336336262301</Id>
 					<Name><![CDATA[routine_test_list]]></Name>
@@ -8652,7 +8734,10 @@ catch (Exception e) {
     			+ "\t" + population.people.get(j).num_fobt
     			//+ "\t" + population.people.get(j).prob_colon
 //    			+ "\t" + Arrays.toString(population.people.get(j).insurance_traj_09to18)
+<<<<<<< HEAD
 //    			+ "\t" + Arrays.toString(population.people.get(j).modality_traj)
+=======
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
     			+ "\t" + population.people.get(j).income_actual
     			+ "\t" + population.people.get(j).household_size
     			//+ "\t" + population.people.get(j).urban
@@ -8671,11 +8756,14 @@ catch (Exception e) {
     		//	+"\t" + Arrays.toString(population.people.get(j).screening_traj)
     			+ "\t" + population.people.get(j).p_colonoscopy_age50
 				+ "\t" + population.people.get(j).zipcode
+<<<<<<< HEAD
 				+ "\t" + population.people.get(j).cancerStage1_age
 				+ "\t" + population.people.get(j).cancerStage2_age
 				+ "\t" + population.people.get(j).cancerStage3_age
 				+ "\t" + population.people.get(j).cancerStage4_age
 				
+=======
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				 
  );
     
@@ -8861,10 +8949,13 @@ catch (Exception e) {
      //   +"\t" + "screening_traj"
         +"\t" + "ProbColonoscopy_50"
         +"\t" + "Zipcode"
+<<<<<<< HEAD
         +"\t" + "Age at Stage 1 cancer"
         +"\t" + "Age at Stage 2 cancer"
         +"\t" + "Age at Stage 3 cancer"
         +"\t" + "Age at Stage 4 cancer"
+=======
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
      
       );
       
@@ -9412,7 +9503,11 @@ catch (Exception e) {
 						<GenericParameterSubstituteReference>
 							<PackageName><![CDATA[crc]]></PackageName>
 							<ClassName><![CDATA[TestSet]]></ClassName>
+<<<<<<< HEAD
 							<ItemName><![CDATA[1478008087434]]></ItemName>
+=======
+							<ItemName><![CDATA[1483642289684]]></ItemName>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</GenericParameterSubstituteReference>
 					</GenericParameterSubstitute>
 					<Parameters>
@@ -9476,7 +9571,11 @@ catch (Exception e) {
 						<GenericParameterSubstituteReference>
 							<PackageName><![CDATA[crc]]></PackageName>
 							<ClassName><![CDATA[Population]]></ClassName>
+<<<<<<< HEAD
 							<ItemName><![CDATA[1478008087416]]></ItemName>
+=======
+							<ItemName><![CDATA[1483642289667]]></ItemName>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</GenericParameterSubstituteReference>
 					</GenericParameterSubstitute>
 					<Parameters>
@@ -9566,8 +9665,13 @@ import java.util.Arrays;
 import java.util.Random;]]></Import>
 			<Generic>false</Generic>
 			<GenericParameter>
+<<<<<<< HEAD
 				<Id>1478008087403</Id>
 				<Name><![CDATA[1478008087403]]></Name>
+=======
+				<Id>1483642289655</Id>
+				<Name><![CDATA[1483642289655]]></Name>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<GenericParameterValue Class="CodeValue">
 					<Code><![CDATA[T]]></Code>
 				</GenericParameterValue>
@@ -9615,7 +9719,11 @@ import java.util.Random;]]></Import>
 			<DatasetsCreationProperties>
 				<AutoCreate>true</AutoCreate>
 					<OccurrenceAtTime>true</OccurrenceAtTime>
+<<<<<<< HEAD
 					<OccurrenceDate>1478073600000</OccurrenceDate>
+=======
+					<OccurrenceDate>1483689600000</OccurrenceDate>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
@@ -9626,9 +9734,15 @@ import java.util.Random;]]></Import>
 					</RecurrenceCode>
 			</DatasetsCreationProperties>
 			<ScaleRuler>
+<<<<<<< HEAD
 				<Id>1478008087415</Id>
 				<Name><![CDATA[scale]]></Name>
 				<X>-140</X><Y>-150</Y>
+=======
+				<Id>1483642289666</Id>
+				<Name><![CDATA[scale]]></Name>
+				<X>0</X><Y>-150</Y>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<PublicFlag>false</PublicFlag>
 				<PresentationFlag>false</PresentationFlag>
 				<ShowLabel>false</ShowLabel>
@@ -10677,6 +10791,14 @@ import java.util.Random;]]></Import>
 					<Name><![CDATA[insurance_in2023]]></Name>
 					<X>110</X><Y>330</Y>
 					<Label><X>10</X><Y>0</Y></Label>
+<<<<<<< HEAD
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[String]]></Type>        
+					</Properties>
+=======
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
@@ -10695,9 +10817,71 @@ import java.util.Random;]]></Import>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[String[]]]></Type>        
 						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new String[30]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1328041345823</Id>
+					<Name><![CDATA[sex_male]]></Name>
+					<X>-200</X><Y>20</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<NumericType><![CDATA[double]]></NumericType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[false]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>0</Id>
+							<Label><![CDATA[sex_male]]></Label>
+							<EditorContolType>CHECK_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1468777553015</Id>
+					<Name><![CDATA[screening_traj]]></Name>
+					<X>-380</X><Y>960</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+<<<<<<< HEAD
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[String[]]]></Type>        
+						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new String[35]]]></Code>
 						</InitialValue>
 					</Properties>
+=======
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<NumericType><![CDATA[double]]></NumericType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[false]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>0</Id>
+							<Label><![CDATA[educ_college]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1491957987522</Id>
@@ -10707,12 +10891,32 @@ import java.util.Random;]]></Import>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
+<<<<<<< HEAD
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int[200]]]></Code>
 						</InitialValue>
 					</Properties>
+=======
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<NumericType><![CDATA[double]]></NumericType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[false]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>0</Id>
+							<Label><![CDATA[income_gt_20k]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1493216492871</Id>
@@ -10722,12 +10926,32 @@ import java.util.Random;]]></Import>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
+<<<<<<< HEAD
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[0]]></Code>
 						</InitialValue>
 					</Properties>
+=======
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<NumericType><![CDATA[double]]></NumericType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[false]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>0</Id>
+							<Label><![CDATA[insure_none]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1493216501145</Id>
@@ -10737,12 +10961,32 @@ import java.util.Random;]]></Import>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
+<<<<<<< HEAD
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[0]]></Code>
 						</InitialValue>
 					</Properties>
+=======
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<NumericType><![CDATA[double]]></NumericType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[false]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>0</Id>
+							<Label><![CDATA[insure_private]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1493216504314</Id>
@@ -10752,12 +10996,32 @@ import java.util.Random;]]></Import>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
+<<<<<<< HEAD
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[String]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA["NA"]]></Code>
 						</InitialValue>
 					</Properties>
+=======
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<NumericType><![CDATA[double]]></NumericType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[false]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>0</Id>
+							<Label><![CDATA[race_white]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1493216507107</Id>
@@ -10767,6 +11031,7 @@ import java.util.Random;]]></Import>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
+<<<<<<< HEAD
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[String]]></Type>        
 						<InitialValue Class="CodeValue">
@@ -11088,6 +11353,8 @@ import java.util.Random;]]></Import>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
+=======
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
 						<Type><![CDATA[boolean]]></Type>
 						<UnitType><![CDATA[NONE]]></UnitType>
@@ -12193,6 +12460,8 @@ import java.util.Random;]]></Import>
 						<SdArray>false</SdArray>
 						<ParameterEditor>
 							<Id>1464898456784</Id>
+<<<<<<< HEAD
+=======
 							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
@@ -12204,6 +12473,38 @@ import java.util.Random;]]></Import>
 					<Id>1465834386147</Id>
 					<Name><![CDATA[p_compliant_preadj_age50]]></Name>
 					<X>290</X><Y>160</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[double]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<NumericType><![CDATA[double]]></NumericType>
+						<SdArray>false</SdArray>
+						<ParameterEditor>
+							<Id>1465834386145</Id>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+<<<<<<< HEAD
+				<Variable Class="Parameter">
+					<Id>1465834386147</Id>
+					<Name><![CDATA[p_compliant_preadj_age50]]></Name>
+					<X>290</X><Y>160</Y>
+=======
+				<Variable Class="CollectionVariable">
+					<Id>1328041345733</Id>
+					<Name><![CDATA[routine_compliance_history]]></Name>
+					<Description><![CDATA[During import this variable was converted to the Collection Variable with element type "Object".
+You can change the element type to the type of objects you store in this collection]]></Description>
+					<X>-450</X><Y>-50</Y>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14887,6 +15188,7 @@ if (screen_state.isStateActive (Person.Diagnostic) && !routine_is_diagnostic) {
       	
 	  if (!insure_none){
 		  //Annulaizing adjustmnt
+<<<<<<< HEAD
 		  /*compliance_prob =
 		     complianceModel.getTestAdjustedComplianceProbability (
 		          compliance_prob,
@@ -14902,6 +15204,24 @@ if (screen_state.isStateActive (Person.Diagnostic) && !routine_is_diagnostic) {
 				compliance_prob = 1-Math.pow(1- compliance_prob, main.col_choice_freq / 6.0);
 				}
 		if (main.secular_trend_active){
+=======
+		  compliance_prob =
+		     complianceModel.getTestAdjustedComplianceProbability (
+		          compliance_prob,
+		  	      test.name);
+		  	    
+		  	    //---------------copied from getTestAdjustedComplianceProbability-----------------
+		  	    /*if (test.name.equals ("FOBT")) {
+				 // 1-(1-p)^(1/n)
+				 compliance_prob = 1 - Math.pow (1 - compliance_prob, 1.0 / 4.0); 
+				 
+				} else {                               // Added by rmt on 05/31/16, modified 2016/06/02 SAC
+				// 1-(1-p)^(10/n)
+				compliance_prob = 1-Math.pow(1- compliance_prob, main.col_choice_freq / 4.0);
+				}*/
+		 // Trend adjustment
+		 if (main.secular_trend_active){
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 		 	compliance_prob = Math.min(compliance_prob + apply_trend(),1);
 		 }		
 		 
@@ -15213,9 +15533,15 @@ if(main.age==64){
   //boolean isCompliant = 0 < compliance_prob;
   routine_compliance_history.add (new Boolean (isCompliant));
   set_utd(test.name, isCompliant); // indexes into up-to-date vector if person chooses to comply
+<<<<<<< HEAD
   adjusted_bumped_probability_traj[main.age] = compliance_prob;
   if (isCompliant){
   screening_traj[main.age-45] = test.name;
+=======
+  
+  if (isCompliant){
+  screening_traj[main.age-50] = test.name;
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
   }
   return isCompliant;
   
@@ -16267,7 +16593,11 @@ if(main.acaImplementation==true){ //&& main.medicaidExpansion ==false){
 		} else if (household_size==8 && income_actual<(54384/cola_adj)){
 			insure_medicaid=true;
 		} else{
+<<<<<<< HEAD
 			insure_private = true;}*/
+=======
+			insure_private = true;}
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 			
 			//choose_tests()
 	//NC Eligibility Rules
@@ -16847,7 +17177,11 @@ total_QALY += current_QALY_mult;
 					<ShowLabel>true</ShowLabel>
 					<AutoUpdate>false</AutoUpdate>
 					<OccurrenceAtTime>true</OccurrenceAtTime>
+<<<<<<< HEAD
 					<OccurrenceDate>1478073600000</OccurrenceDate>
+=======
+					<OccurrenceDate>1483689600000</OccurrenceDate>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
@@ -16927,7 +17261,11 @@ total_QALY += current_QALY_mult;
 						<GenericParameterSubstituteReference>
 							<PackageName><![CDATA[crc]]></PackageName>
 							<ClassName><![CDATA[LesionSource]]></ClassName>
+<<<<<<< HEAD
 							<ItemName><![CDATA[1478008087399]]></ItemName>
+=======
+							<ItemName><![CDATA[1483642289651]]></ItemName>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</GenericParameterSubstituteReference>
 					</GenericParameterSubstitute>
 					<Parameters>
@@ -16991,7 +17329,11 @@ total_QALY += current_QALY_mult;
 						<GenericParameterSubstituteReference>
 							<PackageName><![CDATA[crc]]></PackageName>
 							<ClassName><![CDATA[Lesion]]></ClassName>
+<<<<<<< HEAD
 							<ItemName><![CDATA[1478008087385]]></ItemName>
+=======
+							<ItemName><![CDATA[1483642289634]]></ItemName>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</GenericParameterSubstituteReference>
 					</GenericParameterSubstitute>
 					<Parameters>
@@ -17119,8 +17461,13 @@ import java.io.OutputStreamWriter;
 ]]></Import>
 			<Generic>false</Generic>
 			<GenericParameter>
+<<<<<<< HEAD
 				<Id>1478008087416</Id>
 				<Name><![CDATA[1478008087416]]></Name>
+=======
+				<Id>1483642289667</Id>
+				<Name><![CDATA[1483642289667]]></Name>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<GenericParameterValue Class="CodeValue">
 					<Code><![CDATA[T]]></Code>
 				</GenericParameterValue>
@@ -17168,7 +17515,11 @@ import java.io.OutputStreamWriter;
 			<DatasetsCreationProperties>
 				<AutoCreate>true</AutoCreate>
 					<OccurrenceAtTime>true</OccurrenceAtTime>
+<<<<<<< HEAD
 					<OccurrenceDate>1478073600000</OccurrenceDate>
+=======
+					<OccurrenceDate>1483689600000</OccurrenceDate>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
@@ -17179,7 +17530,11 @@ import java.io.OutputStreamWriter;
 					</RecurrenceCode>
 			</DatasetsCreationProperties>
 			<ScaleRuler>
+<<<<<<< HEAD
 				<Id>1478008087431</Id>
+=======
+				<Id>1483642289681</Id>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<Name><![CDATA[scale]]></Name>
 				<X>0</X><Y>-150</Y>
 				<PublicFlag>false</PublicFlag>
@@ -19521,6 +19876,7 @@ import java.io.OutputStreamWriter;
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[0]]></Code>
 						</InitialValue>
+<<<<<<< HEAD
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -19941,6 +20297,8 @@ import java.io.OutputStreamWriter;
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int[100]]]></Code>
 						</InitialValue>
+=======
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -19953,6 +20311,12 @@ import java.io.OutputStreamWriter;
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
+<<<<<<< HEAD
+=======
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+						</InitialValue>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -19965,6 +20329,12 @@ import java.io.OutputStreamWriter;
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
+<<<<<<< HEAD
+=======
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+						</InitialValue>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -19977,6 +20347,12 @@ import java.io.OutputStreamWriter;
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
+<<<<<<< HEAD
+=======
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+						</InitialValue>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -19989,6 +20365,12 @@ import java.io.OutputStreamWriter;
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
+<<<<<<< HEAD
+=======
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+						</InitialValue>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -20001,6 +20383,12 @@ import java.io.OutputStreamWriter;
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
+<<<<<<< HEAD
+=======
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+						</InitialValue>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -20012,9 +20400,15 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int [101]]]></Code>
+=======
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -20027,9 +20421,15 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int [101]]]></Code>
+=======
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -20042,9 +20442,15 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int [101]]]></Code>
+=======
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -20057,9 +20463,15 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int [101]]]></Code>
+=======
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -20072,9 +20484,15 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int [101]]]></Code>
+=======
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -20087,9 +20505,15 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int [101]]]></Code>
+=======
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -20102,9 +20526,15 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int [101]]]></Code>
+=======
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -20117,9 +20547,15 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int [101]]]></Code>
+=======
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -20132,9 +20568,15 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int[main.utd_year_end-main.utd_year_start+1]]]></Code>
+=======
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -20147,9 +20589,15 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int[main.utd_year_end-main.utd_year_start+1]]]></Code>
+=======
+						<Type><![CDATA[int]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -20162,7 +20610,11 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>false</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[double]]></Type>        
+=======
+						<Type><![CDATA[int]]></Type>        
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[0]]></Code>
 						</InitialValue>
@@ -20177,7 +20629,11 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[double]]></Type>        
+=======
+						<Type><![CDATA[int]]></Type>        
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[0]]></Code>
 						</InitialValue>
@@ -20252,9 +20708,15 @@ import java.io.OutputStreamWriter;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+<<<<<<< HEAD
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int[100]]]></Code>
+=======
+						<Type><![CDATA[int]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -21861,7 +22323,11 @@ for (int yr= main.utd_year_start; yr<=main.utd_year_end; yr++){
 						<GenericParameterSubstituteReference>
 							<PackageName><![CDATA[crc]]></PackageName>
 							<ClassName><![CDATA[Person]]></ClassName>
+<<<<<<< HEAD
 							<ItemName><![CDATA[1478008087403]]></ItemName>
+=======
+							<ItemName><![CDATA[1483642289655]]></ItemName>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</GenericParameterSubstituteReference>
 					</GenericParameterSubstitute>
 					<Parameters>
@@ -22020,6 +22486,7 @@ for (int yr= main.utd_year_start; yr<=main.utd_year_end; yr++){
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[p_compliant_preadj_age50]]></Name>
+<<<<<<< HEAD
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[is_newMedicaid]]></Name>
@@ -22035,6 +22502,8 @@ for (int yr= main.utd_year_start; yr<=main.utd_year_end; yr++){
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[insurance_change]]></Name>
+=======
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</Parameter>
 					</Parameters>
 					<ReplicationFlag>true</ReplicationFlag>
@@ -22093,8 +22562,13 @@ for (int yr= main.utd_year_start; yr<=main.utd_year_end; yr++){
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
 			<Generic>false</Generic>
 			<GenericParameter>
+<<<<<<< HEAD
 				<Id>1478008087432</Id>
 				<Name><![CDATA[1478008087432]]></Name>
+=======
+				<Id>1483642289682</Id>
+				<Name><![CDATA[1483642289682]]></Name>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<GenericParameterValue Class="CodeValue">
 					<Code><![CDATA[T]]></Code>
 				</GenericParameterValue>
@@ -22142,7 +22616,11 @@ for (int yr= main.utd_year_start; yr<=main.utd_year_end; yr++){
 			<DatasetsCreationProperties>
 				<AutoCreate>true</AutoCreate>
 					<OccurrenceAtTime>true</OccurrenceAtTime>
+<<<<<<< HEAD
 					<OccurrenceDate>1478073600000</OccurrenceDate>
+=======
+					<OccurrenceDate>1483689600000</OccurrenceDate>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
@@ -22153,7 +22631,11 @@ for (int yr= main.utd_year_start; yr<=main.utd_year_end; yr++){
 					</RecurrenceCode>
 			</DatasetsCreationProperties>
 			<ScaleRuler>
+<<<<<<< HEAD
 				<Id>1478008087433</Id>
+=======
+				<Id>1483642289683</Id>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<Name><![CDATA[scale]]></Name>
 				<X>0</X><Y>-150</Y>
 				<PublicFlag>false</PublicFlag>
@@ -22806,8 +23288,13 @@ This is used to calculate continuing, rather than initial compliance.
 			<IconTopGroupPersistent>true</IconTopGroupPersistent>
 			<Generic>false</Generic>
 			<GenericParameter>
+<<<<<<< HEAD
 				<Id>1478008087434</Id>
 				<Name><![CDATA[1478008087434]]></Name>
+=======
+				<Id>1483642289684</Id>
+				<Name><![CDATA[1483642289684]]></Name>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<GenericParameterValue Class="CodeValue">
 					<Code><![CDATA[T]]></Code>
 				</GenericParameterValue>
@@ -22855,7 +23342,11 @@ This is used to calculate continuing, rather than initial compliance.
 			<DatasetsCreationProperties>
 				<AutoCreate>true</AutoCreate>
 					<OccurrenceAtTime>true</OccurrenceAtTime>
+<<<<<<< HEAD
 					<OccurrenceDate>1478073600000</OccurrenceDate>
+=======
+					<OccurrenceDate>1483689600000</OccurrenceDate>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
@@ -22866,7 +23357,11 @@ This is used to calculate continuing, rather than initial compliance.
 					</RecurrenceCode>
 			</DatasetsCreationProperties>
 			<ScaleRuler>
+<<<<<<< HEAD
 				<Id>1478008087435</Id>
+=======
+				<Id>1483642289685</Id>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				<Name><![CDATA[scale]]></Name>
 				<X>0</X><Y>-150</Y>
 				<PublicFlag>false</PublicFlag>
@@ -23024,7 +23519,11 @@ return null;
 						<GenericParameterSubstituteReference>
 							<PackageName><![CDATA[crc]]></PackageName>
 							<ClassName><![CDATA[Test]]></ClassName>
+<<<<<<< HEAD
 							<ItemName><![CDATA[1478008087432]]></ItemName>
+=======
+							<ItemName><![CDATA[1483642289682]]></ItemName>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</GenericParameterSubstituteReference>
 					</GenericParameterSubstitute>
 					<Parameters>
@@ -23145,7 +23644,11 @@ return null;
 						<GenericParameterSubstituteReference>
 							<PackageName><![CDATA[crc]]></PackageName>
 							<ClassName><![CDATA[Test]]></ClassName>
+<<<<<<< HEAD
 							<ItemName><![CDATA[1478008087432]]></ItemName>
+=======
+							<ItemName><![CDATA[1483642289682]]></ItemName>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 						</GenericParameterSubstituteReference>
 					</GenericParameterSubstitute>
 					<Parameters>
@@ -23403,6 +23906,12 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[infile_population_name]]></ParameterName>
+<<<<<<< HEAD
+=======
+					<ParameterValue Class="CodeValue">
+						<Code><![CDATA["population2.tsv"]]></Code>
+					</ParameterValue>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[outfile_replication]]></ParameterName>
@@ -23895,6 +24404,7 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[col_choice_freq]]></ParameterName>
+<<<<<<< HEAD
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[acaImplementation]]></ParameterName>
@@ -23913,6 +24423,8 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[newly_elig_pBump_col]]></ParameterName>
+=======
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 				</Parameter>
 			</Parameters>			
 			<PresentationProperties 
@@ -24087,7 +24599,11 @@ variable = lifespan;
 					<ShowLabel>true</ShowLabel>
 					<AutoUpdate>true</AutoUpdate>
 					<OccurrenceAtTime>true</OccurrenceAtTime>
+<<<<<<< HEAD
 					<OccurrenceDate>1478073600000</OccurrenceDate>
+=======
+					<OccurrenceDate>1483689600000</OccurrenceDate>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -24110,7 +24626,11 @@ variable = lifespan;
 					<ShowLabel>true</ShowLabel>
 					<AutoUpdate>false</AutoUpdate>
 					<OccurrenceAtTime>true</OccurrenceAtTime>
+<<<<<<< HEAD
 					<OccurrenceDate>1478073600000</OccurrenceDate>
+=======
+					<OccurrenceDate>1483689600000</OccurrenceDate>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -24133,7 +24653,11 @@ variable = lifespan;
 					<ShowLabel>true</ShowLabel>
 					<AutoUpdate>false</AutoUpdate>
 					<OccurrenceAtTime>true</OccurrenceAtTime>
+<<<<<<< HEAD
 					<OccurrenceDate>1478073600000</OccurrenceDate>
+=======
+					<OccurrenceDate>1483689600000</OccurrenceDate>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -26550,7 +27074,11 @@ copyToClipboard( s );
 					<ShowLabel>false</ShowLabel>
 					<AutoUpdate>false</AutoUpdate>
 					<OccurrenceAtTime>true</OccurrenceAtTime>
+<<<<<<< HEAD
 					<OccurrenceDate>1478073600000</OccurrenceDate>
+=======
+					<OccurrenceDate>1483689600000</OccurrenceDate>
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 					<OccurrenceTime Class="CodeUnitValue">
 						<Code><![CDATA[0]]></Code>
 						<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -27303,6 +27831,7 @@ copyToClipboard( s );
 			<Parameter>	
 				<Id>1468268822637</Id>
 				<Type>FIXED</Type>
+<<<<<<< HEAD
 			</Parameter>
 			<Parameter>	
 				<Id>1470687619338</Id>
@@ -27327,6 +27856,8 @@ copyToClipboard( s );
 			<Parameter>	
 				<Id>1503943465551</Id>
 				<Type>FIXED</Type>
+=======
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 			</Parameter>
 			<ObjectiveFunctionCode><![CDATA[//this.calibration.getValue ()
 root.population.people.average ("lifespan")]]></ObjectiveFunctionCode>
@@ -27958,6 +28489,7 @@ if (root.simulation_count % 2 == 0) {
 			<FreeformParamValue>	
 				<Id>1468268822637</Id>
 			</FreeformParamValue>
+<<<<<<< HEAD
 			<FreeformParamValue>	
 				<Id>1470687619338</Id>
 			</FreeformParamValue>
@@ -27976,6 +28508,8 @@ if (root.simulation_count % 2 == 0) {
 			<FreeformParamValue>	
 				<Id>1503943465551</Id>
 			</FreeformParamValue>
+=======
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 			<RangeVariationParamValue>	
 				<Id>1328041345577</Id>
 				<Type>FIXED</Type>
@@ -28644,6 +29178,7 @@ if (root.simulation_count % 2 == 0) {
 				<Id>1468268822637</Id>
 				<Type>FIXED</Type>
 			</RangeVariationParamValue>
+<<<<<<< HEAD
 			<RangeVariationParamValue>	
 				<Id>1470687619338</Id>
 				<Type>FIXED</Type>
@@ -28668,6 +29203,8 @@ if (root.simulation_count % 2 == 0) {
 				<Id>1503943465551</Id>
 				<Type>FIXED</Type>
 			</RangeVariationParamValue>
+=======
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 			<ModelTimeProperties>
 				<StopOption><![CDATA[Stop at specified time]]></StopOption>
 				<InitialDate><![CDATA[1328041345266]]></InitialDate>	
@@ -29138,6 +29675,7 @@ private String runtimeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm").format(ne
 //private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\cleanpops-2014-02-05-1203-smallcohort";
 //private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\cleanpops-2014-02-05-1203-smallcohort-p1";
 //private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\cleanpops-2014-02-05-1203-smallcohort-p2";
+<<<<<<< HEAD
 //private String inputDirectory  = "g:\\dev-NC\\var\\crcsim\\model\\whitemalepops";
 //private String inputDirectory  = "g:\\dev-NC\\var\\crcsim\\model\\temppop";
 //private String inputDirectory  = "c:\\dev\\var\\crcsim\\model\\pops_50Sample";
@@ -29145,11 +29683,20 @@ private String inputDirectory  = "g:\\dev-OR\\var\\crcsim\\model\\pops";
 private String popname = inputDirectory.substring(27);
 
 
+=======
+//private String inputDirectory  = "c:\\dev\\var\\crcsim\\model\\blackmalepops";
+//private String inputDirectory  = "c:\\dev\\var\\crcsim\\model\\pops_50Sample";
+private String inputDirectory  = "g:\\dev-OR\\var\\crcsim\\model\\pops";
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 //private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\smallpops";
 //private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\outPSA";
 //private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\outDB";
 //private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-rmt_test";
+<<<<<<< HEAD
 private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-OR-" + strDebug + "-" + popname + "-" + runtimeStamp;
+=======
+private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-full-2017-01-06-1035";
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 //private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-2016-05-25-1636_full";
 //private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\Nambiar-Analysis"; 
 //For small test production runs
@@ -29176,6 +29723,7 @@ private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsSci
 //private String experimentId = "002"; //agent_year output
 //private String experimentId = "012"; //agent_year output OR
 //private String experimentId = "012"; // Oregon lite
+<<<<<<< HEAD
 //private String experimentId = "017"; //  originald diesease progression
 //private String experimentId = "013"; //  NC experiment Medicaid Exp 6 scenarios
 //private String experimentId = "018";
@@ -29184,6 +29732,10 @@ private String experimentId = "015";
 //private String experimentId = "016"; //  NC experiment calibrate secular trend
 //private String experimentId = "013"; // Oregon lite, experimenting with secular trend
 //private String experimentId = "012"; // Oregon lite, experimenting with colonoscopy choice timing
+=======
+//private String experimentId = "013"; // Oregon lite, experimenting with secular trend
+private String experimentId = "012"; // Oregon lite, experimenting with colonoscopy choice timing
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 //private String experimentId = "011_database";
 //private String experimentId = "fs";
 //private String experimentId = "base";

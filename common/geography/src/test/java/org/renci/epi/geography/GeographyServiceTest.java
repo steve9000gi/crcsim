@@ -42,7 +42,12 @@ public class GeographyServiceTest extends AbstractJUnit4SpringContextTests {
 
     @Test
     public void testGetPolygons () throws Exception {
+<<<<<<< HEAD
 /* These polygon files are not used and don't exist for Oregon
+=======
+
+/*
+>>>>>>> 1699535e41ab3f8c55eb11bdeca7e3c98c0f09c6
 	BasicConfigurator.configure ();
 	Logger.getRootLogger().setLevel (Level.DEBUG);
 
