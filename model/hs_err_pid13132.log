@@ -1,0 +1,280 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x000000006dabeb19, pid=13132, tid=14188
+#
+# JRE version: 6.0_24-b07
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (19.1-b02 mixed mode windows-amd64 )
+# Problematic frame:
+# V  [jvm.dll+0x22eb19]
+#
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000000005ce8a000):  JavaThread "Finalizer" daemon [_thread_in_vm, id=14188, stack(0x0000000060120000,0x0000000060220000)]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x0000000000000015
+
+Registers:
+RAX=0x0000000002873b98, RBX=0x0000000000000000, RCX=0x0000000000000010, RDX=0x0000000000000000
+RSP=0x000000006021f718, RBP=0x000000005ce76420, RSI=0x0000000002873b88, RDI=0x0000000002873b90
+R8=0x0000000000000005, R9=0x000000007fff4438, R10=0x0000000000000000, R11=0x000000006021f7a8
+R12=0x000000005ce8a000, R13=0x000000007fff4438, R14=0x000000006d468010, R15=0x000000005ce79aa0
+RIP=0x000000006dabeb19, EFLAGS=0x0000000000010246
+
+Register to memory mapping:
+
+RAX=0x0000000002873b98
+0x0000000002873b98 is pointing to unknown location
+
+RBX=0x0000000000000000
+0x0000000000000000 is pointing to unknown location
+
+RCX=0x0000000000000010
+0x0000000000000010 is pointing to unknown location
+
+RDX=0x0000000000000000
+0x0000000000000000 is pointing to unknown location
+
+RSP=0x000000006021f718
+0x000000006021f718 is pointing into the stack for thread: 0x000000005ce8a000
+"Finalizer" daemon prio=8 tid=0x000000005ce8a000 nid=0x376c runnable [0x000000006021f000]
+   java.lang.Thread.State: RUNNABLE
+
+RBP=0x000000005ce76420
+0x000000005ce76420 is pointing to unknown location
+
+RSI=0x0000000002873b88
+0x0000000002873b88 is pointing to unknown location
+
+RDI=0x0000000002873b90
+0x0000000002873b90 is pointing to unknown location
+
+R8 =0x0000000000000005
+0x0000000000000005 is pointing to unknown location
+
+R9 =0x000000007fff4438
+{symbol} 
+ - klass: {other class}
+
+R10=0x0000000000000000
+0x0000000000000000 is pointing to unknown location
+
+R11=0x000000006021f7a8
+0x000000006021f7a8 is pointing into the stack for thread: 0x000000005ce8a000
+"Finalizer" daemon prio=8 tid=0x000000005ce8a000 nid=0x376c runnable [0x000000006021f000]
+   java.lang.Thread.State: RUNNABLE
+
+R12=0x000000005ce8a000
+"Finalizer" daemon prio=8 tid=0x000000005ce8a000 nid=0x376c runnable [0x000000006021f000]
+   java.lang.Thread.State: RUNNABLE
+
+R13=0x000000007fff4438
+{symbol} 
+ - klass: {other class}
+
+R14=0x000000006d468010
+0x000000006d468010 is pointing to unknown location
+
+R15=0x000000005ce79aa0
+0x000000005ce79aa0 is pointing to unknown location
+
+
+Top of Stack: (sp=0x000000006021f718)
+0x000000006021f718:   000000006dae50e5 0000000000000000
+0x000000006021f728:   000000007fff5d50 0000000002873b88
+0x000000006021f738:   000000006d468019 000000006021f8e0
+0x000000006021f748:   000000005ce8a1c8 00000000d764dc1e
+0x000000006021f758:   000000006021f7a8 000000005ce8a000
+0x000000006021f768:   000000005ce8a000 000000006021f8e0
+0x000000006021f778:   00000000800318c0 000000005ce79aa0
+0x000000006021f788:   000000005ce8a1c8 000000006d467e68
+0x000000006021f798:   000000006d468010 000000005ce8a000
+0x000000006021f7a8:   000000006dae5339 0000000080030e90
+0x000000006021f7b8:   000000006dad3a1e 0000000000009b75
+0x000000006021f7c8:   000000006021f8c0 000000005ce8a100
+0x000000006021f7d8:   000000005ce8a000 000000005ce8a000
+0x000000006021f7e8:   0000000000000000 000000005ce8a000
+0x000000006021f7f8:   000000005ce8a000 0000000080030e90
+0x000000006021f808:   000000006d4524fc 000000005ce8a1c8 
+
+Instructions: (pc=0x000000006dabeb19)
+0x000000006dabeb09:   43 00 48 85 c0 0f 94 c0 c3 48 63 0d 23 0f 45 00
+0x000000006dabeb19:   4a 8b 04 01 48 85 c0 0f 94 c0 c3 cc cc cc cc cc 
+
+
+Stack: [0x0000000060120000,0x0000000060220000],  sp=0x000000006021f718,  free space=1021k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x22eb19]
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  java.lang.ref.Finalizer.invokeFinalizeMethod(Ljava/lang/Object;)V+0
+j  java.lang.ref.Finalizer.runFinalizer()V+45
+j  java.lang.ref.Finalizer.access$100(Ljava/lang/ref/Finalizer;)V+1
+j  java.lang.ref.Finalizer$FinalizerThread.run()V+11
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x0000000060c70000 JavaThread "AWT-Windows" daemon [_thread_in_native, id=10736, stack(0x00000000656e0000,0x00000000657e0000)]
+  0x0000000060c6f000 JavaThread "Java2D Disposer" daemon [_thread_blocked, id=8296, stack(0x00000000654e0000,0x00000000655e0000)]
+  0x0000000060c6e000 JavaThread "pool-1-thread-64" [_thread_blocked, id=7812, stack(0x00000000653e0000,0x00000000654e0000)]
+  0x0000000060c6d800 JavaThread "pool-1-thread-63" [_thread_blocked, id=3264, stack(0x00000000652e0000,0x00000000653e0000)]
+  0x0000000060c6c800 JavaThread "pool-1-thread-62" [_thread_blocked, id=6808, stack(0x00000000651e0000,0x00000000652e0000)]
+  0x0000000060c6c000 JavaThread "pool-1-thread-61" [_thread_blocked, id=6884, stack(0x00000000650e0000,0x00000000651e0000)]
+  0x0000000060c6b000 JavaThread "pool-1-thread-60" [_thread_in_Java, id=8028, stack(0x0000000064fe0000,0x00000000650e0000)]
+  0x0000000060c6a800 JavaThread "pool-1-thread-59" [_thread_in_native, id=7808, stack(0x0000000064ee0000,0x0000000064fe0000)]
+  0x0000000060c69800 JavaThread "pool-1-thread-58" [_thread_blocked, id=10752, stack(0x0000000064de0000,0x0000000064ee0000)]
+  0x0000000060c69000 JavaThread "pool-1-thread-57" [_thread_blocked, id=4048, stack(0x0000000064ce0000,0x0000000064de0000)]
+  0x0000000060c68800 JavaThread "pool-1-thread-56" [_thread_in_Java, id=4224, stack(0x0000000064be0000,0x0000000064ce0000)]
+  0x0000000060bc2000 JavaThread "pool-1-thread-55" [_thread_blocked, id=11712, stack(0x0000000064ae0000,0x0000000064be0000)]
+  0x0000000060bc1800 JavaThread "pool-1-thread-54" [_thread_blocked, id=14160, stack(0x00000000649e0000,0x0000000064ae0000)]
+  0x0000000060bc0800 JavaThread "pool-1-thread-53" [_thread_blocked, id=10036, stack(0x00000000648e0000,0x00000000649e0000)]
+  0x0000000060bc0000 JavaThread "pool-1-thread-52" [_thread_blocked, id=512, stack(0x00000000647e0000,0x00000000648e0000)]
+  0x0000000060bbf000 JavaThread "pool-1-thread-51" [_thread_blocked, id=4064, stack(0x00000000646e0000,0x00000000647e0000)]
+  0x0000000060bbe800 JavaThread "pool-1-thread-50" [_thread_blocked, id=6736, stack(0x00000000645e0000,0x00000000646e0000)]
+  0x0000000060bbd800 JavaThread "pool-1-thread-49" [_thread_blocked, id=8996, stack(0x00000000644e0000,0x00000000645e0000)]
+  0x0000000060bbd000 JavaThread "pool-1-thread-48" [_thread_blocked, id=10104, stack(0x00000000643e0000,0x00000000644e0000)]
+  0x0000000060bbc000 JavaThread "pool-1-thread-47" [_thread_blocked, id=13016, stack(0x00000000642e0000,0x00000000643e0000)]
+  0x0000000060bbb800 JavaThread "pool-1-thread-46" [_thread_blocked, id=8184, stack(0x00000000641e0000,0x00000000642e0000)]
+  0x0000000060bbb000 JavaThread "pool-1-thread-45" [_thread_blocked, id=6168, stack(0x00000000640e0000,0x00000000641e0000)]
+  0x0000000060bba000 JavaThread "pool-1-thread-44" [_thread_blocked, id=8492, stack(0x0000000063fe0000,0x00000000640e0000)]
+  0x0000000060bb9800 JavaThread "pool-1-thread-43" [_thread_in_Java, id=1596, stack(0x0000000063ee0000,0x0000000063fe0000)]
+  0x0000000060bb8800 JavaThread "pool-1-thread-42" [_thread_blocked, id=12012, stack(0x0000000063de0000,0x0000000063ee0000)]
+  0x0000000060bb8000 JavaThread "pool-1-thread-41" [_thread_in_Java, id=8852, stack(0x0000000063ce0000,0x0000000063de0000)]
+  0x0000000060bb7000 JavaThread "pool-1-thread-40" [_thread_in_Java, id=6568, stack(0x0000000063be0000,0x0000000063ce0000)]
+  0x0000000060bb6800 JavaThread "pool-1-thread-39" [_thread_in_Java, id=9612, stack(0x0000000063ae0000,0x0000000063be0000)]
+  0x0000000060bb5800 JavaThread "pool-1-thread-38" [_thread_blocked, id=12764, stack(0x00000000639e0000,0x0000000063ae0000)]
+  0x0000000060bb5000 JavaThread "pool-1-thread-37" [_thread_in_Java, id=11320, stack(0x00000000638e0000,0x00000000639e0000)]
+  0x0000000060bb4800 JavaThread "pool-1-thread-36" [_thread_in_Java, id=9108, stack(0x00000000637e0000,0x00000000638e0000)]
+  0x0000000060bb3800 JavaThread "pool-1-thread-35" [_thread_blocked, id=6832, stack(0x00000000636e0000,0x00000000637e0000)]
+  0x0000000060bb3000 JavaThread "pool-1-thread-34" [_thread_blocked, id=5732, stack(0x00000000635e0000,0x00000000636e0000)]
+  0x0000000060c12000 JavaThread "pool-1-thread-33" [_thread_blocked, id=14088, stack(0x00000000634e0000,0x00000000635e0000)]
+  0x0000000060c11800 JavaThread "pool-1-thread-32" [_thread_blocked, id=8528, stack(0x00000000633e0000,0x00000000634e0000)]
+  0x0000000060c10800 JavaThread "pool-1-thread-31" [_thread_blocked, id=10248, stack(0x00000000632e0000,0x00000000633e0000)]
+  0x0000000060c10000 JavaThread "pool-1-thread-30" [_thread_blocked, id=12664, stack(0x00000000631e0000,0x00000000632e0000)]
+  0x0000000060c0f000 JavaThread "pool-1-thread-29" [_thread_in_Java, id=4584, stack(0x00000000630e0000,0x00000000631e0000)]
+  0x0000000060c0e800 JavaThread "pool-1-thread-28" [_thread_in_Java, id=9220, stack(0x0000000062fe0000,0x00000000630e0000)]
+  0x0000000060c0d800 JavaThread "pool-1-thread-27" [_thread_blocked, id=4024, stack(0x0000000062ee0000,0x0000000062fe0000)]
+  0x0000000060c0d000 JavaThread "pool-1-thread-26" [_thread_blocked, id=12512, stack(0x0000000062de0000,0x0000000062ee0000)]
+  0x0000000060c0c000 JavaThread "pool-1-thread-25" [_thread_blocked, id=5232, stack(0x0000000062ce0000,0x0000000062de0000)]
+  0x0000000060c0b800 JavaThread "pool-1-thread-24" [_thread_blocked, id=10672, stack(0x0000000062be0000,0x0000000062ce0000)]
+  0x0000000060c0b000 JavaThread "pool-1-thread-23" [_thread_blocked, id=5984, stack(0x0000000062ae0000,0x0000000062be0000)]
+  0x0000000060c0a000 JavaThread "pool-1-thread-22" [_thread_blocked, id=12836, stack(0x00000000629e0000,0x0000000062ae0000)]
+  0x0000000060c09800 JavaThread "pool-1-thread-21" [_thread_in_Java, id=10796, stack(0x00000000628e0000,0x00000000629e0000)]
+  0x0000000060c08800 JavaThread "pool-1-thread-20" [_thread_blocked, id=10864, stack(0x00000000627e0000,0x00000000628e0000)]
+  0x0000000060c08000 JavaThread "pool-1-thread-19" [_thread_blocked, id=7396, stack(0x00000000626e0000,0x00000000627e0000)]
+  0x0000000060c07000 JavaThread "pool-1-thread-18" [_thread_blocked, id=6696, stack(0x00000000625e0000,0x00000000626e0000)]
+  0x0000000060c06800 JavaThread "pool-1-thread-17" [_thread_blocked, id=9020, stack(0x00000000624e0000,0x00000000625e0000)]
+  0x0000000060c05800 JavaThread "pool-1-thread-16" [_thread_blocked, id=13100, stack(0x00000000623e0000,0x00000000624e0000)]
+  0x0000000060c05000 JavaThread "pool-1-thread-15" [_thread_blocked, id=14184, stack(0x00000000622e0000,0x00000000623e0000)]
+  0x0000000060c04800 JavaThread "pool-1-thread-14" [_thread_blocked, id=5636, stack(0x00000000621e0000,0x00000000622e0000)]
+  0x0000000060c03800 JavaThread "pool-1-thread-13" [_thread_blocked, id=10292, stack(0x00000000620e0000,0x00000000621e0000)]
+  0x0000000060c03000 JavaThread "pool-1-thread-12" [_thread_in_Java, id=13920, stack(0x0000000061fe0000,0x00000000620e0000)]
+  0x0000000060a16000 JavaThread "pool-1-thread-11" [_thread_blocked, id=9084, stack(0x0000000061ee0000,0x0000000061fe0000)]
+  0x0000000060cf1800 JavaThread "pool-1-thread-10" [_thread_blocked, id=12804, stack(0x0000000061de0000,0x0000000061ee0000)]
+  0x0000000060987000 JavaThread "pool-1-thread-9" [_thread_blocked, id=4912, stack(0x0000000061ce0000,0x0000000061de0000)]
+  0x0000000060b92000 JavaThread "pool-1-thread-8" [_thread_blocked, id=11008, stack(0x0000000061be0000,0x0000000061ce0000)]
+  0x0000000060b91000 JavaThread "pool-1-thread-7" [_thread_blocked, id=7152, stack(0x0000000061ae0000,0x0000000061be0000)]
+  0x0000000060ae8000 JavaThread "pool-1-thread-6" [_thread_in_Java, id=11556, stack(0x00000000619e0000,0x0000000061ae0000)]
+  0x000000006090b000 JavaThread "pool-1-thread-5" [_thread_blocked, id=6944, stack(0x00000000618e0000,0x00000000619e0000)]
+  0x0000000060ae5000 JavaThread "pool-1-thread-4" [_thread_blocked, id=6644, stack(0x00000000617e0000,0x00000000618e0000)]
+  0x000000006092b800 JavaThread "pool-1-thread-3" [_thread_blocked, id=12268, stack(0x00000000616e0000,0x00000000617e0000)]
+  0x000000006099a000 JavaThread "pool-1-thread-2" [_thread_blocked, id=8868, stack(0x00000000615e0000,0x00000000616e0000)]
+  0x0000000060999000 JavaThread "pool-1-thread-1" [_thread_blocked, id=4184, stack(0x00000000614e0000,0x00000000615e0000)]
+  0x000000005cf12000 JavaThread "Low Memory Detector" daemon [_thread_blocked, id=11024, stack(0x0000000060620000,0x0000000060720000)]
+  0x000000005cef7000 JavaThread "CompilerThread1" daemon [_thread_blocked, id=12944, stack(0x0000000060520000,0x0000000060620000)]
+  0x000000005cee2800 JavaThread "CompilerThread0" daemon [_thread_blocked, id=10940, stack(0x0000000060420000,0x0000000060520000)]
+  0x000000005cedd000 JavaThread "Attach Listener" daemon [_thread_blocked, id=628, stack(0x0000000060320000,0x0000000060420000)]
+  0x000000005cedc000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=1968, stack(0x0000000060220000,0x0000000060320000)]
+=>0x000000005ce8a000 JavaThread "Finalizer" daemon [_thread_in_vm, id=14188, stack(0x0000000060120000,0x0000000060220000)]
+  0x000000005ce84000 JavaThread "Reference Handler" daemon [_thread_blocked, id=8524, stack(0x0000000060020000,0x0000000060120000)]
+  0x000000000078d800 JavaThread "main" [_thread_blocked, id=6724, stack(0x0000000002710000,0x0000000002810000)]
+
+Other Threads:
+  0x000000005ce7d000 VMThread [stack: 0x000000005ff20000,0x0000000060020000] [id=9724]
+  0x000000005cf1b800 WatcherThread [stack: 0x0000000060720000,0x0000000060820000] [id=11348]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ PSYoungGen      total 196436928K, used 658645K [0x000000a9aff50000, 0x000000f469c40000, 0x000000fe34bf0000)
+  eden space 78271232K, 0% used [0x000000a9aff50000,0x000000a9d82857c8,0x000000bc59410000)
+  from space 118165696K, 0% used [0x000000bc59410000,0x000000bc59410000,0x000000d885840000)
+  to   space 114519936K, 0% used [0x000000d91c060000,0x000000d91c060000,0x000000f469c40000)
+ PSOldGen        total 363881856K, used 58326929K [0x00000000a65f0000, 0x0000005767f50000, 0x000000a9aff50000)
+  object space 363881856K, 16% used [0x00000000a65f0000,0x0000000e8e5d45c8,0x0000005767f50000)
+ PSPermGen       total 24576K, used 24231K [0x000000007fff0000, 0x00000000817f0000, 0x00000000a65f0000)
+  object space 24576K, 98% used [0x000000007fff0000,0x0000000081799d10,0x00000000817f0000)
+
+Dynamic libraries:
+0x0000000000400000 - 0x000000000042e000 	C:\Program Files\AnyLogic 7 University\jre\bin\javaw.exe
+0x0000000077220000 - 0x00000000773cb000 	C:\Windows\SYSTEM32\ntdll.dll
+0x0000000077100000 - 0x000000007721f000 	C:\Windows\system32\kernel32.dll
+0x000007fefcf80000 - 0x000007fefcfea000 	C:\Windows\system32\KERNELBASE.dll
+0x000007fefd7a0000 - 0x000007fefd87b000 	C:\Windows\system32\ADVAPI32.dll
+0x000007fefe550000 - 0x000007fefe5ef000 	C:\Windows\system32\msvcrt.dll
+0x000007fefdca0000 - 0x000007fefdcbf000 	C:\Windows\SYSTEM32\sechost.dll
+0x000007fefdb70000 - 0x000007fefdc9d000 	C:\Windows\system32\RPCRT4.dll
+0x0000000077000000 - 0x00000000770fa000 	C:\Windows\system32\USER32.dll
+0x000007fefdae0000 - 0x000007fefdb47000 	C:\Windows\system32\GDI32.dll
+0x000007fefdaa0000 - 0x000007fefdaae000 	C:\Windows\system32\LPK.dll
+0x000007fefe6d0000 - 0x000007fefe79a000 	C:\Windows\system32\USP10.dll
+0x000007fefdab0000 - 0x000007fefdade000 	C:\Windows\system32\IMM32.DLL
+0x000007fefd690000 - 0x000007fefd799000 	C:\Windows\system32\MSCTF.dll
+0x000000006d890000 - 0x000000006df94000 	C:\Program Files\AnyLogic 7 University\jre\bin\server\jvm.dll
+0x000007fef88a0000 - 0x000007fef88db000 	C:\Windows\system32\WINMM.dll
+0x000000006d800000 - 0x000000006d80e000 	C:\Program Files\AnyLogic 7 University\jre\bin\verify.dll
+0x000000006d450000 - 0x000000006d477000 	C:\Program Files\AnyLogic 7 University\jre\bin\java.dll
+0x000000006d3b0000 - 0x000000006d3ba000 	C:\Program Files\AnyLogic 7 University\jre\bin\hpi.dll
+0x00000000773e0000 - 0x00000000773e7000 	C:\Windows\system32\PSAPI.DLL
+0x000000006d850000 - 0x000000006d862000 	C:\Program Files\AnyLogic 7 University\jre\bin\zip.dll
+0x000000006d0a0000 - 0x000000006d263000 	C:\Program Files\AnyLogic 7 University\jre\bin\awt.dll
+0x000007fef7fa0000 - 0x000007fef8011000 	C:\Windows\system32\WINSPOOL.DRV
+0x000007fefe2f0000 - 0x000007fefe4f3000 	C:\Windows\system32\ole32.dll
+0x000007fefe7a0000 - 0x000007feff529000 	C:\Windows\system32\SHELL32.dll
+0x000007fefda20000 - 0x000007fefda91000 	C:\Windows\system32\SHLWAPI.dll
+0x000007fefb940000 - 0x000007fefbb34000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.18837_none_fa3b1e3d17594757\COMCTL32.dll
+0x000007fefb010000 - 0x000007fefb028000 	C:\Windows\system32\DWMAPI.DLL
+0x000007fefcdc0000 - 0x000007fefcdcf000 	C:\Windows\system32\CRYPTBASE.dll
+0x000000006d340000 - 0x000000006d3a6000 	C:\Program Files\AnyLogic 7 University\jre\bin\fontmanager.dll
+0x000000006d6a0000 - 0x000000006d6b7000 	C:\Program Files\AnyLogic 7 University\jre\bin\net.dll
+0x000007fefe500000 - 0x000007fefe54d000 	C:\Windows\system32\WS2_32.dll
+0x000007fefd880000 - 0x000007fefd888000 	C:\Windows\system32\NSI.dll
+0x000007fefc700000 - 0x000007fefc755000 	C:\Windows\system32\mswsock.dll
+0x000007fefc6f0000 - 0x000007fefc6f7000 	C:\Windows\System32\wship6.dll
+0x000000006d6c0000 - 0x000000006d6cb000 	C:\Program Files\AnyLogic 7 University\jre\bin\nio.dll
+
+VM Arguments:
+jvm_args: -Xms1024m -XX:MaxPermSize=630040k -Xmx1038565m -DlanguageId_xjal=en013h1b1 -Dfile.encoding=Cp1252 
+java_command: com.xj.anylogic.ms.MS crc.HassmillerCRC 177cb9f seed 12334
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=c:\scox\app\jdk1.6.0_25
+PATH=C:/Program Files/AnyLogic 7 University/jre/bin/server;C:/Program Files/AnyLogic 7 University/jre/bin;C:/Program Files/AnyLogic 7 University/jre/lib/amd64;c:\Progra~1\Java\jdk1.8.0_74;C:\Program Files\jdk1.8.0_74\bin;C:\Users\stevec\app\apache-maven-3.1.1\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Perforce;C:\Program Files\AnyLogic 7 University;
+USERNAME=stevec
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 46 Stepping 6, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows NT 6.1 Build 7601 Service Pack 1
+
+CPU:total 64 (8 cores per cpu, 2 threads per core) family 6 model 46 stepping 6, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, ht
+
+Memory: 4k page, physical 1073731412k(440420904k free), swap 1073729552k(340070336k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (19.1-b02) for windows-amd64 JRE (1.6.0_24-b07), built on Feb  2 2011 16:25:45 by "java_re" with MS VC++ 8.0 (VS2005)
+
+time: Fri Oct 28 20:54:02 2016
+elapsed time: 14793 seconds
+

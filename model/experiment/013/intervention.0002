@@ -1,0 +1,10 @@
+#Senario 0002: high medicaid enrollment, med compliance
+acaImplementation=true
+medicaidExpansion=true
+medicaid_enrollment=0.9
+newMedicaidCompliance=2
+#test_routine_start=50,50,45,50
+col_choice_freq=5.0
+test_routine_freq=1,5,5,3
+
+

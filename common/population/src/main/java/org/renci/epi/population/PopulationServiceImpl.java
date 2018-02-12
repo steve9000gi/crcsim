@@ -106,7 +106,7 @@ public class PopulationServiceImpl implements PopulationService {
             throw new RuntimeException("Unable to create INS 2014 map. Status code: ", e);
         }
         try {
-            inPath = "g:/dev-NC/crcsim/common/util/src/main/resources/data/INS2015_NC_033117.csv"; 
+            inPath = "g:/dev-NC/crcsim/common/util/src/main/resources/data/INS2015_NC_041017.csv"; 
             createINSMap (inPath, "2015");
         } catch (IOException e) {
             throw new RuntimeException("Unable to create INS 2015 map. Status code: ", e);

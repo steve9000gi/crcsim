@@ -1,0 +1,12 @@
+#Senario 0000: ACA Implementation
+diagnostic_compliance_rate=1.0
+surveillance_compliance_rate=0.0
+test_sensitivity_cancer=1,1,1,1
+test_sensitivity_polyp1=1,1,1,1
+test_sensitivity_polyp2=1,1,1,1
+test_sensitivity_polyp3=1,1,1,1
+test_specificity=1,1,1,1
+
+
+
+

@@ -1,0 +1,8 @@
+#Senario 0000: 10% baseline secular trend
+medicaidExpansion=true
+secular_trend_active=true
+secular_trend_years=1900,1002,1004,1006,1008,1010,1012,2100
+secular_trend_values=-.10,-.10,-.10,-.10,-.10,-.10,-.10,-.10
+
+
+
