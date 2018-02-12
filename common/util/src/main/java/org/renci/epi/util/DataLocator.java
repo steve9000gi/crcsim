@@ -17,7 +17,7 @@ public class DataLocator {
     private String _dataRoot = null;
 
     public DataLocator () {
-	this.setDataRoot ( new String [] { "", "dev", "var", "crcsim" } );
+	this.setDataRoot ( new String [] { "", "dev-OR", "var", "crcsim" } );
     }
 
     // set the root folder to which others are relative
@@ -29,6 +29,7 @@ public class DataLocator {
     public String getSyntheticPopulationPath (String fileName) {
 	return this.join (new String [] { _dataRoot, "generated", fileName });
     }
+
     public File [] getSyntheticPopulationExports () {
 	final String pattern = "export.*";
 	File directory = new File (join (new String [] { _dataRoot, "generated", "exports-Oregon" })); //fileName }));
