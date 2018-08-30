@@ -3613,7 +3613,7 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[2.53]]></Code>
+							<Code><![CDATA[2.5]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -3977,7 +3977,7 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[0.8]]></Code>
+							<Code><![CDATA[1.5]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -4731,7 +4731,7 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA["0,0.002,0.006,0.012,0.015,0.023,0.024,0.025,0.025,0.01,0.005,0;0,0"]]></Code>
+							<Code><![CDATA["0.0005,0.002,0.006,0.012,0.015,0.023,0.024,0.025,0.025,0.01,0.005,0;0,0"]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -4783,7 +4783,7 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA["0,0.002,0.01,0.013,0.02,0.03,0.033,0.037,0.043,0.013,0.011,0;0,0"]]></Code>
+							<Code><![CDATA["0.0005,0.002,0.01,0.013,0.02,0.03,0.033,0.037,0.043,0.013,0.011,0;0,0"]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -4835,7 +4835,7 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA["0,0.001,0.004,0.006,0.01,0.018,0.022,0.022,0.023,0.012,0.011,0;0,0"]]></Code>
+							<Code><![CDATA["0.0005,0.001,0.004,0.006,0.01,0.018,0.022,0.022,0.023,0.012,0.011,0;0,0"]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -4887,7 +4887,7 @@ set_beta_distance_gt_25(excelFile.getCellNumericValue( "Sheet1!C20") );
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA["0,0.002,0.004,0.009,0.016,0.029,0.032,0.032,0.032,0.018,0.014,0;0,0"]]></Code>
+							<Code><![CDATA["0.0005,0.002,0.004,0.009,0.016,0.029,0.032,0.032,0.032,0.018,0.014,0;0,0"]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>0</Id>
@@ -7210,7 +7210,7 @@ This is used to calculate continuing, rather than initial compliance.
 						<NumericType><![CDATA[double]]></NumericType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[0]]></Code>
+							<Code><![CDATA[0.6]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1470687876981</Id>
@@ -7437,6 +7437,32 @@ This is used to calculate continuing, rather than initial compliance.
 						<SdArray>false</SdArray>
 						<ParameterEditor>
 							<Id>1513638102031</Id>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1521474318893</Id>
+					<Name><![CDATA[test_proportion_bleeding]]></Name>
+					<X>230</X><Y>2030</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[String]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<NumericType><![CDATA[double]]></NumericType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA["0,0,0.032,0"]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1521474318891</Id>
+							<Label><![CDATA[test_proportion_perforation]]></Label>
 							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
@@ -7924,6 +7950,9 @@ for (int i = 0; i < num_tests; i++) {
 
   fields = test_proportion_perforation.split(",");
   t.proportion_perforation = Double.parseDouble(fields[i]);
+  
+  fields = test_proportion_bleeding.split(",");
+  t.proportion_bleeding = Double.parseDouble(fields[i]);
 
   fields = test_cost_perforation.split(",");
   t.cost_perforation = Double.parseDouble(fields[i]);
@@ -8160,464 +8189,72 @@ catch (Exception e) {
   
         
   );
-
-//rmt output changes 
-  
-  
-  for (int j=0; j < 5; j++) {
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][0]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][1]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][2]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][3]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][4]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][5]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][6]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][7]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][8]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][9]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][10]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][11]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][12]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][13]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][14]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][15]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][16]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][17]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][18]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][19]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][20]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][21]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][22]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][23]);
-  	outfile_replication_writer.write("\t"+population.insurance_change_count[j][24]);
-  	outfile_replication_writer.write("\t"+population.turned_65[j][0]);
-  	outfile_replication_writer.write("\t"+population.turned_65[j][1]);
-  	outfile_replication_writer.write("\t"+population.turned_65[j][2]);
-  	outfile_replication_writer.write("\t"+population.turned_65[j][3]);
-  	outfile_replication_writer.write("\t"+population.turned_65[j][4]);
-  	
-  }
-  
-  
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_fobt[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_fobt1[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_fobt2[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_fobt3[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_fobt4[j]
-    );
-  }  
-
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy[j]
-    );
-  }
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_r[j]
-    );
-  }
-   for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_d[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s[j]
-    );
-  } 
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s_bc[j]
-    );
-  } 
-  
-   for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s_ac[j]
-    );
-  }    
+	
+	
+    //////////////////// UTD COUNTS /////////////////////////////  
+       for (int j = 0; j <= (utd_year_end - utd_year_start); j++) {
+	    outfile_replication_writer.write(
+	        "\t" + population.count_alive[j]
+	    );
+	  } 
+	  
+	  for (int j = 0; j <= (utd_year_end - utd_year_start); j++) {
+	    outfile_replication_writer.write(
+	        "\t" + population.count_utd[j]
+	    );
+	  } 
+		
+	
+	
+	/////////// CANCER INCIDENCE CALIBRATION /////////////////////////
+	///////////////////////////////////////////////////////////////////////
 
 
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_r1[j]
-    );
-  }
-   for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_d1[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s1[j]
-    );
-  } 
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s_bc1[j]
-    );
-  } 
-  
-   for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s_ac1[j]
-    );
-  }  
-
-
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_r2[j]
-    );
-  }
-   for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_d2[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s2[j]
-    );
-  } 
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s_bc2[j]
-    );
-  } 
-  
-   for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s_ac2[j]
-    );
-  }  
-
-
-
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_r3[j]
-    );
-  }
-   for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_d3[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s3[j]
-    );
-  } 
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s_bc3[j]
-    );
-  } 
-  
-   for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s_ac3[j]
-    );
-  }  
-
-
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_r4[j]
-    );
-  }
-   for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_d4[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s4[j]
-    );
-  } 
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s_bc4[j]
-    );
-  } 
-  
-   for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_colonoscopy_s_ac4[j]
-    );
-  }  
-  
-   for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_private[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_dual[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_medicare[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_medicaid[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_none[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_utd_fobt_private[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_utd_fobt_dual[j]
-    );
-  }  
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_utd_fobt_medicare[j]
-    );
-  }  
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_utd_fobt_medicaid[j]
-    );
-  }  
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_utd_fobt_none[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_utd_col_private[j]
-    );
-  }
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_utd_col_dual[j]
-    );
-  }  
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_utd_col_medicare[j]
-    );
-  }  
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_utd_col_medicaid[j]
-    );
-  }  
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_utd_col_none[j]
-    );
-  }        
-
-
-
-
-
- /*  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_stage1[j]
-    );
-  }
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_stage2[j]
-    );
-  }
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_stage3[j]
-    );
-  }
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.countTotal_stage4[j]
-    );
-  }      
-  
-  for (int j = 0; j <= (utd_year_end - utd_year_start); j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_alive[j]
-    );
-  } 
-  
-  for (int j = 0; j <= (utd_year_end - utd_year_start); j++) {
-    outfile_replication_writer.write(
-        "\t" + population.count_utd[j]
-    );
-  } 
- */ 
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.num_perforations[j]
-    );
-  } 
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.num_perforations1[j]
-    );
-  } 
-
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.num_perforations2[j]
-    );
-  }   
-
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.num_perforations3[j]
-    );
-  } 
-
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.num_perforations4[j]
-    );
-  } 
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.avg_lifetime_treatment_cost_private[j]
-    );
-  } 
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.avg_lifetime_treatment_cost_dual[j]
-    );
-  } 
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.avg_lifetime_treatment_cost_medicare[j]
-    );
-  } 
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.avg_lifetime_treatment_cost_medicaid[j]
-    );
-  } 
-  
-  for (int j = 0; j <= 60; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.avg_lifetime_treatment_cost_uninsured[j]
-    );
-  } 
-
-
-
-  
-  /*outfile_replication_writer.write(
-  //	"\t" + population.cancer_inc_04to08_over50_total
-  //	+ "\t" + population.cancer_inc_04to08_over50_black
-  //	+ "\t" + population.cancer_inc_04to08_over50_white
-  //	+ "\t" + population.cancer_inc_04to08_over50_male
-  //	+ "\t" + population.cancer_inc_04to08_over50_female
-  //	+ "\t" + population.tot_state_clin
-  //	+ "\t" + population.totalStage1
-  //	+ "\t" + population.totalStage2
-  //	+ "\t" + population.totalStage3
-  //	+ "\t" + population.totalStage4
-  //	+ "\t" + population.total_LYs
-  //	+ "\t" + population.total_LYUTD
-  //	+ "\t" + population.tot_state_dead_crc
-  		"\t" + population.avg_lifetime_treatment_cost
-  		+ "\t" + population.avg_lifetime_treatment_cost_private
-  		+ "\t" + population.avg_lifetime_treatment_cost_dual
-  		+ "\t" + population.avg_lifetime_treatment_cost_medicare
-  		+ "\t" + population.avg_lifetime_treatment_cost_medicaid
-  		+ "\t" + population.avg_lifetime_treatment_cost_uninsured
-  	
-   );/*
-
- /*for (int j = 0; j < NUM_CANCER_STAGES; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.crc_incidence_rate[j]
-      + "\t" + population.crc_incidence_rate_variance[j]
-    );
-  }
-
-  outfile_replication_writer.write(
-      "\t" + population.crc_mortality_rate
-    + "\t" + population.crc_mortality_rate_variance
-  );
-
-  for (int j = 0; j < NUM_CANCER_STAGES; j++) {
-    outfile_replication_writer.write(
-        "\t" + population.crc_survival_rate[j]
-      + "\t" + population.crc_survival_rate_variance[j]
-    );
-  }*/
-  
+	
+	for (int j = 0; j <= 6; j ++){
+		int local = 0;
+		for (int sta = 0; sta <= 3; sta ++){
+			local = local + population.calibration_cancer_stage1[j][sta];
+		}
+		for (int sta = 0; sta <= 3; sta ++){
+			local = local + population.calibration_cancer_stage2[j][sta];
+		}
+		
+		int regional = 0;
+		for (int sta = 0; sta <= 3; sta ++){
+			regional = regional + population.calibration_cancer_stage3[j][sta];
+		}
+		int distant = 0;
+		for (int sta = 0; sta <= 3; sta ++){
+			distant = distant + population.calibration_cancer_stage4[j][sta];
+		}
+		outfile_replication_writer.write("\t" + local);
+		outfile_replication_writer.write("\t" + regional);
+		outfile_replication_writer.write("\t" + distant);
+		
+	}
+	
+	for (int j = 0; j <= 6; j++) {
+		for (int sta = 0; sta <= 3; sta ++){
+			int a = 0;
+			a += population.calibration_cancer_stage1[j][sta];
+			a += population.calibration_cancer_stage2[j][sta];
+			a += population.calibration_cancer_stage3[j][sta];
+			a += population.calibration_cancer_stage4[j][sta];
+			outfile_replication_writer.write("\t" + a);
+		}
+	}
+	
+	for (int j = 0; j <= 6; j++) {
+		for (int sta = 0; sta <= 3; sta ++){
+			int a = 0;
+			a += population.calibration_pop_counts[j][sta];
+			outfile_replication_writer.write("\t" + a);
+		}
+	}
+	
+	
+	
   outfile_replication_writer.write("\r\n");
 }
 catch (Exception e) {
@@ -8646,375 +8283,8 @@ catch (Exception e) {
         + "\t" + "n"
        
       );
-
-
-
-
-	 for (int i =0; i <5 ; i++){
-	 int k = i+ 2012;
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_private_private");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_dual_private");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_medicare_private");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_medicaid_private");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_none_private");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_private_dual");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_dual_dual");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_medicare_dual");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_medicaid_dual");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_none_dual");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_private_medicare");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_dual_medicare");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_medicare_medicare");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_medicaid_medicare");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_none_medicare");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_private_medicaid");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_dual_medicaid");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_medicare_medicaid");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_medicaid_medicaid");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_none_medicaid");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_private_none");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_dual_none");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_medicare_none");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_medicaid_none");
-	 outfile_replication_writer.write(
-	 "\t"+"Insurance_Change_"+k+"_none_none");
-	 outfile_replication_writer.write(
-	 "\t"+"Number_turned_65_private"+k);
-	 outfile_replication_writer.write(
-	 "\t"+"Number_turned_65_dual"+k);
-	 outfile_replication_writer.write(
-	 "\t"+"Number_turned_65_medicare"+k);
-	 outfile_replication_writer.write(
-	 "\t"+"Number_turned_65_medicaid"+k);
-	 outfile_replication_writer.write(
-	 "\t"+"Number_turned_65_none"+k);
-	 }
-
-    
-      for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_fobt_private"+ k);
-    	}
-    	
-      for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_fobt_dual"+ k);
-    	}
-  
-       for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_fobt_medicare"+ k);
-    	}
-    	
-       for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_fobt_medicaid"+ k);
-    	}
-    	
-       for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_fobt_uninsured"+ k);
-    	} 	
-    	
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col"+ k);
-    	}
-     	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_r_private"+ k);
-    	}
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_d_private"+ k);
-    	}
-    	  for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_private"+ k);
-    	}
-    	
-    	
-  		for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_bc_private"+ k);
-    	}
-    
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_ac_private"+ k);
-    	}
-    	
-     	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_r_dual"+ k);
-    	}
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_d_dual"+ k);
-    	}
-    	  for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_dual"+ k);
-    	}
-    	
-    	
-  		for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_bc_dual"+ k);
-    	}
-    
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_ac_dual"+ k);
-    	}    	
-    	
-      	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_r_medicare"+ k);
-    	}
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_d_medicare"+ k);
-    	}
-    	  for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_medicare"+ k);
-    	}
-    	
-    	
-  		for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_bc_medicare"+ k);
-    	}
-    
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_ac_medicare"+ k);
-    	}   	
- 
- 
-      	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_r_medicaid"+ k);
-    	}
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_d_medicaid"+ k);
-    	}
-    	  for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_medicaid"+ k);
-    	}
-    	
-    	
-  		for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_bc_medicaid"+ k);
-    	}
-    
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_ac_medicaid"+ k);
-    	}
- 
- 
-      	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_r_uninsured"+ k);
-    	}
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_d_uninsured"+ k);
-    	}
-    	  for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_uninsured"+ k);
-    	}
-    	
-    	
-  		for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_bc_uninsured"+ k);
-    	}
-    
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_col_s_ac_uninsured"+ k);
-    	}
-    	
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_total_private"+ k);
-    	}    	
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_total_dual"+ k);
-    	}    	
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_total_medicare"+ k);
-    	}    	
-    	
-     	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_total_medicaid"+ k);
-    	}    	
-    	
-     	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_total_uninsured"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_utd_fobt_private"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_utd_fobt_dual"+ k);
-    	}    	  
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_utd_fobt_medicare"+ k);
-    	}    	    	
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_utd_fobt_medicaid"+ k);
-    	}    	    	
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_utd_fobt_uninsured"+ k);
-    	}    	    	  	    	  
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_utd_col_private"+ k);
-    	}    	    	  	
- 
-		for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_utd_col_dual"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_utd_col_medicare"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_utd_col_medicaid"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "count_utd_col_uninsured"+ k);
-    	}    	    	 
- 
-  /*  	   
-    	for (int i = 0; i <=60; i++){
-      int k = i+2014;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_stage1_"+ k);
-    	}
-    	
-    		for (int i = 0; i <=60; i++){
-      int k = i+2014;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_stage2_"+ k);
-    	}
-    	
-    		for (int i = 0; i <=60; i++){
-      int k = i+2014;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_stage3_"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2014;
-      outfile_replication_writer.write(
-      "\t" + "countTotal_stage4_"+ k);
-    	}
-    	
-    	for (int i = 0; i <=(utd_year_end-utd_year_start); i++){
+      
+     	for (int i = 0; i <=(utd_year_end-utd_year_start); i++){
       int k = i+utd_year_start;
       outfile_replication_writer.write(
       "\t" + "count_alive_"+ k);
@@ -9026,90 +8296,34 @@ catch (Exception e) {
       "\t" + "count_utd_"+ k);
     	}
     	
-  */  	
-    for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "num_perforations_private_"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "num_perforations_dual_"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "num_perforations_medicare_"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "num_perforations_medicaid_"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "num_perforations_uninsured_"+ k);
-    	}
-    	
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "lifetime_Treatment_cost_private_"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "lifetime_Treatment_cost_dual_"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "lifetime_Treatment_cost_medicare_"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "lifetime_Treatment_cost_medicaid_"+ k);
-    	}
-    	
-    	for (int i = 0; i <=60; i++){
-      int k = i+2012;
-      outfile_replication_writer.write(
-      "\t" + "lifetime_Treatment_cost_uninsured_"+ k);
-    	}
-    	
-    /*	outfile_replication_writer.write( 
-    	//	"\t" + "04_08_inc_total"+
-    	//	"\t" + "04_08_inc_black"+
-    	//	"\t" + "04_08_inc_white"+
-    	//	"\t" + "04_08_inc_male"+
-    	//	"\t" + "04_08_inc_female"+
-    	//	"\t" + "total_clinical_cases"+
-    	//	"\t" + "total_stage1"+
-    	//	"\t" + "total_stage2"+
-    	//	"\t" + "total_stage3"+
-    	//	"\t" + "total_stage4"+
-    	//	"\t" + "total_LYs"+
-    	//	"\t" + "total_LYUTD"+
-    	//	"\t" + "total_crc_death"
-    		"\t" + "Average_Lifetime_Treatment_Cost" +
-    		"\t" + "Average_Lifetime_Treatment_Cost_Private" +
-    		"\t" + "Average_Lifetime_Treatment_Cost_Dual" +
-    		"\t" + "Average_Lifetime_Treatment_Cost_Medicare" +
-    		"\t" + "Average_Lifetime_Treatment_Cost_Medicaid" +
-    		"\t" + "Average_Lifetime_Treatment_Cost_Uninsured"
-    	);*/
-  /////end new code
+    	     
+      
+
+	/////////// CANCER INCIDENCE CALIBRATION /////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	
+    
+    for(int i = 2008; i <= 2014 ; i++){
+    	outfile_replication_writer.write("\t" + "calibrateCancer_Local_" + i);
+    	outfile_replication_writer.write("\t" + "calibrateCancer_Regional_" + i);
+    	outfile_replication_writer.write("\t" + "calibrateCancer_Distant_" + i);
+    }
+    
+    for(int i = 2008; i <= 2014 ; i++){
+    	outfile_replication_writer.write("\t" + "calibrateCancer_0to19_" + i);
+    	outfile_replication_writer.write("\t" + "calibrateCancer_20to44_" + i);
+    	outfile_replication_writer.write("\t" + "calibrateCancer_45to64_" + i);
+    	outfile_replication_writer.write("\t" + "calibrateCancer_65+_" + i);
+    }
+    
+     for(int i = 2008; i <= 2014 ; i++){
+    	outfile_replication_writer.write("\t" + "Popcount_0to19_" + i);
+    	outfile_replication_writer.write("\t" + "Popcount_20to44_" + i);
+    	outfile_replication_writer.write("\t" + "Popcount_45to64_" + i);
+    	outfile_replication_writer.write("\t" + "Popcount_65+_" + i);
+    }
+  
+
     outfile_replication_writer.write("\r\n");
   }
   else {
@@ -9448,7 +8662,7 @@ catch (Exception e) {
 	outfile_agent_writer.write(
     "\n" + (j+1) 	
     			+ "\t" + population.people.get(j).SEHP
-    			+ "\t" + population.people.get(j).insure_dual
+    		/*	+ "\t" + population.people.get(j).insure_dual
     			+ "\t" + population.people.get(j).insure_medicaid
     			+ "\t" + population.people.get(j).insure_medicare
     			+ "\t" + population.people.get(j).insure_none
@@ -9464,9 +8678,9 @@ catch (Exception e) {
     			+ "\t" + population.people.get(j).insure_none_age50
     			+ "\t" + population.people.get(j).insure_private_age50
     			+ "\t" + population.people.get(j).routine_test.name
-    			/*+ "\t" + population.people.get(j).is_free_screen
+    			+ "\t" + population.people.get(j).is_free_screen
     			+ "\t" + population.people.get(j).compliance_prob_inital
-    			+ "\t" + population.people.get(j).compliance_prob_intv*/
+    			+ "\t" + population.people.get(j).compliance_prob_intv
     			+ "\t" + population.people.get(j).race_black
     			+ "\t" + population.people.get(j).race_hispanic
     			+ "\t" + population.people.get(j).race_other
@@ -9513,7 +8727,7 @@ catch (Exception e) {
     			+ "\t" + population.people.get(j).p_compliant_age50
     		//	+"\t" + Arrays.toString(population.people.get(j).screening_traj)
     			+ "\t" + population.people.get(j).p_colonoscopy_age50
-				+ "\t" + population.people.get(j).zipcode
+				+ "\t" + population.people.get(j).zipcode*/
 				+ "\t" + population.people.get(j).timeAtDiagnosis
 				+ "\t" + population.people.get(j).cancerStage1_age
 				+ "\t" + population.people.get(j).cancerStage2_age
@@ -9538,7 +8752,7 @@ catch (Exception e) {
     	
    // private String[] myUTDTraj = new String[101];	
     	
-   
+   /*
      for (int i = 50; i <=75;i++){
      	if(population.people.get(j).death_age<i && population.people.get(j).death_age>0){
      		population.people.get(j).myUTDtraj[i]="dead";
@@ -9549,7 +8763,7 @@ catch (Exception e) {
 	    		}		else {
 	    				population.people.get(j).myUTDtraj[i]="none";
 	    				}
-    }
+    }*/
     
    
    /* for (int i = 50; i <=75;i++){
@@ -9563,19 +8777,19 @@ catch (Exception e) {
     	"\t" + population.people.get(j).colon_utd[i]
     	);
     	}*/
-    
+    /*
         for (int i = 50; i <=75;i++){
     	outfile_agent_writer.write(
     	"\t" + population.people.get(j).myUTDtraj[i]
     	);
-    	}
+    	}*/
     	
-    	for (int i = 50; i <=75;i++){
+    	for (int i = 50; i <=100;i++){
     	outfile_agent_writer.write(
     	"\t" + population.people.get(j).myINStraj[i]
     	);
     	}
-    	
+    	/*
     	for (int i = 50; i <=75;i++){
     	outfile_agent_writer.write(
     	"\t" + population.people.get(j).colTypeTraj[i]
@@ -9599,7 +8813,7 @@ catch (Exception e) {
     	"\t" + population.people.get(j).adjusted_bumped_probability_traj[i]
     	);
     	}	
-    	
+    	*/
     	for (int i = 50; i <=100;i++){
     	outfile_agent_writer.write(
     	"\t" + population.people.get(j).lifetimeCostTraj[i]
@@ -9654,7 +8868,7 @@ catch (Exception e) {
     outfile_agent_writer.write(
                  "agent_number"
         + "\t" + "SEHP"
-        + "\t" + "insure_dual"
+      /*  + "\t" + "insure_dual"
         + "\t" + "insure_medcaid"
         + "\t" + "insure_medicare"
         + "\t" + "insure_none"
@@ -9670,9 +8884,9 @@ catch (Exception e) {
         + "\t" + "insure_none_age50"
         + "\t" + "insure_private_age50"
         + "\t" + "modality"
-       /* + "\t" + "is_free_screen"
+        + "\t" + "is_free_screen"
         + "\t" + "compliance_prob_orig"
-        + "\t" + "compliance_prob_intv"*/
+        + "\t" + "compliance_prob_intv"
         + "\t" + "race_black"
         + "\t" + "race_hispanic"
         + "\t" + "race_other"
@@ -9717,7 +8931,7 @@ catch (Exception e) {
         +"\t" + "AdjProbCompliant_50"
      //   +"\t" + "screening_traj"
         +"\t" + "ProbColonoscopy_50"
-        +"\t" + "Zipcode"
+        +"\t" + "Zipcode"*/
         +"\t" + "Time at Diagnosis"
         +"\t" + "Age at Stage 1 cancer"
         +"\t" + "Age at Stage 2 cancer"
@@ -9744,19 +8958,19 @@ catch (Exception e) {
       outfile_agent_writer.write(
       "\t" + "col_utd_year"+ k);
       }
-      */
+      
       for (int i = 50; i <=75; i++){
       int k = i-population.people.get(1).age+2009;
       outfile_agent_writer.write(
       "\t" + "utd_mode_year"+ k);
       }
-      
-       for (int i = 50; i <=75; i++){
+      */
+       for (int i = 50; i <=100; i++){
       int k = i-population.people.get(1).age+2009;
       outfile_agent_writer.write(
       "\t" + "insurance_label_year"+ k);
       }     
-      
+      /*
       for (int i = 50; i <=75; i++){
       int k = i-population.people.get(1).age+2009;
       outfile_agent_writer.write(
@@ -9780,7 +8994,7 @@ catch (Exception e) {
       outfile_agent_writer.write(
       "\t" + "Adjusted_Probability_trajectory"+ k);
       }  
-
+*/
       for (int i = 50; i <=100; i++){
       int k = i-population.people.get(1).age+2009;
       outfile_agent_writer.write(
@@ -11956,6 +11170,36 @@ import java.util.Random;]]></Import>
 						<Type><![CDATA[double]]></Type>        
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521473193457</Id>
+					<Name><![CDATA[isBleedingTraj]]></Name>
+					<X>-910</X><Y>-180</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[101]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1524020747379</Id>
+					<Name><![CDATA[adjusted_screening_traj]]></Name>
+					<X>120</X><Y>430</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[String]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA["11111111111111"]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
 				<Variable Class="Parameter">
 					<Id>1328041345823</Id>
 					<Name><![CDATA[sex_male]]></Name>
@@ -13527,6 +12771,31 @@ import java.util.Random;]]></Import>
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1534771458966</Id>
+					<Name><![CDATA[out_of_surveillance]]></Name>
+					<X>110</X><Y>480</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<NumericType><![CDATA[double]]></NumericType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[false]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1534771458964</Id>
+							<EditorContolType>CHECK_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1328041345733</Id>
 					<Name><![CDATA[routine_compliance_history]]></Name>
@@ -13652,22 +12921,40 @@ total_treatment_cost = 0;
 // attribute costs to payers
 double j1 =Math.floor(timeAtDiagnosis);
 int q = (int) j1;
+/*
+if(age_at_death >= 2013){
+	for(int i=age_at_death; i<=2077; i++){
+		population.cancer_count_stage1[i-2013] = population.totalStage1;
+		population.cancer_count_stage2[i-2013] = population.totalStage2;
+		population.cancer_count_stage3[i-2013] = population.totalStage3;
+		population.cancer_count_stage4[i-2013] = population.totalStage4;
+		population.crc_cumulative_death[i-2013] = population.tot_state_dead_crc;
+	}
+}else{
+	for(int i=2013; i<=2077; i++){
+		population.cancer_count_stage1[i-2013] = population.totalStage1;
+		population.cancer_count_stage2[i-2013] = population.totalStage2;
+		population.cancer_count_stage3[i-2013] = population.totalStage3;
+		population.cancer_count_stage4[i-2013] = population.totalStage4;
+		population.crc_cumulative_death[i-2013] = population.tot_state_dead_crc;
+	}
+}*/
 
 
 
 for(int i=q; i<=age_at_death; i++) {
 	if(q - age + 2009 >= 2012){
-		population.avg_lifetime_treatment_cost[q - age + 2009 - 2012]+= lifetimeCostTraj[i];
+		population.avg_lifetime_treatment_cost[i - age + 2009 - 2012]+= lifetimeCostTraj[i];
 		if(costInsuranceAttribute[i]=="private") {
-			population.avg_lifetime_treatment_cost_private[q - age + 2009 - 2012]+= lifetimeCostTraj[i];
+			population.avg_lifetime_treatment_cost_private[i - age + 2009 - 2012]+= lifetimeCostTraj[i];
 		} else if(costInsuranceAttribute[i]=="medicare") {
-			population.avg_lifetime_treatment_cost_medicare[q - age + 2009 - 2012]+= lifetimeCostTraj[i];
+			population.avg_lifetime_treatment_cost_medicare[i - age + 2009 - 2012]+= lifetimeCostTraj[i];
 		} else if(costInsuranceAttribute[i]=="medicaid") {
-			population.avg_lifetime_treatment_cost_medicaid[q - age + 2009 - 2012]+= lifetimeCostTraj[i];
+			population.avg_lifetime_treatment_cost_medicaid[i - age + 2009 - 2012]+= lifetimeCostTraj[i];
 		} else if(costInsuranceAttribute[i]=="dual") {
-			population.avg_lifetime_treatment_cost_dual[q - age + 2009 - 2012]+= lifetimeCostTraj[i];
+			population.avg_lifetime_treatment_cost_dual[i - age + 2009 - 2012]+= lifetimeCostTraj[i];
 		} else if(costInsuranceAttribute[i]=="none") {
-			population.avg_lifetime_treatment_cost_uninsured[q - age + 2009 - 2012]+= lifetimeCostTraj[i];
+			population.avg_lifetime_treatment_cost_uninsured[i - age + 2009 - 2012]+= lifetimeCostTraj[i];
 		} 
 	}
 }
@@ -13731,6 +13018,9 @@ population_utd_counts();]]></EntryAction>
 						<EntryAction><![CDATA[event_dead = true;
 event_dead_crc = true;
 get_Population().tot_state_dead_crc++;
+if(get_year_from_age() >= 2013){
+	population.crc_cumulative_death[get_year_from_age()-2013] = get_Population().tot_state_dead_crc;
+}
 ]]></EntryAction>
 						<ExitAction><![CDATA[Main main = get_Population().get_Main ();
 double j = Math.floor(time()); 
@@ -13924,18 +13214,80 @@ screen_state.fireEvent("clinical_detection");
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="130" Height="40">
-						<EntryAction><![CDATA[increment_num_in_stage(3);count_stage3_agent++;
+						<EntryAction><![CDATA[if(get_year_from_age()>=2008 && get_year_from_age()<=2014){
+	if(main.age <= 19){
+		population.calibration_cancer_stage3[get_year_from_age()-2008][0]++;
+	}else if(main.age >=20 && main.age<=44){
+		population.calibration_cancer_stage3[get_year_from_age()-2008][1]++;
+	}else if(main.age >= 45 && main.age <= 64){
+		population.calibration_cancer_stage3[get_year_from_age()-2008][2]++;
+	}else{
+		population.calibration_cancer_stage3[get_year_from_age()-2008][3]++;
+	}
+}
+
+increment_num_in_stage(3);count_stage3_agent++;
 cancerStage3_age = main.age;
 population.totalStage3++;
 timeAtDiagnosis = time();
 if( get_year_from_age()>=2014){population.countTotal_stage3[ get_year_from_age()-2014]++;}
 
 if(get_year_from_age()>=2004 && get_year_from_age()<=2008 && main.age>=50){
-	population.cancer_inc_04to08_over50_total++;
-	if(race_black==true && race_hispanic==false){population.cancer_inc_04to08_over50_black++;}
-	if(race_white==true && race_hispanic==false){population.cancer_inc_04to08_over50_white++;}
-	if(sex_male==true){population.cancer_inc_04to08_over50_male++;}
-	if(sex_male==false){population.cancer_inc_04to08_over50_female++;}
+	population.cancer_inc_04to08_over50_total[3]++;
+	if(race_black==true && race_hispanic==false){population.cancer_inc_04to08_over50_black[3]++;}
+	if(race_white==true && race_hispanic==false){population.cancer_inc_04to08_over50_white[3]++;}
+	if(race_other==true && race_hispanic==false){population.cancer_inc_04to08_over50_other[3]++;}
+	if(race_hispanic==true){population.cancer_inc_04to08_over50_hispanic[3]++;}
+	if(sex_male==true){population.cancer_inc_04to08_over50_male[3]++;}
+	if(sex_male==false){population.cancer_inc_04to08_over50_female[3]++;}
+}
+
+if(get_year_from_age() >= 2013){
+	population.cancer_count_stage3[get_year_from_age()-2013] = population.totalStage3;
+}
+
+int stageCan = 3;
+
+
+if(get_year_from_age()>=2000){
+	if(sex_male==true){
+		if(race_hispanic==true){
+			if(race_white==true){
+				population.cancerCounts[0][0][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][0][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][0][0][get_year_from_age()-2000][stageCan-1]++;
+			}
+		} else {
+			if(race_white==true){
+				population.cancerCounts[0][1][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][1][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][1][0][get_year_from_age()-2000][stageCan-1]++;
+			}
+		}
+	
+	} else {
+		if(race_hispanic==true) {
+			if(race_white==true){
+				population.cancerCounts[0][0][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][0][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][0][1][get_year_from_age()-2000][stageCan-1]++;
+			}
+		} else {
+			if(race_white==true){
+				population.cancerCounts[0][1][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][1][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][1][1][get_year_from_age()-2000][stageCan-1]++;
+			}
+		}
+	}
 }]]></EntryAction>
 						<ExitAction><![CDATA[//decrement_num_in_stage(3);]]></ExitAction>
 						<FillColor/>
@@ -13950,18 +13302,81 @@ if(get_year_from_age()>=2004 && get_year_from_age()<=2008 && main.age>=50){
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="130" Height="40">
-						<EntryAction><![CDATA[increment_num_in_stage(2);	count_stage2_agent++;
+						<EntryAction><![CDATA[if(get_year_from_age()>=2008 && get_year_from_age()<=2014){
+	if(main.age <= 19){
+		population.calibration_cancer_stage2[get_year_from_age()-2008][0]++;
+	}else if(main.age >=20 && main.age<=44){
+		population.calibration_cancer_stage2[get_year_from_age()-2008][1]++;
+	}else if(main.age >= 45 && main.age <= 64){
+		population.calibration_cancer_stage2[get_year_from_age()-2008][2]++;
+	}else{
+		population.calibration_cancer_stage2[get_year_from_age()-2008][3]++;
+	}
+}
+
+increment_num_in_stage(2);	count_stage2_agent++;
 cancerStage2_age = main.age;
 population.totalStage2++;
 timeAtDiagnosis = time();
 if(get_year_from_age()>=2004 && get_year_from_age()<=2008 && main.age>=50){
-	population.cancer_inc_04to08_over50_total++;
-	if(race_black==true && race_hispanic==false){population.cancer_inc_04to08_over50_black++;}
-	if(race_white==true && race_hispanic==false){population.cancer_inc_04to08_over50_white++;}
-	if(sex_male==true){population.cancer_inc_04to08_over50_male++;}
-	if(sex_male==false){population.cancer_inc_04to08_over50_female++;}
+	population.cancer_inc_04to08_over50_total[2]++;
+	if(race_black==true && race_hispanic==false){population.cancer_inc_04to08_over50_black[2]++;}
+	if(race_white==true && race_hispanic==false){population.cancer_inc_04to08_over50_white[2]++;}
+	if(race_other==true && race_hispanic==false){population.cancer_inc_04to08_over50_other[2]++;}
+	if(race_hispanic==true){population.cancer_inc_04to08_over50_hispanic[2]++;}
+	if(sex_male==true){population.cancer_inc_04to08_over50_male[2]++;}
+	if(sex_male==false){population.cancer_inc_04to08_over50_female[2]++;}
 }
-if( get_year_from_age()>=2014){population.countTotal_stage2[ get_year_from_age()-2014]++;}]]></EntryAction>
+if( get_year_from_age()>=2014){population.countTotal_stage2[ get_year_from_age()-2014]++;}
+
+if(get_year_from_age() >= 2013){
+	population.cancer_count_stage2[get_year_from_age()-2013] = population.totalStage2;
+}
+
+
+int stageCan = 2;
+
+
+if(get_year_from_age()>=2000){
+	if(sex_male==true){
+		if(race_hispanic==true){
+			if(race_white==true){
+				population.cancerCounts[0][0][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][0][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][0][0][get_year_from_age()-2000][stageCan-1]++;
+			}
+		} else {
+			if(race_white==true){
+				population.cancerCounts[0][1][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][1][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][1][0][get_year_from_age()-2000][stageCan-1]++;
+			}
+		}
+	
+	} else {
+		if(race_hispanic==true) {
+			if(race_white==true){
+				population.cancerCounts[0][0][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][0][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][0][1][get_year_from_age()-2000][stageCan-1]++;
+			}
+		} else {
+			if(race_white==true){
+				population.cancerCounts[0][1][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][1][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][1][1][get_year_from_age()-2000][stageCan-1]++;
+			}
+		}
+	}
+}]]></EntryAction>
 						<ExitAction><![CDATA[//decrement_num_in_stage(2);]]></ExitAction>
 						<FillColor/>
 					</Properties>
@@ -13975,18 +13390,80 @@ if( get_year_from_age()>=2014){population.countTotal_stage2[ get_year_from_age()
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="130" Height="40">
-						<EntryAction><![CDATA[increment_num_in_stage(4);count_stage4_agent++;
+						<EntryAction><![CDATA[if(get_year_from_age()>=2008 && get_year_from_age()<=2014){
+	if(main.age <= 19){
+		population.calibration_cancer_stage4[get_year_from_age()-2008][0]++;
+	}else if(main.age >=20 && main.age<=44){
+		population.calibration_cancer_stage4[get_year_from_age()-2008][1]++;
+	}else if(main.age >= 45 && main.age <= 64){
+		population.calibration_cancer_stage4[get_year_from_age()-2008][2]++;
+	}else{
+		population.calibration_cancer_stage4[get_year_from_age()-2008][3]++;
+	}
+}
+
+increment_num_in_stage(4);count_stage4_agent++;
 cancerStage4_age = main.age;
 population.totalStage4++;
 timeAtDiagnosis = time();
 if( get_year_from_age()>=2014){population.countTotal_stage4[ get_year_from_age()-2014]++;}
 
 if(get_year_from_age()>=2004 && get_year_from_age()<=2008 && main.age>=50){
-	population.cancer_inc_04to08_over50_total++;
-	if(race_black==true && race_hispanic==false){population.cancer_inc_04to08_over50_black++;}
-	if(race_white==true && race_hispanic==false){population.cancer_inc_04to08_over50_white++;}
-	if(sex_male==true){population.cancer_inc_04to08_over50_male++;}
-	if(sex_male==false){population.cancer_inc_04to08_over50_female++;}
+	population.cancer_inc_04to08_over50_total[4]++;
+	if(race_black==true && race_hispanic==false){population.cancer_inc_04to08_over50_black[4]++;}
+	if(race_white==true && race_hispanic==false){population.cancer_inc_04to08_over50_white[4]++;}
+	if(race_other==true && race_hispanic==false){population.cancer_inc_04to08_over50_other[4]++;}
+	if(race_hispanic==true){population.cancer_inc_04to08_over50_hispanic[4]++;}
+	if(sex_male==true){population.cancer_inc_04to08_over50_male[4]++;}
+	if(sex_male==false){population.cancer_inc_04to08_over50_female[4]++;}
+}
+
+if(get_year_from_age() >= 2013){
+	population.cancer_count_stage4[get_year_from_age()-2013] = population.totalStage4;
+}
+
+int stageCan = 4;
+
+
+if(get_year_from_age()>=2000){
+	if(sex_male==true){
+		if(race_hispanic==true){
+			if(race_white==true){
+				population.cancerCounts[0][0][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][0][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][0][0][get_year_from_age()-2000][stageCan-1]++;
+			}
+		} else {
+			if(race_white==true){
+				population.cancerCounts[0][1][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][1][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][1][0][get_year_from_age()-2000][stageCan-1]++;
+			}
+		}
+	
+	} else {
+		if(race_hispanic==true) {
+			if(race_white==true){
+				population.cancerCounts[0][0][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][0][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][0][1][get_year_from_age()-2000][stageCan-1]++;
+			}
+		} else {
+			if(race_white==true){
+				population.cancerCounts[0][1][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][1][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][1][1][get_year_from_age()-2000][stageCan-1]++;
+			}
+		}
+	}
 }]]></EntryAction>
 						<ExitAction><![CDATA[//decrement_num_in_stage(4);]]></ExitAction>
 						<FillColor/>
@@ -14001,18 +13478,85 @@ if(get_year_from_age()>=2004 && get_year_from_age()<=2008 && main.age>=50){
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="130" Height="40">
-						<EntryAction><![CDATA[increment_num_in_stage(1); count_stage1_agent++; 
+						<EntryAction><![CDATA[if(get_year_from_age()>=2008 && get_year_from_age()<=2014){
+	if(main.age <= 19){
+		population.calibration_cancer_stage1[get_year_from_age()-2008][0]++;
+	}else if(main.age >=20 && main.age<=44){
+		population.calibration_cancer_stage1[get_year_from_age()-2008][1]++;
+	}else if(main.age >= 45 && main.age <= 64){
+		population.calibration_cancer_stage1[get_year_from_age()-2008][2]++;
+	}else{
+		population.calibration_cancer_stage1[get_year_from_age()-2008][3]++;
+	}
+}
+
+increment_num_in_stage(1); count_stage1_agent++; 
 cancerStage1_age = main.age;
 timeAtDiagnosis = time();
 population.totalStage1++;
 if(get_year_from_age()>=2004 && get_year_from_age()<=2008 && main.age>=50){
-	population.cancer_inc_04to08_over50_total++;
-	if(race_black==true && race_hispanic==false){population.cancer_inc_04to08_over50_black++;}
-	if(race_white==true && race_hispanic==false){population.cancer_inc_04to08_over50_white++;}
-	if(sex_male==true){population.cancer_inc_04to08_over50_male++;}
-	if(sex_male==false){population.cancer_inc_04to08_over50_female++;}
+	population.cancer_inc_04to08_over50_total[1]++;
+	if(race_black==true && race_hispanic==false){population.cancer_inc_04to08_over50_black[1]++;}
+	if(race_white==true && race_hispanic==false){population.cancer_inc_04to08_over50_white[1]++;}
+	if(race_other==true && race_hispanic==false){population.cancer_inc_04to08_over50_other[1]++;}
+	if(race_hispanic==true){population.cancer_inc_04to08_over50_hispanic[1]++;}
+	if(sex_male==true){population.cancer_inc_04to08_over50_male[1]++;}
+	if(sex_male==false){population.cancer_inc_04to08_over50_female[1]++;}
 }
-if( get_year_from_age()>=2014){population.countTotal_stage1[ get_year_from_age()-2014]++;}]]></EntryAction>
+if( get_year_from_age()>=2014){population.countTotal_stage1[ get_year_from_age()-2014]++;}
+
+if(get_year_from_age() >= 2013){
+	population.cancer_count_stage1[get_year_from_age()-2013] = population.totalStage1;
+}
+
+
+
+int stageCan = 1;
+
+
+if(get_year_from_age()>=2000){
+	if(sex_male==true){
+		if(race_hispanic==true){
+			if(race_white==true){
+				population.cancerCounts[0][0][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][0][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][0][0][get_year_from_age()-2000][stageCan-1]++;
+			}
+		} else {
+			if(race_white==true){
+				population.cancerCounts[0][1][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][1][0][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][1][0][get_year_from_age()-2000][stageCan-1]++;
+			}
+		}
+	
+	} else {
+		if(race_hispanic==true) {
+			if(race_white==true){
+				population.cancerCounts[0][0][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][0][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][0][1][get_year_from_age()-2000][stageCan-1]++;
+			}
+		} else {
+			if(race_white==true){
+				population.cancerCounts[0][1][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_black==true){
+				population.cancerCounts[1][1][1][get_year_from_age()-2000][stageCan-1]++;
+			} else if(race_other==true){
+				population.cancerCounts[2][1][1][get_year_from_age()-2000][stageCan-1]++;
+			}
+		}
+	}
+}
+
+
+]]></EntryAction>
 						<ExitAction><![CDATA[//decrement_num_in_stage(1);]]></ExitAction>
 						<FillColor/>
 					</Properties>
@@ -15407,6 +14951,7 @@ test_surveillance();
 					<Properties Source="1328041345816" Target="1328041345819" Trigger="message">
 						<Action><![CDATA[surveillance_timer.reset();
 surveillance_negatives = 0;
+out_of_surveillance = true;
 ]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
@@ -16070,7 +15615,7 @@ if (routine_test == null) {
 }
 
 
-
+//routine_test = get_Population().get_Main().test_set.get_test_by_name("FOBT"); // DELETE> UGH. RACHEL
 
 
 ]]></Body>
@@ -16206,6 +15751,20 @@ if (test.name.equals("None")) {
 }
 
 
+// RACHEL CODE TO TEST SPECIFIED SCREENING TRAJ. She's a pain in the butt
+
+/*
+String[] screenTrajSubArr= adjusted_screening_traj.split("");
+//System.out.println(Arrays.toString(screenTrajSubArr));
+int[] screenTrajArr = new int[26];
+int i = 0;
+
+while(i <= 12){
+	screenTrajArr[i*2] = Integer.parseInt(screenTrajSubArr[i]);
+	i++;
+}*/
+
+
 
 
 if (screen_state.isStateActive (Person.Diagnostic) && !routine_is_diagnostic) {
@@ -16218,6 +15777,9 @@ if (screen_state.isStateActive (Person.Diagnostic) && !routine_is_diagnostic) {
   set_utd(test.name, isCompliant2);	
   //year_complianceProb[main.age] = main.surveillance_compliance_rate;
   return isCompliant2;
+} else if(out_of_surveillance){ 
+  boolean isCompliant_Surveil = uniform(myRNG4) < main.surveillance_compliance_rate;
+  return isCompliant_Surveil;
 } else if (screen_state.isStateActive (Person.Routine) || 
           (screen_state.isStateActive (Person.Diagnostic) && routine_is_diagnostic)) {  
   // Determine the compliance probability. If this person is never
@@ -16642,7 +16204,8 @@ if(main.age==64){
   insure_medicaid = medicaid_temp;
   insure_none = none_temp;
   
-  
+  //isCompliant = (screenTrajArr[main.age - 50] == 1); //DELETE. THIS IS RACHEL
+   
   return isCompliant;
   
   
@@ -16692,14 +16255,117 @@ return uniform() < 1 - test.specificity;
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[update_value();
+					<Body><![CDATA[// Collecting Summary statistics (written for NC Expansion paper)
+
+Main main = get_Population().get_Main();
+int flag = -1;
+if(insure_private){
+	flag = 0;
+}else if(insure_dual){
+	flag = 1;
+}else if(insure_medicare){
+	flag = 2;
+}else if(insure_medicaid){
+	flag = 3;
+}else if(insure_none){
+	flag = 4;
+}
+
+
+
+
+
+int personAge = get_year_from_age();
+if(main.age >= 50 && main.age <= 75){
+	int start_year = 2003;
+	if(get_year_from_age()>=start_year && get_year_from_age()<= start_year + 7){
+		if(race_hispanic){
+			if(race_white && sex_male){
+				population.n_wmh[flag][personAge-start_year]+=1;
+			} else if(race_black && sex_male){
+				population.n_bmh[flag][personAge-start_year]+=1;
+			} else if(race_white && !sex_male){
+				population.n_wfh[flag][personAge-start_year]+=1;
+			} else if(race_black && !sex_male) {
+				population.n_bfh[flag][personAge-start_year]+=1;
+			} else if(race_other && sex_male){
+				population.n_omh[flag][personAge-start_year]+=1;
+			} else if(race_other && !sex_male){
+				population.n_ofh[flag][personAge-start_year]+=1;
+			}
+		} else {
+			if(race_white && sex_male){
+				population.n_wm[flag][personAge-start_year]+=1;
+			} else if(race_black && sex_male){
+				population.n_bm[flag][personAge-start_year]+=1;
+			} else if(race_white && !sex_male){
+				population.n_wf[flag][personAge-start_year]+=1;
+			} else if(race_black && !sex_male) {
+				population.n_bf[flag][personAge-start_year]+=1;
+			} else if(race_other && sex_male){
+				population.n_om[flag][personAge-start_year]+=1;
+			} else if(race_other && !sex_male){
+				population.n_of[flag][personAge-start_year]+=1;
+			}		
+		}
+		if(sex_male){
+			population.n_m[flag][personAge-start_year]+=1;
+		} else {
+			population.n_f[flag][personAge-start_year]+=1;
+		}
+		if(main.age >= 65){
+			population.n_overAnd65[flag][personAge-start_year]+=1;
+		} else {
+			population.n_under65[flag][personAge-start_year]+=1;
+		}
+	}
+}	
+
+
+if(get_year_from_age()>=2008 && get_year_from_age()<=2014){
+	if(event_dead == false){
+		if(main.age <= 19){
+			population.calibration_pop_counts[get_year_from_age()-2008][0]++;
+		}else if(main.age >= 20 && main.age <= 44){
+			population.calibration_pop_counts[get_year_from_age()-2008][1]++;
+		}else if(main.age >= 45 && main.age <= 64){
+			population.calibration_pop_counts[get_year_from_age()-2008][2]++;
+		}else{
+			population.calibration_pop_counts[get_year_from_age()-2008][3]++;
+		}
+	}
+}
+
+
+
+
+if(main.age >= 50 && get_year_from_age()>= 2000){
+	if(sex_male){population.n_over50_male[get_year_from_age()-2000]++;}
+	if(!sex_male){population.n_over50_female[get_year_from_age()-2000]++;}
+	if(race_hispanic){population.n_over50_hispanic[get_year_from_age()-2000]++;}
+	if(race_black){population.n_over50_black[get_year_from_age()-2000]++;}
+	if(race_white){population.n_over50_white[get_year_from_age()-2000]++;}
+	if(race_other){population.n_over50_other[get_year_from_age()-2000]++;}
+	population.n_over50_total[get_year_from_age()-2000]++;
+
+}
+
+/*if(get_year_from_age() >= 2013){
+	cancer_count_stage1[get_year_from_age()-2013] = totalStage1;
+	cancer_count_stage2[get_year_from_age()-2013] = totalStage2;
+	cancer_count_stage3[get_year_from_age()-2013] = totalStage3;
+	cancer_count_stage4[get_year_from_age()-2013] = totalStage4;
+	crc_cumulative_death[get_year_from_age()-2013] = tot_state_dead_crc;
+	
+}*/
+
+
+
+// End Collecting summary statistics
+	
+update_value();
 update_value_QALY();
-calculate_treatment_cost();
-
-
-
-
-]]></Body>
+calculate_treatment_cost();]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>
@@ -16896,7 +16562,29 @@ colTypeTraj[main.age] = "diagnostic";
         if (lesions.get(i).is_detected_new1(diagnostic_test,is_detected_array_diagnostic)) {
           if (lesions.get(i).statechart.isStateActive(Lesion.Polyp)) {
             results.add("Polyp");
-
+			
+			
+			if(get_year_from_age()>=2012){
+   				if(insure_private){
+   					population.countTotal_pathology[get_year_from_age()-2012]++;
+   				} else if (insure_dual) {
+   					population.countTotal_pathology1[get_year_from_age()-2012]++;
+   				} else if (insure_medicare) {
+   					population.countTotal_pathology2[get_year_from_age()-2012]++;
+   				} else if (insure_medicaid) {
+   					population.countTotal_pathology3[get_year_from_age()-2012]++;
+   				} else if (insure_none) {
+   					population.countTotal_pathology4[get_year_from_age()-2012]++;
+   				}
+  			}
+			
+			
+			
+			
+			
+			
+			
+			
             // The polyp pathology cost is per polyp, so add it inside the loop.
             add_cost(get_Population().get_Main().cost_polyp_pathology, routine_is_diagnostic ? "routine" : "diagnostic");
           }
@@ -16919,6 +16607,24 @@ colTypeTraj[main.age] = "diagnostic";
       //       in a polypectomy.
       if (results.contains("Polyp")) {
         add_cost(get_Population().get_Main().cost_polypectomy, routine_is_diagnostic ? "routine" : "diagnostic");
+      
+      
+     		 if(get_year_from_age()>=2012){
+   				if(insure_private){
+   					population.countTotal_polypectomy[get_year_from_age()-2012]++;
+   				} else if (insure_dual) {
+   					population.countTotal_polypectomy1[get_year_from_age()-2012]++;
+   				} else if (insure_medicare) {
+   					population.countTotal_polypectomy2[get_year_from_age()-2012]++;
+   				} else if (insure_medicaid) {
+   					population.countTotal_polypectomy3[get_year_from_age()-2012]++;
+   				} else if (insure_none) {
+   					population.countTotal_polypectomy4[get_year_from_age()-2012]++;
+   				}
+  			}
+      
+     
+      
       }
 
       // Fire an event in the screening statechart based on the set
@@ -16947,7 +16653,7 @@ colTypeTraj[main.age] = "diagnostic";
       isPerforationTraj[main.age] = 1;
       
       
-                	if(get_year_from_age()>=2012){
+              if(get_year_from_age()>=2012){
 			   	if(insure_private){
 			   		population.num_perforations[get_year_from_age()-2012]++;
 			   	} else if (insure_dual) {
@@ -16959,13 +16665,44 @@ colTypeTraj[main.age] = "diagnostic";
 			   	} else if (insure_none) {
 			   		population.num_perforations4[get_year_from_age()-2012]++;
 			   	}
-			   	}
+			  }
       
       
       
       
       
     }
+    
+    if (uniform() < diagnostic_test.proportion_bleeding) {
+      isBleedingTraj[main.age] = 1;
+      
+      
+              if(get_year_from_age()>=2012){
+			   	if(insure_private){
+			   		population.num_bleeding[get_year_from_age()-2012]++;
+			   	} else if (insure_dual) {
+			   		population.num_bleeding1[get_year_from_age()-2012]++;
+			   	} else if (insure_medicare) {
+			   		population.num_bleeding2[get_year_from_age()-2012]++;
+			   	} else if (insure_medicaid) {
+			   		population.num_bleeding3[get_year_from_age()-2012]++;
+			   	} else if (insure_none) {
+			   		population.num_bleeding4[get_year_from_age()-2012]++;
+			   	}
+			  }
+      
+      
+      
+      
+      
+    }
+    
+    
+    
+    
+    
+    
+    
   }
   else {
     screen_state.fireEvent("not_compliant");
@@ -17103,6 +16840,38 @@ if (    screen_state.isStateActive(Person.Routine)
 			}     
         isPerforationTraj[main.age] = 1;
       }
+      
+      if (uniform() < diagnostic_test.proportion_bleeding) {
+      isBleedingTraj[main.age] = 1;
+      
+      
+              if(get_year_from_age()>=2012){
+			   	if(insure_private){
+			   		population.num_bleeding[get_year_from_age()-2012]++;
+			   	} else if (insure_dual) {
+			   		population.num_bleeding1[get_year_from_age()-2012]++;
+			   	} else if (insure_medicare) {
+			   		population.num_bleeding2[get_year_from_age()-2012]++;
+			   	} else if (insure_medicaid) {
+			   		population.num_bleeding3[get_year_from_age()-2012]++;
+			   	} else if (insure_none) {
+			   		population.num_bleeding4[get_year_from_age()-2012]++;
+			   	}
+			  }
+      
+      
+      
+      
+      
+    }
+      
+      
+      
+      
+      
+      
+      
+      
    }
   }
 }
@@ -17219,6 +16988,26 @@ if(get_year_from_age()>=2012){
 
             // The polyp pathology cost is per polyp, so add it inside the loop.
             add_cost(get_Population().get_Main().cost_polyp_pathology, "surveillance");
+          
+          
+         	 if(get_year_from_age()>=2012){
+   				if(insure_private){
+   					population.countTotal_pathology[get_year_from_age()-2012]++;
+   				} else if (insure_dual) {
+   					population.countTotal_pathology1[get_year_from_age()-2012]++;
+   				} else if (insure_medicare) {
+   					population.countTotal_pathology2[get_year_from_age()-2012]++;
+   				} else if (insure_medicaid) {
+   					population.countTotal_pathology3[get_year_from_age()-2012]++;
+   				} else if (insure_none) {
+   					population.countTotal_pathology4[get_year_from_age()-2012]++;
+   				}
+  			 }
+          
+          
+       
+         
+          
           }
           else if (lesions.get(i).statechart.isStateActive(Lesion.PreclinicalCancer)) {
             results.add("Preclinical");
@@ -17242,6 +17031,34 @@ if(get_year_from_age()>=2012){
       //       in a polypectomy.
       if (results.contains("Polyp")) {
         add_cost(get_Population().get_Main().cost_polypectomy, "surveillance");
+      
+      
+      
+      		if(get_year_from_age()>=2012){
+   				if(insure_private){
+   					population.countTotal_polypectomy[get_year_from_age()-2012]++;
+   				} else if (insure_dual) {
+   					population.countTotal_polypectomy1[get_year_from_age()-2012]++;
+   				} else if (insure_medicare) {
+   					population.countTotal_polypectomy2[get_year_from_age()-2012]++;
+   				} else if (insure_medicaid) {
+   					population.countTotal_polypectomy3[get_year_from_age()-2012]++;
+   				} else if (insure_none) {
+   					population.countTotal_polypectomy4[get_year_from_age()-2012]++;
+   				}
+  			}
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       }
 
       // Fire an event in the screening statechart based on the set
@@ -17297,6 +17114,38 @@ if(get_year_from_age()>=2012){
       
       
     }
+    
+    
+    if (uniform() < diagnostic_test.proportion_bleeding) {
+      isBleedingTraj[main.age] = 1;
+      
+      
+              if(get_year_from_age()>=2012){
+			   	if(insure_private){
+			   		population.num_bleeding[get_year_from_age()-2012]++;
+			   	} else if (insure_dual) {
+			   		population.num_bleeding1[get_year_from_age()-2012]++;
+			   	} else if (insure_medicare) {
+			   		population.num_bleeding2[get_year_from_age()-2012]++;
+			   	} else if (insure_medicaid) {
+			   		population.num_bleeding3[get_year_from_age()-2012]++;
+			   	} else if (insure_none) {
+			   		population.num_bleeding4[get_year_from_age()-2012]++;
+			   	}
+			  }
+      
+      
+      
+      
+      
+    }
+    
+    
+    
+    
+    
+    
+    
   }
   else {
     screen_state.fireEvent("not_compliant");
@@ -17563,6 +17412,37 @@ return compliance_prob;]]></Body>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[Main main = get_Population().get_Main();
 dynamic_insurance();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if(get_year_from_age()>=2000){
+	if(main.age==40){
+		population.count_by_year_age[get_year_from_age()-2000][0]++;
+	}
+	if(main.age==50){
+		population.count_by_year_age[get_year_from_age()-2000][1]++;
+	}
+	if(main.age==60){
+		population.count_by_year_age[get_year_from_age()-2000][2]++;
+	}
+	if(main.age==70){
+		population.count_by_year_age[get_year_from_age()-2000][3]++;
+	}
+}
+
+
 if(get_year_from_age()>=2012){
 
    	if(insure_private){
@@ -17690,17 +17570,17 @@ if (age < 65){
 	//this indicates that the individual is age 65 or youner in 2007
 	if (main.age == 65){
 
-		if(modelYear >= 2011 && modelYear <= 2015 ){
+		if(modelYear >= 2012 && modelYear <= 2016){
 		if(insure_private){
-				population.turned_65[modelYear-2011][0]++;}
+				population.turned_65[modelYear-2012][0]++;}
 		if(insure_dual){
-				population.turned_65[modelYear-2011][1]++;}
+				population.turned_65[modelYear-2012][1]++;}
 		if(insure_medicare){
-				population.turned_65[modelYear-2011][2]++;}
+				population.turned_65[modelYear-2012][2]++;}
 		if(insure_medicaid){
-				population.turned_65[modelYear-2011][3]++;}
+				population.turned_65[modelYear-2012][3]++;}
 		if(insure_none){
-				population.turned_65[modelYear-2011][4]++;}
+				population.turned_65[modelYear-2012][4]++;}
 
 		}
 		
@@ -17938,11 +17818,46 @@ if(main.medicaidExpansion==true && modelYear == 2014 && insure_none==true){
 			is_newMedicaid = true;
 			insure_none = false;
 			insure_medicaid = true;	}
+}
+
+
+
+if(main.medicaidExpansion==true && modelYear == 2015 && insure_none==true){
+ 
+		/*Cost of living adjustments by year (federal)
+		January 2010 -- 0.0%
+		January 2011 -- 0.0%
+		January 2012 -- 3.6%
+		January 2013 -- 1.7%
+		January 2014 -- 1.5% - from Leah on 05/10/15 */
+		
+		//identify eligible population
+		if (household_size==1 && income_actual<(15800/cola_adj)){
+			is_medicaidEligible=true;
+		}else if (household_size==2 && income_actual<(21307/cola_adj)){
+			is_medicaidEligible=true;
+		}else if (household_size==3 && income_actual<(26813/cola_adj)){
+			is_medicaidEligible=true;
+		} else if (household_size==4 && income_actual<(32319/cola_adj)){
+			is_medicaidEligible=true;
+		} else if (household_size==5 && income_actual<(37825/cola_adj)){
+			is_medicaidEligible=true;
+		} else if (household_size==6 && income_actual<(43331/cola_adj)){
+			is_medicaidEligible=true;
+		} else if (household_size==7 && income_actual<(48851/cola_adj)){
+			is_medicaidEligible=true;
+		} else if (household_size==8 && income_actual<(54384/cola_adj)){
+			is_medicaidEligible=true;
+		} else {
+			is_medicaidEligible = false;}
 			
 		
-	
-	
-
+		// 
+		if (is_medicaidEligible == true && random() <= main.medicaid_enrollment){
+		
+			is_newMedicaid = true;
+			insure_none = false;
+			insure_medicaid = true;	}
 }
 
 //tracks insurance trajectory from 2009 to 2018
@@ -18128,16 +18043,17 @@ if (modelYear == 2016 || modelYear == 2012 || modelYear == 2013 || modelYear == 
 
 
 
-
-if (array[0] && array_new[3]) {
-	int flagArrayNew = 1;
-} else {
-	for (int i=0; i <array.length;i++) {
-		if(array[i]!=array_new[i]) {
-			insurance_change = true;
-			choose_tests();
-		} else {
-			insurance_change = false;
+if(!out_of_surveillance){
+	if (array[0] && array_new[3]) {
+		int flagArrayNew = 1;
+	} else {
+		for (int i=0; i <array.length;i++) {
+			if(array[i]!=array_new[i]) {
+				insurance_change = true;
+				choose_tests();
+			} else {
+				insurance_change = false;
+			}
 		}
 	}
 }]]></Body>
@@ -18527,7 +18443,10 @@ if (screen_state.isStateActive(Person.Routine)) {
 }*/
 int current_age = main.age - 1;
 int modelYear = get_year_from_age();
-double flag = Math.pow(1 - main.cost_discount_rate, modelYear - main.cost_discount_age);
+double flag = 1.0;
+if (modelYear >= main.cost_discount_age) {
+		flag = Math.pow(1 - main.cost_discount_rate, modelYear - main.cost_discount_age);
+	} 
 
 if (timeAtDiagnosis > 0 && current_age <= timeAtDiagnosis) {
 	if(disease_state.isStateActive(Person.ClinicalStage1)){
@@ -18618,7 +18537,7 @@ if (timeAtDiagnosis > 0 && current_age <= timeAtDiagnosis) {
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[for(int p_age = 45; p_age<= 95; p_age++){
+					<Body><![CDATA[for(int p_age = 50; p_age<= 75; p_age++){
 	int p_year = 2009 - age + p_age;
 	if(p_year>=2012){
 		if(fobt_utd[p_age]){
@@ -18647,7 +18566,84 @@ if (timeAtDiagnosis > 0 && current_age <= timeAtDiagnosis) {
 		   	}				
 		}
 	}
-}]]></Body>
+}
+
+
+
+for(int p_age = 50; p_age<= 75; p_age++){
+	int p_year = 2009 - age + p_age;
+	if(p_year>=2013){
+		if(sex_male){ 
+			population.count_utd_male[p_year - 2013][0]++;
+			if(fobt_utd[p_age] || colon_utd[p_age]){
+				population.count_utd_male[p_year - 2013][1]++;
+			} 
+		}
+		if(!sex_male){ 
+			population.count_utd_female[p_year - 2013][0]++;
+			if(fobt_utd[p_age] || colon_utd[p_age]){
+				population.count_utd_female[p_year - 2013][1]++;
+			} 
+		}
+		if(race_white){ 
+			population.count_utd_white[p_year - 2013][0]++;
+			if(fobt_utd[p_age] || colon_utd[p_age]){
+				population.count_utd_white[p_year - 2013][1]++;
+			} 
+		}
+		if(race_black){ 
+			population.count_utd_black[p_year - 2013][0]++;
+			if(fobt_utd[p_age] || colon_utd[p_age]){
+				population.count_utd_black[p_year - 2013][1]++;
+			} 
+		}
+		if(race_other){ 
+			population.count_utd_other[p_year - 2013][0]++;
+			if(fobt_utd[p_age] || colon_utd[p_age]){
+				population.count_utd_other[p_year - 2013][1]++;
+			} 
+		}
+		if(race_hispanic){ 
+			population.count_utd_hispanic[p_year - 2013][0]++;
+			if(fobt_utd[p_age] || colon_utd[p_age]){
+				population.count_utd_hispanic[p_year - 2013][1]++;
+			} 
+		}
+		if(myINStraj[p_age]=="private"){
+			population.count_utd_tot[0][p_year - 2013][0]++;
+			if(fobt_utd[p_age] || colon_utd[p_age]){
+				population.count_utd_tot[0][p_year - 2013][1]++;
+			}
+		}
+		if(myINStraj[p_age]=="dual"){
+			population.count_utd_tot[1][p_year - 2013][0]++;
+			if(fobt_utd[p_age] || colon_utd[p_age]){
+				population.count_utd_tot[1][p_year - 2013][1]++;
+			}
+		}
+		if(myINStraj[p_age]=="medicare"){
+			population.count_utd_tot[2][p_year - 2013][0]++;
+			if(fobt_utd[p_age] || colon_utd[p_age]){
+				population.count_utd_tot[2][p_year - 2013][1]++;
+			}
+		}
+		if(myINStraj[p_age]=="medicaid"){
+			population.count_utd_tot[3][p_year - 2013][0]++;
+			if(fobt_utd[p_age] || colon_utd[p_age]){
+				population.count_utd_tot[3][p_year - 2013][1]++;
+			}
+		}
+		if(myINStraj[p_age]=="none"){
+			population.count_utd_tot[4][p_year - 2013][0]++;
+			if(fobt_utd[p_age] || colon_utd[p_age]){
+				population.count_utd_tot[4][p_year - 2013][1]++;
+			}
+		}
+		
+		
+	}
+}
+]]></Body>
 				</Function>
 			</Functions>
 			<AnalysisData>
@@ -21760,61 +21756,76 @@ import java.io.OutputStreamWriter;
 				<Variable Class="PlainVariable">
 					<Id>1476915642259</Id>
 					<Name><![CDATA[cancer_inc_04to08_over50_total]]></Name>
-					<X>-490</X><Y>220</Y>
+					<X>-820</X><Y>390</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[double]]></Type>        
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[5]]]></Code>
+						</InitialValue>
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1476915668099</Id>
 					<Name><![CDATA[cancer_inc_04to08_over50_black]]></Name>
-					<X>-490</X><Y>240</Y>
+					<X>-820</X><Y>410</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[double]]></Type>        
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[5]]]></Code>
+						</InitialValue>
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1476915689728</Id>
 					<Name><![CDATA[cancer_inc_04to08_over50_white]]></Name>
-					<X>-490</X><Y>260</Y>
+					<X>-820</X><Y>430</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[double]]></Type>        
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[5]]]></Code>
+						</InitialValue>
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1476915712353</Id>
 					<Name><![CDATA[cancer_inc_04to08_over50_male]]></Name>
-					<X>-490</X><Y>280</Y>
+					<X>-820</X><Y>450</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[double]]></Type>        
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[5]]]></Code>
+						</InitialValue>
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1476915741289</Id>
 					<Name><![CDATA[cancer_inc_04to08_over50_female]]></Name>
-					<X>-490</X><Y>300</Y>
+					<X>-820</X><Y>470</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[double]]></Type>        
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[5]]]></Code>
+						</InitialValue>
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
@@ -22218,7 +22229,7 @@ import java.io.OutputStreamWriter;
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[new int[41]]]></Code>
+							<Code><![CDATA[new int[100]]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -22308,7 +22319,7 @@ import java.io.OutputStreamWriter;
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[new int[41]]]></Code>
+							<Code><![CDATA[new int[100]]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -22398,7 +22409,7 @@ import java.io.OutputStreamWriter;
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[new int[31]]]></Code>
+							<Code><![CDATA[new int[100]]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -22488,7 +22499,7 @@ import java.io.OutputStreamWriter;
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[new int[31]]]></Code>
+							<Code><![CDATA[new int[100]]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -22578,7 +22589,7 @@ import java.io.OutputStreamWriter;
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[int[]]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[new int[31]]]></Code>
+							<Code><![CDATA[new int[100]]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -23209,6 +23220,1014 @@ import java.io.OutputStreamWriter;
 						<Type><![CDATA[int[][]]]></Type>        
 						<InitialValue Class="CodeValue">
 							<Code><![CDATA[new int[5][5]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1520866441563</Id>
+					<Name><![CDATA[n_bm]]></Name>
+					<X>-1350</X><Y>620</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1520866610639</Id>
+					<Name><![CDATA[n_bf]]></Name>
+					<X>-1260</X><Y>620</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1520866718576</Id>
+					<Name><![CDATA[n_wf]]></Name>
+					<X>-1120</X><Y>620</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1520866785251</Id>
+					<Name><![CDATA[n_wm]]></Name>
+					<X>-1190</X><Y>620</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1520867598806</Id>
+					<Name><![CDATA[n_m]]></Name>
+					<X>-1050</X><Y>620</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1520867782877</Id>
+					<Name><![CDATA[n_f]]></Name>
+					<X>-980</X><Y>620</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1520867872340</Id>
+					<Name><![CDATA[n_overAnd65]]></Name>
+					<X>-1610</X><Y>620</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1520867892232</Id>
+					<Name><![CDATA[n_under65]]></Name>
+					<X>-1470</X><Y>620</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521471639549</Id>
+					<Name><![CDATA[n_om]]></Name>
+					<X>-1350</X><Y>660</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521471639565</Id>
+					<Name><![CDATA[n_of]]></Name>
+					<X>-1260</X><Y>660</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521471723746</Id>
+					<Name><![CDATA[n_bmh]]></Name>
+					<X>-1360</X><Y>740</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521471723762</Id>
+					<Name><![CDATA[n_bfh]]></Name>
+					<X>-1270</X><Y>740</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521471723764</Id>
+					<Name><![CDATA[n_wfh]]></Name>
+					<X>-1130</X><Y>740</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521471723766</Id>
+					<Name><![CDATA[n_wmh]]></Name>
+					<X>-1200</X><Y>740</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521471723768</Id>
+					<Name><![CDATA[n_mh]]></Name>
+					<X>-1060</X><Y>740</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521471723770</Id>
+					<Name><![CDATA[n_fh]]></Name>
+					<X>-990</X><Y>740</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521471723772</Id>
+					<Name><![CDATA[n_omh]]></Name>
+					<X>-1360</X><Y>780</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521471723774</Id>
+					<Name><![CDATA[n_ofh]]></Name>
+					<X>-1270</X><Y>780</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][8]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521498281788</Id>
+					<Name><![CDATA[countTotal_pathology]]></Name>
+					<X>-1300</X><Y>-880</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521498316609</Id>
+					<Name><![CDATA[countTotal_pathology1]]></Name>
+					<X>-1300</X><Y>-850</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521498320384</Id>
+					<Name><![CDATA[countTotal_pathology2]]></Name>
+					<X>-1300</X><Y>-820</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521498323801</Id>
+					<Name><![CDATA[countTotal_pathology3]]></Name>
+					<X>-1300</X><Y>-790</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521498327373</Id>
+					<Name><![CDATA[countTotal_pathology4]]></Name>
+					<X>-1300</X><Y>-760</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521498333114</Id>
+					<Name><![CDATA[countTotal_polypectomy]]></Name>
+					<X>-1080</X><Y>-880</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521498349355</Id>
+					<Name><![CDATA[countTotal_polypectomy1]]></Name>
+					<X>-1080</X><Y>-850</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521498353614</Id>
+					<Name><![CDATA[countTotal_polypectomy2]]></Name>
+					<X>-1080</X><Y>-820</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521498357561</Id>
+					<Name><![CDATA[countTotal_polypectomy3]]></Name>
+					<X>-1080</X><Y>-790</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1521498361570</Id>
+					<Name><![CDATA[countTotal_polypectomy4]]></Name>
+					<X>-1080</X><Y>-760</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522179990387</Id>
+					<Name><![CDATA[count_utd_tot]]></Name>
+					<X>-1710</X><Y>-480</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[5][100][2]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522180050845</Id>
+					<Name><![CDATA[count_utd_male]]></Name>
+					<X>-1710</X><Y>-450</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100][2]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522180141311</Id>
+					<Name><![CDATA[count_utd_female]]></Name>
+					<X>-1710</X><Y>-420</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100][2]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522180212735</Id>
+					<Name><![CDATA[count_utd_black]]></Name>
+					<X>-1710</X><Y>-380</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100][2]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522180226300</Id>
+					<Name><![CDATA[count_utd_white]]></Name>
+					<X>-1710</X><Y>-350</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100][2]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522180239255</Id>
+					<Name><![CDATA[count_utd_other]]></Name>
+					<X>-1710</X><Y>-320</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100][2]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522180250445</Id>
+					<Name><![CDATA[count_utd_hispanic]]></Name>
+					<X>-1710</X><Y>-280</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100][2]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186252398</Id>
+					<Name><![CDATA[cancer_count_stage1]]></Name>
+					<X>-1710</X><Y>-650</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186307611</Id>
+					<Name><![CDATA[cancer_count_stage2]]></Name>
+					<X>-1710</X><Y>-620</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186311812</Id>
+					<Name><![CDATA[cancer_count_stage3]]></Name>
+					<X>-1710</X><Y>-590</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186315810</Id>
+					<Name><![CDATA[cancer_count_stage4]]></Name>
+					<X>-1710</X><Y>-560</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186713090</Id>
+					<Name><![CDATA[ly_gained_male]]></Name>
+					<X>-1970</X><Y>-480</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186722844</Id>
+					<Name><![CDATA[ly_gained_female]]></Name>
+					<X>-1970</X><Y>-450</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186803010</Id>
+					<Name><![CDATA[ly_gained_white]]></Name>
+					<X>-1970</X><Y>-410</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186814232</Id>
+					<Name><![CDATA[ly_gained_other]]></Name>
+					<X>-1970</X><Y>-380</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186823471</Id>
+					<Name><![CDATA[ly_gained_black]]></Name>
+					<X>-1970</X><Y>-350</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186833745</Id>
+					<Name><![CDATA[ly_gained_hispanic]]></Name>
+					<X>-1970</X><Y>-320</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186847703</Id>
+					<Name><![CDATA[can_death_averted]]></Name>
+					<X>-2150</X><Y>-480</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186864380</Id>
+					<Name><![CDATA[can_death_averted_male]]></Name>
+					<X>-2150</X><Y>-450</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186874414</Id>
+					<Name><![CDATA[can_death_averted_female]]></Name>
+					<X>-2150</X><Y>-420</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186885386</Id>
+					<Name><![CDATA[can_death_averted_white]]></Name>
+					<X>-2150</X><Y>-390</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186895777</Id>
+					<Name><![CDATA[can_death_averted_black]]></Name>
+					<X>-2150</X><Y>-360</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186905294</Id>
+					<Name><![CDATA[can_death_averted_other]]></Name>
+					<X>-2150</X><Y>-330</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186916202</Id>
+					<Name><![CDATA[can_death_averted_hispanic]]></Name>
+					<X>-2150</X><Y>-300</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522186927817</Id>
+					<Name><![CDATA[ly_gained]]></Name>
+					<X>-1970</X><Y>-510</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522954195919</Id>
+					<Name><![CDATA[cancer_inc_04to08_over50_other]]></Name>
+					<X>-820</X><Y>490</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[5]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1522954217262</Id>
+					<Name><![CDATA[cancer_inc_04to08_over50_hispanic]]></Name>
+					<X>-820</X><Y>510</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[5]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1523388870680</Id>
+					<Name><![CDATA[cancerCounts]]></Name>
+					<X>-1660</X><Y>360</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][][][][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[3][2][2][100][4]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1523993838012</Id>
+					<Name><![CDATA[n_over50_black]]></Name>
+					<X>-820</X><Y>580</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1523993966006</Id>
+					<Name><![CDATA[n_over50_white]]></Name>
+					<X>-820</X><Y>600</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1523993979042</Id>
+					<Name><![CDATA[n_over50_male]]></Name>
+					<X>-820</X><Y>620</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1523993994741</Id>
+					<Name><![CDATA[n_over50_female]]></Name>
+					<X>-820</X><Y>640</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1523994008838</Id>
+					<Name><![CDATA[n_over50_other]]></Name>
+					<X>-820</X><Y>660</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1523994032140</Id>
+					<Name><![CDATA[n_over50_hispanic]]></Name>
+					<X>-820</X><Y>680</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1523994047428</Id>
+					<Name><![CDATA[n_over50_total]]></Name>
+					<X>-820</X><Y>560</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1524592091695</Id>
+					<Name><![CDATA[crc_cumulative_death]]></Name>
+					<X>-1550</X><Y>-650</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1527085340491</Id>
+					<Name><![CDATA[count_by_year_age]]></Name>
+					<X>100</X><Y>390</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[100][4]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1529674182982</Id>
+					<Name><![CDATA[calibration_cancer_stage1]]></Name>
+					<X>500</X><Y>220</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[7][4]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1529674224594</Id>
+					<Name><![CDATA[calibration_pop_counts]]></Name>
+					<X>500</X><Y>180</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[7][4]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1529674733348</Id>
+					<Name><![CDATA[calibration_cancer_stage2]]></Name>
+					<X>500</X><Y>250</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[7][4]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1529674736973</Id>
+					<Name><![CDATA[calibration_cancer_stage3]]></Name>
+					<X>500</X><Y>280</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[7][4]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1529674740582</Id>
+					<Name><![CDATA[calibration_cancer_stage4]]></Name>
+					<X>500</X><Y>300</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[int[][]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new int[7][4]]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -23857,7 +24876,8 @@ for (int i=0; i<people.size(); i++) {
     p.race_black = in.getBoolean("BLACK");
     p.race_hispanic = in.getBoolean("HISP");
     p.race_other = in.getBoolean("OTHER");
-    p.race_white = !(p.race_black || p.race_hispanic || p.race_other);
+    p.race_white = !(p.race_black || p.race_other);
+    //p.race_white = !(p.race_black || p.race_hispanic || p.race_other);
 	p.married = in.getBoolean ("MARRIED");
 	//p.urban = in.getString("Desig"); (was for OR)
 	//p.is_urban = (p.urban.equals("Urban"));
@@ -23876,6 +24896,8 @@ for (int i=0; i<people.size(); i++) {
     
     p.insure_2014 = in.getBoolean("INS_NEW_2014");
     p.insure_2015 = in.getBoolean("INS_NEW_2015");
+    
+   // p.adjusted_screening_traj = in.getString("screenTraj");
     
     p.alone_yes = in.getBoolean("ALONE");
     p.source_yes = in.getBoolean("USUAL");
@@ -23933,6 +24955,10 @@ compute_insurance_year_counters();
 // compute county stuff
 get_county_counts();
 get_utd_counts_yearly();
+
+//int i = people.get(1).get_year_from_age();
+
+
 
 output_person_data ();
 output_person_close ();]]></Body>
@@ -24721,7 +25747,7 @@ if (people.get(1).get_year_from_age() == 2023){
 for (int yr= main.utd_year_start; yr<=main.utd_year_end; yr++){
 	if(people.get(1).get_year_from_age()==yr){
 		for (Person p: people){
-			if ((p.colon_utd[main.age] || p.fobt_utd[main.age] || p.sigmoid_utd[main.age]) && (!p.event_dead) ){
+			if ((p.colon_utd[main.age] || p.fobt_utd[main.age] || p.sigmoid_utd[main.age]) && (!p.event_dead && main.age>=50 && main.age<=75) ){
 		      count_utd[yr-main.utd_year_start]++;
 		    }
 		    if (!p.event_dead && main.age>=50 && main.age<=75 ){
@@ -25010,6 +26036,9 @@ for (int yr= 2012; yr<=2042; yr++){
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[insure_2015]]></Name>
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[out_of_surveillance]]></Name>
 						</Parameter>
 					</Parameters>
 					<ReplicationFlag>true</ReplicationFlag>
@@ -25694,6 +26723,32 @@ This is used to calculate continuing, rather than initial compliance.
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1521474254321</Id>
+					<Name><![CDATA[proportion_bleeding]]></Name>
+					<X>-200</X><Y>360</Y>
+					<Label><X>20</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[double]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<NumericType><![CDATA[double]]></NumericType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1521474254319</Id>
+							<Label><![CDATA[proportion_perforation]]></Label>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 			</Variables>
 			<Functions>
 				<Function AccessType="default" StaticFunction="false">
@@ -26060,6 +27115,9 @@ return null;
 						<Parameter>
 							<Name><![CDATA[new_compliance_rate_given_not_prev_compliant]]></Name>
 						</Parameter>
+						<Parameter>
+							<Name><![CDATA[proportion_bleeding]]></Name>
+						</Parameter>
 					</Parameters>
 					<ReplicationFlag>false</ReplicationFlag>
 					<Replication Class="CodeValue">
@@ -26189,6 +27247,9 @@ return null;
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[new_compliance_rate_given_not_prev_compliant]]></Name>
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[proportion_bleeding]]></Name>
 						</Parameter>
 					</Parameters>
 					<ReplicationFlag>true</ReplicationFlag>
@@ -26892,6 +27953,9 @@ getPresentation().setPresentable( getEngine().getRoot() );]]></ActionCode>
 				<Parameter>
 					<ParameterName><![CDATA[test_propertion_bleeding]]></ParameterName>
 				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[test_proportion_bleeding]]></ParameterName>
+				</Parameter>
 			</Parameters>			
 			<PresentationProperties 
 				EnableAdaptiveFrameManagement="true" 
@@ -27522,6 +28586,9 @@ if (root.simulation_count % 2 == 0) {
 			<FreeformParamValue>	
 				<Id>1513638102033</Id>
 			</FreeformParamValue>
+			<FreeformParamValue>	
+				<Id>1521474318893</Id>
+			</FreeformParamValue>
 			<RangeVariationParamValue>	
 				<Id>1328041345577</Id>
 				<Type>FIXED</Type>
@@ -28218,6 +29285,10 @@ if (root.simulation_count % 2 == 0) {
 				<Id>1513638102033</Id>
 				<Type>FIXED</Type>
 			</RangeVariationParamValue>
+			<RangeVariationParamValue>	
+				<Id>1521474318893</Id>
+				<Type>FIXED</Type>
+			</RangeVariationParamValue>
 			<ModelTimeProperties>
 				<StopOption><![CDATA[Stop at specified time]]></StopOption>
 				<InitialDate><![CDATA[1328041345266]]></InitialDate>	
@@ -28287,10 +29358,14 @@ import org.apache.commons.lang3.StringUtils;
 			<Code><![CDATA[/**
  * Configure the population scenario to execute.
  */
-execute_populations_parallel (5); //00);
+execute_populations_parallel (5); //00); // DELETE. OMG. RACHEL!
 //calibrate (1);
 ]]></Code>
-			<AdditionalClassCode><![CDATA[private List<Outcomes> _outcomes = null;
+			<AdditionalClassCode><![CDATA[/// THIS IS NC MODEL //////
+
+
+
+private List<Outcomes> _outcomes = null;
 private Executor _executor = new Executor ();
 private static final String CONTROL = "control";
 static int outcomesIndex = 0;
@@ -28324,6 +29399,10 @@ private String runtimeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm").format(ne
 //private String inputDirectory  = "g:\\dev-NC\\var\\crcsim\\model\\whitemalepops";
 //private String inputDirectory  = "g:\\dev-NC\\var\\crcsim\\model\\temppop";
 //private String inputDirectory  = "c:\\dev\\var\\crcsim\\model\\pops_50Sample";
+
+//private String inputDirectory  = "g:\\dev-NC\\var\\crcsim\\model\\testingRachel";
+
+
 private String inputDirectory  = "g:\\dev-NC\\var\\crcsim\\model\\pops";
 private String popname = inputDirectory.substring(27);
 
@@ -28363,7 +29442,11 @@ private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsSci
 //private String experimentId = "013"; //  NC experiment Medicaid Exp 6 scenarios
 //private String experimentId = "018";
 //private String experimentId = "019";
-private String experimentId = "020"; //NC Experiment calibrate secular trend 8-6-2017
+//private String experimentId = "020"; //NC Experiment calibrate secular trend 8-6-2017
+private String experimentId = "022"; //NC base experiment
+//private String experimentId = "024"; 
+//private String experimentId = "025"; //Calibration Experiment
+
 //private String experimentId = "016"; //  NC experiment calibrate secular trend
 //private String experimentId = "013"; // Oregon lite, experimenting with secular trend
 //private String experimentId = "012"; // Oregon lite, experimenting with colonoscopy choice timing
@@ -28533,7 +29616,7 @@ private void execute_populations_parallel (int replications) {
                           futures,
                           null, //results,
                           null);
-                          
+                         
         File experimentDir = new File (formExperimentDirPath ());
         File [] interventions = Main.modelIO.getFilesByPattern ("intervention.[0-9]+", experimentDir);
     	model_population (cohorts,
@@ -28881,6 +29964,8 @@ class ModelRunner implements Runnable {
 			long end = System.currentTimeMillis ();
 			traceln ("-end  : " + root.output_dir + " rep(" + replication + ") in " + 
 					( (end - start) / 1000.0 ) + " seconds");
+					
+			int tempCan = root.age;
 			//ADDED 17 Apr 2014 to see if can reduce memory usage
 			root.getEngine().stop();
 		} catch (Throwable t) {
@@ -28910,9 +29995,679 @@ List<Future> execute_parallel  (File input,
 		for (int c = 0; c < replications; c++) {
 			ModelRunner runner = new ModelRunner (scenario, input, parameters, results, c, calibrate);
 			futures.add (_executor.queue (runner));
+			Main root = new Main();
+			int tempCan = root.age;
 		}
 	}
 	return futures;
+}]]></AdditionalClassCode>
+		</CustomExperiment>
+		<!--   =========  Custom Experiment   ========  -->
+		<CustomExperiment>
+			<Id>0</Id>
+			<Name><![CDATA[CustomExperiment]]></Name>
+			<MaximumMemory>1038565</MaximumMemory>
+			<CommandLineArguments><![CDATA[seed 12334]]></CommandLineArguments>
+			<VmArgs><![CDATA[-Xms1024m -XX:MaxPermSize=630040k]]></VmArgs>
+			<Import><![CDATA[import java.io.File;
+import java.io.FilenameFilter;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Date;
+import java.text.*;
+import org.renci.epi.util.Calibrate;
+import org.renci.epi.util.JavaScriptCalibrate;
+import org.renci.epi.util.Executor;
+import org.renci.epi.util.ModelIO;
+import org.renci.epi.util.IterationUtil;
+import org.renci.epi.util.Outcomes;
+import java.util.concurrent.Future;
+import org.apache.commons.lang3.StringUtils;
+]]></Import>
+			<Code><![CDATA[/**
+ * Configure the population scenario to execute.
+ */
+execute_populations_parallel (5); //00); // DELETE. OMG. RACHEL!
+//calibrate (1);
+]]></Code>
+			<AdditionalClassCode><![CDATA[/// THIS IS NC MODEL //////
+
+
+
+private List<Outcomes> _outcomes = null;
+private Executor _executor = new Executor ();
+private static final String CONTROL = "control";
+static int outcomesIndex = 0;
+
+// Useful for run on mayorga_anylogic.
+//private String inputDirectory = "C:\\Users\\mayorga_anylogic\\Documents\\GitHub\\crcsim\\pops";
+//private String outputDirectory = "C:\\Users\\mayorga_anylogic\\Documents\\GitHub\\crcsim\\model\\out";
+
+private boolean debugMode = true; // Denotes if only use part of population files.
+private String strDebug = (debugMode)? "debug":"full";
+private String runtimeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm").format(new Date());
+// For small scale runs on RENCI Machine
+//private String inputDirectory = "C:\\Users\\dacornej\\Documents\\pops";
+//private String outputDirectory = "C:\\Users\\dacornej\\Documents\\out";
+//private String inputDirectory = "C:\\Users\\dacornej\\Documents\\GitHub\\crcsim\\pops2";
+//private String outputDirectory = "C:\\Users\\dacornej\\Documents\\GitHub\\crcsim\\model\\out2";
+
+// For my runs on the RENCI Machine
+//private String inputDirectory = "C:\\Users\\dacornej\\Documents\\GitHub\\crcsim\\pops2";
+//private String outputDirectory = "C:\\Users\\dacornej\\Documents\\GitHub\\crcsim\\model\\out2";
+
+// For production runs on the RENCI Machine
+//private String inputDirectory = "C:\\cleanpops-2014-02-05-1203-smallcohort";
+//private String outputDirectory = "C:\\Users\\dacornej\\Documents\\GitHub\\crcsim\\model\\out";
+
+//For Production Runs on RENCI Machine(replaced by SystemsScience_Windows)
+//private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\cleanpops-2014-02-05-1203";
+//private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\cleanpops-2014-02-05-1203-smallcohort";
+//private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\cleanpops-2014-02-05-1203-smallcohort-p1";
+//private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\cleanpops-2014-02-05-1203-smallcohort-p2";
+//private String inputDirectory  = "g:\\dev-NC\\var\\crcsim\\model\\whitemalepops";
+//private String inputDirectory  = "g:\\dev-NC\\var\\crcsim\\model\\temppop";
+//private String inputDirectory  = "c:\\dev\\var\\crcsim\\model\\pops_50Sample";
+
+//private String inputDirectory  = "g:\\dev-NC\\var\\crcsim\\model\\testingRachel";
+
+
+private String inputDirectory  = "g:\\dev-NC\\var\\crcsim\\model\\pops";
+private String popname = inputDirectory.substring(27);
+
+
+//private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\smallpops";
+//private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\outPSA";
+//private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\outDB";
+//private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-rmt_test";
+private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-NC-" + strDebug + "-" + popname + "-" + runtimeStamp;
+//private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\out-2016-05-25-1636_full";
+//private String outputDirectory = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\Nambiar-Analysis"; 
+//For small test production runs
+//private String inputDirectory  = "\\\\ad.renci.org\\Shared\\Projects\\SystemsScience\\smallpops";
+//private String outputDirectory = "\\\\ad.renci.org\\projects\\SystemsScience_Windows\\smallout";
+
+// On stevec@STEVE-W510:
+//private String inputDirectory  = "C:\\dev\\var\\crcsim\\model\\cleanpops-2014-02-05-1203-no89or90";
+//private String inputDirectory  = "C:\\dev\\var\\crcsim\\model\\pops60";
+//private String outputDirectory = "C:\\dev\\var\\crcsim\\model\\out";
+
+/**
+ * Change this to select a different experment.
+ */
+//private String experimentId = "000"; //orginal Experiment using inital_compliance_rate
+//private String experimentId = "001";
+//private String experimentId = "002";
+//private String experimentId = "003";
+//private String experimentId = "005";
+//private String experimentId = "006";//just tests the distance file
+//private String experimentId = "007"; // all interventions with end year of testing program changed
+//private String experimentId = "008"; // two secular trend intervention,mailed reminder,mass media, all on, NO endoscopy expainsion
+//private String experimentId = "009"; // 10% secular t is baseline, also 5% trend and no trend interventions,,mailed reminder(w. 10% trend),mass media(w. 10% trend), all on(w. 10% trend), NO endoscopy expainsion
+//private String experimentId = "002"; //agent_year output
+//private String experimentId = "012"; //agent_year output OR
+//private String experimentId = "012"; // Oregon lite
+//private String experimentId = "017"; //  originald diesease progression
+//private String experimentId = "013"; //  NC experiment Medicaid Exp 6 scenarios
+//private String experimentId = "018";
+//private String experimentId = "019";
+//private String experimentId = "020"; //NC Experiment calibrate secular trend 8-6-2017
+//private String experimentId = "022"; //NC base experiment
+//private String experimentId = "024"; 
+private String experimentId = "025"; //Calibration Experiment
+
+//private String experimentId = "016"; //  NC experiment calibrate secular trend
+//private String experimentId = "013"; // Oregon lite, experimenting with secular trend
+//private String experimentId = "012"; // Oregon lite, experimenting with colonoscopy choice timing
+//private String experimentId = "011_database";
+//private String experimentId = "fs";
+//private String experimentId = "base";
+//private String experimentId = "new_base";
+//private String experimentId = "threshold_001";
+//private String experimentId = "psa_001";
+//private String experimentId = "test_database";
+//private String experimentId = "T2";
+//private String experimentId = "T3_noRNG";
+
+
+/**
+ * Forms the path to experiment specific data.
+ */
+private String formPath (String [] elements) {
+	return StringUtils.join (elements, File.separator);
+}
+/**
+ * Forms path to the experiment directory.
+ */
+private String formExperimentDirPath () {
+	return formPath (new String [] { "experiment", experimentId });
+}
+/**
+ * Forms path to a specific data element within the experiment directory.
+ */
+private String formExperimentPath (String element) {
+	return formPath (new String [] {
+	    formExperimentDirPath (),
+	    element
+	});
+}
+/**
+ * Get a scenario name normalizing between control and intervention scenarios.
+ */
+private String get_scenario_name (File cohort, int iterationIndex, File scenario) {
+	return scenario == null ? 
+		cohort.getName () + "." + iterationIndex + "." + CONTROL : 
+		cohort.getName () + "." + iterationIndex + "." + scenario.getName ();
+}
+
+/**
+ * Get a scenario number normalizing between control and intervention scenarios.
+ */
+private int get_scenario_number (File cohort, int iterationIndex, File scenario) {
+	return scenario == null ? 
+		-1 : Integer.parseInt(scenario.getName ());
+}
+/**
+ * Get model parameters by reading a scenario configuration file.
+ */
+private String get_scenario_parameters (File scenario) {
+	return scenario == null ? "" : Main.modelIO.getFileAsString (scenario);
+}
+/**
+ * Execute the model for a set of control scenarios in parallel.
+ * @param cohorts A list of file names where each is an agent cohort.
+ * @param iterationParameters Parameters controlling random draws for an iteration.
+ * @param iterationIndex zero based numeric value for to keep track of which iteration we are on
+ * @param replications Number of times to run the model with this set of parameters.
+ * @param futures For tracking parallel execution.
+ * @param results Model execution results.
+ */
+private void model_population (File [] cohorts,
+                               String experimentParameters,
+                               String iterationParameters,
+							   int iterationIndex,	
+                               int replications,
+                               HashMap<String,List<Future>> futures,
+                               HashMap<String,Outcomes> results,
+                               Calibrate calibrate)
+{
+
+	model_population (cohorts,
+					  new File [] { null },
+					  experimentParameters, 
+	                  iterationParameters,
+					  iterationIndex,
+	                  replications,
+	                  futures,
+	                  null, //results,
+	                  calibrate);
+}                               
+/**
+ * Execute the model for each of a set of intervention scenarios in parallel.
+ * @param cohorts A list of file names where each is an agent cohort.
+ * @param interventions A list of files containing intervention specific parameters.
+ * @param iterationParameters Parameters controlling random draws for an iteration.
+ * @param iterationIndex zero based numeric value for to keep track of which iteration we are on
+ * @param replications Number of times to run the model with this set of parameters.
+ * @param futures For tracking parallel execution.
+ * @param results Model execution results.
+ */
+ private void model_population (File [] cohorts,
+							    File [] interventions,
+                                String experimentParameters,
+                                String iterationParameters,
+								int iterationIndex,
+                                int replications,
+                                HashMap<String,List<Future>> futures,
+                                HashMap<String,Outcomes> results,
+                                Calibrate calibrate)
+{
+    //System.out.println ("Experiment params: ==> \n" + experimentParameters + "END EXPERIMENT PARAMS");
+    //System.out.println ("iteration params: ==> \n(" + iterationParameters + ")");		
+	for (File cohort : cohorts) {
+		//traceln ("cohort: " + cohort);
+		for (File intervention : interventions) {
+		    String scenario = get_scenario_name (cohort, iterationIndex, intervention);
+		    //traceln("scenario = " + scenario);
+	        String scenarioParameters = get_scenario_parameters (intervention);
+					     execute_parallel (cohort,
+										   scenario,
+										   new String [] {
+									 	      experimentParameters,
+									 		  scenarioParameters,
+									 		  iterationParameters
+							 		 	   },
+							  			   replications,
+							  		   	   results,
+							  		   	   calibrate);
+	    }
+	}
+	waitFor (futures, results);
+	futures.clear ();
+}
+/**
+ * Execute the given number of replications for the model.
+ */
+private void execute_populations_parallel (int replications) {
+
+	// Read parameters common to the entire experiment.
+	String experimentDefinition = formExperimentPath ("experiment.txt");
+	String experimentParameters = Main.modelIO.getFileAsString (new File (experimentDefinition));
+	//traceln("experimentDefinition: " + experimentDefinition);
+	// Track parallel jobs using futures to allow us to wait for completion.
+	HashMap<String,List<Future>> futures = new HashMap<String,List<Future>> ();		
+
+	// Track outcomes for the base case and each intervention.
+	_outcomes = new ArrayList<Outcomes> ();
+	HashMap<String,Outcomes> results = new HashMap<String,Outcomes> ();
+		
+	List<String> iterationParameterSets = IterationUtil.generateIterations (formExperimentPath ("iterations.conf"));
+	//List<String> iterationParameterSets = IterationUtil.generateIterationsFromValueList (formExperimentPath ("iterationsList.conf"));
+	for (int c = 0; c < iterationParameterSets.size(); c++) {
+		String iterationParameters = iterationParameterSets.get(c);
+		int iterationIndex = c;
+		// For debug purposes
+		//System.out.println ("iterationParameters[" + c + "]: " + iterationParameters);
+		//System.exit(0);
+ 
+        File [] cohorts = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+", new File (inputDirectory));
+		System.out.println("BREAK 1");
+		System.out.println("INPUT_DIRECTORY: " + inputDirectory);
+		System.out.println("COHORTS: " + cohorts);
+		System.out.println("EXPERIMENT_PARAMETERS: " + experimentParameters);
+		System.out.println("ITERATION_PARAMETERS: " + iterationParameters);
+		model_population (cohorts,
+					      experimentParameters,
+                          iterationParameters,
+						  iterationIndex,
+                          replications,
+                          futures,
+                          null, //results,
+                          null);
+                         
+        File experimentDir = new File (formExperimentDirPath ());
+        File [] interventions = Main.modelIO.getFilesByPattern ("intervention.[0-9]+", experimentDir);
+    	model_population (cohorts,
+    	                  interventions,
+					      experimentParameters,
+                          iterationParameters,
+						  iterationIndex,
+                          replications,
+                          futures,
+                          null, //results
+                          null);
+	}
+	System.exit (0);
+}
+
+
+/**
+ * Calibrate the model.
+ */
+private void calibrate (int replications) {
+
+	// Read parameters common to the entire experiment.
+	String experimentDefinition = formExperimentPath ("experiment.txt");
+	String experimentParameters = Main.modelIO.getFileAsString (new File (experimentDefinition));
+	
+	// Track parallel jobs using futures to allow us to wait for completion.
+	HashMap<String,List<Future>> futures = new HashMap<String,List<Future>> ();		
+
+	/* Specify
+	 *   # of iterations and distributions specified by configuration file
+	 *   random number seed (or use default)
+	 *   objective function.
+	 *   Engine tolerances can be set using: setATOL/setRTOL (absolute/relative)
+	 *   Engine solvers can be set with 
+	 *      setSolverODE 
+	 *      setSolverNAE
+	 *      setSolverDAE
+	 *   http://www.anylogic.com/anylogic/help/index.jsp?topic=/com.anylogic.help/html/javadoc/com/xj/anylogic/engine/Engine.html
+	 */
+	Calibrate calibrate = new JavaScriptCalibrate (formExperimentPath ("calibrate.js"));
+	List<String> iterationParameterSets = IterationUtil.generateIterations (formExperimentPath ("iterations.conf"));
+	for (int c = 0; c < iterationParameterSets.size(); c++) {
+		String iterationParameters = iterationParameterSets.get(c);
+		int iterationIndex = c;
+	    File [] cohorts = Main.modelIO.getFilesByPattern (".*.tsv.[0-9]+", new File (inputDirectory));
+		model_population (cohorts,
+						  experimentParameters,
+   		                  iterationParameters,
+						  iterationIndex,
+   	                   	  replications,
+                          futures,
+                          null, //results,
+                          calibrate);
+        calibrate.onIterationComplete ();
+    }
+	System.exit (0);
+}
+ 
+/**
+ * Join this thread with a map of collections of other threads.
+ * For each key in the map, get the list of associated futures.
+ * Wait for each future.
+ * Once all have completed, add outcomes for the scenario.
+ *@param futures A map of lists of futures where scenario ids are keys.
+ *@param results A map of scenarios to outcomes objects.
+ */
+public void waitFor (HashMap<String,List<Future>> futures, HashMap<String,Outcomes> results) {
+	for (String scenario : futures.keySet ()) {
+		try {
+			List<Future> futuresList = futures.get (scenario);
+			//trace ("============================= waiting for " + scenario);
+			_executor.waitFor (futuresList);
+			//traceln (".");
+			//addOutcomes (scenario, results);
+			//traceln ("pending:");
+			for (String scen : futures.keySet ()) {
+				//traceln ("   scenario: " + scen);
+			}
+		} catch (Throwable t) {
+			throw new RuntimeException (t);
+		}
+	}
+}
+/**
+ * Get a configuration instruction to set the input file name.
+ *@param input The input file.
+ */
+private String getInputFileConfiguration (File input) {
+	StringBuilder buffer = new StringBuilder ();
+	int cohort = Main.modelIO.getAge (input);
+	if (cohort > -1) {
+		buffer.append ("cohort=").append (cohort).append ("\n");
+		buffer.append ("death_rate_delay=").append (cohort).append ("\n");
+	}
+	int numLines = Main.modelIO.countFileLines (input);
+	final int MAX_LINES = 101; // Add one extra for headers
+	if (debugMode) {
+		if (numLines > MAX_LINES) {
+		    numLines = MAX_LINES;
+		}		
+	}else{
+		numLines = numLines-1;
+	}
+	buffer.append ("population_size=").append (numLines).append ("\n");
+	buffer.append ("infile_population_name=").append (input.getPath ()).append ("\n");
+	return buffer.toString (); //value;
+}
+
+/**
+* Get the age of the cohort from the cohort file
+@param input The cohort input file
+*/
+private String getCohortAge (File input){
+	String value = "";
+	int cohort = Main.modelIO.getAge(input);
+	if (cohort > -1) {
+		value = "death_rate_delay=" + cohort + "\n";
+	}
+	return value;
+}
+/**
+ * Add replication outcomes for a single replication of a given scenario.
+ *@param name The scenario name to add outcomes for.
+ *@param root The model object containing the values to record.
+ *@param results The map of scenarios to results objects.
+ */
+private synchronized void addReplicationOutcomes (String scenario,
+												  Main root,
+												  HashMap<String,Outcomes> results)
+{
+/*
+System.out.println ("scenario: " + scenario);
+System.out.println ("root: " + root);
+System.out.println ("results: " + results);
+System.out.println ("root.population: " + root.population);
+*/
+	Outcomes outcomes = results.get (scenario);
+	if (outcomes == null) {
+		outcomes = new Outcomes (scenario);
+		results.put (scenario, outcomes);
+	}
+	outcomes.read (root.population.people.average ("cost_routine"),
+	               root.population.people.average ("cost_diagnostic"),
+	               root.population.people.average ("cost_surveillance"),
+	               root.population.people.average ("cost_treatment"),
+	               -root.population.people.average ("lost_years"),
+				   root.population.people.average ("discounted_cost_routine"),
+	               root.population.people.average ("discounted_cost_diagnostic"),
+	               root.population.people.average ("discounted_cost_surveillance"),
+	               root.population.people.average ("discounted_cost_treatment"),
+	               -root.population.people.average ("discounted_lost_years"),
+	    		   root.population.prob_crc,
+				   root.population.prob_dead_crc);
+}
+/**
+ * Add outcomes for a set of replications to the final list of outcomes objects.
+ * If this is an intervention, calculate its deltas from the control scenario.
+ *@param name The name of the scenario.
+ *@param results The map of scenarios to results.
+ */
+private synchronized void addOutcomes (String scenario, HashMap<String,Outcomes> results) {
+	Outcomes outcomes = results.get (scenario);
+	if (outcomes != null) {	
+		outcomes.calculateValues ();
+		_outcomes.add (outcomes);
+		String key = getControl (scenario);
+		Outcomes control = results.get (key);
+		//traceln ("got control: " + key);
+		if (control != null) {
+			outcomes.calculateDeltas (control);
+		}
+	}
+	Outcomes.writeOutcomes (_outcomes,
+						    outputDirectory + File.separator + 
+						    "outcomes.tsv." + outcomesIndex++, "\t");
+}
+private String getControl (String scenario) {
+	String result = scenario;
+	int index = scenario.indexOf (".intervention");
+	if (index > -1) {
+		result = scenario.substring (0, index);
+	}
+	return result + ".control";
+}
+/**
+ *
+ * Configure the model's output behavior.
+ *@param root The main model object.
+ *@param inputFile The model input file
+ *@param scenario The mode of the experiment (control or intervention)
+ *@return Returns a new model with the given input file and output file appropriately configured.
+ */
+public Main create_model (File input, String scenario, int replication) {
+
+	// Create a new model.
+	Main root = initialize (new Main (createEngine (), null, null),
+						    replication);
+
+	// Set input file name.
+ 	root.infile_population_name = input.getName ();
+ 	
+ 	//Set replication index
+ 	root.rep_idx = replication + 1;
+
+	// Set output file name.
+	//root.output_dir = "out" + File.separator + scenario;
+	root.output_dir = outputDirectory + File.separator + scenario;
+	
+	// Configure the simulation to compute population rates.
+	root.compute_population_rates = true;
+	
+	// Save the scenario name in root so it's available in 
+	// Population.output_person_data():
+	root.scenario = scenario;
+	
+	return root;
+}
+/**
+ * Initialize a model.
+ *@param root The model to initialize.
+ *@return Returns an initialized model object.
+ */
+private Main initialize (Main root, int replication) {
+	// Parse the command-line parameters. For now, we require parameters to
+	// be specified in the form:
+	//
+	//    paramname1 paramvalue1 paramname2 paramvalue2 ...
+	//
+	// A parameter named seed must be provided on the command line. Other
+	// command-line parameter names must match a parameter name for the
+	// Main object. Providing the Main parameters on the command line is
+	// optional.
+	//
+	// The Main parameter run_mode must not be provided on the command
+	// line. This parameter will automatically be set to "batch" because
+	// other values are invalid in command-line runs.
+	boolean foundSeed = false;
+	long seed = 0;
+	root.setParametersToDefaultValues();
+	String[] args = getCommandLineArguments();
+	for (int i = 0; i < args.length; i++) {
+		if (args[i].equalsIgnoreCase("seed")) {
+			seed = Long.parseLong(args[++i]);
+			seed += replication * 10000;
+			root.getEngine().getDefaultRandomGenerator().setSeed(seed);
+
+			foundSeed = true;
+		}
+		traceln (args [i]);
+	}
+	if (!foundSeed) {
+		throw new RuntimeException("No seed parameter was specified.");
+	}
+	
+	// Configure the model. Use reflection to process command line parameters.
+	HashMap<String,String> skip = new HashMap<String,String> ();
+	skip.put ("seed", "seed");
+	Main.modelIO.configureModel (root, args, skip);
+
+	root.getEngine().getDefaultRandomGenerator().setSeed (seed);
+
+	return root;
+}
+/**
+ * A runnable job modeling the execution of a model.
+ */
+class ModelRunner implements Runnable {
+	private String scenario;
+	private File input;
+	private String [] parameters;
+	private HashMap<String,Outcomes> results;
+	private int replication = 0;
+	private Calibrate calibrate = null;
+
+	/**
+	 * Create a new model runner.
+	 *@param scenario The scenario name.
+	 *@param root The model object to execute.
+	 *@param results Map of scenario names to outcomes.
+	 */
+	ModelRunner (String scenario,
+				 File input,
+				 String [] parameters,
+				 HashMap<String,Outcomes> results,
+				 int rep,
+				 Calibrate calibrate)
+	{
+		this.scenario = scenario;
+		this.input = input;
+		this.parameters = parameters;
+		//this.results = results;
+		this.replication = rep;
+		this.calibrate = calibrate;
+	}
+	/**
+	 * Execute the model and record its outcomes.
+	 */
+	public void run () {
+		try {
+			Main root = create_model (input, scenario, replication);
+			// Must keep same engine to retain initialization results.
+			//root.setEngine (createEngine ());
+			traceln ("-start: " + root.output_dir + " rep(" + replication + ")");
+		
+			List<String> outputLines = new ArrayList<String> ();
+			outputLines.add ("--replication: " + replication);
+
+			root.configure_parameters (input.getName () + "-" + scenario, parameters, outputLines);
+			root.configure_parameters (input.getName () + "-" + scenario,
+									   new String [] {
+									   		getInputFileConfiguration (input),
+									   },
+									   outputLines);
+
+
+			Main.modelIO.writeConfiguration (root,
+										root.output_dir,
+										"configuration.txt." + replication,
+										outputLines);
+		
+			long start = System.currentTimeMillis ();
+
+			root.outfile_year_name = root.outfile_year_name + "." + replication;
+			root.outfile_state_name = root.outfile_state_name + "." + replication;		
+			root.outfile_replication_name = root.outfile_replication_name + "." + replication;
+			root.outfile_agent_name = root.outfile_agent_name + "." + replication;
+			root.outfile_agent_year_name = root.outfile_agent_year_name + "." + replication;
+			root.outfile_county_name = root.outfile_county_name + "." + replication;
+
+			synchronized (ModelRunner.class) {
+		   	 // This appears to workaround an occasional deadlock in the classloader in some vms.
+	    		root.getEngine().start (root);
+	    	}
+	    	
+	    	if (calibrate != null) {
+	    		calibrate.onInitRun (root);
+	    	}
+			root.getEngine().runFast ();
+			//addReplicationOutcomes (scenario, root, results);
+
+			if (calibrate != null) {
+				calibrate.onRunComplete (root);
+			}
+			
+			long end = System.currentTimeMillis ();
+			traceln ("-end  : " + root.output_dir + " rep(" + replication + ") in " + 
+					( (end - start) / 1000.0 ) + " seconds");
+					
+			int tempCan = root.age;
+			//ADDED 17 Apr 2014 to see if can reduce memory usage
+			root.getEngine().stop();
+		} catch (Throwable t) {
+			t.printStackTrace ();
+			throw new RuntimeException (scenario + " " + replication + " ", t);
+		}
+	}
+}
+/**
+ * Create and configure the model given a set of input parameters.
+ * Then submit it for concurrent execution.
+ *@param input The input file.
+ *@param mode The scenario being executed.
+ *@param replications The number of replications of the job to run.
+ *@param results A map of scenario names to outcomes.
+ *@return Returns a list of futures containing one element per replication submitted.
+ */
+private void execute_parallel  (File input,
+								String scenario,
+								String [] parameters,
+								int replications,
+								HashMap<String,Outcomes> results,
+								Calibrate calibrate)
+{
+	if (input.exists ()) {
+		for (int c = 0; c < replications; c++) {
+			ModelRunner runner = new ModelRunner (scenario, input, parameters, results, c, calibrate);
+			runner.run();
+		}
+	}
 }]]></AdditionalClassCode>
 		</CustomExperiment>
 	</Experiments>
